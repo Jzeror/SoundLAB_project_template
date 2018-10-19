@@ -1,20 +1,9 @@
 /*
-==========================================================
-==========================================================
-
-Bootstrapious Dashboard Template 1.2
-
-https://bootstrapious.com/p/bootstrap-4-dashboard
-
-==========================================================
-==========================================================
-*/
-/*
 * ==========================================================
 *     GENERAL
 * ==========================================================
 */
-
+/*
 .text-bold {
   font-weight: 700;
 }
@@ -30,15 +19,15 @@ https://bootstrapious.com/p/bootstrap-4-dashboard
 .text-gray {
   color: #868e96;
 }
-
+*/
 .text-uppercase {
   letter-spacing: 0.2em;
 }
-
+/*
 .lh-2 {
   line-height: 2;
 }
-
+*/
 a {
   display: inline-block;
   text-decoration: none;
@@ -56,7 +45,7 @@ i {
 span {
   display: inline-block;
 }
-
+/*
 .mt-30px {
   margin-top: 30px !important;
 }
@@ -64,17 +53,18 @@ span {
 .mb-30px {
   margin-bottom: 30px !important;
 }
-
+*/
+/*
 i[class*='icon-'] {
   -webkit-transform: translateY(4px);
   transform: translateY(4px);
 }
-
+*/
 table {
   font-size: 0.9em;
   color: #666;
 }
-
+/*
 .btn-xs {
   font-size: 0.7em !important;
   padding: 2px 5px !important;
@@ -89,7 +79,7 @@ table {
 .badge.badge-primary {
   background: #ef5285;
 }
-
+*/
 .page {
   position: absolute;
   top: 0;
@@ -110,7 +100,7 @@ h2 {
   color: #555;
   font-weight: 400;
 }
-
+/*
 .breadcrumb-holder {
   background: #eceeef;
 }
@@ -130,7 +120,7 @@ h2 {
 .breadcrumb-holder .breadcrumb .container {
   padding: 0;
 }
-
+*/
 .card {
   margin-bottom: 30px;
   -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
@@ -157,11 +147,11 @@ h2 {
 .section-padding {
   padding: 3rem 0;
 }
-
+/*
 .section-no-padding-bottom {
   padding-bottom: 0;
 }
-
+*/
 section header {
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -227,18 +217,18 @@ nav.navbar a {
   color: #fff;
   position: relative;
 }
-
+/*
 nav.navbar .badge {
   position: absolute;
   top: 0;
   right: 0;
 }
-
-nav.navbar a.language span {
+*/
+/*nav.navbar a.language span {
   margin-left: .2rem;
   vertical-align: middle;
 }
-
+*/
 nav.navbar a.logout i {
   margin-left: 5px;
 }
@@ -263,7 +253,7 @@ nav.navbar .brand-text strong {
 nav.navbar .nav-menu {
   margin-bottom: 0;
 }
-
+/*
 nav.navbar .dropdown-toggle::after {
   border: none !important;
   content: '\f107';
@@ -271,8 +261,8 @@ nav.navbar .dropdown-toggle::after {
   font-family: 'FontAwesome';
   margin-left: .3rem;
 }
-
-nav.navbar .dropdown-menu {
+*/
+/*nav.navbar .dropdown-menu {
   right: 0;
   left: auto;
   float: left;
@@ -305,8 +295,8 @@ nav.navbar .dropdown-menu .dropdown-item span {
 nav.navbar .dropdown-menu .dropdown-item i {
   margin-right: 5px;
 }
-
-nav.navbar .msg-body span,
+*/
+/*nav.navbar .msg-body span,
 nav.navbar .msg-body strong {
   display: block;
 }
@@ -314,8 +304,8 @@ nav.navbar .msg-body strong {
 nav.navbar .msg-body span {
   font-size: 0.85em;
 }
-
-nav.navbar .msg-profile {
+*/
+/*nav.navbar .msg-profile {
   margin-right: 10px;
   width: 50px;
 }
@@ -324,7 +314,7 @@ nav.navbar .notification-content {
   font-size: .8rem;
   margin-right: .5rem;
 }
-
+*/
 nav.navbar a.menu-btn {
   width: 40px;
   height: 40px;
@@ -333,11 +323,10 @@ nav.navbar a.menu-btn {
   color: #fff;
   text-align: center;
   padding: 0 !important;
-  float:left;
 }
 
 nav.navbar a.menu-btn i[class*='icon-'] {
-  webkit-transform::; translateY(4px);
+  -webkit-transform: translateY(4px);
   transform: translateY(4px);
 }
 
@@ -346,7 +335,7 @@ nav.navbar a.menu-btn:hover {
 }
 
 /*  NAVBAR MEDIAQUERIES ---------------------------------- */
-@media (max-width: 575px) {
+/*@media (max-width: 575px) {
   nav.navbar .dropdown-menu {
     width: auto;
     right: -40px;
@@ -367,6 +356,8 @@ nav.navbar a.menu-btn:hover {
     font-size: 0.9em;
   }
 }
+*/
+
 
 /*
 * ==========================================================
@@ -937,85 +928,6 @@ nav.navbar a.menu-btn:hover {
 
 /*
 * ==========================================================
-*      UPDATES WIDGETS
-* ==========================================================
-*/
-.updates .left-col {
-  padding-right: 20px;
-}
-
-.updates .icon {
-  margin-right: 10px;
-}
-
-.updates li {
-  border-bottom: 1px solid #f3f3f3;
-  padding: .75rem 1.25rem;
-}
-
-.updates .update-date {
-  font-size: 1.3em;
-  font-weight: 700;
-  color: #bbb;
-  display: block;
-}
-
-.updates span {
-  font-size: 0.7em;
-  font-weight: 300;
-  color: #aaa;
-  line-height: 0.5em;
-  display: block;
-}
-
-.updates strong {
-  font-weight: 400;
-  color: #555;
-  font-size: 0.9em;
-}
-
-.updates small {
-  font-size: 0.75em;
-}
-
-.updates a {
-  color: #555;
-}
-
-.updates a:hover, .updates a:focus {
-  color: #555;
-  text-decoration: none;
-}
-
-.updates h2 {
-  margin-bottom: 0;
-}
-
-.updates p {
-  font-size: 0.9em;
-  color: #999;
-  margin-bottom: 5px;
-}
-
-/* UPDATES MEDIAQUERIES ------------------------- */
-@media (max-width: 991px) {
-  .updates h2 {
-    font-size: 1.05rem;
-  }
-  .updates strong {
-    font-size: 1em;
-    font-weight: 400;
-  }
-  .updates small {
-    font-size: 0.85em;
-  }
-  .updates .full-date {
-    font-size: 0.85em;
-  }
-}
-
-/*
-* ==========================================================
 *      DAILY FEEDS AND ACTIVITES WIDGETS
 * ==========================================================
 */
@@ -1054,81 +966,6 @@ nav.navbar a.menu-btn:hover {
   margin-bottom: 10px;
   -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.daily-feeds .full-date {
-  line-height: 0.7em;
-  margin-bottom: 10px;
-}
-
-.daily-feeds .CTAs a {
-  margin-right: 5px;
-}
-
-.daily-feeds .CTAs a i {
-  margin-right: 5px;
-}
-
-.daily-feeds .CTAs a:last-of-type {
-  margin-right: 0;
-}
-
-.daily-feeds a.btn {
-  color: #fff;
-}
-
-/* Activities  ------------------- */
-.activities li {
-  padding: 0;
-}
-
-.activities .date-holder {
-  padding-right: 0;
-}
-
-.activities .date-holder .date {
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-
-.activities .date-holder .date span {
-  font-size: 0.8em;
-}
-
-.activities .date-holder .icon {
-  width: 30px;
-  height: 30px;
-  line-height: 30px;
-  background: #f5f5f5;
-  text-align: center;
-  margin: 0;
-  display: inline-block;
-}
-
-.activities .date-holder span {
-  display: block;
-  margin: 10px;
-}
-
-.activities .content {
-  border-left: 1px solid #eee;
-  border-bottom: 20px;
-  padding: 10px 20px;
-}
-
-.activities .content strong {
-  display: block;
-  margin-right: 5px;
-}
-
-/* UPDATES WIDGET MEDIAQUERIES ------------------------- */
-@media (min-width: 768px) {
-  .updates strong {
-    font-size: 1em;
-  }
-  .updates small {
-    font-size: 0.8em;
-  }
 }
 
 /*
@@ -1521,187 +1358,6 @@ button {
   }
 }
 
-/*
-* ==========================================================
-*     LOGIN PAGE
-* ==========================================================
-*/
-.login-page,
-.register-page {
-  width: 100%;
-  background: #f5f5f5;
-  min-height: auto;
-  padding-bottom: 0;
-}
-
-.login-page .form-outer,
-.register-page .form-outer {
-  min-height: 100vh;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px 0;
-  position: relative;
-}
-
-.login-page .copyrights,
-.register-page .copyrights {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-}
-
-.login-page .copyrights p,
-.register-page .copyrights p {
-  font-size: 0.6em;
-  font-weight: 300;
-  margin-bottom: 10px;
-}
-
-.login-page .form-inner,
-.register-page .form-inner {
-  padding: 40px 30px;
-  background: #fff;
-  -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-}
-
-.login-page .logo,
-.register-page .logo {
-  font-size: 2em;
-  font-weight: 500;
-}
-
-.login-page .logo span,
-.register-page .logo span {
-  color: #ccc;
-}
-
-.login-page p,
-.register-page p {
-  font-size: 0.8em;
-  font-weight: 300;
-  color: #aaa;
-  margin-bottom: 0;
-}
-
-.login-page form,
-.register-page form {
-  margin: 2rem auto 1rem;
-  max-width: 300px;
-}
-
-.login-page a.forgot-pass,
-.login-page a.signup,
-.register-page a.forgot-pass,
-.register-page a.signup {
-  font-size: 0.65em;
-  color: #66b0ff;
-}
-
-.login-page a.forgot-pass:hover, .login-page a.forgot-pass:focus,
-.login-page a.signup:hover,
-.login-page a.signup:focus,
-.register-page a.forgot-pass:hover,
-.register-page a.forgot-pass:focus,
-.register-page a.signup:hover,
-.register-page a.signup:focus {
-  color: #66b0ff;
-  text-decoration: none;
-}
-
-.login-page a.forgot-pass,
-.register-page a.forgot-pass {
-  display: block;
-}
-
-.login-page a.create-account,
-.register-page a.create-account {
-  border-radius: 50px;
-  font-size: 0.75em;
-  margin-top: 10px;
-  color: #999;
-  text-transform: uppercase;
-}
-
-.login-page .terms-conditions,
-.register-page .terms-conditions {
-  margin-top: 20px;
-}
-
-.login-page small,
-.register-page small {
-  font-size: 0.65em;
-  color: #aaa;
-  line-height: 0.9em;
-}
-
-/* LOGIN MEDIAQUERIES -------------------------- */
-@media (min-width: 768px) {
-  .login-page p,
-  .register-page p {
-    font-size: 0.9em;
-  }
-  .login-page form label.label-custom,
-  .register-page form label.label-custom {
-    font-size: 0.9em;
-  }
-  .login-page form small,
-  .register-page form small {
-    font-size: 0.8em;
-  }
-  .login-page .terms-conditions label,
-  .register-page .terms-conditions label {
-    font-size: 0.9em;
-  }
-  .login-page a.forgot-pass,
-  .login-page a.signup,
-  .register-page a.forgot-pass,
-  .register-page a.signup {
-    font-size: 0.8em;
-  }
-  .login-page small,
-  .register-page small {
-    font-size: 0.8em;
-  }
-  .login-page .copyrights p,
-  .register-page .copyrights p {
-    font-size: 0.85em;
-    font-weight: 400;
-  }
-}
-
-/*
-
-=====================
-STYLE SWITCHER FOR DEMO
-=====================
-
-*/
-#style-switch-button {
-  position: fixed;
-  top: 120px;
-  right: 0px;
-  border-radius: 0;
-  z-index: 2;
-}
-
-#style-switch {
-  width: 300px;
-  padding: 20px;
-  position: fixed;
-  top: 160px;
-  right: 0px;
-  background: #fff;
-  border: solid 1px #ced4da;
-  z-index: 2000;
-}
-
-#style-switch h4 {
-  color: #495057;
-}
-
 /* ========================================= 
    THEMING OF BOOTSTRAP COMPONENTS           
    ========================================= */
@@ -1848,7 +1504,6 @@ STYLE SWITCHER FOR DEMO
   color: color-yiq(#ec2f6c);
   background-color: #ec2f6c;
   border-color: #eb2364;
-  background-position: 0 -30px;
 }
 
 .btn-primary:focus, .btn-primary.focus {
@@ -2600,45 +2255,6 @@ a.text-primary:focus, a.text-primary:hover {
   border-bottom-right-radius: 0.2rem;
 }
 
-/*
-* 5. DROPDOWNS
-*/
-.dropdown-menu {
-  z-index: 1000;
-  min-width: 10rem;
-  padding: 0.5rem 0;
-  margin: 0.125rem 0 0;
-  font-size: 1rem;
-  color: #212529;
-  background-color: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.25rem;
-}
-
-.dropdown-item {
-  padding: 0.25rem 1.5rem;
-  color: #212529;
-}
-
-.dropdown-item:focus, .dropdown-item:hover {
-  color: #16181b;
-  background-color: #f8f9fa;
-}
-
-.dropdown-item.active, .dropdown-item:active {
-  color: #fff;
-  background-color: #ef5285;
-}
-
-.dropdown-item.disabled, .dropdown-item:disabled {
-  color: #868e96;
-}
-
-.dropdown-header {
-  padding: 0.5rem 1.5rem;
-  font-size: 0.875rem;
-  color: #868e96;
-}
 
 /*
 * 6. UTILITIES
