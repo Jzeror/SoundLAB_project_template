@@ -21,6 +21,23 @@ public class DummyCtrl {
 	@Autowired Map<String,Object> rm;
 	@Autowired DummyMapper dp;
 	
+	
+	@GetMapping("/hash")
+	public Map<String,Object> hash(){
+		logger.info("DummyCtrl ::: hash ");
+		rm.clear();
+		rm.put("memberId", "shin");
+		int[] sq= {5,10,15};
+		for(int j=0;j<3;j++) {
+			rm.put("seq", sq[j]);
+			for(int i=0;i<20;i++) {
+				
+				dp.hashUp(rm);
+			}
+		}
+		return rm;
+	}
+	
 	@GetMapping("/view")
 	public Map<String,Object> view(){
 		logger.info("DummyCtrl ::: view ");

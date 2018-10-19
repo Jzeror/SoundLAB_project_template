@@ -171,10 +171,10 @@ sh = (()=>{
          });
          
         $('#logoImg').click(()=>{
-        	/*$.getJSON(sh.ctx()+'/dummy/chart',d=>{
+        	/*$.getJSON(sh.ctx()+'/dummy/hash',d=>{
         		alert('seq ::' + d.seq);
         	});*/
-             home();
+             /*home();*/
         });
 
      };

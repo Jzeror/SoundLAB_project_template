@@ -13,5 +13,6 @@ public interface DummyMapper {
 	public void musicUp(Map<?,?> p);
 	public void musicDown(Map<?,?> p);
 	public void bangRecord(Map<?,?> p);
+	public void hashUp(Map<?,?> p);
 	
 }

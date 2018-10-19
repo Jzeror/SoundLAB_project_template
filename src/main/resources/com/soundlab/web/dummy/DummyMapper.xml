@@ -52,5 +52,11 @@
 	  	(#{memberId},#{seq},'music', '2019-01-01 20:20:34')
 	  </insert>
 	  
+	  <insert id="hashUp">
+	  	INSERT INTO UPDOWN
+	  	(MEMBER_ID, SEQ_GROUP, SG_ELEMENT, TYPES)
+	  	VALUES
+	  	(#{memberId},#{seq},'hash', 'u')
+	  </insert>
 	  
 </mapper>
