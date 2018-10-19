@@ -340,15 +340,15 @@ public class DummyCtrl {
 	public Map<String,Object> chart() {
 		logger.info("DummyCtrl ::: chart ");
 		rm.clear();
-		/*rm.put("memberId", "shin");
-		rm.put("seq", 75);
+		rm.put("memberId", "shin");
+		rm.put("seq", 59);
 		rm.put("element", "music");
 		for(int i=0;i<70;i++) {
 			dp.post(rm);
-		}*/
+		}
 		/*75
 		 */ 
-		int[] lst = {  57  
+		/*int[] lst = {  57  
 				  ,58
 				  ,59
 				  ,62
@@ -421,7 +421,7 @@ public class DummyCtrl {
 			for(int i=0;i<s+1;i++) {
 				dp.post(rm);
 			}
-		}
+		}*/
 		
 		return rm;
 	}

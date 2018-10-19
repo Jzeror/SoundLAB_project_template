@@ -1768,7 +1768,7 @@ SELECT ud.seq_group, ud.member_id, m.sex, m.birth  FROM UPDOWN ud join member m 
 
 
 
-/*아티스분석, 노래당 클릭수한 회원 성별*/
+/*아티스트 1번*/
 SELECT VI.뮤직번호, VI.성별, COUNT(VI.성별) 성별
 FROM
 (
@@ -1784,6 +1784,16 @@ FROM MEMBER M
 ) VI	
 GROUP BY VI.뮤직번호, VI.성별;
 
+/*아티스트 2번*/
+SELECT ud.seq_group,ROUND(AVG(YEAR(CURDATE())-YEAR(m.birth)+1)) 평균연령, m.sex 성별
+, COUNT(CASE WHEN ud.TYPES LIKE 'u' THEN 1 END) 좋아요수
+, COUNT(CASE WHEN ud.TYPES LIKE 'd' THEN 1 END) 싫어요수 
+FROM updown ud
+	JOIN MEMBER m
+	ON ud.member_id = m.member_id
+WHERE sg_element like 'music'
+GROUP BY ud.seq_group, ud.member_id, m.member_id, m.sex
+ORDER BY SEQ_GROUP, 평균연령 , 성별;
 
 
 /*노래당 스트리밍수  */
@@ -1797,17 +1807,29 @@ GROUP BY SEQ_GROUP;
 
 
 	
-SELECT COUNT(*)
+SELECT V.MEMBER_ID, count(v.seq_group), ud.MEMBER_ID,COUNT(ud.seq_group)
 FROM VIEW_RECORD V
-	JOIN MEMBER M
+left JOIN updown ud
+	ON (V.MEMBER_ID = ud.MEMBER_ID AND ud.SEQ_GROUP LIKE 74 AND ud.TYPES LIKE 'u')
+WHERE V.SEQ_GROUP LIKE 74 
+group by V.MEMBER_ID, ud.MEMBER_ID;
+
+
+JOIN updown ud
+	ON V.MEMBER_ID = ud.MEMBER_ID	
+JOIN MEMBER M
 	ON V.MEMBER_ID = M.MEMBER_ID
-	JOIN UPDOWN UD
-	ON V.MEMBER_ID = M.MEMBER_ID
-	AND V.MEMBER_ID = UD.MEMBER_ID
+
 WHERE V.SEQ_GROUP LIKE 74;
 
+select count(*)
+from view_record
+where view_record
 
 
+JOIN UPDOWN UD
+	ON V.MEMBER_ID = M.MEMBER_ID
+	AND V.MEMBER_ID = UD.MEMBER_ID
 
 	
 INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_선미','jpg',7);
