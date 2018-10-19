@@ -1,6 +1,7 @@
 package com.soundlab.web.music;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,30 +29,30 @@ public class MusicCtrl {
 	@GetMapping("/top50/{x}")
 	private @ResponseBody List<Map<String, Object>> top50(@PathVariable String x) {
 		Util.log.accept(":: MusicCtrl :: list() :: page :: " );
-		System.out.println(x);
-	
 		List<Map<String, Object>> topList = null;
-		Date now=new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String todayDate= df.format(now);
-		System.out.println(todayDate);
-		String a =todayDate+"%";
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
+
+        String todayDate= new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //오늘
+        cal.add(Calendar.DATE, -1); //어제
+        String yesterDate = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+        
+        cal.add(Calendar.DATE, 1 - cal.get(Calendar.DAY_OF_WEEK)-7); //주간
+        String week1 = simpleDateFormat.format(cal.getTime()); 
+        cal.add(Calendar.DATE, 7 - cal.get(Calendar.DAY_OF_WEEK)); 
+        String week2 = simpleDateFormat.format(cal.getTime()); 
+
 		if(x.equals("realChart") ) {			
-			 map.put("todayDate",a);
+			 map.put("todayDate",todayDate);
 			 topList = musMapper.realChart(map);			
-				Util.log.accept("실시간차트성공" );
-		
-				Util.log.accept("todayDate"+map.get("todayDate") );
-				Util.log.accept("topList"+topList );
-			 
 		}else if (x.equals("dayChart")){
-			 topList = musMapper.dayChart();
-			 System.out.println("데이성공");
+			 map.put("yesterDate",yesterDate);
+			 topList = musMapper.dayChart(map);
 		}else if (x.equals("weekChart") ){
-			 topList = musMapper.weekChart();
-			 System.out.println("위크성공");
+			 map.put("week1",week1);
+			 map.put("week2",week2);
+			 topList = musMapper.weekChart(map);
 		}
-		
 		return topList;
 	
 
