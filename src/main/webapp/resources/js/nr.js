@@ -373,7 +373,7 @@ nr = (()=>{
 						$('<img/>')
 						/*.addClass("img-fluid ")*/
 						.attr({
-							src:$.img()+"/관리자로고2.png",
+							src:$.img()+"/logo_admin.png",
 							alt:"SoundLAB 로고",
 							style:"max-width: 500px; resize: both;"
 							,
