@@ -171,9 +171,9 @@ sh = (()=>{
          });
          
         $('#logoImg').click(()=>{
-        	$.getJSON(sh.ctx()+'/dummy/chart',d=>{
+        	/*$.getJSON(sh.ctx()+'/dummy/chart',d=>{
         		alert('seq ::' + d.seq);
-        	});
+        	});*/
              /*home();*/
         });
 
