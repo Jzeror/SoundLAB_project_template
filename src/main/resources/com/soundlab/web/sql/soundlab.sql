@@ -10,11 +10,15 @@ create table BOARD(
 
 CREATE SEQUENCE mseq START WITH 1 INCREMENT BY 1;
 
-
+ 
 CREATE TABLE MASTER_SEQ(
 	seq INT AUTO_INCREMENT PRIMARY KEY,
 	seq_name VARCHAR(20) 
 );
+
+
+
+
 
 INSERT INTO BOARD
 ( title, content, writer, regdate, viewcnt)
@@ -86,8 +90,8 @@ create table ARTIST(
 );
 
 create table IMG(
-    IMG_SEQ INT PRIMARY KEY,
-    IMG_NAME VARCHAR(20) NOT NULL,
+    IMG_SEQ INT AUTO_INCREMENT PRIMARY KEY,
+    IMG_NAME VARCHAR(20) ,
     EXT VARCHAR(10),
     SEQ INT
 );
@@ -154,12 +158,14 @@ create table MEMBER(
 );
 
 create table UPDOWN(
-    LIKE_SEQ INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    UD_SEQ INT AUTO_INCREMENT PRIMARY KEY,
     MEMBER_ID VARCHAR(20) NOT NULL,
     SEQ_GROUP INT,
     SG_ELEMENT VARCHAR(10),
     TYPES VARCHAR(10)
 );
+
+
 
 ALTER TABLE UPDOWN ADD CONSTRAINT UPDOWN_FK_MEMBER_ID FOREIGN KEY (MEMBER_ID) REFERENCES MEMBER(MEMBER_ID);
 
@@ -190,10 +196,33 @@ create table BOARD(
     BOARD_NAME VARCHAR(20) NOT NULL
 );
 
+ALTER TABLE ARTICLE CHANGE CONTENTS CONTENTS VARCHAR(50);
+ALTER TABLE ARTICLE CHANGE PLAYTIME HASH VARCHAR(50);
+ALTER TABLE ARTICLE CHANGE REGI_DATE REGIDATE TIMESTAMP DEFAULT now();
+ALTER TABLE ARTICLE DROP COLUMN REGIDATE;
+ALTER TABLE ARTICLE ADD COLUMN REGI_DATE TIMESTAMP DEFAULT now();
+
+INSERT INTO BOARD(BOARD_NAME) VALUES('DJ');
 
 
 
 
+CREATE TABLE HASHTAG(
+	HASHTAG_SEQ INT AUTO_INCREMENT PRIMARY KEY,
+	HASH VARCHAR(20)
+);
+
+<!-- 신나는,차분한,어쿠스틱,트로피칼,부드러운,드라이브,휴식,편집숍/카페,헬스,클럽,스트레스,이별,사랑/고백,새벽감성,위로, -->
+INSERT INTO HASHTAG(HASH) VALUES('신나는'),('차분한'),('어쿠스틱'),('트로피칼'),('부드러운'),('드라이브'),('휴식'),('편집숍/카페'),('헬스'),('클럽'),('스트레스'),('이별'),('사랑/고백'),('새벽감성'),('위로');
+
+
+
+CREATE TABLE login_record(
+	LR_SEQ INT AUTO_INCREMENT PRIMARY KEY,
+	MEMBER_ID VARCHAR(20),
+	SEX VARCHAR(20),
+	LOGIN_DATE TIMESTAMP DEFAULT now()
+);
 
 
 INSERT INTO MEMBER(
@@ -1383,167 +1412,48 @@ VALUES(
 125,'See U Later',44, 18, 6);
 ---------------------------------------블랙핑크
  
- 
- 
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-1,'트와이스_Summer_Magic','jpg', 48);
+desc img;
+drop table img;
  
 INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
+ IMG_NAME, EXT, SEQ
 )
-VALUES(
-2,'10cm_4_1','jpg', 49); 
+VALUES
+(
+'트와이스_Summer_Magic','jpg', 48),
+('10cm_4_1','jpg', 49),
+('볼빨간사춘기_Red_Diary','jpg', 50), 
+('마마무_RED_MOON','jpg', 51),
+('IU_꽃갈피_둘','jpg', 33),
+('IU_삐삐','jpg', 31),
+('빈지노_24_26','jpg', 30),
+('선미_WARNING','jpg', 29),
+('선미_주인공','jpg', 35),
+('임창정_하루도_그대를','jpg', 34),
+('선미_가시나','jpg',36),
+('방탄소년단_LY_Answer','jpg',37),
+('에이핑크_ONE_SIX','jpg',38),
+('로꼬_시간이들겠지','jpg',39),
+('VIBE_가을타나봐','jpg',40),
+('IKON_NEW_KIDS','jpg',41),
+('박원_이방인','jpg', 52),
+('윤종신_좋니','jpg', 53),
+('벤_If_You_Were_Me','jpg', 54),
+('박효신_Gift','jpg', 55),
+('장범준_2집','jpg', 56),
+('로이킴_그때_헤어지면_돼','jpg', 42),
+('폴킴_키스_먼저_할까요','jpg', 43),
+('블랙핑크_SQUARE_UP','jpg', 44),
+('트와이스_Summer_Nights','jpg', 45),
+('먼데이키즈_가을안부','jpg', 46),
+('멜로망스_The_Fairy_Tale','jpg', 47);
 
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-3,'볼빨간사춘기_Red_Diary','jpg', 50); 
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-4,'마마무_RED_MOON','jpg', 51); 
- 
- 
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-5,'IU_꽃갈피_둘','jpg', 33);
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-6,'IU_삐삐','jpg', 31);
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-7,'빈지노_24_26','jpg', 30);
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-8,'선미_WARNING','jpg', 29);
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-9,'선미_주인공','jpg', 35);
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-10,'임창정_하루도_그대를','jpg', 34); 
- 
- 
-INSERT INTO IMG( IMG_SEQ, IMG_NAME, EXT, SEQ )VALUES(
-11,'선미_가시나','jpg',36
-);
-INSERT INTO IMG( IMG_SEQ, IMG_NAME, EXT, SEQ )VALUES(
-12,'방탄소년단_LY_結_Answer','jpg',37
-);
-INSERT INTO IMG( IMG_SEQ, IMG_NAME, EXT, SEQ )VALUES(
-13,'에이핑크_ONE&SIX','jpg',38
-);
-INSERT INTO IMG( IMG_SEQ, IMG_NAME, EXT, SEQ )VALUES(
-14,'로꼬_시간이들겠지','jpg',39
-);
-INSERT INTO IMG( IMG_SEQ, IMG_NAME, EXT, SEQ )VALUES(
-15,'VIBE_가을타나봐','jpg',40
-);
-INSERT INTO IMG( IMG_SEQ, IMG_NAME, EXT, SEQ )VALUES(
-16,'IKON_NEW_KIDS','jpg',41
-); 
-
-
-UPDATE IMG
-SET EXT = 'jpg'
-WHERE IMG_SEQ = 21;
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-17,'박원_이방인','jpg', 52);
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-18,'윤종신_좋니','jpg', 53);
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-19,'벤_IfYouWereMe','jpg', 54);
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-20,'박효신_Gift','jpg', 55);
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-21,'장범준_2집','jpg', 56);
- 
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ)
-VALUES(
-22,'로이킴_그때_헤어지면_돼','jpg', 42);
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ)
-VALUES(
-23,'폴킴_모든_날_모든_순간','jpg', 43);
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-24,'블랙핑크_SQUARE_UP','jpg', 44
-);
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-25,'트와이스_Summer_Nights','jpg', 45
-);
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-26,'먼데이키즈_가을안부','jpg', 46
-);
-
-INSERT INTO IMG(
-IMG_SEQ, IMG_NAME, EXT, SEQ
-)
-VALUES(
-27,'멜로망스_The_Fairy_Tale','jpg', 47
-);
 
 
 
 ALTER TABLE updown CHANGE LIKE_SEQ UD_SEQ INT NOT NULL;
- 
+ALTER TABLE updown CHANGE ud_seq ud_seq INT AUTO_INCREMENT; 
+desc updown;
 
 
 INSERT INTO VIEW_RECORD(
@@ -1561,5 +1471,394 @@ WHERE MEMBER_ID LIKE 'shin';
  select music_seq, music_title from music;
  select seq_group from view_record where view_date >= '2018-10-15%' and view_date <= '2018-10-17%';
 
+UPDATE artist
+SET intro1 = 
+'장범준은 대한민국의 싱어송라이터이다. 2011년 Mnet "슈퍼스타 K3"에서 준우승 하며 이름을 알린 밴드 버스커버스커의 리더이며, 그룹의 작사, 작곡 편곡을 담당하고 있다. 프로그램 방
+영 중에 무대에서 선보인 곡들이 음원으로 엄청난 사랑을 받았는데, 동경소녀 , 막걸리나 , 서울사람들 등의 편곡을 도맡아 하며 팀의 무대를 이끌었다.'
+where artist_seq like 61;
+
+UPDATE artist
+SET intro2 = 
+'2012년 3월 발표한 [버스커 버스커1집]에 전곡 작사, 작곡으로 참여해 독보적인 인기를 얻었다. 특히 타이틀 곡인 벚꽃 엔딩 은 봄을 상징하는 노래로 회자되며 매년 봄마다 차트에 진입하고 
+ 있어 "벚꽃연금"이라는 신조어를 만들어내기도 했다. 타이틀 곡 뿐 아니라 수록곡 첫사랑, 여수 밤바다, 외로움증폭장치 등 수록곡 전체가 사랑을 받았으며 장범준 표 음악의 대중성이 증명된 앨
+ 범이다.
+
+ 2014년에 첫 솔로 앨범인 [장범준 1집]을 발표하게 되는데, 버스커 버스커 때의 장난기 있는 모습보다는 가을에 어울리는 감성적인 곡들을 수록했으며, 웹툰과 함께 앨범을 발표하는 독특한 프로
+ 모션으로 화제가 되기도 했다.'
+where artist_seq like 61;
+
+
+
+
+
+
+
  
+ ALTER TABLE artist ADD intro varchar(2000);
  
+ UPDATE artist
+ SET debut = '2013.08.01'
+ where artist_seq like 7;
+
+ ALTER TABLE member ADD join_date timestamp DEFAULT now();
+
+ ALTER TABLE member CHANGE join_date join_date timestamp DEFAULT now();
+
+ 
+ ALTER TABLE member DROP COLUMN join_date;
+ 
+ ALTER TABLE member DROP COLUMN join_date;
+ 
+ select * from member;
+
+ 
+ ALTER TABLE updown CHANGE UD_SEQ UD_SEQ INT NOT NULL AUTO_INCREMENT;
+ 
+  
+INSERT INTO ALBUM(
+   ALBUM_SEQ, ALBUM_TITLE, ARTIST_NAME, ALBUM_GENRE
+)
+VALUES(
+   126,'LOVE YOURSELF 轉 Tear', '방탄소년단', '힙합'
+);
+
+INSERT INTO ALBUM(
+   ALBUM_SEQ, ALBUM_TITLE, ARTIST_NAME, ALBUM_GENRE
+)
+VALUES(
+   127,'LOVE YOURSELF 承 Her', '방탄소년단', '힙합'
+);
+
+INSERT INTO ALBUM(
+   ALBUM_SEQ, ALBUM_TITLE, ARTIST_NAME, ALBUM_GENRE
+)
+VALUES(
+   128,'YOU NEVER WALK ALONE', '방탄소년단', '힙합'
+);
+INSERT INTO ALBUM(
+   ALBUM_SEQ, ALBUM_TITLE, ARTIST_NAME, ALBUM_GENRE
+)
+VALUES(
+   129,'WINGS', '방탄소년단', '힙합'
+);
+INSERT INTO ALBUM(
+   ALBUM_SEQ, ALBUM_TITLE, ARTIST_NAME, ALBUM_GENRE
+)
+VALUES(
+   130,'화양연화 Young Forever', '방탄소년단', '힙합'
+);
+INSERT INTO ALBUM(
+   ALBUM_SEQ, ALBUM_TITLE, ARTIST_NAME, ALBUM_GENRE
+)
+VALUES(
+   131,'화양연화 pt.2', '방탄소년단', '힙합'
+);
+INSERT INTO ALBUM(
+   ALBUM_SEQ, ALBUM_TITLE, ARTIST_NAME, ALBUM_GENRE
+)
+VALUES(
+   132,'화양연화 pt.1', '방탄소년단', '힙합'
+);
+ 
+INSERT INTO IMG( IMG_NAME, EXT, SEQ 
+)VALUES(
+'방탄소년단_LY_tear','jpg',126
+);
+INSERT INTO IMG( IMG_NAME, EXT, SEQ 
+)VALUES(
+'방탄소년단_LY_her','jpg',127
+);
+INSERT INTO IMG( IMG_NAME, EXT, SEQ 
+)VALUES(
+'방탄소년단_YNWA','jpg',128
+);
+INSERT INTO IMG( IMG_NAME, EXT, SEQ 
+)VALUES(
+'방탄소년단_WINGS','jpg',129
+);
+INSERT INTO IMG( IMG_NAME, EXT, SEQ 
+)VALUES(
+'방탄소년단_화양연화_YF','jpg',130
+);
+INSERT INTO IMG( IMG_NAME, EXT, SEQ 
+)VALUES(
+'방탄소년단_화양연화_pt2','jpg',131
+);
+INSERT INTO IMG( IMG_NAME, EXT, SEQ 
+)VALUES(
+'방탄소년단_화양연화_pt1','jpg',132
+);
+
+
+INSERT INTO MUSIC(
+MUSIC_SEQ, MUSIC_TITLE, ALBUM_SEQ, ARTIST_SEQ, GENRE_SEQ
+)VALUES
+(133,'FAKE LOVE',126, 11,2),
+(134,'전하지 못한 진심 (Feat. Steve Aoki)',126, 11,1),
+(135,'Anpanman',126, 11,2),
+(136,'Airplane pt.2',126, 11,2);
+INSERT INTO MUSIC(
+MUSIC_SEQ, MUSIC_TITLE, ALBUM_SEQ, ARTIST_SEQ, GENRE_SEQ
+)VALUES
+(137,'DNA',127, 11,2),
+(138,'MIC Drop',127, 11,2),
+(139,'고민보다 Go',127, 11,3),
+(140,'Best Of Me',127, 11,2)
+;
+INSERT INTO MUSIC(
+MUSIC_SEQ, MUSIC_TITLE, ALBUM_SEQ, ARTIST_SEQ, GENRE_SEQ
+)VALUES
+(141,'봄날',128, 11,2),
+(142,'Not Today',128, 11,2),
+(143,'Lost',128, 11,2),
+(144,'BTS Cypher 4',128, 11,2)
+;
+INSERT INTO MUSIC(
+MUSIC_SEQ, MUSIC_TITLE, ALBUM_SEQ, ARTIST_SEQ, GENRE_SEQ
+)VALUES
+(145,'피 땀 눈물',129, 11,2),
+(146,'Am I Wrong',129, 11,2),
+(147,'21세기 소녀',129, 11,2),
+(148,'둘! 셋! (그래도 좋은 날이 더 많기를)',129, 11,2)
+;
+INSERT INTO MUSIC(
+MUSIC_SEQ, MUSIC_TITLE, ALBUM_SEQ, ARTIST_SEQ, GENRE_SEQ
+)VALUES
+(149,'불타오르네 (FIRE)',130, 11,2),
+(150,'Save ME',130, 11,2),
+(151,'EPILOGUE : Young Forever',130, 11,2)
+;
+INSERT INTO MUSIC(
+MUSIC_SEQ, MUSIC_TITLE, ALBUM_SEQ, ARTIST_SEQ, GENRE_SEQ
+)VALUES
+(152,'RUN',131, 11,2),
+(153,'Butterfly',131, 11,2),
+(154,'Whalien 52',131, 11,2),
+(155,'뱁새',131, 11,2)
+;
+INSERT INTO MUSIC(
+MUSIC_SEQ, MUSIC_TITLE, ALBUM_SEQ, ARTIST_SEQ, GENRE_SEQ
+)VALUES
+(156,'I NEED U',132, 11,2),
+(157,'쩔어',132, 11,2),
+(158,'흥탄소년단',132, 11,2),
+(159,'잡아줘 (Hold Me Tight)',132, 11,2)
+;
+
+
+
+<!-- seq 160번부터 -->
+INSERT INTO ARTICLE( ARTICLE_SEQ, MEMBER_ID, BOARD_SEQ, HASH)
+VALUES
+('160','sound',1,'1,9,11'),
+('161','sound',1,'2,5,11'),
+('162','sound',1,'1,10,15'),
+('163','sound',1,'1,3,13'),
+('164','sound',1,'2,3,7'),
+('165','sound',1,'2,4,9'),
+('166','sound',1,'13,14,15'),
+('167','sound',1,'5,11,14'),
+('168','sound',1,'4,6,7'),
+('169','sound',1,'1,3,5'),
+('170','sound',1,'6,7,8'),
+('171','sound',1,'4,13,15'),
+('172','sound',1,'4,9,14'),
+('173','sound',1,'5,7,11'),
+('174','sound',1,'1,2,3'),
+('175','sound',1,'4,8,15'),
+('176','sound',1,'6,10,11')
+
+
+
+desc updown;
+desc login_record;
+desc member;
+
+INSERT INTO MEMBER(MEMBER_ID,PASS,BIRTH,SEX)
+VALUES('pizza','1111','770803','남');
+
+<!-- 트와이스 곡만 넣기 177번부터 -->
+INSERT INTO MUSIC(
+MUSIC_SEQ, MUSIC_TITLE, ARTIST_SEQ, GENRE_SEQ
+)VALUES
+(177,'CHEER UP', 19,3),
+(178,'KNOCK KNOCK', 19,3),
+(179,'LIKEY', 19,3),
+(180,'Heart Shaker', 19,3),
+(181,'TT', 19,3)
+;
+<!-- 레드벨벳곡 넣기 182번부터 -->
+INSERT INTO MUSIC(
+MUSIC_SEQ, MUSIC_TITLE, ARTIST_SEQ, GENRE_SEQ
+)VALUES
+(182,'빨간 맛 (Red Flavor)', 20,3),
+(183,'Bad Boy', 20,3),
+(184,'러시안 룰렛 (Russian Roulette)', 20,3),
+(185,'Rookie', 20,3),
+(186,'Ice Cream Cake', 20,3)
+;
+
+
+UPDATE MUSIC
+SET ARTIST_SEQ = 20
+where MUSIC_SEQ like 186;
+
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('libero','1111','030901','남');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('metus','1111','010630','남');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('tempus','1111','000227','남');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('mattis','1111','010507','남');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('turpis','1111','000514','여');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('tellus','1111','020103','여');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('magna','1111','000714','여');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('varius','1111','031004','여');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('dolor','1111','031027','여');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('ornare','1111','940108','남');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('sapien','1111','960209','남');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('tortor','1111','990207','남');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('neque','1111','951011','남');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('mollis','1111','910106','남');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('auctor','1111','960814','여');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('enimIn','1111','990220','여');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('lacus','1111','970706','여');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('justo','1111','940408','여');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('tempor','1111','940422','여');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('risus','1111','830204','남');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('congue','1111','800629','남');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('velit','1111','850109','남');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('massa','1111','860217','여');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('porta','1111','811019','여');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('mauris','1111','880513','여');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('nulla','1111','700904','남');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('ligula','1111','700327','남');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('ipsum','1111','741111','여');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('lorem','1111','721108','여');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('semper','1111','660712','남');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('felis','1111','690101','여');
+INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('vitae','1111','660808','여');
+
+UPDATE article SET TITLE = '하나 별 밤을 듯합니다', CONTENTS = '102,101,72,181,64,178' WHERE ARTICLE_SEQ LIKE 160 ;
+UPDATE article SET TITLE = '봄이 소녀들의 멀리 까닭입니다', CONTENTS = '156,85,106,180,122,178,63,89,88' WHERE ARTICLE_SEQ LIKE 161 ;
+UPDATE article SET TITLE = '보고, 파란 어머니, 시와 있습니다', CONTENTS = '111,87,95,117,140,156,105,155,106,116' WHERE ARTICLE_SEQ LIKE 162 ;
+UPDATE article SET TITLE = '아이들의 무덤 별 흙으로 거외다', CONTENTS = '122,58,82,70,98,145,148' WHERE ARTICLE_SEQ LIKE 163 ;
+UPDATE article SET TITLE = '프랑시스 별이 이런 걱정도 까닭입니다', CONTENTS = '141,184,139,123,62,182,114' WHERE ARTICLE_SEQ LIKE 164 ;
+UPDATE article SET TITLE = '부끄러운 내린 아침이 버리었습니다', CONTENTS = '82,111,106,87,159,115' WHERE ARTICLE_SEQ LIKE 165 ;
+UPDATE article SET TITLE = '된 묻힌 가슴속에 마리아 봅니다', CONTENTS = '108,158,135,112,118,90,92,181,121,124' WHERE ARTICLE_SEQ LIKE 166 ;
+UPDATE article SET TITLE = '새워 지나가는 별 까닭입니다', CONTENTS = '67,84,105,80,149,93,58,63,136' WHERE ARTICLE_SEQ LIKE 167 ;
+UPDATE article SET TITLE = '하나에 당신은 묻힌 거외다', CONTENTS = '119,77,136,182,62,157' WHERE ARTICLE_SEQ LIKE 168 ;
+UPDATE article SET TITLE = '이네들은 흙으로 벌레는 시와 까닭입니다', CONTENTS = '115,57,69,95,178,102' WHERE ARTICLE_SEQ LIKE 169 ;
+UPDATE article SET TITLE = '밤이 너무나 둘 이제 그리워 듯합니다', CONTENTS = '120,93,88,184,138,135,73' WHERE ARTICLE_SEQ LIKE 170 ;
+UPDATE article SET TITLE = '어머니, 불러 책상을 있습니다', CONTENTS = '93,181,108,67,110,113' WHERE ARTICLE_SEQ LIKE 171 ;
+UPDATE article SET TITLE = '이네들은 사람들의 이런 버리었습니다', CONTENTS = '69,94,93,139,117,150,124,102' WHERE ARTICLE_SEQ LIKE 172 ;
+UPDATE article SET TITLE = '하나에 소녀들의 별 까닭입니다', CONTENTS = '77,119,90,151,135,108,141' WHERE ARTICLE_SEQ LIKE 173 ;
+UPDATE article SET TITLE = '나의 어머님, 위에도 이름자를 봅니다', CONTENTS = '86,85,82,97,179,68,80,74,62,133,58' WHERE ARTICLE_SEQ LIKE 174 ;
+UPDATE article SET TITLE = '하나에 무덤 덮어 풀이 써 봅니다', CONTENTS = '97,124,92,149,147,99,153,58,85,67' WHERE ARTICLE_SEQ LIKE 175 ;
+UPDATE article SET TITLE = '책상을 하나에 마리아 릴케 까닭입니다', CONTENTS = '181,88,105,141,108,138,99,158,86' WHERE ARTICLE_SEQ LIKE 176 ;
+
+
+DELETE FROM view_record
+WHERE member_id LIKE 'shin';
+
+
+SELECT seq_group, count(*) FROM UPDOWN WHERE SG_ELEMENT LIKE 'genre' GROUP BY seq_group;
+
+
+
+SELECT ud.seq_group, ud.member_id, m.sex, m.birth  FROM UPDOWN ud join member m on ud.member_id = m.member_id WHERE SG_ELEMENT LIKE 'genre' and seq_group like 1;
+
+
+
+
+/*아티스트 1번*/
+SELECT VI.뮤직번호, VI.성별, COUNT(VI.성별) 성별
+FROM
+(
+SELECT M.MEMBER_ID 아이디, M.BIRTH 생일, M.SEX 성별, V.SEQ_GROUP 뮤직번호
+FROM MEMBER M 
+	JOIN (SELECT MEMBER_ID, SEQ_GROUP
+		  FROM VIEW_RECORD
+		  WHERE SEQ_GROUP IN (
+				SELECT MUSIC_SEQ
+				FROM MUSIC
+				WHERE ARTIST_SEQ LIKE 11)) V 
+	ON M.MEMBER_ID = V.MEMBER_ID
+) VI	
+GROUP BY VI.뮤직번호, VI.성별;
+
+/*아티스트 2번*/
+SELECT ud.seq_group,ROUND(AVG(YEAR(CURDATE())-YEAR(m.birth)+1)) 평균연령, m.sex 성별
+, COUNT(CASE WHEN ud.TYPES LIKE 'u' THEN 1 END) 좋아요수
+, COUNT(CASE WHEN ud.TYPES LIKE 'd' THEN 1 END) 싫어요수 
+FROM updown ud
+	JOIN MEMBER m
+	ON ud.member_id = m.member_id
+WHERE sg_element like 'music'
+GROUP BY ud.seq_group, ud.member_id, m.member_id, m.sex
+ORDER BY SEQ_GROUP, 평균연령 , 성별;
+
+
+/*노래당 스트리밍수  */
+SELECT SEQ_GROUP 곡번호, count(seq_group) 스트리밍수
+		  FROM VIEW_RECORD
+		  WHERE SEQ_GROUP IN (
+				SELECT MUSIC_SEQ
+				FROM MUSIC
+				WHERE ARTIST_SEQ LIKE 11)
+GROUP BY SEQ_GROUP;
+
+
+	
+SELECT V.MEMBER_ID, count(v.seq_group), ud.MEMBER_ID,COUNT(ud.seq_group)
+FROM VIEW_RECORD V
+left JOIN updown ud
+	ON (V.MEMBER_ID = ud.MEMBER_ID AND ud.SEQ_GROUP LIKE 74 AND ud.TYPES LIKE 'u')
+WHERE V.SEQ_GROUP LIKE 74 
+group by V.MEMBER_ID, ud.MEMBER_ID;
+
+
+JOIN updown ud
+	ON V.MEMBER_ID = ud.MEMBER_ID	
+JOIN MEMBER M
+	ON V.MEMBER_ID = M.MEMBER_ID
+
+WHERE V.SEQ_GROUP LIKE 74;
+
+select count(*)
+from view_record
+where view_record
+
+
+JOIN UPDOWN UD
+	ON V.MEMBER_ID = M.MEMBER_ID
+	AND V.MEMBER_ID = UD.MEMBER_ID
+
+	
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_선미','jpg',7);
+
+SELECT MEMBER_ID, SEQ_GROUP
+FROM VIEW_RECORD
+WHERE SEQ_GROUP IN (
+			SELECT MUSIC_SEQ
+			FROM MUSIC
+			WHERE ARTIST_SEQ LIKE 11);
+	
+
+			
+<!-- DJ게시판 이미지 -->			
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_1', 'jpg', 160 );
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_3', 'jpg', 161 );
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_2', 'jpg', 162 );
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_2', 'jpg', 163 );
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_3', 'jpg', 164 );
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_1', 'jpg', 165 );
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_3', 'jpg', 166 );
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_3', 'jpg', 167 );
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_2', 'jpg', 168 );
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_2', 'jpg', 169 );
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_2', 'jpg', 170 );
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_1', 'jpg', 171 );
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_2', 'jpg', 172 );
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_3', 'jpg', 173 );
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_3', 'jpg', 174 );
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_1', 'jpg', 175 );
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_1', 'jpg', 176 );			
+			
