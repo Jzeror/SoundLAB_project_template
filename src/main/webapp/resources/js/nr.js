@@ -5,12 +5,14 @@ nr = (()=>{
 
 	var init =()=>{
         console.log('nr.init ::');
+        
         let pink = document.createElement('link');
 			pink.rel = 'stylesheet';
 			pink.href = $.ctx()+'/resources/css/cssnr/style.pink.css';
 			pink.id = 'pinkcss';
 			document.head.appendChild(pink);
-		let nrstyle = document.createElement('link');
+		
+			let nrstyle = document.createElement('link');
 			nrstyle.rel = 'stylesheet';
 			nrstyle.href = $.ctx()+'/resources/css/cssnr/nr.css';
 			nrstyle.id = 'nrcss';
@@ -270,8 +272,13 @@ nr = (()=>{
 					$('<div/>').addClass("form-group").attr({id:'endDiv'}).appendTo($('#periodForm'));
 						$('<input/>').attr({type:'date', name:'endDate', id:'endDate'}).addClass("mr-3 form-control").appendTo($('#endDiv'));
 					$('<div/>').addClass("form-group").attr({id:'submitDiv'}).appendTo($('#periodForm'));
-						$('<button/>').addClass("mr-3 btn btn-primary").attr({id:"submitBtn", type:"btn"})
+						$('<div/>').addClass("form-group").attr({id:'submitDiv'}).appendTo($('#periodForm'));
+						$('<a/>').addClass("nrBtn")
+						/*.addClass("mr-3 btn btn-primary")*/
 						.html('조회').appendTo($('#submitDiv'));
+						/*$('<btn/>').addClass("mr-3 btn btn-primary")
+						.attr({id:"submitBtn", type:"btn"})
+						.html('조회').appendTo($('#submitDiv'));*/
         return period;
     }
     
@@ -363,12 +370,14 @@ nr = (()=>{
 			$('<div/>').addClass("side-navbar-wrapper").append(
 				$('<div/>').addClass("sidenav-header d-flex align-items-center justify-content-center").append(
 					$('<div/>').addClass("sidenav-header-inner text-center").append(
-						$('<img/>').addClass("img-fluid rounded-circle").attr({
-							src:$.img()+"/logo.png",
+						$('<img/>')
+						/*.addClass("img-fluid ")*/
+						.attr({
+							src:$.img()+"/관리자로고2.png",
 							alt:"SoundLAB 로고",
-						}),
-						$('<h2/>').addClass("h5").html("SoundLAB"),
-						$('<span/>').html("관리자 페이지")
+							style:"max-width: 500px; resize: both;"
+							,
+						})
 					),
 					$('<div/>').addClass("sidenav-header-logo").append(
 						$('<a/>').addClass("brand-small text-center").attr({href:"#"}).append(
@@ -435,4 +444,4 @@ nr = (()=>{
 		init : init
 	};
 })();
-//수정
+
