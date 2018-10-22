@@ -1973,6 +1973,20 @@ insert into mv ( MV_SEQ,
  	'https://www.youtube.com/embed/TNWMZIf7eSg'
  );
 
+insert into mv ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+values(
+   188,
+   '가시나',
+   73,
+   '2017.08.22',
+   'https://www.youtube.com/embed/ur0hCdne2-s'
+);
+ 
+ 
 <!-- chart 일주일치 -->
 select  v1.seq_group, count(*) cnt , v1.view_date, (select count(*) from view_record v2 where v2.view_date like v1.view_date and v2.seq_group in (69,83,75) ) tcnt,((count(*)/(select count(*) from view_record v2 where v2.view_date like v1.view_date and v2.seq_group in (69,83,75))) * 100) per 
 from view_record v1
