@@ -7,10 +7,6 @@ sj ={
 				let $djSec = $('<section/>').attr({id:'djSec'}).appendTo($('#contents'));
 				
 				$('<div/>').addClass('container').appendTo($djSec).append(
-						
-						$('<h3/>').html('Select Hash Tag : '),
-						$('<h5/>').attr({id:'selHash'}).html('선택된 해시태그'),
-						
 						$('<div/>').addClass('row text-center').append(
 								$('<h4/>').attr({'style':'font-weight: bold;'}).addClass('col-md-offset-3 col-md-2').html('스타일'),
 								$('<h4/>').attr({'style':'font-weight: bold;'}).addClass('col-md-2').html('상황&장소'),
@@ -25,53 +21,37 @@ sj ={
 				);
 				let arr = [
 					{at:'1',hash:['신나는','차분한','어쿠스틱','트로피칼','부드러운']},
-					{at:'3',hash:['드라이브','휴식','편집숍/카페','헬스','클럽']},
-					{at:'4',hash:['스트레스','이별','사랑/고백','새벽감성','위로']}
+					{at:'3',hash:['드라이브','휴식','편집숍&카페','헬스','클럽']},
+					{at:'4',hash:['스트레스','이별','사랑&고백','새벽감성','위로']}
 					];
 				$.each(arr,(i,v)=>{
 					$.each(v.hash,function(){
 						$('<label/>')
 						.attr({'style': 'z-index: 0;'})
-						.addClass('btn btn-link')
+						.addClass('btn sj-hash-btn')
 						.html(this)
 						.append(
 								$('<input/>')
 								.attr({
 									type : 'checkbox',
-									autocomplete : 'off',
 									value : this
 								})
-						).appendTo($('#hb'+v.at))
-						.click(function(e){
-							
-							if($(this).hasClass('active')){
-								$(this)
-								.removeClass('btn-success')
-								.addClass('btn-link')
-							}else{
-								$(this)
-								.removeClass('btn-link')
-								.addClass('btn-success')
-							}
-							
-						});
+						).appendTo($('#hb'+v.at));
 					})
 				});
 				
-				$('input[type="checkbox"]').change(()=>{
-					let arr = [];
+				$('input[type="checkbox"]').change(function(){
+					if($('input[type="checkbox"]:checked').length>3) $(this).prop('checked',false);
+					let s = '';
 					let ckHash = $('input[type="checkbox"]:checked');
 					for(let i of ckHash){
-						arr.push(i.value);
+						s += i.value+',';
 					}
-					let s = "";
-					for(let i in arr){
-						s += arr[i] + ","
-					}
-					$('#selHash').html((s == '')?'전체':s);
+					console.log(':: 선택된 해시 :: '+s.slice(0,-1));
+					sj.service.dj_pl((s == '')?'first':s.slice(0,-1));
 				});
 				
-				sj.service.dj_pl({});
+				sj.service.dj_pl('first');
 				
 			}
 		},
@@ -284,9 +264,11 @@ sj ={
 
 sj.service = {
 		dj_pl : x=>{
-			
-			$.getJSON($.ctx()+'/dj',d=>{
-				$('<div/>').addClass('container').append(
+			$('#djcsl').remove();
+			$.getJSON($.ctx()+'/dj/'+x, d=>{
+				$('<div/>')
+				.attr({id:'djcsl'})
+				.addClass('container').append(
 						$('<div/>').addClass('row').append(
 								$('<div/>')
 								.addClass('col-xs-12 sj-dj-carousel').append(
@@ -301,11 +283,7 @@ sj.service = {
 									
 									if($this.find('h4').text() != $('#dj-detail .sj-songs-info-title>h4').text()){
 										$('#dj-coll').remove();
-										sj.service.dj_pld({
-											src : $this.find('img').attr('src'),
-											title: $this.find('h4').text()
-										})
-										
+										sj.service.dj_pld($this.attr('id'));
 									}
 								})
 						)
@@ -327,22 +305,24 @@ sj.service = {
 				
 				let $item = $('<div/>').addClass('carousel-inner').appendTo($('#djCarousel'))
 				
-				let djArr = d.list; 
+				let djArr = d.djlist; 
 				
 				$.each(djArr,(i,v)=>{
-					$('<div/>').addClass('item'+((i===0)?' active':'')).append(
+					$('<div/>')
+					.addClass('item'+((i===0)?' active':'')).append(
 							$('<div/>')
-							.attr({'data-toggle':'collapse', 'data-target':'#dj-coll', 'aria-controls':'dj-coll'})
+							.attr({id:v.articleSeq,'data-toggle':'collapse', 'data-target':'#dj-coll', 'aria-controls':'dj-coll'})
 							.addClass('col-md-4 col-sm-6 col-xs-12 sj-dj-item').append(
-									$('<img/>').attr({
-										src : $.ctx()+'/resources/img/sj/'+v.src
-									}).addClass('img-responsive'),
+									$('<div/>')
+									.addClass('sj-bg-img img-responsive')
+									.attr({
+										'style':'height:100%;background-image: url('+$.ctx()+'/resources/img/'+v.imgName+'.'+v.ext+');'
+									}),
 									$('<div/>').addClass('sj-dj-item-content').append(
 											$('<div/>').addClass('sj-dj-content-txt').append(
 													$('<h4/>').html(v.title),
 													$('<p/>').html(v.memberId),
-													$('<p/>').html(v.regidate),
-													$('<p/>').html(v.hash),
+													$('<p/>').html(v.hashtag),
 													$('<div/>').addClass('bg-gradients')
 											)
 									)
@@ -391,97 +371,102 @@ sj.service = {
 			
 		},
 		dj_pld : x=>{
-			
 			$('<div/>').attr({id:'dj-coll'}).addClass('collapse').appendTo($('#djSec'));
-			$('<div/>')
-			.addClass('sj-padding-5r clearfix')
-			.attr({id:'dj-detail', 'style':'margin-bottom:0px;'})
-			.append(
-					$('<div/>').addClass('container').append(
-							$('<div/>').addClass('row').append(
-									$('<div/>').addClass('col-xs-12').append(
-											$('<div/>').addClass('sj-music-content sj-d-flex sj-flex-wrap').append(
-													$('<div/>')
-													.addClass('sj-music-content-img sj-h-100 sj-bg-img')
-													.attr({'style':'background-image: url('+x.src+');'}),
-													$('<button/>').addClass('close')
-													.attr({'aria-label':'Close','style':'position: absolute; right: 5px; z-index: 11; color:#fff; font-size:2.5em'})
-													.html('<span aria-hidden="true">&times;</span>')
-													.click(e=>{
-														$('#dj-coll').removeClass('collapse in').addClass('collapse');
-													}),
-													$('<div/>').addClass('sj-music-content-songs sj-h-100').append(
-															$('<div/>').addClass('sj-music-songs-info sj-mb-10 sj-d-flex sj-flex-wrap sj-align-items-center sj-justify-content-between').append(
-																	$('<div/>').addClass('sj-songs-info-title').append(
-																			$('<h4/>').html(x.title),
-																			$('<h6/>').html('soundLAB'),
-																			$('<h6/>').html('#여름 #신나는 #여행')
-																	),
-																	$('<div/>').addClass('sj-songs-info-title').append(
-																			$('<h6/>').html('조회수'),
-																			$('<a/>').attr({href:'#'}).addClass('btn sj-like-btn').append(
-																					$('<span/>').addClass('glyphicon glyphicon-heart')
-																			)
-																	)
-															),
-															$('<div/>').append(
-																	$('<label/>').addClass('col-xs-1 container check-con').append(
-																			$('<input/>').attr({type:'checkbox',name:'allCheck'})
-																			.click(function(e){
-																				let $this = $(this);
-																				$('.sj-music-item .check-con input:checkbox').prop('checked',($this.is(':checked')?true:false));
-																			}),
-																			$('<span/>').addClass('sj-checkmark')
-																	),
-																	$('<button/>').addClass('btn btn-secondary').html('전체듣기'),
-																	$('<button/>').addClass('btn btn-secondary').html('선택듣기')
-															),
-															$('<div/>').addClass('sj-music-list-area').attr({id:'album-scroll'})
-													)
-											)
-									)
-							)
-					)
-			).appendTo($('#dj-coll'));
 			
-			let $pl = $('<div/>').addClass('sj-music-playlist').appendTo($('#album-scroll'));
-			for(let i=1;i<=10;i++){
-				$('<div/>').addClass('single-music').append(
-						$('<div/>').addClass('sj-music-item row').append(
-								$('<label/>').addClass('col-xs-1 container check-con').append(
-										$('<input/>').attr({type:'checkbox'})
-										.click(e=>{
-											$('.check-con input[name=allCheck]:checkbox')
-											.prop('checked',
-													$('.sj-music-item .check-con input:checkbox').length
-															=== $('.sj-music-item .check-con input:checked').length
-															? true : false);
-										}),
-										$('<span/>').addClass('sj-checkmark')
-								),
-								$('<div/>').addClass('col-xs-5').html(i + '. Drop that beat'),
-								$('<div/>').addClass('col-xs-2').html('Artist'),
-								$('<div/>').addClass('btn-group col-xs-4').append(
-										$('<button/>').addClass('btn btn-default').append(
-												$('<span/>').addClass('glyphicon glyphicon-play')
-										),
-										$('<button/>').addClass('btn btn-default like-btn').append(
-												$('<span/>').addClass('glyphicon glyphicon-heart')
-										).click(function(e){
-											let $this = $(this);
-											if($this.hasClass('active')){
-												$this.removeClass('active');
-											}else{
-												$this.addClass('active');
-											} 
-										})
+			$.getJSON($.ctx()+'/dj/'+x+'/musics', d=>{
+				
+				let djInfo = d.mlist[0];
+				$('<div/>')
+				.addClass('sj-padding-5r clearfix')
+				.attr({id:'dj-detail', 'style':'margin-bottom:0px;'})
+				.append(
+						$('<div/>').addClass('container').append(
+								$('<div/>').addClass('row').append(
+										$('<div/>').addClass('col-xs-12').append(
+												$('<div/>').addClass('sj-music-content sj-d-flex sj-flex-wrap').append(
+														$('<div/>')
+														.addClass('sj-music-content-img sj-h-100 sj-bg-img')
+														.attr({'style':'background-image: url('+$.ctx()+'/resources/img/'+djInfo.imgName+'.'+djInfo.ext+');'}),
+														$('<button/>').addClass('close')
+														.attr({'aria-label':'Close','style':'position: absolute; right: 5px; z-index: 11; color:#fff; font-size:2.5em'})
+														.html('<span aria-hidden="true">&times;</span>')
+														.click(e=>{
+															$('#dj-coll').removeClass('collapse in').addClass('collapse');
+														}),
+														$('<div/>').addClass('sj-music-content-songs sj-h-100').append(
+																$('<div/>').addClass('sj-music-songs-info sj-mb-10 sj-d-flex sj-flex-wrap sj-align-items-center sj-justify-content-between').append(
+																		$('<div/>').addClass('sj-songs-info-title').append(
+																				$('<h4/>').html(djInfo.title),
+																				$('<h6/>').html(djInfo.memberId),
+																				$('<h6/>').html(djInfo.hashtag)
+																		),
+																		$('<div/>').addClass('sj-songs-info-title').append(
+																				$('<h6/>').html(djInfo.viewCnt),
+																				$('<a/>').attr({href:'#'}).addClass('btn sj-like-btn').append(
+																						$('<span/>').addClass('glyphicon glyphicon-heart')
+																				)
+																		)
+																),
+																$('<div/>').append(
+																		$('<label/>').addClass('col-xs-1 container check-con').append(
+																				$('<input/>').attr({type:'checkbox',name:'allCheck'})
+																				.click(function(e){
+																					let $this = $(this);
+																					$('.sj-music-item .check-con input:checkbox').prop('checked',($this.is(':checked')?true:false));
+																				}),
+																				$('<span/>').addClass('sj-checkmark')
+																		),
+																		$('<button/>').addClass('btn btn-secondary').html('전체듣기'),
+																		$('<button/>').addClass('btn btn-secondary').html('선택듣기')
+																),
+																$('<div/>').addClass('sj-music-list-area').attr({id:'album-scroll'})
+														)
+												)
+										)
 								)
 						)
-				).appendTo($pl)
-			}
-
+				).appendTo($('#dj-coll'));
+				
+				
+				let mArr = d.mlist;
+				let $pl = $('<div/>').addClass('sj-music-playlist').appendTo($('#album-scroll'));
+				
+				$.each(mArr,(i, v)=>{
+					$('<div/>').addClass('single-music').append(
+							$('<div/>').addClass('sj-music-item row').append(
+									$('<label/>').addClass('col-xs-1 container check-con').append(
+											$('<input/>').attr({type:'checkbox'})
+											.click(e=>{
+												$('.check-con input[name=allCheck]:checkbox')
+												.prop('checked',
+														$('.sj-music-item .check-con input:checkbox').length
+																=== $('.sj-music-item .check-con input:checked').length
+																? true : false);
+											}),
+											$('<span/>').addClass('sj-checkmark')
+									),
+									$('<div/>').addClass('col-xs-5').html(v.musicTitle),
+									$('<div/>').addClass('col-xs-2').html(v.artistName),
+									$('<div/>').addClass('btn-group col-xs-4').append(
+											$('<button/>').addClass('btn btn-default').append(
+													$('<span/>').addClass('glyphicon glyphicon-play')
+											),
+											$('<button/>').addClass('btn btn-default like-btn').append(
+													$('<span/>').addClass('glyphicon glyphicon-heart')
+											).click(function(e){
+												let $this = $(this);
+												if($this.hasClass('active')){
+													$this.removeClass('active');
+												}else{
+													$this.addClass('active');
+												} 
+											})
+									)
+							)
+					).appendTo($pl)
+				});
+			}); // getJSON end
 		}
-		
 };
 
 

@@ -9,5 +9,6 @@ import com.soundlab.web.bean.article;
 
 @Repository
 public interface ArticleMapper {
-	public List<article> get(Map<String, Object> p);
+	public List<Object> get(Map<String, Object> p);
+	public List<Object> getDetail(String p);
 }

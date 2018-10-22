@@ -1,6 +1,12 @@
 /*
 class랑 아이디 이름 줄 때 
-sj을 포함시켜서 겹치지 않게 부탁드려요 
+sj을 포함시켜서 겹치지 않게 부탁드려요
+
+#F6B352 주황
+#F68657 산호색
+#383A3F 진회색
+#1F2124 검정
+ 
 */
 
 /* 
@@ -12,9 +18,10 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 	position: relative;
 	z-index: 1;
 	overflow: hidden;
+	height : 300px;
 }
 
-.sj-dj-item img {
+.sj-dj-item div.sj-bg-img {
 	-webkit-transition-duration: 800ms;
 	transition-duration: 800ms;
 }
@@ -437,7 +444,7 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 	position: relative;
 	z-index: 1;
 	display: inline-block;
-	min-width: 133px;
+	/* min-width: 133px; */
 	height: 42px;
 	color: #ffffff;
 	border: none;
@@ -607,4 +614,13 @@ label.check-con {
 	text-decoration: none;
 	padding: 20px;
 	font-size: 16px;
+}
+
+.sj-hash-btn {
+	color : #383A3F;
+	font-weight: 1000;
+}
+.sj-hash-btn:hover, .sj-hash-btn.active{
+	color : #383A3F;
+	background-color:#F6B352;
 }
