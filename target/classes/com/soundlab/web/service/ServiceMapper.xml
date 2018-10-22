@@ -3,29 +3,72 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.soundlab.web.service.ServiceMapper">
-	<select id="getArtist" resultType="com.soundlab.web.bean.artist">
-		SELECT
-		 ARTIST_SEQ 'ARTISTSEQ',
-		 ARTIST_NAME 'ARTISTNAME', SEX, BIRTH, DEBUT, NATION,
-		 GROUP_NAME 'GROUPNAME',
-		 INTRO1, INTRO2
-		FROM ARTIST WHERE ARTIST_NAME LIKE #{artist}
+	<!--  <resultMap type="Map" id="art">
+		<id property="artistSeq" column="ARTIST_SEQ"/>
+		<result property="artistName" column="ARTIST_NAME"/>
+		<result property="sex" column="SEX"/>
+		<result property="birth" column="BIRTH"/>
+		<result property="debut" column="DEBUT"/>
+		<result property="nation" column="NATION"/>
+		<result property="groupName" column="GROUP_NAME"/>
+		<result property="intro1" column="intro1"/>
+		<result property="intro2" column="intro2"/>
+		<association property="img" javaType="com.soundlab.web.bean.img">
+			<result property="imgName" column="IMG_NAME"/>
+			<result property="ext" column="EXT"/>
+		</association>
+	</resultMap>   -->
+	<select id="getArtist" resultType="java.util.Map" parameterType="string">
+		  SELECT
+		     A.*,
+			 I.IMG_NAME, 
+			 I.EXT
+		FROM ARTIST AS A
+			 LEFT JOIN IMG AS I
+			 ON A.ARTIST_SEQ = I.SEQ
+		WHERE A.ARTIST_NAME LIKE #{artist}
 	</select>
-	<select id="musicList" resultType="com.soundlab.web.bean.music">
-		SELECT
-		 MUSIC_TITLE 'MUSICTITLE',
-		 ARTIST_SEQ 'ARTISTSEQ'
-		FROM MUSIC WHERE ARTIST_SEQ LIKE #{artistSeq}
+	
+	<select id="getMusicList" resultType="com.soundlab.web.bean.music" parameterType="string">
+			SELECT
+		  		MUSIC_SEQ 'MUSICSEQ',
+		  		MUSIC_TITLE 'MUSICTITLE'
+			FROM  MUSIC 
+		 	WHERE ARTIST_SEQ LIKE #{artistSeq}
 	</select>
-	<select id="albumList"  resultType="com.soundlab.web.bean.album">
+	
+	<select id="getAlbumList"  resultType="java.util.Map" parameterType="string">
+		 SELECT
+		     B.ALBUM_SEQ,
+			 B.ALBUM_TYPE,
+			 B.ALBUM_TITLE,
+			 B.RELEASE_DATE,
+			 I.IMG_NAME, 
+			 I.EXT
+		FROM ALBUM AS B
+			 JOIN IMG AS I
+			 ON B.ALBUM_SEQ = I.SEQ
+		WHERE B.ALBUM_SEQ IN(
+			SELECT M.ALBUM_SEQ
+			FROM MUSIC M
+			WHERE M.ARTIST_SEQ LIKE #{artistSeq}
+		)
+	</select>
+	<select id="getMvList" resultType="java.util.Map" parameterType="string">
 		SELECT
-		 ALBUM_TYPE 'ALBUMTYPE',
-		 ALBUM_TITLE 'ALBUMTITLE',
-		 ARTIST_NAME 'ARTISTNAME',
-		 RELEASE_DATE 'RELEASEDATE'
-		FROM ALBUM
-		WHERE ARTIST_NAME LIKE #{artist};
-		
+		     M.MV_SEQ,
+			 M.MV_TITLE,
+			 M.RELEASE_DATE,
+			 M.MUSIC_SEQ,
+			 M.ytb
+		FROM MV AS M
+		WHERE M.MUSIC_SEQ IN(
+			SELECT MC.MUSIC_SEQ
+			FROM MUSIC MC
+			WHERE MC.ARTIST_SEQ LIKE #{artistSeq}
+			)
+	
+	
 	</select>
 
 </mapper>

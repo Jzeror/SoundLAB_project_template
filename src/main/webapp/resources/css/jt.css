@@ -25,7 +25,7 @@
 }
 
 
-.jt_search_album{
+#jt_search_album{
 	padding-top: 30px;
 }
 
@@ -38,9 +38,13 @@
 
 .img-rounded{
 	width: 150px;
-	height: auto;
+	height: 210px;
 }
-
+#jt_mv_iframe{
+	width : 550px;
+	height : 300px;
+	
+}
 
 .jt_album_detail{
 	 cursor: pointer;
