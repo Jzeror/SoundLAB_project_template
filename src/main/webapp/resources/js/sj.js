@@ -41,7 +41,10 @@ sj ={
 				});
 				
 				$('input[type="checkbox"]').change(function(){
-					if($('input[type="checkbox"]:checked').length>3) $(this).prop('checked',false);
+					let $this = $(this);
+					if($('input[type="checkbox"]:checked').length>3){
+						$this.prop('checked',false);
+					}
 					let s = '';
 					let ckHash = $('input[type="checkbox"]:checked');
 					for(let i of ckHash){
