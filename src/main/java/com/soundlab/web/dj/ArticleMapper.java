@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import com.soundlab.web.bean.article;
 
 @Repository
 public interface ArticleMapper {

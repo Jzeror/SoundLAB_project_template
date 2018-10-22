@@ -179,7 +179,6 @@ sj ={
 			).appendTo($foryouSec);
 			
 			
-			console.log('무한 스크롤 하고싶다...');
 			$('#album-scroll').bind(function(){
 				let $this = $(this);
 				console.log($this.scrollTop());

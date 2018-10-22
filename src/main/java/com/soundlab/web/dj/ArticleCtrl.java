@@ -9,10 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.soundlab.web.cmm.Util;
-import com.soundlab.web.bean.*;
-
-
 @RestController
 public class ArticleCtrl {
 	@Autowired ArticleMapper am;

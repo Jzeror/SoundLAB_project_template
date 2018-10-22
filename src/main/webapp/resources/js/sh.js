@@ -25,6 +25,12 @@ sh = (()=>{
      var home =()=>{
          console.log('sh.home ::');
 	     w.html(nav()+banner()+cloud()+topFive()+footer());
+	     WordCloud({
+	    		container : '#cloud-container',
+	    		data : $ctx+'/resources/json/dummy.json'
+	     });
+	     
+	     
          /*w.html(nav()+footer());*/
          /*-------------------banner--------------------*/
  		/*$('<div/>').addClass('section_banner').attr({id:"section_banner"}).appendTo($('#contents'));
@@ -103,23 +109,34 @@ sh = (()=>{
          });
         
          $('#searchBtn').click(e=>{
-    		 jt.search();
+        	 $.getJSON(sh.ctx()+'/service/search/'+$('#searchInput').val(),d=>{
+					 jt.search(d);
+    			 
+			 });
+    		
     		 fn.scroll({ id : $("#jt_search"), len : 400});
 
     	 });
     	 $('#searchInput').keyup(e=>{
     		 if(e.keyCode == 13) { 
-    			 jt.search();
+    			 alert('서치검색:::'+$('#searchInput').val());
+    			 $.getJSON(sh.ctx()+'/service/search/'+$('#searchInput').val(),d=>{
+					 jt.search(d);
+    			 });
+    			
     			 fn.scroll({ id : $("#jt_search"), len : 400});
 
     		 } 
     	 });
          
     	 $('#chartBtn').click(e=>{
-    		 $('#contents').html(banner()+cloud()+topFive());
-			 ls.chart();
-			 sh.service.removeSec('#chartSec');
-			 fn.scroll({ id : $("#chartSec"), len : 150});
+	 			$('#contents').html(banner()+cloud()+topFive());
+	 			let x = 'realChart';
+		       		ls.chart(x);
+		       		sh.service.removeSec('#chartSec');
+					fn.scroll({ id : $("#chartSec"), len : 150});
+			
+			
          });
          $('#albumBtn').click(e=>{
         	 $('#contents').html(banner()+cloud()+topFive());
@@ -160,10 +177,10 @@ sh = (()=>{
          });
          
         $('#logoImg').click(()=>{
-        	/*$.getJSON(sh.ctx()+'/view/dummy',d=>{
+        	/*$.getJSON(sh.ctx()+'/dummy/chart',d=>{
         		alert('seq ::' + d.seq);
         	});*/
-             home();
+             /*home();*/
         });
 
      };
@@ -251,7 +268,7 @@ var banner =()=> '<section id="banner" class="banner">'
 		+'</ol>'
 		+'<div id="bannerImg" class="carousel-inner" role="listbox">'
 		  +'<div class="item active">'
-		    +'<img id="bannerImg1" src="'+$img+'/gmf2018_poster.jpg" alt="First slide">'
+		    +'<img src="'+$img+'/gmf2018_poster.jpg" alt="First slide">'
 		    +'<div class="carousel-caption">'
 			+'<h4>2018 Grand Mint Festival</h2>'
 			+'<h5>일시 : 2018년 10월 20일(토요일)- 10월 21일(일요일)</h3>'
@@ -259,7 +276,7 @@ var banner =()=> '<section id="banner" class="banner">'
 		    +'</div>'
 		  +'</div>'
 		  +'<div class="item">'
-		    +'<img id="bannerImg2" src="'+$img+'/seoulfashion2018_poster.jpg" alt="Second slide">'
+		    +'<img src="'+$img+'/seoulfashion2018_poster.jpg" alt="Second slide">'
 		    +'<div class="carousel-caption">'
 		    +'<h4>2018 스타라이트 뮤지컬 페스티벌</h2>'
 			+'<h5>일시 : 2018년 10월 20일(토요일)-10월 21일(일요일)</h3>'
@@ -267,7 +284,7 @@ var banner =()=> '<section id="banner" class="banner">'
 		    +'</div>'
 		  +'</div>'
 		  +'<div class="item">'
-		    +'<img id="bannerImg3" src="'+$img+'/starlight2018_poster.jpg" alt="Third slide">'
+		    +'<img src="'+$img+'/starlight2018_poster.jpg" alt="Third slide">'
 		    +'<div class="carousel-caption">'
 		    +'<h4>할로윈 레드문 서울 패션 페스티벌 2018</h2>'
 			+'<h5>일시 : 2018년 10월 27일(토요일)</h3>'
@@ -297,7 +314,7 @@ var cloud =()=> '<section id="cloud" class="cloud" style="text-align:center">'
      +'</br>'
      +'</br>'
      +'</br>'
-     +'<h1>단어구름</h1>'
+     +'<div id="cloud-container"></div>'
      +'</section>';
      
 var topFive =()=>'<section id="topFive" class="topFive" style="text-align:center">'
@@ -560,7 +577,7 @@ sh.service ={
                sh.home();
           });
 
-        
+        /*d*/
          $('#logoImg').click(e=>{
               sh.home();
          });
