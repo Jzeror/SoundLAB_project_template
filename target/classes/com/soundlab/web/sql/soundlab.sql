@@ -1487,6 +1487,8 @@ SET intro2 =
  모션으로 화제가 되기도 했다.'
 where artist_seq like 61;
 
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_아이유','jpg',9);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_빈지노','jpg',8);
 
 
 
