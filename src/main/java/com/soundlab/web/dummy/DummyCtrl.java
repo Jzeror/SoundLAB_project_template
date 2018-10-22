@@ -340,15 +340,16 @@ public class DummyCtrl {
 	public Map<String,Object> chart() {
 		logger.info("DummyCtrl ::: chart ");
 		rm.clear();
-		rm.put("memberId", "shin");
+		/*rm.put("memberId", "shin");
 		rm.put("seq", 59);
 		rm.put("element", "music");
 		for(int i=0;i<70;i++) {
 			dp.post(rm);
-		}
+		}*/
 		/*75
 		 */ 
-		/*int[] lst = {  57  
+		int[] lst = {  
+				   57  
 				  ,58
 				  ,59
 				  ,62
@@ -358,7 +359,6 @@ public class DummyCtrl {
 				  ,66
 				  ,67
 				  ,68
-				  ,69
 				  ,70
 				  ,71
 				  ,72
@@ -370,7 +370,6 @@ public class DummyCtrl {
 				  ,80
 				  ,81
 				  ,82
-				  ,83
 				  ,84
 				  ,85
 				  ,86
@@ -401,7 +400,6 @@ public class DummyCtrl {
 				 ,112
 				 ,113
 				 ,114
-				 ,115
 				 ,116
 				 ,117
 				 ,118
@@ -409,19 +407,24 @@ public class DummyCtrl {
 				 ,120
 				 ,121
 				 ,122
-				 ,123
 				 ,124
 				 ,125
 				 ,89
+				 ,115
 				 ,74
-				 ,75};
+				 ,123
+				 ,75
+				 ,83
+				 ,69};
 		rm.put("memberId", "shin");
+		int count = 1;
 		for(int s=0;s<67;s++) {
 			rm.put("seq", lst[s]);
-			for(int i=0;i<s+1;i++) {
+			for(int i=0;i<count;i++) {
 				dp.post(rm);
 			}
-		}*/
+			count+=10;
+		}
 		
 		return rm;
 	}

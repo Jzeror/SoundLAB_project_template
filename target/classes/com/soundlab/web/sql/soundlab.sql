@@ -1767,6 +1767,79 @@ SELECT ud.seq_group, ud.member_id, m.sex, m.birth  FROM UPDOWN ud join member m 
 
 
 
+<!-- ADMIN 쿼리 -->
+/*아티스트 1번
+ 곡번호 | 나이  | 성별  | 스트리밍수 */
+SELECT 
+	v.SEQ_GROUP 곡번호
+	,YEAR(CURDATE())-YEAR(M.BIRTH)+1 나이
+	, M.SEX 성별
+	, COUNT(v.SEQ_GROUP) 스트리밍수
+FROM VIEW_RECORD v
+	JOIN MEMBER m
+	ON v.MEMBER_ID = M.MEMBER_ID
+WHERE SG_ELEMENT LIKE 'music'
+GROUP BY v.SEQ_GROUP, M.MEMBER_ID, M.SEX
+ORDER BY SEQ_GROUP, 나이 , 성별;
+
+
+
+
+
+/*아티스트 2번
+ 곡번호 | 나이  | 성별  | 좋아요수 | 싫어요수 */
+SELECT 
+	UD.SEQ_GROUP 곡번호
+	,YEAR(CURDATE())-YEAR(M.BIRTH)+1 나이
+	, M.SEX 성별
+	, COUNT(CASE WHEN UD.TYPES LIKE 'U' THEN 1 END) 좋아요수
+	, COUNT(CASE WHEN UD.TYPES LIKE 'D' THEN 1 END) 싫어요수 
+FROM UPDOWN UD
+	JOIN MEMBER M
+	ON UD.MEMBER_ID = M.MEMBER_ID
+WHERE SG_ELEMENT LIKE 'MUSIC'
+GROUP BY UD.SEQ_GROUP, M.MEMBER_ID, M.SEX
+ORDER BY SEQ_GROUP, 나이, 성별;
+
+
+
+
+/* 선호도 - 장르
+장르번호 | 나이 | 성별 | 좋아요수  
+(장르좋아요만 반영)
+(곡좋아요에 대한 장르도 반영할 것인가??)
+*/
+SELECT 
+	UD.SEQ_GROUP 장르번호
+	,YEAR(CURDATE())-YEAR(M.BIRTH)+1 나이
+	, M.SEX 성별
+	,COUNT(CASE WHEN UD.TYPES LIKE 'U' THEN 1 END) 좋아요수
+FROM UPDOWN UD
+	JOIN MEMBER M
+	ON UD.MEMBER_ID = M.MEMBER_ID
+WHERE SG_ELEMENT LIKE 'GENRE'
+GROUP BY UD.SEQ_GROUP, M.MEMBER_ID, M.SEX
+ORDER BY UD.SEQ_GROUP, 나이, 성별;
+;
+
+
+
+/*선호도 - 아티스트
+ 아티스트번호 | 나이 | 성별 | 좋아요수 */
+SELECT 
+	UD.SEQ_GROUP 아티스트번호
+	,YEAR(CURDATE())-YEAR(M.BIRTH)+1 나이
+	, M.SEX 성별
+	,COUNT(CASE WHEN UD.TYPES LIKE 'U' THEN 1 END) 좋아요수
+FROM UPDOWN UD
+	 JOIN MEMBER M
+	 ON UD.MEMBER_ID LIKE M.MEMBER_ID
+WHERE SG_ELEMENT LIKE 'ARTIST'
+GROUP BY UD.SEQ_GROUP, M.MEMBER_ID, M.SEX
+ORDER BY UD.SEQ_GROUP, 나이, 성별;
+
+<!-- ADMIN 쿼리 -->
+
 
 /*아티스트 1번*/
 SELECT VI.뮤직번호, VI.성별, COUNT(VI.성별) 성별
@@ -1861,4 +1934,99 @@ INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_3', 'jpg', 173 );
 INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_3', 'jpg', 174 );
 INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_1', 'jpg', 175 );
 INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_1', 'jpg', 176 );			
-			
+
+
+<!-- DJ게시판 CONTENTS 변경 -->
+UPDATE article SET CONTENTS = '97,85,62,96,115,138,76,110,57' WHERE ARTICLE_SEQ LIKE 160 ;
+UPDATE article SET CONTENTS = '73,92,67,81,101,108' WHERE ARTICLE_SEQ LIKE 161 ;
+UPDATE article SET CONTENTS = '93,74,110,109,115,79,108,89' WHERE ARTICLE_SEQ LIKE 162 ;
+UPDATE article SET CONTENTS = '120,149,77,139,153,154,80,137,81' WHERE ARTICLE_SEQ LIKE 163 ;
+UPDATE article SET CONTENTS = '133,151,110,109,102,62,89' WHERE ARTICLE_SEQ LIKE 164 ;
+UPDATE article SET CONTENTS = '150,78,88,71,152,59,117,81,153,114' WHERE ARTICLE_SEQ LIKE 165 ;
+UPDATE article SET CONTENTS = '82,78,125,58,133,92,103,106,142,79' WHERE ARTICLE_SEQ LIKE 166 ;
+UPDATE article SET CONTENTS = '110,106,70,116,67,84,135,64' WHERE ARTICLE_SEQ LIKE 167 ;
+UPDATE article SET CONTENTS = '125,57,151,111,150,88,122,65,80,96' WHERE ARTICLE_SEQ LIKE 168 ;
+UPDATE article SET CONTENTS = '141,133,101,151,83,158,74,137' WHERE ARTICLE_SEQ LIKE 169 ;
+UPDATE article SET CONTENTS = '88,147,85,120,76,108' WHERE ARTICLE_SEQ LIKE 170 ;
+UPDATE article SET CONTENTS = '139,114,120,76,156,134,106,68' WHERE ARTICLE_SEQ LIKE 171 ;
+UPDATE article SET CONTENTS = '68,83,59,66,75,91' WHERE ARTICLE_SEQ LIKE 172 ;
+UPDATE article SET CONTENTS = '152,149,150,141,97,147' WHERE ARTICLE_SEQ LIKE 173 ;
+UPDATE article SET CONTENTS = '62,96,59,114,139,109,73,97,103' WHERE ARTICLE_SEQ LIKE 174 ;
+UPDATE article SET CONTENTS = '81,147,110,109,123,116,137,139,90' WHERE ARTICLE_SEQ LIKE 175 ;
+UPDATE article SET CONTENTS = '135,138,141,134,102,71,107,133' WHERE ARTICLE_SEQ LIKE 176 ;
+
+
+ALTER TABLE mv ADD COLUMN ytb VARCHAR(100);
+<iframe width="1090" height="613" src="https://www.youtube.com/embed/TNWMZIf7eSg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<!-- 187번부터 -->
+insert into mv ( MV_SEQ,
+ MV_TITLE,
+ MUSIC_SEQ,
+ RELEASE_DATE,
+ ytb)
+ values(
+ 	187,
+ 	'사이렌',
+ 	57,
+ 	'2018.09.04',
+ 	'https://www.youtube.com/embed/TNWMZIf7eSg'
+ );
+
+<!-- chart 일주일치 -->
+select  v1.seq_group, count(*) cnt , v1.view_date, (select count(*) from view_record v2 where v2.view_date like v1.view_date and v2.seq_group in (69,83,75) ) tcnt,((count(*)/(select count(*) from view_record v2 where v2.view_date like v1.view_date and v2.seq_group in (69,83,75))) * 100) per 
+from view_record v1
+where v1.seq_group IN (69,83,75)
+group by v1.seq_group, v1.view_date
+order by v1.view_date, count(*) desc;
+
+<!-- IN 쿼리문 -->
+select v.seq_group
+from view_record v
+where v.view_date like '2018-10-22%' 
+group by v.seq_group 
+order by  
+desc limit 3;
+
+
+
+<!-- chart 일주일치 -->
+select  v1.seq_group, count(*) cnt , v1.view_date,
+		(select count(*) from view_record v2 where v2.view_date like v1.view_date and v2.seq_group in (69,83,75) ) tcnt,
+		((count(*)/(select count(*) from view_record v2 where v2.view_date like v1.view_date and v2.seq_group in (
+					select tmp.mseq 
+					from
+					(
+						select v.seq_group mseq, count(*) cnt
+						from view_record v
+						where v.view_date like '2018-10-22%' 
+						group by v.seq_group 
+						order by cnt 
+						desc limit 3) tmp
+				    ))) * 100) per 
+from view_record v1
+where v1.seq_group IN (
+					select tmp.mseq 
+					from
+						(select v.seq_group mseq, count(*) cnt
+						from view_record v
+						where v.view_date like '2018-10-22%' 
+						group by v.seq_group 
+						order by cnt 
+						desc limit 3) tmp
+				    )
+    and v1.view_date NOT LIKE '2019%'
+group by v1.seq_group, v1.view_date
+order by v1.view_date, count(*) desc;
+
+
+
+update article
+set hash = '2,5,12'
+where ARTICLE_SEQ like 160;
+
+update article
+set hash = '4,12,13'
+where ARTICLE_SEQ like 171;
+
+

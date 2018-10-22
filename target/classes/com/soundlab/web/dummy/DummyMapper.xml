@@ -7,7 +7,7 @@
 	  	INSERT INTO VIEW_RECORD
 	  	(MEMBER_ID, SEQ_GROUP, SG_ELEMENT, VIEW_DATE)
 	  	VALUES
-	  	(#{memberId},#{seq},'music','2018-10-19 13:30:34')
+	  	(#{memberId},#{seq},'music','2018-10-22 13:30:34')
 	  </insert>
 	  <insert id="genreUp">
 	  	INSERT INTO UPDOWN

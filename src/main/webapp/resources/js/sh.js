@@ -25,6 +25,12 @@ sh = (()=>{
      var home =()=>{
          console.log('sh.home ::');
 	     w.html(nav()+banner()+cloud()+topFive()+footer());
+	     WordCloud({
+	    		container : '#cloud-container',
+	    		data : $ctx+'/resources/json/dummy.json'
+	     });
+	     
+	     
          /*w.html(nav()+footer());*/
          /*-------------------banner--------------------*/
  		/*$('<div/>').addClass('section_banner').attr({id:"section_banner"}).appendTo($('#contents'));
@@ -308,7 +314,7 @@ var cloud =()=> '<section id="cloud" class="cloud" style="text-align:center">'
      +'</br>'
      +'</br>'
      +'</br>'
-     +'<h1>단어구름</h1>'
+     +'<div id="cloud-container"></div>'
      +'</section>';
      
 var topFive =()=>'<section id="topFive" class="topFive" style="text-align:center">'
