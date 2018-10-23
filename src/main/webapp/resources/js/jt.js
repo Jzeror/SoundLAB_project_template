@@ -422,7 +422,7 @@ jt ={
 		
 		album_write : x=>{
 				console.log('댓글에 넘어온 값::'+x);
-				$.getJSON($.ctx()+'/detailPg/write/'+x,d=>{
+				
 					$('<div/>').attr({id: 'jt_cmt'}).addClass('container').appendTo($('#jt_content'));
 					$('<h3/>').html('댓글').appendTo($('#jt_cmt'));
 					$('<hr/>').appendTo($('#jt_cmt'));
@@ -432,12 +432,30 @@ jt ={
 					.addClass('img-rounded')
 					.appendTo($('#jt_cmt_profile'));
 					$('<div/>').attr({id:'jt_cmt_body'}).addClass('col-md-8').appendTo($('#jt_cmt'));
-					$('<textarea/>').attr({rows:"6",cols:"105",placeholder:"내용을 입력해주세요"}).appendTo($('#jt_cmt_body'));
+					$('<textarea/>').attr({id:'msg',rows:"6",cols:"105",placeholder:"내용을 입력해주세요"}).appendTo($('#jt_cmt_body'));
 					$('<div/>').attr({id:'jt_cmt_btn_div'}).addClass('col-md-2').appendTo($('#jt_cmt'));
 					$('<button/>')
 					.attr({id:'jt_cmt_btn','type':'button'})
 					.addClass('btn btn-light btn-lg').html('등록')
-					.appendTo($('#jt_cmt_btn_div'));
+					.appendTo($('#jt_cmt_btn_div'))
+					.click(e=>{
+						$.ajax({
+							url:$.ctx()+'/detailPg/write',
+							method:'post',
+							contentType:'application/json',
+							data:JSON.stringify({
+								memberId : $.cookie('loginID'),
+								seqGroup : x,
+								msg : $('#msg').val(),
+							}),
+							success : d=>{},
+							error:(m1,m2,m3)=>{alert(m3);}
+							
+							
+						})
+							
+					});
+				
 					$('<br/>').appendTo($('#jt_content'));
 					$('<div/>').addClass('jt_cmt_count container').appendTo($('#jt_content'));
 					$('<div/>').attr({id:'jt_cmt_div'}).appendTo('.jt_cmt_count');
@@ -451,7 +469,6 @@ jt ={
 			            });
 			        });
 					$('<hr/>').appendTo($('#jt_content'));	
-				});
 				
 
 		},

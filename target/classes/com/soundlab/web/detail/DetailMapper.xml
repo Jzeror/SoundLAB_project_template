@@ -30,13 +30,13 @@
 	
 	<!-- 댓글 -->
 	
-	<!-- <insert id="create">
+	 <insert id="create">
 		INSERT INTO COMMENT
 		(MEMBER_ID, SEQ_GROUP, MSG)
 		VALUES
 		(#{memberId},#{seqGroup},#{msg})
 	</insert>
-	 -->
+	
 	<!-- <select id="getAlbumList"  resultType="map" parameterType="string">
 		 SELECT
 		     B.ALBUM_SEQ,

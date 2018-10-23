@@ -1,15 +1,20 @@
 package com.soundlab.web.detail;
 
 import java.util.Map;
+
+import org.aspectj.lang.annotation.RequiredTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.soundlab.web.bean.comment;
 import com.soundlab.web.cmm.Util;
 import com.soundlab.web.page.Pagination;
 import com.soundlab.web.service.ServiceCtrl;
@@ -21,6 +26,7 @@ public class DetailCtrl {
 	@Autowired Map<String,Object> map;
 	@Autowired DetailMapper dm;
 	@Autowired Pagination page;
+	@Autowired comment cmt;
 	
 	
 	@GetMapping("/detail/{albumSeq}")
@@ -35,21 +41,21 @@ public class DetailCtrl {
 	
 		return map;
 	}
-	@RequestMapping("/detilPg/comment/{id}/{pageNo}")
-	public @ResponseBody Map<String,Object> albumCmt(
-				@PathVariable String pageNo,
-				@PathVariable String id){
-		logger.info("DetailPgCtrl ::: comment");
+	@PostMapping("/write")
+	public void albumComment(@RequestBody Map<String,Object> am){
+		logger.info("DetailPgCtrl ::: write");
+		System.out.println(am);
+		
 		map.clear();
-		map.put("pageNum", pageNo);
-		map.put("countRow", dm.listComment(id));
-		page.carryOut(map);
-		Util.log.accept("::Detail albumCmt() :: page ::"+page);
-		map.put("keyword", id);
-		map.put("page", page);
+		map.put("memberId", am.get("memberId"));
+		map.put("seqGroup", am.get("seqGroup"));
+		map.put("msg", am.get("msg"));
+		System.out.println("Map::"+map);
+		
+		dm.create(map);
 		
 		
-		return map;
+		
 	}
 
 
