@@ -35,7 +35,7 @@
 		FROM
 			ARTICLE A
 	)AR
-	JOIN DJ_VIEW D
+	JOIN SJ_DJ_VIEW D
 		ON AR.ARTICLE_SEQ LIKE D.ARTICLE_SEQ
 		<where>
 			<if test="t1 == null and t2 == null and t3 == null">
@@ -55,6 +55,6 @@
   </select>
   
   <select id="getDetail" resultMap="atc">
-  	SELECT * FROM DJ_VIEW WHERE ARTICLE_SEQ LIKE #{p}
+  	SELECT * FROM SJ_DJ_VIEW WHERE ARTICLE_SEQ LIKE #{p}
   </select>
   </mapper>

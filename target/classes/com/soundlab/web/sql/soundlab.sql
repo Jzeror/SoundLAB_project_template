@@ -2165,10 +2165,6 @@ create table COMMENT(
     REGI_DATE TIMESTAMP DEFAULT now()
 );
 
- criss
- shin
- zuzu
- 
  
  
 INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('shin',30,'지노형 얼른 전역하세요ㅠㅠ');
