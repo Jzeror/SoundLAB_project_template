@@ -14,5 +14,5 @@ public interface DummyMapper {
 	public void musicDown(Map<?,?> p);
 	public void bangRecord(Map<?,?> p);
 	public void hashRecord(Map<?,?> p);
-	
+	public void loginRecord(Map<?,?> p);
 }

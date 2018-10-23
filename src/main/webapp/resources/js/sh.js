@@ -116,10 +116,12 @@ sh = (()=>{
         
          $('#searchBtn').click(e=>{
         	 $.getJSON(sh.ctx()+'/service/search/'+$('#searchInput').val(),d=>{
-					 jt.search(d);
-    			 
+				 jt.search(d);
+				 setTimeout(()=>{
+					 fn.scroll({ id : $("#jt_search"), len : 400});
+		         },200);
 			 });
-    		 fn.scroll({ id : $("#jt_search"), len : 400});
+    		 
 
     	 });
     	 $('#searchInput').keyup(e=>{
@@ -129,39 +131,47 @@ sh = (()=>{
     				 alert('아티스트이름~~::'+d.artist.ARTIST_NAME);
     				 alert('뮤직타이틀::'+d.musics[0].musicTitle);
 					 jt.search(d);
+					 setTimeout(()=>{
+						 fn.scroll({ id : $("#jt_search"), len : 400});
+			         },200);
     			 });
-    			 fn.scroll({ id : $("#jt_search"), len : 400});
-
     		 } 
     	 });
          
     	 $('#chartBtn').click(e=>{
-	 			$('#contents').html(banner()+cloud()+topFive());
-	 			let x = 'realChart';
-		       		ls.chart(x);
-		       		sh.service.removeSec('#chartSec');
-					fn.scroll({ id : $("#chartSec"), len : 150});
-			
-			
+ 			$('#contents').html(banner()+cloud()+topFive());
+ 			let x = 'realChart';
+       		ls.chart(x)
+       		setTimeout(()=>{
+       			sh.service.removeSec('#chartSec');
+		       	fn.scroll({ id : $("#chartSec"), len : 200});
+       		},200);
          });
          $('#albumBtn').click(e=>{
         	 $('#contents').html(banner()+cloud()+topFive());
-      		 ls.album();
-      		 sh.service.removeSec('#albumSec');
-			 fn.scroll({ id : $("#albumSec"), len : 150});
-
+        	 let x = 'newAl_recent';
+      		 ls.album(x);
+      		setTimeout(()=>{
+      		  sh.service.removeSec('#albumSec');
+   			  fn.scroll({ id : $("#albumSec"), len : 150});
+       		},200);
          });
          $('#djBtn').click(e=>{
         	 $('#contents').html(banner()+cloud()+topFive());
     		 sj.dj();
-    		 sh.service.removeSec('#djSec');
-			 fn.scroll({ id : $("#djSec"), len : 200});
+    		 setTimeout(()=>{
+    			 sh.service.removeSec('#djSec');
+    			 fn.scroll({ id : $("#djSec"), len : 200});
+          	 },200);
          });
          $('#forBtn').click(e=>{
         	$('#contents').html(banner()+cloud()+topFive());
 	       		sj.forYou();
-	       		sh.service.removeSec('#foryouSec');
-				fn.scroll({ id : $("#foryouSec"), len : 200});
+	       		setTimeout(()=>{
+	       			sh.service.removeSec('#foryouSec');
+					fn.scroll({ id : $("#foryouSec"), len : 200});
+	          	},200);
+	       		
 			 /*$.ajax({
 	    		 url : sh.ctx()+'/member/auth',
 		       	  method : 'get',
@@ -183,9 +193,9 @@ sh = (()=>{
          });
          
         $('#logoImg').click(()=>{
-        	$.getJSON(sh.ctx()+'/dummy/chart',d=>{
+        	/*$.getJSON(sh.ctx()+'/dummy/loginRecord',d=>{
         		alert('seq ::' + d.seq);
-        	});
+        	});*/
              /*home();*/
         });
 

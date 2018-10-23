@@ -5,8 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface MusicMapper {
-	 public List<Map<String,Object>> realChart(HashMap<String, Object> map);
-	 public List<Map<String,Object>> dayChart(HashMap<String, Object> map);
-	 public List<Map<String,Object>> weekChart(HashMap<String, Object> map);
+	 public List<Map<?,?>> realChart(HashMap<?,?> map);
+	 public List<Map<?,?>> dayChart(HashMap<?,?> map);
+	 public List<Map<?,?>> weekChart(HashMap<?,?> map);
+	 public List<Map<?,?>> top50lineChart(HashMap<?,?> map);
 }
 

@@ -58,5 +58,12 @@
 	  	VALUES
 	  	(#{memberId},#{seq},'hash')
 	  </insert>
+ 
+	    <insert id="loginRecord">
+	  	INSERT INTO LOGIN_RECORD
+	  	(MEMBER_ID, SEX,  LOGIN_DATE)
+	  	VALUES
+	  	(#{memberId},#{sex},#{date})
+	  </insert>
 	  
 </mapper>

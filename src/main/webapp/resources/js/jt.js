@@ -156,10 +156,10 @@ jt ={
 			
 			//앨범디테일 페이지 이동. 클래스로 접근.
 			$('.jt_album_detail').click(e=>{
-
 				jt.album_detail();
-				fn.scroll({ id : $('#jt_album_dtpage'), len : 200});
-
+				setTimeout(()=>{
+					fn.scroll({ id : $('#jt_album_dtpage'), len : 200});
+		         },300);
 			});
 			
 			//영상
@@ -401,8 +401,6 @@ jt ={
 			.addClass('glyphicon glyphicon-thumbs-down jt_user_down')
 			.appendTo($('#jt_user_read2'));
 			$('<hr/>').appendTo($('#jt_content'));
-			
-			
 		},
 		
 		//웹플레이어

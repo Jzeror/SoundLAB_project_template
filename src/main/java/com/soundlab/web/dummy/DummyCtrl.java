@@ -1,6 +1,7 @@
 package com.soundlab.web.dummy;
 
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -20,6 +21,45 @@ public class DummyCtrl {
 	static final Logger logger = LoggerFactory.getLogger(DummyCtrl.class);
 	@Autowired Map<String,Object> rm;
 	@Autowired DummyMapper dp;
+	
+	
+	@GetMapping("/loginRecord")
+	public Map<String,Object> loginRecord(){
+		logger.info("DummyCtrl ::: loginRecord ");
+		rm.clear();
+		String[] man = { "admin","metus","mollis","neque","nulla","ornare","pizza","risus","sapien","semper","shin",
+				 "tempus","tortor","velit","mattis","zuzu","ligula","libero","criss","congue"};
+		String[] woman = {  "sound2","tellus","tempor","turpis","varius","auctor","vitae","sound","dolor","mauris",
+				"magna","lorem","lacus","justo","porta","ipsum","felis","enimIn","massa"};
+		String[] date = {"2018-10-15 11:12:30","2018-10-16 11:12:30","2018-10-17 11:12:30",
+				"2018-10-18 11:12:30","2018-10-19 11:12:30","2018-10-20 11:12:30",
+				"2018-10-21 11:12:30","2018-10-22 11:12:30","2018-10-23 11:12:30",
+				"2018-10-24 11:12:30",
+				"2018-10-25 11:12:30","2018-10-26 11:12:30","2018-10-27 11:12:30",
+				"2018-10-28 11:12:30"};
+		Map<String, String> mm = new HashMap<String, String>();
+		Map<String, String> wm = new HashMap<String, String>();
+		for(int i=0;i<14;i++) {
+			int ml = (int)((Math.random()*6)+1);
+			int wl = (int)((Math.random()*6)+1);
+			int mi = (int)((Math.random()*20));
+			int wi = (int)((Math.random()*19));
+			mm.put("memberId", man[mi]);
+			mm.put("sex", "남");
+			mm.put("date", date[i]);
+			wm.put("memberId", woman[wi]);
+			wm.put("sex", "여");
+			wm.put("date", date[i]);
+			for(int j=0;j<ml;j++) {
+				dp.loginRecord(mm);
+			}
+			for(int j=0;j<wl;j++) {
+				dp.loginRecord(wm);
+			}	
+		}
+		
+		return rm;
+	}
 	
 	
 	@GetMapping("/hash")
