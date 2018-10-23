@@ -3,20 +3,19 @@ var ls = ls || {};
 ls ={
 		chart :x=>{
 			$.getJSON(sh.ctx()+'/music/top50/'+x,d=>{
-
-			
 				
 				 if(!($("#chartSec").length >0)){ 
 						let $chartSec = $('<section/>').attr({id:'chartSec'});
-						$chartSec.appendTo($('#contents')).append(
+						$chartSec.appendTo($('#contents'))
 								// Top100 헤더
 								$('<div/>').addClass("ls_char_panel_top Panel panel-dafalt container").append(
 										$('<h1/>').html('TOP 100')
-								),
+								).appendTo($chartSec);
 								// 차트
-								$('<div/>').addClass("ls_char_panel_top Panel panel-dafalt container").append(
-										 $('<div/>').attr({id :'linechart_material'})
-								),
+								$('<div/>').addClass("ls_lineCh Panel panel-dafalt container").append(
+										 $('<div/>').attr({id :'chart_title'}).html('안녕!'),
+										 $('<div/>').attr({id :'line_top_x'})
+								).appendTo($chartSec);
 								//nav-sort
 								$('<br><br><div/>').attr({id : 'chart-content' }).addClass("ls_char_panel panel panel-dafalt container").append(
 										$('<div/>').append(
@@ -52,19 +51,14 @@ ls ={
 																			 ls.top50table(d);
 																	 })
 																	})
-																
-																
 
 												 )
 										)
-								),
+								).appendTo($chartSec);
 
-							
-								
-								
 								$('<div/>').attr({id : 'chart-top50' }).addClass("ls_char_panel Panel panel-dafalt container")
-						)
-							
+								.appendTo($chartSec);
+						
 									$('<div/>').attr({id :'ls_panel'}).addClass("ls_char_panel panel panel-default").append(
 										
 													$('<div/>').addClass("pull-left").attr({id :'pull-left'}).append(
@@ -88,13 +82,11 @@ ls ={
 																		 
 																		 })
 															)
-													
 											)
 					).appendTo($('#chart-top50')),
 					
 					ls.top50table(d),
 
-						
 					$('#allCheck').click(()=>{
 		                if($('#allCheck').is(':checked')){
 		                    $('input[name = chkBox]:checkbox').prop('checked',true);
@@ -104,7 +96,6 @@ ls ={
 		            })
 		            
 		            //-------------차트-----------------
-		            
 		           $.getJSON(sh.ctx()+'/music/top50lineChart',d=>{				
 							 	google.charts.load('current', {'packages':['line']});
 					 			google.charts.setOnLoadCallback(drawChart);
@@ -122,22 +113,37 @@ ls ={
 							            [d[i+2].VIEW_DATE*1,  d[i].PER, d[i+1].PER, d[i+2].PER]
 							          ]);
 							          }
+							         
+							          
+							         
+							          
+							          let options = {
+							        	        title: '1위 : '+d[0].PER+'2위 : '+d[1].PER+'3위 : '+d[2].PER,
+							        	        subtitle: '현재시간 : '+new Date().toLocaleString(),
+							        	        fontSize : 20,
+							        	        width: 900,
+							        	        height: 350,
+							        	   
+							        	        axes: {
+							        	          x: {
+							        	            0: {side: 'bottom'}
+							        	          }
+							        	        }
+							        	      };
 							          
 							          
-							          var options = {
-							            chart: {
-							              title: '실시간 점유율',
-							              //subtitle: 'in millions of dollars (USD)'
-							            },
-							            width: 900,
-							            height: 300
-							          };
-
-							          var chart = new google.charts.Line(document.getElementById('linechart_material'));
-
-							          chart.draw(data, google.charts.Line.convertOptions(options)).appendTo($('#linechart_material'));
+							          var chart = new google.charts.Line(document.getElementById('line_top_x'));
+							       
+							          chart.draw(data, google.charts.Line.convertOptions(options))
+							          .appendTo($('#line_top_x'));
 							  }		
 					})
+					//차트 내부 점유율 타이틀
+					$('<div/>').append(
+							
+					).appendTo('#chart_title');
+					
+					
 					
 					}
 	        	});
@@ -229,9 +235,6 @@ ls ={
 									 })		
 							).appendTo($albumSec);
 					
-				  
-					
-					
 				 //캐러셀
 				  let item = $('<div/>').addClass('carousel-inner')
 				  item.appendTo($('#alCarousel'));
@@ -317,10 +320,6 @@ ls ={
 			}
 				
 				
-				
-
-				
-				
 			})
 			
 		},
@@ -328,13 +327,9 @@ ls ={
 		
 	
 		 top50table :d=>{
-			 
-		
 				$('<section/>').addClass("ls_topTable table-container").append(
 						$('<table/>').addClass("ls_table table ls_table-filter").attr({id :'topTable'})
 				).appendTo($('#pull-left'));
-				
-				
 				$('<tbody/>').append(
 						$('<tr/>').append(
 										$('<th/>').attr({style : 'width:5%'}).append(

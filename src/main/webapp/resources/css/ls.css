@@ -505,3 +505,8 @@ overflow: hidden;
   line-height: 1.5;
   margin-bottom: 1.25rem;
 }
+.ls_lineCh {
+  border: 1px solid #eee;
+  padding: 20px;
+  font-size : 12px;
+}
