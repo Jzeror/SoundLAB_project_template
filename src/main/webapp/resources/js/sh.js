@@ -127,6 +127,7 @@ sh = (()=>{
 	 			$('#contents').html(banner()+cloud()+topFive());
 	 			let x = 'realChart';
 		       		ls.chart(x);
+		       	
 		       		sh.service.removeSec('#chartSec');
 					fn.scroll({ id : $("#chartSec"), len : 150});
 			
@@ -134,7 +135,8 @@ sh = (()=>{
          });
          $('#albumBtn').click(e=>{
         	 $('#contents').html(banner()+cloud()+topFive());
-      		 ls.album();
+        	 let x = 'newAl_recent';
+      		 ls.album(x);
       		 sh.service.removeSec('#albumSec');
 			 fn.scroll({ id : $("#albumSec"), len : 150});
 
