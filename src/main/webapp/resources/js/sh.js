@@ -145,7 +145,7 @@ sh = (()=>{
        		setTimeout(()=>{
        			sh.service.removeSec('#chartSec');
 		       	fn.scroll({ id : $("#chartSec"), len : 200});
-       		},200);
+       		},300);
          });
          $('#albumBtn').click(e=>{
         	 $('#contents').html(banner()+cloud()+topFive());
@@ -154,7 +154,7 @@ sh = (()=>{
       		setTimeout(()=>{
       		  sh.service.removeSec('#albumSec');
    			  fn.scroll({ id : $("#albumSec"), len : 150});
-       		},200);
+       		},300);
          });
          $('#djBtn').click(e=>{
         	 $('#contents').html(banner()+cloud()+topFive());
