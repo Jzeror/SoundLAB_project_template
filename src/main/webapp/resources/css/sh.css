@@ -340,3 +340,21 @@ font-family: 'Do Hyeon', sans-serif;
 
 /*-- 배너 --*/
 
+
+
+/* 해시태그 */
+.label-background-strong {
+  fill: white;
+  fill-opacity: .8;
+}
+
+#wolfstar-container {
+  cursor: default;
+}
+
+svg text{
+  font-family: Helvetica, sans-serif;
+  font-size: 14px;
+}
+/*-- 해시태그 --*/
+

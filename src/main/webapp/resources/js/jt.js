@@ -155,15 +155,17 @@ jt ={
 			$('<hr/>').appendTo($('#jt_search_album'));
 			
 			//앨범디테일 페이지 이동. 클래스로 접근.
+
 			$('.jt_album_detail').click(function(e){
 				let albumSeq = $(this).parents('div.jt_album_div').attr('id');
 				alert(albumSeq);
 				$.getJSON($.ctx()+'/detailPg/detail/'+albumSeq,d=>{
 				console.log("뒤에서 넘긴 값::"+d.album.ALBUMTITLE);
 				jt.album_detail(d);
-			})
-				fn.scroll({ id : $('#jt_album_dtpage'), len : 200});
-
+				setTimeout(()=>{
+					fn.scroll({ id : $('#jt_album_dtpage'), len : 200});
+		        },300);
+				});
 			});
 			
 			//영상
@@ -451,7 +453,9 @@ jt ={
 					$('<hr/>').appendTo($('#jt_content'));	
 				});
 				
+
 		},
+
 		
 		album_read: x=>{
 			//댓글읽기

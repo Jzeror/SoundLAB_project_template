@@ -3,20 +3,19 @@ var ls = ls || {};
 ls ={
 		chart :x=>{
 			$.getJSON(sh.ctx()+'/music/top50/'+x,d=>{
-				 
-			
 				
 				 if(!($("#chartSec").length >0)){ 
 						let $chartSec = $('<section/>').attr({id:'chartSec'});
-						$chartSec.appendTo($('#contents')).append(
+						$chartSec.appendTo($('#contents'))
 								// Top100 헤더
 								$('<div/>').addClass("ls_char_panel_top Panel panel-dafalt container").append(
 										$('<h1/>').html('TOP 100')
-								),
+								).appendTo($chartSec);
 								// 차트
-								$('<div/>').addClass("ls_char_panel_top Panel panel-dafalt container").append(
-										$('<br><img src="'+$.img()+'/chart.png">')
-								),
+								$('<div/>').addClass("ls_lineCh Panel panel-dafalt container").append(
+										 $('<div/>').attr({id :'chart_title'}).html('안녕!'),
+										 $('<div/>').attr({id :'line_top_x'})
+								).appendTo($chartSec);
 								//nav-sort
 								$('<br><br><div/>').attr({id : 'chart-content' }).addClass("ls_char_panel panel panel-dafalt container").append(
 										$('<div/>').append(
@@ -52,19 +51,14 @@ ls ={
 																			 ls.top50table(d);
 																	 })
 																	})
-																
-																
 
 												 )
 										)
-								),
+								).appendTo($chartSec);
 
-							
-								
-								
-								$('<div/>').attr({id : 'chart-top100' }).addClass("ls_char_panel Panel panel-dafalt container")
-						)
-							
+								$('<div/>').attr({id : 'chart-top50' }).addClass("ls_char_panel Panel panel-dafalt container")
+								.appendTo($chartSec);
+						
 									$('<div/>').attr({id :'ls_panel'}).addClass("ls_char_panel panel panel-default").append(
 										
 													$('<div/>').addClass("pull-left").attr({id :'pull-left'}).append(
@@ -88,22 +82,64 @@ ls ={
 																		 
 																		 })
 															)
-													
 											)
-					).appendTo($('#chart-top100'));
-						
-				
+					).appendTo($('#chart-top50')),
 					
-					ls.top50table(d);
-						 
-				//전체선택 클릭시
-				$('#allCheck').click(()=>{
-						if($("#allCheck").is(':checked')){
-							$('input[name = chk]:checkbox').prop('checked',true);
-						}else{
-							$('input[name = chk]:checkbox').prop('checked',false);
-						}
-					});
+					ls.top50table(d),
+
+					$('#allCheck').click(()=>{
+		                if($('#allCheck').is(':checked')){
+		                    $('input[name = chkBox]:checkbox').prop('checked',true);
+		                }else{
+		                    $('input[name = chkBox]:checkbox').prop('checked',false);
+		                }
+		            })
+		            
+		            //-------------차트-----------------
+		           $.getJSON(sh.ctx()+'/music/top50lineChart',d=>{				
+							 	google.charts.load('current', {'packages':['line']});
+					 			google.charts.setOnLoadCallback(drawChart);
+							    function drawChart() {
+							    	  var data = new google.visualization.DataTable();
+							    	  
+							          data.addColumn('number', 'Day');
+						        	  data.addColumn('number', d[0].ARTIST_NAME);
+							          data.addColumn('number', d[1].ARTIST_NAME);
+							          data.addColumn('number', d[2].ARTIST_NAME);	  
+							          for(let i=0; i <5; i++){	
+							          data.addRows([
+							            [d[i].VIEW_DATE*1,  d[i].PER, d[i+1].PER, d[i+2].PER],
+							            [d[i+1].VIEW_DATE*1,  d[i].PER, d[i+1].PER, d[i+2].PER],
+							            [d[i+2].VIEW_DATE*1,  d[i].PER, d[i+1].PER, d[i+2].PER]
+							          ]);
+							          }
+							         
+							          
+							         
+							          
+							          let options = {
+							        	        title: '1위 : '+d[0].PER+'2위 : '+d[1].PER+'3위 : '+d[2].PER,
+							        	        subtitle: '현재시간 : '+new Date().toLocaleString(),
+							        	        fontSize : 20,
+							        	        width: 900,
+							        	        height: 350,
+							        	   
+							        	        axes: {
+							        	          x: {
+							        	            0: {side: 'bottom'}
+							        	          }
+							        	        }
+							        	      };
+							          
+							          
+							          var chart = new google.charts.Line(document.getElementById('line_top_x'));
+							          chart.draw(data, google.charts.Line.convertOptions(options));
+							  }		
+					})
+					//차트 내부 점유율 타이틀
+					$('<div/>').append(
+							
+					).appendTo('#chart_title');
 					
 					
 					
@@ -111,288 +147,194 @@ ls ={
 	        	});
 		},
 				
-		album :()=>{
+		album :x=>{
+			$.getJSON($.ctx()+'/album/newAl/'+x,d=>{
 			
-			
-			
-			
-		/*	<table>
-			  <caption>최신앨범</caption>
-			  <thead>
-			    <tr>
-			      <th scope="col">sample1</th>
-			      <th scope="col">sample2</th>
-			      <th scope="col">sample3</th>
-			    </tr>
-			  </thead>
-			  <tbody>
-			    <tr>
-			      <td>sample4</td>
-			      <td>sample5</td>
-			      <td>sample6</td>
-			    </tr>
-			    <tr>
-			      <td>sample7</td>
-			      <td>sample8</td>
-			      <td>sample9</td>
-			    </tr>
-			    <tr>
-			      <td>sample10</td>
-			      <td>sample11</td>
-			      <td>sample12</td>
-			    </tr>
-			    <tr>
-			      <td>sample13</td>
-			      <td>sample14</td>
-			      <td>sample15</td>
-			    </tr>
-			    <tr>
-			      <td>sample16</td>
-			      <td>sample17</td>
-			      <td>sample18</td>
-			    </tr>
-			  </tbody>
-			</table>*/
-			
-			if(!($("#albumSec").length >0)){ 
-				let $albumSec = $('<section/>').attr({id:'albumSec'});
-				$albumSec.appendTo($('#contents')).append(
-						
-						$('<table/>').attr({id : 'ls_alTable' }).append(
-								$('<thead/>').append(
-										$('<tr/>').append(
-												$('<th/>')
-										)		
-								),
-								$('<tbody/>').append(
-										$('<tr/>').append(
-												$('<th/>')
-								)
-								)
-								
-						),
-						
-						
-						
-						
-						// 앨범헤더
-						$('<div/>').addClass("ls_album_panel container").append(
-								$('<h1/>').html('최신앨범')
-						),
-						// 앨범 캐러셀
-						$('<div/>').addClass('container').append(
-								$('<div/>').addClass('row').append(
-										$('<div/>').addClass('col-xs-12').append(
-												$('<h2/>').attr('style','margin-left: 1.2rem;').addClass('my-4'),
-												$('<div/>').attr({id : 'alCarousel'}).addClass('carousel slide ls_featured-shows-slides')
-										)
-								)
-						),
-						
-						// 앨범 컨텐츠
-						$('<br><br><div/>').attr({id : 'album-content' }).addClass("ls_album_panel container").append(
-								$('<div/>').addClass('row').append(
-								
-										
-										 $('<ul/>').addClass("ls_album_nav nav nav-tabs nav-justified").append(
-												 $('<li/>').attr({id : 'ali1'}).append(
-														 $('<a/>').attr({href:'#',id : 'ls_alDateSort'}).html('발매일')),
-												 $('<li/>').attr({id : 'ali2'}).append(
-														 $('<a/>').attr({href:'#', id : 'ls_alUpSort'}).html('좋아요'))
-										 )
-								)
-						),
-						//top100 목록
-						$('<div/>').attr({id : 'new-album'}).addClass("ls_album_panel container"),
-						$('<div/>').attr({id : 'morePage'}).addClass("ls_album_panel container").append(
-								$('<button/>').attr({id : 'al_morePage'}).addClass("btn btn-brand btn-primary").html('더보기')
-								.click(()=>{ 
-								 alert('al_morePage click'); 
-								 
-								 })		
-						)
+				
+				if(!($("#albumSec").length >0)){ 
+					let $albumSec = $('<section/>').attr({id:'albumSec'});
+					$albumSec.appendTo($('#contents'))
+							// 앨범헤더
+							$('<div/>').addClass("ls_album_panel container").append(
+									$('<h1/>').html('최신앨범')
+							).appendTo($albumSec);
+							// 앨범 캐러셀
+							$('<div/>').addClass('container').append(
+									$('<div/>').addClass('row').append(
+											$('<div/>').addClass('col-xs-12').append(
+													$('<h2/>').attr('style','margin-left: 1.2rem;').addClass('my-4'),
+													$('<div/>').attr({id : 'alCarousel'}).addClass('carousel slide ls_featured-shows-slides')
+											)
+									)
+							).appendTo($albumSec);
 							
-						
-						
-						
-				);
-				
-			 
-				let arrNewAl = [
-					{src : '선미_가시나.jpg',
-						musTtl : '사이렌',
-						atist : '선미',
-						title : 'WARNING'
-					},
-					{src : '로이킴_그때_헤어지면_돼.jpg',
-						musTtl : '우리 그만하자',
-						atist : '로이킴',
-						title : '우리 그만하자'
-					},
-					{src : 'VIBE_가을타나봐.jpg',
-						musTtl : '가을 타나 봐 ',
-						atist : '바이브',
-						title : '가을 타나 봐 '
-					},
-					{src : '윤종신_좋니.jpg',
-						musTtl : '좋니)',
-						atist : '윤종신',
-						title : '좋니'
-					},
-					{src : 'IU_삐삐.jpg',
-						musTtl : '삐삐',
-						atist : '아이유',
-						title : '삐삐'
-					},
-					{src : '폴킴_키스_먼저_할까요.jpg',
-						musTtl : '모든 날, 모든 순간',
-						atist : '폴킴',
-						title : '키스 먼저 할까요?'}
-				];
-				
-			
-				$.each(arrNewAl,(i,v)=>{
-				 	$('<div/>').attr({id : 'ls_allpl'+i,style : 'float: left;width: 33%;margin :0 auto'})
-				 		.appendTo($('#new-album')).addClass('ls_allpl');	
-				 	$('<div/>').attr({id : 'ls_alrow'+i,style : 'margin : 0 auto'}).addClass('row container')
-				 		.appendTo($('#ls_allpl'+i)).append(
-				 			$('<span/>').attr({id : 'ls_alcol'+i,style :'float: left;margin :0 auto'})
-				 			.addClass('ls_alcol col-md-3').append(
-				 					$('<span/>')
-				 					.attr({id : 'thumbnail'+i,style :'width: 300px;height: 480px ;padding:20px' })
-				 					.addClass('ls_thumbnail thumbnail').append(
-				 							$('<img/>').attr({
-				 								src : $.ctx()+'/resources/img/album/'+v.src}).addClass('ls_alimg'),
-				 							$('<span/>').attr({id : 'caption'+i}).addClass('caption').append(
-				 									$('<h4/>')
-				 									.html(v.musTtl).attr({title :v.musTtl }).addClass('ls_card-description card-description'),
-				 									$('<h4/>')
-				 									.html(v.atist).attr({title :v.atist }).addClass('card-description'),
-				 									$('<h4/>').attr({id : 'date'+i}).addClass('card-description').html('2018.09.04'),
-				 									$('<h4/>').attr({id : 'like'+i}).addClass('card-description')
-				 										.addClass("glyphicon glyphicon-thumbs-up").html('878'),
-				 									$('<h4/>').addClass('card-description')
-				 									.attr({id : 'trackCount'+i,style :'text-align: left;width: 80px; float:left'}).html('1곡'),
-				 									
-				 									$('<br><br><div/>').addClass("btn-group").append(
-															$('<button/>').attr({id : 'albumlis'+i})
-															.addClass("albumlis").html('앨범듣기')
-															.click(()=>{ 
-																 alert('albumlis click'); 
-																 
+							// 앨범 정렬
+							$('<br><br><div/>').attr({id : 'album-content' }).addClass("ls_album_panel container").append(
+									$('<div/>').append(
+											 $('<ul/>').addClass("ls_album_nav nav nav-tabs nav-justified").append(
+													 $('<li/>').attr({id : 'ali1'}).append(
+															 $('<a/>').attr({href:'#',id : 'ls_alDateSort'}).html('발매일'))
+														.click(()=>{ 
+																 	alert('발매일 click'); 
+																	$.getJSON(sh.ctx()+'/album/newAl/'+'newAl_recent',d=>{
+																	
+																		ls.new_alList(d);
+																	})
+									 
 															 }),
-															$('<button/>').attr({id : 'addMyList'+i})
-															.addClass("addMyList").html('담기')
-															.click(()=>{ 
-															 alert('addMyList click'); 
-															 
-															 })
-															
+													 $('<li/>').attr({id : 'ali2'}).append(
+															 $('<a/>').attr({href:'#', id : 'ls_alUpSort'}).html('좋아요'))
+															 .click(()=>{ 
+																 alert('좋아요 click'); 
+																 $.getJSON(sh.ctx()+'/album/newAl/'+'newAl_like',d=>{
+																		ls.new_alList(d);
+																	})
+																 	
+															 })		
+											 )
+									)
+							).appendTo($albumSec);
+							
+							
+							//컨텐츠
+							$('<div/>').attr({id : 'album-Table' }).addClass("ls_album_panel container").append(
+									
+									$('<div/>').attr({id : 'ls_newAlLe'})
+											
+									,
+									$('<div/>').attr({id : 'ls_newAlRi'}).html('최신앨범 인기곡').append(
+											$('<table/>').append(
+													$('<tbody/>').append(
+															$('<tr/>').attr({id : 'ls_alTable_tr'}).append(
+																			$('<th/>').attr({style : 'width:5%'}).append(
+																					$('<input/>').attr({type : 'checkbox', id :'allAlCheck' }).attr({style : 'width:15px'}),
+																					$('<label for="allAlCheck">')
+																			
+																	),
+																	$('<th/>').attr('width','3%').html('NO'),
+																	$('<th/>').attr('width','10%').html('앨범사진'),
+																	$('<th/>').attr('width','20%').html('제목'),
+																	$('<th/>').attr('width','10%').html('아티스트'),
+																	$('<th/>').attr('width','10%').html('앨범명'),
+																	$('<th/>').attr('width','5%').html('듣기')
+																	
+															)
 													)
-				 							)
-				 					)
-				 			)
-				 	)
-				});
-		
-
-					 
-			  
-			 //캐러셀
-			  let item = $('<div/>').addClass('carousel-inner')
-			  item.appendTo($('#alCarousel'));
-			  
-			  let newal = [
-				  {src : '선미_가시나.jpg',
-						musTtl : '사이렌',
-						atist : '선미',
-						title : 'WARNING'
-					},
-					{src : '로이킴_그때_헤어지면_돼.jpg',
-						musTtl : '우리 그만하자',
-						atist : '로이킴',
-						title : '우리 그만하자'
-					},
-					{src : 'VIBE_가을타나봐.jpg',
-						musTtl : '가을 타나 봐 ',
-						atist : '바이브',
-						title : '가을 타나 봐 '
-					},
-					{src : '윤종신_좋니.jpg',
-						musTtl : '좋니',
-						atist : '윤종신',
-						title : '좋니'
-					},
-					{src : 'IU_삐삐.jpg',
-						musTtl : '삐삐',
-						atist : '아이유',
-						title : '삐삐'
-					},
-					{src : '폴킴_키스_먼저_할까요.jpg',
-						musTtl : '모든 날, 모든 순간',
-						atist : '폴킴',
-						title : '키스 먼저 할까요?'}
-				];
-			  
-			 $.each(newal,(i,v)=>{ $('<div/>').addClass('item'+((i===0)?' active':'')).append(
-					  $('<div/>').addClass('col-md-3 col-sm-6 col-xs-12 ls-dj-item').append( 
-							  $('<img/>').attr({src : $.ctx()+'/resources/img/album/'+v.src}).addClass('img-responsive'),
-							  $('<div/>').attr({style :'height ="40%"'}).addClass('ls-dj-item-content').append(
-									  $('<div/>').addClass('ls-dj-content-txt').append( 
-											  $('<h4/>').html(v.title), 
-											  $('<p/>').html(v.musTtl), 
-											  $('<div/>').addClass('bg-gradients') ) ) ) )
-											  
-											  .appendTo(item).click(e=>{
-													// 밑에 dj detail 열리는 event 걸기
+											)
+									)
+							).appendTo($albumSec);
+							
+							ls.new_alList(d);
+							$('<div/>').attr({id : 'morePage'}).addClass("ls_album_panel container").append(
+									$('<button/>').attr({id : 'al_morePage'}).addClass("btn btn-brand btn-primary").html('더보기')
+									.click(()=>{ 
+									 alert('al_morePage click'); 
+									 
+									 })		
+							).appendTo($albumSec);
+					
+				 //캐러셀
+				  let item = $('<div/>').addClass('carousel-inner')
+				  item.appendTo($('#alCarousel'));
+				  
+				  let newal = [
+					  {src : '선미_주인공.jpg',
+							musTtl : '사이렌',
+							atist : '선미',
+							title : 'WARNING'
+						},
+						{src : '로이킴_그때_헤어지면_돼.jpg',
+							musTtl : '우리 그만하자',
+							atist : '로이킴',
+							title : '우리 그만하자'
+						},
+						{src : 'VIBE_가을타나봐.jpg',
+							musTtl : '가을 타나 봐 ',
+							atist : '바이브',
+							title : '가을 타나 봐 '
+						},
+						{src : '윤종신_좋니.jpg',
+							musTtl : '좋니',
+							atist : '윤종신',
+							title : '좋니'
+						},
+						{src : 'IU_삐삐.jpg',
+							musTtl : '삐삐',
+							atist : '아이유',
+							title : '삐삐'
+						},
+						{src : '폴킴_키스_먼저_할까요.jpg',
+							musTtl : '모든 날, 모든 순간',
+							atist : '폴킴',
+							title : '키스 먼저 할까요?'}
+					];
+				  
+				 $.each(newal,(i,v)=>{ $('<div/>').addClass('item'+((i===0)?' active':'')).append(
+						  $('<div/>').addClass('col-md-3 col-sm-6 col-xs-12 ls-dj-item').append( 
+								  $('<img/>').attr({src : $.ctx()+'/resources/img/album/'+v.src}).addClass('img-responsive'),
+								  $('<div/>').attr({style :'height ="40%"'}).addClass('ls-dj-item-content').append(
+										  $('<div/>').addClass('ls-dj-content-txt').append( 
+												  $('<h4/>').html(v.title), 
+												  $('<p/>').html(v.musTtl), 
+												  $('<div/>').addClass('bg-gradients') ) ) ) )
+												  
+												  .appendTo(item).click(e=>{
+														// 밑에 dj detail 열리는 event 걸기
+													});
 												});
-											});
-	
-			  	$('<a/>')
-				.attr({href:'#alCarousel', 'data-slide':'prev'})
-				.addClass('left carousel-control')
-				.append(
-						$('<i/>').addClass('glyphicon glyphicon-chevron-left')
-				).appendTo($('#alCarousel'));
-				$('<a/>')
-				.attr({href:'#alCarousel', 'data-slide':'next'})
-				.addClass('right carousel-control')
-				.append(
-						$('<i/>').addClass('glyphicon glyphicon-chevron-right')
-				).appendTo($('#alCarousel'));
-				
-				$('#alCarousel').carousel({
-					  interval: 2000
-					})
 		
-					$('#alCarousel .item').each(function () {
-				        var next = $(this).next();
-				        if (!next.length) {
-				            next = $(this).siblings(':first');
-				        }
-				        next.children(':first-child').clone().appendTo($(this));
+				  	$('<a/>')
+					.attr({href:'#alCarousel', 'data-slide':'prev'})
+					.addClass('left carousel-control')
+					.append(
+							$('<i/>').addClass('glyphicon glyphicon-chevron-left')
+					).appendTo($('#alCarousel'));
+					$('<a/>')
+					.attr({href:'#alCarousel', 'data-slide':'next'})
+					.addClass('right carousel-control')
+					.append(
+							$('<i/>').addClass('glyphicon glyphicon-chevron-right')
+					).appendTo($('#alCarousel'));
+					
+					$('#alCarousel').carousel({
+						  interval: 2000
+						})
+			
+						$('#alCarousel .item').each(function () {
+					        var next = $(this).next();
+					        if (!next.length) {
+					            next = $(this).siblings(':first');
+					        }
+					        next.children(':first-child').clone().appendTo($(this));
 
-				    	for (var i=0;i<2;i++) {
-							next=next.next();
-							if (!next.length) {
-								next = jQuery(this).siblings(':first');
+					    	for (var i=0;i<2;i++) {
+								next=next.next();
+								if (!next.length) {
+									next = jQuery(this).siblings(':first');
+								}
+								next.children(':first-child').clone().appendTo($(this));
 							}
-							next.children(':first-child').clone().appendTo($(this));
-						}
-				    });
-		}
+					    });
+			}
+				
+				
+			})
 			
 		},
+		
+		
+	
 		 top50table :d=>{
 				$('<section/>').addClass("ls_topTable table-container").append(
 						$('<table/>').addClass("ls_table table ls_table-filter").attr({id :'topTable'})
 				).appendTo($('#pull-left'));
-				
 				$('<tbody/>').append(
-						$('<tr/>').attr({id : 'ls_topTable_tr'}).append(
+						$('<tr/>').append(
 										$('<th/>').attr({style : 'width:5%'}).append(
 												$('<input/>').attr({type : 'checkbox', id :'allCheck' }).attr({style : 'width:15px'}),
 												$('<label for="allCheck">')
+												
+												
 										
 								),
 								$('<th/>').attr('width','3%').html('NO'),
@@ -411,7 +353,7 @@ ls ={
 				 $('<tr/>').append(
 							$('<td/>').append(
 									$('<div/>').addClass('ckbox').append(
-											$('<input/>').attr({type : 'checkbox', id :'checkbox'+i, name :'chk'}),
+											$('<input/>').attr({type : 'checkbox', id :'checkbox'+i, name :'chkBox'}),
 											$('<label for="checkbox'+i+'">') 
 									)
 							),
@@ -427,6 +369,7 @@ ls ={
 							),
 							$('<td/>').html(d[i].MUSIC_TITLE).click(()=>{
 								alert('제목 클릭');
+				
 							}),
 							$('<td/>').html(d[i].ARTIST_NAME).click(()=>{
 								alert('아티스트 클릭');
@@ -457,10 +400,52 @@ ls ={
 					).appendTo($('#topTable'));
 			 }
 			
+		},
+		new_alList :d=>{
+			$('#ls_newA').empty();
+			$('<ul/>').addClass('ls_cards').attr({id : 'ls_newA'}).appendTo($('#ls_newAlLe'));
+			
+			for(let i =0; i<6 ;i++){
+						$('<ul/>').addClass('ls_cards__item').append(
+								$('<div/>').addClass('ls_card').append(
+										$('<div/>').addClass('ls_card__image').append(
+												
+												$('<img/>').attr({src : $.ctx()+'/resources/img/album/'+d[i].IMG})
+												.addClass('ls_alimg').click(()=>{ 
+													 alert('앨범사진 click'); 
+													 
+												 })
+												
+										),
+										$('<div/>').addClass('ls_card__content').append(
+												$('<div/>').addClass('ls_card__title').html(d[i].ARTIST_NAME),
+												$('<p>').addClass('ls_card__text').html(d[i].ALBUM_TITLE),
+												$('<div/>').append(
+														$('<button/>').addClass('ls_btn btn--block card__btn').html('전체듣기')
+														.click(()=>{ 
+															 alert('전체듣기 click'); 
+															 
+														 }),
+														
+														$('<button/>').addClass('ls_btn btn--block card__btn').html('담기')
+														.click(()=>{ 
+															alert('담기 click'); 
+																		 
+														})
+												)
+												
+										)
+								
+						)
+						).appendTo($('#ls_newA'));
+				
+				
+				
+				
+				
+			}
 		}
-		
-
-		 
+	
 }
 
 

@@ -1987,6 +1987,30 @@ values(
    '2017.08.22',
    'https://www.youtube.com/embed/ur0hCdne2-s'
 );
+insert into mv ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+values(
+   189,
+   'Aqua Man',
+   63,
+   '2017.07.11',
+   'https://www.youtube.com/embed/8nq32TQBwXI'
+);
+insert into mv ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+values(
+   190,
+   '삐삐',
+   65,
+   '2018.10.10',
+   'https://www.youtube.com/embed/nM0xDI5R50E'
+);
  
  
 <!-- chart 일주일치 -->
@@ -2044,5 +2068,111 @@ where ARTICLE_SEQ like 160;
 update article
 set hash = '4,12,13'
 where ARTICLE_SEQ like 171;
+
+
+<!-- 3번 댄스에대한 up -->
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',108,'music','u'),
+('sound',122,'music','u'),
+('sound',119,'music','u'),
+('sound',116,'music','u'),
+('sound',59,'music','u'),
+('sound',73,'music','u'),
+('sound',57,'music','u'),
+('sound',77,'music','u');
+
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',3,'genre','u'),
+('sound',3,'genre','u'),
+('sound',3,'genre','u'),
+('sound',3,'genre','u'),
+('sound',3,'genre','u'),
+('sound',3,'genre','u'),
+('sound',3,'genre','u'),
+('sound',3,'genre','u');
+
+<!-- 1번 발라드에대한 up -->
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',66,'music','u'),
+('sound',89,'music','u'),
+('sound',84,'music','u'),
+('sound',95,'music','u'),
+('sound',69,'music','u');
+
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',1,'genre','u'),
+('sound',1,'genre','u'),
+('sound',1,'genre','u'),
+('sound',1,'genre','u'),
+('sound',1,'genre','u');
+
+<!-- 2번 힙합에대한 up -->
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',79 ,'music','u'),
+('sound',64 ,'music','u'),
+('sound',123 ,'music','u'),
+('sound',63 ,'music','u');
+
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',2 ,'genre','u'),
+('sound',2 ,'genre','u'),
+('sound',2 ,'genre','u'),
+('sound',2 ,'genre','u');
+
+
+
+<!-- 6번 알앤비소울에대한 up -->
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',124  ,'music','u'),
+('sound',65  ,'music','u'),
+('sound',125  ,'music','u');
+
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',6  ,'genre','u'),
+('sound',6  ,'genre','u'),
+('sound',6  ,'genre','u');
+
+
+<!-- 11번 방탄에대한 up -->
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',11  ,'artist','u');
+<!-- 19번 트와이스에대한 up -->
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',19  ,'artist','u');
+<!-- 20번 레벨에대한 up -->
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',20 ,'artist','u');
+
+
+<!-- 댓글 테이블 생성 -->
+
+create table COMMENT(
+    COMMENT_SEQ INT AUTO_INCREMENT PRIMARY KEY,
+    MEMBER_ID VARCHAR(20),
+    SEQ_GROUP INT,
+    MSG VARCHAR(300),
+    REGI_DATE TIMESTAMP DEFAULT now()
+);
+
+ criss
+ shin
+ zuzu
+ 
+ 
+ 
+INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('shin',30,'지노형 얼른 전역하세요ㅠㅠ');
+INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('criss',30,'지노형 인생 살고싶다..');
+INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('zuzu',30,'진짜 인생 떙곡임');
 
 
