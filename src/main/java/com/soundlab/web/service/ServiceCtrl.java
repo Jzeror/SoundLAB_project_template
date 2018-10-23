@@ -8,9 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.soundlab.web.bean.*;
 import com.soundlab.web.service.ServiceCtrl;
+
+import jdk.nashorn.internal.ir.annotations.Reference;
 
 
 @RestController
@@ -24,7 +27,7 @@ public class ServiceCtrl {
 	
 	@SuppressWarnings("unchecked")
 	@GetMapping("/search/{artist}")
-	public Map<String,Object> search(@PathVariable String artist){
+	public @ResponseBody Map<String,Object> search(@PathVariable String artist){
 		logger.info("ServiceCtrl ::: search");
 		map.clear();
 		HashMap<String, Object> am = (HashMap<String, Object>) sm.getArtist(artist);
