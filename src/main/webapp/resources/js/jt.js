@@ -282,6 +282,7 @@ jt ={
 		
 		//앨범디테일 페이지
 		album_detail : x=>{
+			console.log('앨범디테일에 넘어온 앨범SEQ::'+x.album.ALBUMSEQ);
 			let $cnts = $('#contents');
 			$cnts.empty();
 			let $albumDetailSec = $('<section/>').attr({ id : 'albumDetailSec'});
@@ -410,120 +411,122 @@ jt ={
 					$('input[name = chk]:checkbox').prop('checked',false);
 				}
 			});
+			alert('넘어온 앨범시퀀스~::'+x.album.ALBUMSEQ);
+			jt.album_write(x.album.ALBUMSEQ);
+			jt.album_read(x.album.ALBUMSEQ);
 			
-			jt.album_comment(x);
 		
 		},
 		
-		album_comment : x=>{
-			
-				$('<div/>').attr({id: 'jt_cmt'}).addClass('container').appendTo($('#jt_content'));
-				$('<h3/>').html('댓글').appendTo($('#jt_cmt'));
-				$('<hr/>').appendTo($('#jt_cmt'));
-				$('<div/>').attr({id: 'jt_cmt_profile'}).addClass('col-md-2').appendTo($('#jt_cmt'));
-				$('<img/>')
-				.attr({src : $.img()+'/캡처.JPG', align : 'left'})
-				.addClass('img-rounded')
-				.appendTo($('#jt_cmt_profile'));
-				$('<div/>').attr({id:'jt_cmt_body'}).addClass('col-md-8').appendTo($('#jt_cmt'));
-				$('<textarea/>').attr({rows:"6",cols:"105",placeholder:"내용을 입력해주세요"}).appendTo($('#jt_cmt_body'));
-				$('<div/>').attr({id:'jt_cmt_btn_div'}).addClass('col-md-2').appendTo($('#jt_cmt'));
-				$('<button/>')
-				.attr({id:'jt_cmt_btn','type':'button'})
-				.addClass('btn btn-light btn-lg').html('등록')
-				.appendTo($('#jt_cmt_btn_div'));
-				$('<br/>').appendTo($('#jt_content'));
-				$('<div/>').addClass('jt_cmt_count container').appendTo($('#jt_content'));
-				$('<div/>').attr({id:'jt_cmt_div'}).appendTo('.jt_cmt_count');
-				$('<span/>').attr({id:'jt_cmt_counts'}).html('총 00 개').appendTo($('#jt_cmt_div'));
-				let array=["최신순","추천순","답글순"];
-		        $.each(array,(x,j)=>{
-		            
-		            $('<span/>').addClass('jt_cmt_array').html(j).appendTo($('#jt_cmt_div'))
-		            .click(e=>{
-		                alert(j+" 버튼");
-		            });
-		        });
-				$('<hr/>').appendTo($('#jt_content'));
+		album_write : x=>{
+				console.log('댓글에 넘어온 값::'+x);
+				$.getJSON($.ctx()+'/detailPg/write/'+x,d=>{
+					$('<div/>').attr({id: 'jt_cmt'}).addClass('container').appendTo($('#jt_content'));
+					$('<h3/>').html('댓글').appendTo($('#jt_cmt'));
+					$('<hr/>').appendTo($('#jt_cmt'));
+					$('<div/>').attr({id: 'jt_cmt_profile'}).addClass('col-md-2').appendTo($('#jt_cmt'));
+					$('<img/>')
+					.attr({src : $.img()+'/캡처.JPG', align : 'left'})
+					.addClass('img-rounded')
+					.appendTo($('#jt_cmt_profile'));
+					$('<div/>').attr({id:'jt_cmt_body'}).addClass('col-md-8').appendTo($('#jt_cmt'));
+					$('<textarea/>').attr({rows:"6",cols:"105",placeholder:"내용을 입력해주세요"}).appendTo($('#jt_cmt_body'));
+					$('<div/>').attr({id:'jt_cmt_btn_div'}).addClass('col-md-2').appendTo($('#jt_cmt'));
+					$('<button/>')
+					.attr({id:'jt_cmt_btn','type':'button'})
+					.addClass('btn btn-light btn-lg').html('등록')
+					.appendTo($('#jt_cmt_btn_div'));
+					$('<br/>').appendTo($('#jt_content'));
+					$('<div/>').addClass('jt_cmt_count container').appendTo($('#jt_content'));
+					$('<div/>').attr({id:'jt_cmt_div'}).appendTo('.jt_cmt_count');
+					$('<span/>').attr({id:'jt_cmt_counts'}).html('총 00 개').appendTo($('#jt_cmt_div'));
+					let array=["최신순","추천순","답글순"];
+			        $.each(array,(x,j)=>{
+			            
+			            $('<span/>').addClass('jt_cmt_array').html(j).appendTo($('#jt_cmt_div'))
+			            .click(e=>{
+			                alert(j+" 버튼");
+			            });
+			        });
+					$('<hr/>').appendTo($('#jt_content'));	
+				});
 				
-				
-				//댓글읽기
-				$('<div/>').attr({id:'jt_user_cmt'}).addClass('media').appendTo($('#jt_content'));
-				$('<img/>')
-				.attr({src : $.img()+'/유아인.jpg', align : 'left'})
-				.addClass('img-circle')
-				.appendTo($('#jt_user_cmt'));
-				$('<div/>').attr({id:'jt_user_read'}).addClass('media-body').appendTo($('#jt_user_cmt'));
-				$('<span/>').addClass('jt_user_content').html('노래좋아요~~').appendTo($('#jt_user_read'));
-				$('<span/>').html('좋아요')
-				.attr({'style':'font-size:15px'})
-				.addClass('glyphicon glyphicon-thumbs-up jt_user_up')
-				.appendTo($('#jt_user_read'));
-				$('<span/>').html('싫어요')
-				.attr({'style':'font-size:15px'})
-				.addClass('glyphicon glyphicon-thumbs-down jt_user_down')
-				.appendTo($('#jt_user_read'));
-				$('<hr/>').appendTo($('#jt_content'));
-				
-				$('<div/>').attr({id:'jt_user_cmt2'}).addClass('media').appendTo($('#jt_content'));
-				$('<img/>')
-				.attr({src : $.img()+'/유아인.jpg', align : 'left'})
-				.addClass('img-circle')
-				.appendTo($('#jt_user_cmt2'));
-				$('<div/>').attr({id:'jt_user_read2'}).addClass('media-body').appendTo($('#jt_user_cmt2'));
-				$('<span/>').addClass('jt_user_content').html('노래좋아요~~').appendTo($('#jt_user_read2'));
-				$('<span/>').html('좋아요')
-				.attr({'style':'font-size:15px'})
-				.addClass('glyphicon glyphicon-thumbs-up jt_user_up')
-				.appendTo($('#jt_user_read2'));
-				$('<span/>').html('싫어요')
-				.attr({'style':'font-size:15px'})
-				.addClass('glyphicon glyphicon-thumbs-down jt_user_down')
-				.appendTo($('#jt_user_read2'));
-				$('<hr/>').appendTo($('#jt_content'));
-				$('<div/>').attr({id:'jt_cmt_pagination'}).addClass('text-center')
-				.append(
-						$('<ul/>').addClass('pagnation')
-				).appendTo($('#jt_content'));
-				
-				/*let z = d.page;
-				let ul = $('.pagination');
-				let prev = (z.prevPage)?'':'disabled';
-				let next = (z.nextPage)?'':'disabled';
-				let begin = z.beginPage -1;
-				let end = z.endPage +1;
-				for(let i=begin; i<=end;i++){
-					let c = (i == x) ? 'active' : 
-								(i == begin) ? prev : 
-									(i == end) ? next : '';
-					$('<li/>')
-					.addClass('page-item '+c)
-					.append(
-							$('<a/>')
-							.attr('style','cursor:pointer')
-							.addClass('page-link')
-							.html(
-									(i == begin)
-										? 'Prev' : (i == end)
-														? 'Next' : i
-								)
-					).appendTo(ul)
-					.click(function(e){
-						e.preventDefault();
-						if(i != begin && i != end){
-							$('li').removeClass('active');
-							$(this).addClass('active');
-						}
-						app.service.boards(i);
-					});
-					$('.disabled').off(); //클릭을 못먹게 할려고 .off()를 써준다. 반대는 .on()
-					
-				}*/
-				
+		},
 		
+		album_read: x=>{
+			//댓글읽기
+			console.log('댓글에 넘어온 읽기::'+x);
+			$('<div/>').attr({id:'jt_user_cmt'}).addClass('media').appendTo($('#jt_content'));
+			$('<img/>')
+			.attr({src : $.img()+'/유아인.jpg', align : 'left'})
+			.addClass('img-circle')
+			.appendTo($('#jt_user_cmt'));
+			$('<div/>').attr({id:'jt_user_read'}).addClass('media-body').appendTo($('#jt_user_cmt'));
+			$('<span/>').addClass('jt_user_content').html('노래좋아요~~').appendTo($('#jt_user_read'));
+			$('<span/>').html('좋아요')
+			.attr({'style':'font-size:15px'})
+			.addClass('glyphicon glyphicon-thumbs-up jt_user_up')
+			.appendTo($('#jt_user_read'));
+			$('<span/>').html('싫어요')
+			.attr({'style':'font-size:15px'})
+			.addClass('glyphicon glyphicon-thumbs-down jt_user_down')
+			.appendTo($('#jt_user_read'));
+			$('<hr/>').appendTo($('#jt_content'));
 			
-			//댓글
+			$('<div/>').attr({id:'jt_user_cmt2'}).addClass('media').appendTo($('#jt_content'));
+			$('<img/>')
+			.attr({src : $.img()+'/유아인.jpg', align : 'left'})
+			.addClass('img-circle')
+			.appendTo($('#jt_user_cmt2'));
+			$('<div/>').attr({id:'jt_user_read2'}).addClass('media-body').appendTo($('#jt_user_cmt2'));
+			$('<span/>').addClass('jt_user_content').html('노래좋아요~~').appendTo($('#jt_user_read2'));
+			$('<span/>').html('좋아요')
+			.attr({'style':'font-size:15px'})
+			.addClass('glyphicon glyphicon-thumbs-up jt_user_up')
+			.appendTo($('#jt_user_read2'));
+			$('<span/>').html('싫어요')
+			.attr({'style':'font-size:15px'})
+			.addClass('glyphicon glyphicon-thumbs-down jt_user_down')
+			.appendTo($('#jt_user_read2'));
+			$('<hr/>').appendTo($('#jt_content'));
+			$('<div/>').attr({id:'jt_cmt_pagination'}).addClass('text-center')
+			.append(
+					$('<ul/>').addClass('pagnation')
+			).appendTo($('#jt_content'));
 			
+			/*let z = d.page;
+			let ul = $('.pagination');
+			let prev = (z.prevPage)?'':'disabled';
+			let next = (z.nextPage)?'':'disabled';
+			let begin = z.beginPage -1;
+			let end = z.endPage +1;
+			for(let i=begin; i<=end;i++){
+				let c = (i == x) ? 'active' : 
+							(i == begin) ? prev : 
+								(i == end) ? next : '';
+				$('<li/>')
+				.addClass('page-item '+c)
+				.append(
+						$('<a/>')
+						.attr('style','cursor:pointer')
+						.addClass('page-link')
+						.html(
+								(i == begin)
+									? 'Prev' : (i == end)
+													? 'Next' : i
+							)
+				).appendTo(ul)
+				.click(function(e){
+					e.preventDefault();
+					if(i != begin && i != end){
+						$('li').removeClass('active');
+						$(this).addClass('active');
+					}
+					app.service.boards(i);
+				});
+				$('.disabled').off(); //클릭을 못먹게 할려고 .off()를 써준다. 반대는 .on()
+				
+			}*/		
 		},
 
 		
