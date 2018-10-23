@@ -32,7 +32,7 @@ public class DummyCtrl {
 			rm.put("seq", sq[j]);
 			for(int i=0;i<20;i++) {
 				
-				dp.hashUp(rm);
+				dp.hashRecord(rm);
 			}
 		}
 		return rm;
@@ -386,44 +386,44 @@ public class DummyCtrl {
 				  ,98
 				  ,99
 				 ,100
-				 ,101
-				 ,102
-				 ,103
 				 ,104
 				 ,105
 				 ,106
 				 ,107
+				 ,101
+				 ,102
+				 ,103
 				 ,108
 				 ,109
 				 ,110
 				 ,111
 				 ,112
 				 ,113
-				 ,114
-				 ,116
 				 ,117
 				 ,118
+				 ,114
+				 ,116
 				 ,119
-				 ,120
 				 ,121
+				 ,120
 				 ,122
-				 ,124
 				 ,125
+				 ,124
 				 ,89
 				 ,115
 				 ,74
-				 ,123
 				 ,75
+				 ,123
 				 ,83
 				 ,69};
 		rm.put("memberId", "shin");
 		int count = 1;
 		for(int s=0;s<67;s++) {
 			rm.put("seq", lst[s]);
-			for(int i=0;i<count;i++) {
+			for(int i=0;i<s+1;i++) {
 				dp.post(rm);
 			}
-			count+=10;
+			//count+=10;
 		}
 		
 		return rm;

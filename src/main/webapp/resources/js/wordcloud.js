@@ -19,38 +19,35 @@ function WordCloud(options) {
   // seeded random number generator
   var arng = new alea('hello.');
 
-  var data;
-  d3.json(options.data, function(error, d) {
-    if (error) throw error;
-    data = d;
-    var word_entries = d3.entries(data['count']);
-    xScale.domain(d3.extent(word_entries, function(d) {return d.value;}));
+  var data = options.data;
+  var word_entries = d3.entries(data['count']);
+  
+  xScale.domain(d3.extent(word_entries, function(d) {return d.value;}));
 
-    makeCloud();
+  makeCloud();
 
-    function makeCloud() {
-      d3.layout.cloud().size([w, h])
-               .timeInterval(20)
-               .words(word_entries)
-               .fontSize(function(d) { return xScale(+d.value); })
-               .text(function(d) { return d.key; })
-               .font("Impact")
-               .random(arng)
-               .on("end", function(output) {
-                 // sometimes the word cloud can't fit all the words- then redraw
-                 // https://github.com/jasondavies/d3-cloud/issues/36
-                 if (word_entries.length !== output.length) {
-                   console.log("not all words included- recreating");
-                   makeCloud();
-                   return undefined;
-                 } else { draw(output); }
-               })
-               .start();
-    }
+  function makeCloud() {
+    d3.layout.cloud().size([w, h])
+             .timeInterval(20)
+             .words(word_entries)
+             .fontSize(function(d) { return xScale(+d.value); })
+             .text(function(d) { return d.key; })
+             .font("Impact")
+             .random(arng)
+             .on("end", function(output) {
+               // sometimes the word cloud can't fit all the words- then redraw
+               // https://github.com/jasondavies/d3-cloud/issues/36
+               if (word_entries.length !== output.length) {
+                 console.log("not all words included- recreating");
+                 makeCloud();
+                 return undefined;
+               } else { draw(output); }
+             })
+             .start();
+  }
 
-    d3.layout.cloud().stop();
-
-  });
+  d3.layout.cloud().stop();
+  
 
   function draw(words) {
     focus.selectAll("text")
