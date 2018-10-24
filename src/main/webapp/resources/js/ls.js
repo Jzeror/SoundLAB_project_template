@@ -12,8 +12,9 @@ ls ={
 										$('<h1/>').html('TOP 100')
 								).appendTo($chartSec);
 								// 차트
+								$('<div/>').attr({id :'chart_title'}).addClass("container").appendTo($chartSec);
 								$('<div/>').addClass("ls_lineCh Panel panel-dafalt container").append(
-										 $('<div/>').attr({id :'chart_title'}).html('안녕!'),
+										 
 										 $('<div/>').attr({id :'line_top_x'})
 								).appendTo($chartSec);
 								//nav-sort
@@ -118,7 +119,7 @@ ls ={
 							         
 							          
 							          let options = {
-							        	        title: '1위 : '+d[0].PER+'2위 : '+d[1].PER+'3위 : '+d[2].PER,
+							        	      
 							        	        subtitle: '현재시간 : '+new Date().toLocaleString(),
 							        	        fontSize : 20,
 							        	        width: 900,
@@ -136,13 +137,31 @@ ls ={
 							       
 							          chart.draw(data, google.charts.Line.convertOptions(options))
 							          .appendTo($('#line_top_x'));
-							  }		
+							  }	
+							    $('<div/>').append(
+										$('<div/>').addClass('ls_fa-line-chart fa fa-line-chart').html('실시간 점유율'),
+										$('<div/>').addClass('rank_time').append(
+												$('<ul/>').append(
+														$('<li/>').addClass('lank01').html('1위').append(
+																$('<em/>').html(d[0].PER),
+																$('<span/>').addClass('none')
+														),
+														$('<li/>').addClass('lank02').html('2위').append(
+																$('<em/>').html(d[1].PER),
+																$('<span/>').addClass('none')
+														),
+														$('<li/>').addClass('lank03').html('3위').append(
+																$('<em/>').html(d[2].PER),
+																$('<span/>').addClass('none')
+														)
+													
+														
+												)
+										)
+								).appendTo('#chart_title');
+							    
+							    
 					})
-					//차트 내부 점유율 타이틀
-					$('<div/>').append(
-							
-					).appendTo('#chart_title');
-					
 					
 					
 					}
@@ -201,8 +220,7 @@ ls ={
 							//컨텐츠
 							$('<div/>').attr({id : 'album-Table' }).addClass("ls_album_panel container").append(
 									
-									$('<div/>').attr({id : 'ls_newAlLe'})
-											
+									$('<div/>').attr({id : 'ls_newAlLe'})//
 									,
 									$('<div/>').attr({id : 'ls_newAlRi'}).html('최신앨범 인기곡').append(
 											$('<table/>').append(
@@ -440,7 +458,6 @@ ls ={
 								
 						)
 						).appendTo($('#ls_newA'));
-				
 				
 				
 				
