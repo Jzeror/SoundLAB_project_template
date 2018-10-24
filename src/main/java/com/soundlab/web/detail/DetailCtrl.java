@@ -42,7 +42,7 @@ public class DetailCtrl {
 		return map;
 	}
 	@PostMapping("/write")
-	public void albumComment(@RequestBody Map<String,Object> am){
+	public Map<String, Object> albumComment(@RequestBody Map<String,Object> am){
 		logger.info("DetailPgCtrl ::: write");
 		System.out.println(am);
 		
@@ -54,7 +54,20 @@ public class DetailCtrl {
 		
 		dm.create(map);
 		
+		return map;
 		
+	}
+	@GetMapping("/list/{seqGroup}")
+	public Map<String,Object> albumlist(@PathVariable String seqGroup) {
+		logger.info("DetailPgCtrl ::: list");
+		map.clear();
+		
+		System.out.println("seq::"+seqGroup);
+	
+		map.put("list", dm.cmtRead(seqGroup));
+		System.out.println("list"+map.get("list"));
+		
+		return map;
 		
 	}
 

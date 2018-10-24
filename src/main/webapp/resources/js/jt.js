@@ -414,22 +414,20 @@ jt ={
 				}
 			});
 			alert('넘어온 앨범시퀀스~::'+x.album.ALBUMSEQ);
-			jt.album_write(x.album.ALBUMSEQ);
-			jt.album_read(x.album.ALBUMSEQ);
-			
+			jt.album_write(x);
 		
 		},
 		
 		album_write : x=>{
-				console.log('댓글에 넘어온 값::'+x);
-				
+				console.log('댓글에 넘어온 값::'+x.album.ARTISTNAME);
+				/*$.getJSON($.ctx()+'/detailPg/list/'+x.album.ALBUMSEQ,d=>{*/
 					$('<div/>').attr({id: 'jt_cmt'}).addClass('container').appendTo($('#jt_content'));
 					$('<h3/>').html('댓글').appendTo($('#jt_cmt'));
 					$('<hr/>').appendTo($('#jt_cmt'));
 					$('<div/>').attr({id: 'jt_cmt_profile'}).addClass('col-md-2').appendTo($('#jt_cmt'));
 					$('<img/>')
-					.attr({src : $.img()+'/캡처.JPG', align : 'left'})
-					.addClass('img-rounded')
+					.attr({src :  $.ctx()+'/resources/img/user_1.jpg', align : 'left'})
+					.addClass('jt_cmt_user')
 					.appendTo($('#jt_cmt_profile'));
 					$('<div/>').attr({id:'jt_cmt_body'}).addClass('col-md-8').appendTo($('#jt_cmt'));
 					$('<textarea/>').attr({id:'msg',rows:"6",cols:"105",placeholder:"내용을 입력해주세요"}).appendTo($('#jt_cmt_body'));
@@ -445,13 +443,15 @@ jt ={
 							contentType:'application/json',
 							data:JSON.stringify({
 								memberId : $.cookie('loginID'),
-								seqGroup : x,
-								msg : $('#msg').val(),
+								seqGroup : x.album.ALBUMSEQ,
+								msg : $('#msg').val()
 							}),
-							success : d=>{},
+							success : d=>{
+								
+								jt.album_read(d.seqGroup);
+							
+							},
 							error:(m1,m2,m3)=>{alert(m3);}
-							
-							
 						})
 							
 					});
@@ -470,52 +470,41 @@ jt ={
 			        });
 					$('<hr/>').appendTo($('#jt_content'));	
 				
-
+					jt.album_read(x.album.ALBUMSEQ);
+			
+		
 		},
 
-		
 		album_read: x=>{
-			//댓글읽기
-			console.log('댓글에 넘어온 읽기::'+x);
-			$('<div/>').attr({id:'jt_user_cmt'}).addClass('media').appendTo($('#jt_content'));
-			$('<img/>')
-			.attr({src : $.img()+'/유아인.jpg', align : 'left'})
-			.addClass('img-circle')
-			.appendTo($('#jt_user_cmt'));
-			$('<div/>').attr({id:'jt_user_read'}).addClass('media-body').appendTo($('#jt_user_cmt'));
-			$('<span/>').addClass('jt_user_content').html('노래좋아요~~').appendTo($('#jt_user_read'));
-			$('<span/>').html('좋아요')
-			.attr({'style':'font-size:15px'})
-			.addClass('glyphicon glyphicon-thumbs-up jt_user_up')
-			.appendTo($('#jt_user_read'));
-			$('<span/>').html('싫어요')
-			.attr({'style':'font-size:15px'})
-			.addClass('glyphicon glyphicon-thumbs-down jt_user_down')
-			.appendTo($('#jt_user_read'));
-			$('<hr/>').appendTo($('#jt_content'));
+			$.getJSON($.ctx()+'/detailPg/list/'+x,d=>{
+			$('<div/>').append(
+	                $('<div/>').addClass('row').append(
+	                    $('<div/>').addClass('col-md-12').append(
+	                            $('<div/>').addClass('blog-comment').attr({id : 'jt_blog-comment'}),
+	                        	$('<hr/>').attr({id:'jt_comment_hr'})
+	                    )    
+	                )
+	            ).appendTo($('#jt_content'))
+	            
+	            for(let i=0 ; i<d.list.length; i++){
+	                $('<div/>').addClass('clearfix').append(
+	                         $('<img/>').attr({src : $.ctx()+'/resources/img/user_1.jpg'})
+	                         .addClass('avatar'),
+	                         $('<div/>').attr({id:'jt_post_commets'}).addClass('post-comments').append(
+	                                 $('<p>').addClass('meta').html('날짜:'+d.list[i].REGI_DATE).attr({'style':'font-size:15px'}),
+	                                 $('<small>').html('ID:' +d.list[i].MEMBER_ID).attr({'style':'font-size:15px'}),
+	                                 $('<br/>'),
+	                                 $('<p>').addClass('meta').html(d.list[i].MSG).attr({'style':'font-size:20px'})
+	                         )
+	                    ).appendTo($('#jt_blog-comment'))
+	                
+	            }
+			});
 			
-			$('<div/>').attr({id:'jt_user_cmt2'}).addClass('media').appendTo($('#jt_content'));
-			$('<img/>')
-			.attr({src : $.img()+'/유아인.jpg', align : 'left'})
-			.addClass('img-circle')
-			.appendTo($('#jt_user_cmt2'));
-			$('<div/>').attr({id:'jt_user_read2'}).addClass('media-body').appendTo($('#jt_user_cmt2'));
-			$('<span/>').addClass('jt_user_content').html('노래좋아요~~').appendTo($('#jt_user_read2'));
-			$('<span/>').html('좋아요')
-			.attr({'style':'font-size:15px'})
-			.addClass('glyphicon glyphicon-thumbs-up jt_user_up')
-			.appendTo($('#jt_user_read2'));
-			$('<span/>').html('싫어요')
-			.attr({'style':'font-size:15px'})
-			.addClass('glyphicon glyphicon-thumbs-down jt_user_down')
-			.appendTo($('#jt_user_read2'));
-			$('<hr/>').appendTo($('#jt_content'));
-			$('<div/>').attr({id:'jt_cmt_pagination'}).addClass('text-center')
-			.append(
-					$('<ul/>').addClass('pagnation')
-			).appendTo($('#jt_content'));
+	
 			
-			/*let z = d.page;
+			
+/*			let z = d.page;
 			let ul = $('.pagination');
 			let prev = (z.prevPage)?'':'disabled';
 			let next = (z.nextPage)?'':'disabled';
@@ -547,7 +536,7 @@ jt ={
 				});
 				$('.disabled').off(); //클릭을 못먹게 할려고 .off()를 써준다. 반대는 .on()
 				
-			}*/		
+			}	*/
 		},
 
 		

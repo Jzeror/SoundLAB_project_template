@@ -13,6 +13,7 @@ public interface DetailMapper {
 	public Map<?,?> getAlbum(String albumSeq);
 	public List<music> getAlbumMusic(String albumseq);
 	public void create(Map<?,?> map);
+	public List<?> cmtRead(String seqGroup);
 
 	
 }

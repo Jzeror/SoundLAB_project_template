@@ -36,6 +36,26 @@
 		VALUES
 		(#{memberId},#{seqGroup},#{msg})
 	</insert>
+	<select id="cmtRead" resultType="map">
+	
+	SELECT * FROM COMMENT WHERE SEQ_GROUP LIKE #{seqGroup};
+	</select>
+	
+	<!-- <select id="list" resultType="map">
+	SELECT *
+       FROM (
+           SELECT
+               ROW_NUMBER() OVER(ORDER BY msg_seq DESC) AS NUM,
+               A.*
+           FROM
+               COMMENT A
+           WHERE SEQ_GROUP like #{seqGroup}
+       )B
+       WHERE B.NUM BETWEEN #{beginRow} AND #{endRow}
+       ORDER BY B.NUM
+	
+	
+	</select> -->
 	
 	<!-- <select id="getAlbumList"  resultType="map" parameterType="string">
 		 SELECT
