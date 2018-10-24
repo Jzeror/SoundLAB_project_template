@@ -67,11 +67,10 @@ public class DummyCtrl {
 		logger.info("DummyCtrl ::: hash ");
 		rm.clear();
 		rm.put("memberId", "shin");
-		int[] sq= {5,10,15};
-		for(int j=0;j<3;j++) {
-			rm.put("seq", sq[j]);
-			for(int i=0;i<20;i++) {
-				
+		for(int j=0;j<100;j++) {
+			rm.put("seq", (int)(Math.random()*15 + 1));
+			int cnt = (int)(Math.random()*70 + 1);
+			for(int i=0;i<cnt;i++) {
 				dp.hashRecord(rm);
 			}
 		}
@@ -393,9 +392,7 @@ public class DummyCtrl {
 				  ,58
 				  ,59
 				  ,62
-				  ,63
 				  ,64
-				  ,65
 				  ,66
 				  ,67
 				  ,68
@@ -449,21 +446,22 @@ public class DummyCtrl {
 				 ,122
 				 ,125
 				 ,124
-				 ,89
+				 ,69
 				 ,115
-				 ,74
-				 ,75
 				 ,123
 				 ,83
-				 ,69};
+				 ,63 //빈지노 아쿠아맨
+				 ,75  // 방탄 아임파인
+				 ,74  // 방탄 아이돌
+				 ,89  // 박효신 기프트
+				 ,65 //아이유 삐삐
+		};
 		rm.put("memberId", "shin");
-		int count = 1;
 		for(int s=0;s<67;s++) {
 			rm.put("seq", lst[s]);
 			for(int i=0;i<s+1;i++) {
 				dp.post(rm);
 			}
-			//count+=10;
 		}
 		
 		return rm;

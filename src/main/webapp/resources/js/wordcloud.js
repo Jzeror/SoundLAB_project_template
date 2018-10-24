@@ -1,15 +1,15 @@
 function WordCloud(options) {
   var margin = {top: 70, right: 100, bottom: 0, left: 100},
-           w = 1200 - margin.left - margin.right,
-           h = 400 - margin.top - margin.bottom;
+           w = 1000 - margin.left - margin.right,
+           h = 200 - margin.top - margin.bottom;
 
   // create the svg
   var svg = d3.select(options.container).append("svg")
-              .attr('height', h + margin.top + margin.bottom)
-              .attr('width', w + margin.left + margin.right)
+  			.attr('height', h + margin.top + margin.bottom)
+            .attr('width', w + margin.left + margin.right)
 
   // set the ranges for the scales
-  var xScale = d3.scaleLinear().range([10, 100]);
+  var xScale = d3.scaleLinear().range([10, 40]);
 
   var focus = svg.append('g')
                  .attr("transform", "translate(" + [w/2, h/2+margin.top] + ")")
@@ -23,7 +23,6 @@ function WordCloud(options) {
   var word_entries = d3.entries(data['count']);
   
   xScale.domain(d3.extent(word_entries, function(d) {return d.value;}));
-
   makeCloud();
 
   function makeCloud() {
@@ -63,6 +62,17 @@ function WordCloud(options) {
          .text(function(d) { return d.key; })
          .on('mouseover', handleMouseOver)
          .on('mouseout', handleMouseOut);
+    
+    focus.selectAll("text")
+    .data(words).transition()
+    .duration(600)
+    .style("font-size", function (d) {
+        return d.size + "px";
+    })
+    .attr("transform", function (d) {
+        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+    })
+    .style("fill-opacity", 1);
     /*test...*/
     /*var cloud = focus.selectAll("text").data(words)
     //Entering words

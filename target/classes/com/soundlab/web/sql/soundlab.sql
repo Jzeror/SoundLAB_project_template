@@ -2172,3 +2172,34 @@ INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('criss',30,'지노형 인생
 INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('zuzu',30,'진짜 인생 떙곡임');
 
 
+<!-- 이슬 #일주일 -->
+SELECT  MUS.MUSIC_TITLE,AR.ARTIST_NAME,V1.SEQ_GROUP,COUNT(*) CNT , DATE_FORMAT(V1.VIEW_DATE,'%m-%d')AS VIEW_DATE,
+        FLOOR((COUNT(*)/(SELECT COUNT(*) FROM VIEW_RECORD V2 WHERE V2.VIEW_DATE LIKE V1.VIEW_DATE AND V2.SEQ_GROUP IN (
+                    SELECT TMP.MSEQ
+                    FROM
+                    (
+                        SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
+                        FROM VIEW_RECORD V
+                        WHERE V.VIEW_DATE LIKE '2018-10-25%' and V.SG_ELEMENT LIKE 'music'
+                        GROUP BY V.SEQ_GROUP
+                        ORDER BY CNT
+                        DESC LIMIT 3) TMP
+                    ))) * 100) PER
+FROM VIEW_RECORD V1
+JOIN MUSIC MUS ON V1.SEQ_GROUP LIKE MUS.MUSIC_SEQ
+   JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
+WHERE V1.SEQ_GROUP IN (
+                    SELECT TMP.MSEQ
+                    FROM
+                        (SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
+                        FROM VIEW_RECORD V
+                        WHERE V.VIEW_DATE LIKE '2018-10-25%' and V.SG_ELEMENT LIKE 'music'
+                        GROUP BY V.SEQ_GROUP
+                        ORDER BY CNT
+                        DESC LIMIT 3) TMP
+                    )
+         
+   AND V1.VIEW_DATE BETWEEN '2018-10-19%' AND '2018-10-26%'
+GROUP BY V1.SEQ_GROUP, V1.VIEW_DATE
+ORDER BY V1.VIEW_DATE DESC, COUNT(*) DESC;
+
