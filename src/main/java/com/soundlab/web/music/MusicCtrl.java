@@ -26,9 +26,9 @@ public class MusicCtrl {
 	@Autowired MusicMapper musMapper;
 	@Autowired HashMap<String, Object> map;
 	@GetMapping("/top50/{x}")
-	private @ResponseBody List<Map<String, Object>> top50(@PathVariable String x) {
+	private @ResponseBody List<Map<?,?>> top50(@PathVariable String x) {
 		Util.log.accept(":: MusicCtrl :: list() :: page :: " );
-		List<Map<String, Object>> topList = null;
+		List<Map<?,?>> topList = null;
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
 
@@ -53,8 +53,24 @@ public class MusicCtrl {
 			 topList = musMapper.weekChart(map);
 		}
 		return topList;
+	}
 	
-
+	@GetMapping("/top50lineChart")
+	public List<Map<?,?>> top50lineChart() {
+		  List<Map<?,?>> chartData = null;
+		  String todayDate= new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //오늘
+		  map.put("todayDate",todayDate);
+		  chartData = musMapper.top50lineChart(map);
+		  Util.log.accept("차트용 :: 날짜 ::"+map.get("todayDate"));
+		  Util.log.accept("차트용 :: 데이타 ::"+chartData);
+		  
+		
+		return chartData;
 		
 	}
+	
+	
+	
+	
+	
 }

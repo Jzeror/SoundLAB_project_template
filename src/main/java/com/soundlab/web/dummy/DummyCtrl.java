@@ -1,6 +1,7 @@
 package com.soundlab.web.dummy;
 
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -22,17 +23,55 @@ public class DummyCtrl {
 	@Autowired DummyMapper dp;
 	
 	
+	@GetMapping("/loginRecord")
+	public Map<String,Object> loginRecord(){
+		logger.info("DummyCtrl ::: loginRecord ");
+		rm.clear();
+		String[] man = { "admin","metus","mollis","neque","nulla","ornare","pizza","risus","sapien","semper","shin",
+				 "tempus","tortor","velit","mattis","zuzu","ligula","libero","criss","congue"};
+		String[] woman = {  "sound2","tellus","tempor","turpis","varius","auctor","vitae","sound","dolor","mauris",
+				"magna","lorem","lacus","justo","porta","ipsum","felis","enimIn","massa"};
+		String[] date = {"2018-10-15 11:12:30","2018-10-16 11:12:30","2018-10-17 11:12:30",
+				"2018-10-18 11:12:30","2018-10-19 11:12:30","2018-10-20 11:12:30",
+				"2018-10-21 11:12:30","2018-10-22 11:12:30","2018-10-23 11:12:30",
+				"2018-10-24 11:12:30",
+				"2018-10-25 11:12:30","2018-10-26 11:12:30","2018-10-27 11:12:30",
+				"2018-10-28 11:12:30"};
+		Map<String, String> mm = new HashMap<String, String>();
+		Map<String, String> wm = new HashMap<String, String>();
+		for(int i=0;i<14;i++) {
+			int ml = (int)((Math.random()*6)+1);
+			int wl = (int)((Math.random()*6)+1);
+			int mi = (int)((Math.random()*20));
+			int wi = (int)((Math.random()*19));
+			mm.put("memberId", man[mi]);
+			mm.put("sex", "남");
+			mm.put("date", date[i]);
+			wm.put("memberId", woman[wi]);
+			wm.put("sex", "여");
+			wm.put("date", date[i]);
+			for(int j=0;j<ml;j++) {
+				dp.loginRecord(mm);
+			}
+			for(int j=0;j<wl;j++) {
+				dp.loginRecord(wm);
+			}	
+		}
+		
+		return rm;
+	}
+	
+	
 	@GetMapping("/hash")
 	public Map<String,Object> hash(){
 		logger.info("DummyCtrl ::: hash ");
 		rm.clear();
 		rm.put("memberId", "shin");
-		int[] sq= {5,10,15};
-		for(int j=0;j<3;j++) {
-			rm.put("seq", sq[j]);
-			for(int i=0;i<20;i++) {
-				
-				dp.hashUp(rm);
+		for(int j=0;j<100;j++) {
+			rm.put("seq", (int)(Math.random()*15 + 1));
+			int cnt = (int)(Math.random()*70 + 1);
+			for(int i=0;i<cnt;i++) {
+				dp.hashRecord(rm);
 			}
 		}
 		return rm;
@@ -340,25 +379,23 @@ public class DummyCtrl {
 	public Map<String,Object> chart() {
 		logger.info("DummyCtrl ::: chart ");
 		rm.clear();
-		rm.put("memberId", "shin");
+		/*rm.put("memberId", "shin");
 		rm.put("seq", 59);
 		rm.put("element", "music");
 		for(int i=0;i<70;i++) {
 			dp.post(rm);
-		}
+		}*/
 		/*75
 		 */ 
-		/*int[] lst = {  57  
+		int[] lst = {  
+				   57  
 				  ,58
 				  ,59
 				  ,62
-				  ,63
 				  ,64
-				  ,65
 				  ,66
 				  ,67
 				  ,68
-				  ,69
 				  ,70
 				  ,71
 				  ,72
@@ -370,7 +407,6 @@ public class DummyCtrl {
 				  ,80
 				  ,81
 				  ,82
-				  ,83
 				  ,84
 				  ,85
 				  ,86
@@ -387,41 +423,46 @@ public class DummyCtrl {
 				  ,98
 				  ,99
 				 ,100
-				 ,101
-				 ,102
-				 ,103
 				 ,104
 				 ,105
 				 ,106
 				 ,107
+				 ,101
+				 ,102
+				 ,103
 				 ,108
 				 ,109
 				 ,110
 				 ,111
 				 ,112
 				 ,113
-				 ,114
-				 ,115
-				 ,116
 				 ,117
 				 ,118
+				 ,114
+				 ,116
 				 ,119
-				 ,120
 				 ,121
+				 ,120
 				 ,122
-				 ,123
-				 ,124
 				 ,125
-				 ,89
-				 ,74
-				 ,75};
+				 ,124
+				 ,69
+				 ,115
+				 ,123
+				 ,83
+				 ,63 //빈지노 아쿠아맨
+				 ,75  // 방탄 아임파인
+				 ,74  // 방탄 아이돌
+				 ,89  // 박효신 기프트
+				 ,65 //아이유 삐삐
+		};
 		rm.put("memberId", "shin");
 		for(int s=0;s<67;s++) {
 			rm.put("seq", lst[s]);
 			for(int i=0;i<s+1;i++) {
 				dp.post(rm);
 			}
-		}*/
+		}
 		
 		return rm;
 	}

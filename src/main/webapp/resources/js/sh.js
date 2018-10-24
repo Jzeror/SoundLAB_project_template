@@ -25,6 +25,31 @@ sh = (()=>{
      var home =()=>{
          console.log('sh.home ::');
 	     w.html(nav()+banner()+cloud()+topFive()+footer());
+	     
+	     $.getJSON($ctx+'/main/hash',d=>{
+	    	 let hashcnt = [389,344,284,244,218,178,172,140,139,139,127,125,118,111,110];
+	    	 //let hashcnt = [289,244,184,144,118,78,72,40,39,39,27,25,18,11,10];
+	    	 //let hashcnt = d.cnt;
+	    	 let hashdata = {"count":{"신나는":hashcnt[0],"차분한":hashcnt[1],"어쿠스틱":hashcnt[2],"트로피칼":hashcnt[3],"부드러운":hashcnt[4],"드라이브":hashcnt[5],"휴식":hashcnt[6],"편집숍&카페":hashcnt[7],"헬스":hashcnt[8],"클럽":hashcnt[9],"스트레스":hashcnt[10],"이별":hashcnt[11],"사랑&고백":hashcnt[12],"새벽감성":hashcnt[13],"위로":hashcnt[14]},
+		    		 "sample_title":{"신나는":[hashcnt[0]],"차분한":[hashcnt[1]],"어쿠스틱":[hashcnt[2]],"트로피칼":[hashcnt[3]],"부드러운":[hashcnt[4]],"드라이브":[hashcnt[5]],"휴식":[hashcnt[6]],"편집숍&카페":[hashcnt[7]],"헬스":[hashcnt[8]],"클럽":[hashcnt[9]],"스트레스":[hashcnt[10]],"이별":[hashcnt[11]],"사랑&고백":[hashcnt[12]],"새벽감성":[hashcnt[13]],"위로":[hashcnt[14]]}
+		     };
+	    	 WordCloud({
+		    		container : '#cloud-container',
+		    		data : hashdata
+		     });
+	    	  setInterval(function(){
+	    		  $('#cloud-container').empty();
+	    		  WordCloud({
+			    		container : '#cloud-container',
+			    		data : hashdata
+			     });
+	    	 },10000)
+		     
+	    	 
+	     });
+	     
+	     
+	     
          /*w.html(nav()+footer());*/
          /*-------------------banner--------------------*/
  		/*$('<div/>').addClass('section_banner').attr({id:"section_banner"}).appendTo($('#contents'));
@@ -104,52 +129,62 @@ sh = (()=>{
         
          $('#searchBtn').click(e=>{
         	 $.getJSON(sh.ctx()+'/service/search/'+$('#searchInput').val(),d=>{
-					 jt.search(d);
-    			 
+				 jt.search(d);
+				 setTimeout(()=>{
+					 fn.scroll({ id : $("#jt_search"), len : 400});
+		         },200);
 			 });
-    		
-    		 fn.scroll({ id : $("#jt_search"), len : 400});
+    		 
 
     	 });
     	 $('#searchInput').keyup(e=>{
     		 if(e.keyCode == 13) { 
     			 alert('서치검색:::'+$('#searchInput').val());
     			 $.getJSON(sh.ctx()+'/service/search/'+$('#searchInput').val(),d=>{
+    				 alert('아티스트이름~~::'+d.artist.ARTIST_NAME);
+    				 alert('뮤직타이틀::'+d.musics[0].musicTitle);
 					 jt.search(d);
+					 setTimeout(()=>{
+						 fn.scroll({ id : $("#jt_search"), len : 400});
+			         },200);
     			 });
-    			
-    			 fn.scroll({ id : $("#jt_search"), len : 400});
-
     		 } 
     	 });
          
     	 $('#chartBtn').click(e=>{
-	 			$('#contents').html(banner()+cloud()+topFive());
-	 			let x = 'realChart';
-		       		ls.chart(x);
-		       		sh.service.removeSec('#chartSec');
-					fn.scroll({ id : $("#chartSec"), len : 150});
-			
-			
+ 			$('#contents').html(banner()+cloud()+topFive());
+ 			let x = 'realChart';
+       		ls.chart(x)
+       		setTimeout(()=>{
+       			sh.service.removeSec('#chartSec');
+		       	fn.scroll({ id : $("#chartSec"), len : 200});
+       		},300);
          });
          $('#albumBtn').click(e=>{
         	 $('#contents').html(banner()+cloud()+topFive());
-      		 ls.album();
-      		 sh.service.removeSec('#albumSec');
-			 fn.scroll({ id : $("#albumSec"), len : 150});
-
+        	 let x = 'newAl_recent';
+      		 ls.album(x);
+      		setTimeout(()=>{
+      		  sh.service.removeSec('#albumSec');
+   			  fn.scroll({ id : $("#albumSec"), len : 150});
+       		},300);
          });
          $('#djBtn').click(e=>{
         	 $('#contents').html(banner()+cloud()+topFive());
     		 sj.dj();
-    		 sh.service.removeSec('#djSec');
-			 fn.scroll({ id : $("#djSec"), len : 200});
+    		 setTimeout(()=>{
+    			 sh.service.removeSec('#djSec');
+    			 fn.scroll({ id : $("#djSec"), len : 200});
+          	 },200);
          });
          $('#forBtn').click(e=>{
         	$('#contents').html(banner()+cloud()+topFive());
 	       		sj.forYou();
-	       		sh.service.removeSec('#foryouSec');
-				fn.scroll({ id : $("#foryouSec"), len : 200});
+	       		setTimeout(()=>{
+	       			sh.service.removeSec('#foryouSec');
+					fn.scroll({ id : $("#foryouSec"), len : 200});
+	          	},200);
+	       		
 			 /*$.ajax({
 	    		 url : sh.ctx()+'/member/auth',
 		       	  method : 'get',
@@ -301,14 +336,14 @@ var banner =()=> '<section id="banner" class="banner">'
 		+'</div>'
      +'</section>';
 		
-var cloud =()=> '<section id="cloud" class="cloud" style="text-align:center">'
+var cloud =()=> '<section id="cloud" class="cloud">'
      +'</br>'
      +'</br>'
      +'</br>'
      +'</br>'
      +'</br>'
      +'</br>'
-     +'<h1>단어구름</h1>'
+     +'<div id="cloud-container"></div>'
      +'</section>';
      
 var topFive =()=>'<section id="topFive" class="topFive" style="text-align:center">'

@@ -23,6 +23,18 @@
 	 <!-- 해시태그 수정-->
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	
+
+	<!-- 단어구름 -->
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+    <!-- Random number generator -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.3/lib/alea.min.js"></script>
+    <!-- d3-cloud library -->
+    
+    <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js" type="text/JavaScript"></script>
+    <%-- <script src="${context}/resources/js/d3.layout.cloud.js"></script>  --%>
+	<script src="${context}/resources/js/wordcloud.js"></script>
+
+	
 </head>
 <body data-spy="scroll" data-target="#header">
 <div id="wrapper"></div>

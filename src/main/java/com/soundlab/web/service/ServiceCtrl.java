@@ -1,20 +1,19 @@
 package com.soundlab.web.service;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.soundlab.web.bean.*;
-import com.soundlab.web.cmm.Util;
 import com.soundlab.web.service.ServiceCtrl;
+
+import jdk.nashorn.internal.ir.annotations.Reference;
 
 
 @RestController
@@ -26,32 +25,29 @@ public class ServiceCtrl {
 	@Autowired artist at;
 	
 	
+	@SuppressWarnings("unchecked")
 	@GetMapping("/search/{artist}")
-	public Map<String,Object> search(@PathVariable String artist){
+	public @ResponseBody Map<String,Object> search(@PathVariable String artist){
 		logger.info("ServiceCtrl ::: search");
-		Util.log.accept("아티스트이름::"+artist);     
 		map.clear();
-		at = sm.getArtist(artist);
-		List<music> music = sm.musicList(at.getArtistSeq());
-		List<album> album = sm.albumList(at.getArtistName());
-		System.out.println(music);
-		System.out.println(at);
-		System.out.println(album);
+		HashMap<String, Object> am = (HashMap<String, Object>) sm.getArtist(artist);
+		System.out.println("am에 담긴것::"+am);
+		String artistSeq = am.get("ARTIST_SEQ").toString();
 		
-		map.put("artist", at);
-		map.put("music", music);
-		map.put("album", album);
-	
+		map.put("artist", am);
+		map.put("musics", sm.getMusicList(artistSeq));
+		map.put("album", sm.getAlbumList(artistSeq));
+		map.put("mv", sm.getMvList(artistSeq));
+		System.out.println("artist::"+am);
+		System.out.println("album:::"+map.get("album"));
+		System.out.println("musics:::"+map.get("musics"));
+		System.out.println("mv:::"+map.get("mv"));
+		
+
 		return map;
 	}
-	/*@GetMapping("/artist/{music}")
-	public Map<String,Object> music(@PathVariable String music){
-		logger.info("ServiceCtrl ::: music");
+
 	
-	
-		return map;
-	}
-	*/
 	@GetMapping("/player")
 	public Map<String,Object> player(){
 		logger.info("ServiceCtrl ::: player");

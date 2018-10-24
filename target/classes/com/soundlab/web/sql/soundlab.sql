@@ -1487,6 +1487,8 @@ SET intro2 =
  모션으로 화제가 되기도 했다.'
 where artist_seq like 61;
 
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_아이유','jpg',9);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_빈지노','jpg',8);
 
 
 
@@ -1767,6 +1769,79 @@ SELECT ud.seq_group, ud.member_id, m.sex, m.birth  FROM UPDOWN ud join member m 
 
 
 
+<!-- ADMIN 쿼리 -->
+/*아티스트 1번
+ 곡번호 | 나이  | 성별  | 스트리밍수 */
+SELECT 
+	v.SEQ_GROUP 곡번호
+	,YEAR(CURDATE())-YEAR(M.BIRTH)+1 나이
+	, M.SEX 성별
+	, COUNT(v.SEQ_GROUP) 스트리밍수
+FROM VIEW_RECORD v
+	JOIN MEMBER m
+	ON v.MEMBER_ID = M.MEMBER_ID
+WHERE SG_ELEMENT LIKE 'music'
+GROUP BY v.SEQ_GROUP, M.MEMBER_ID, M.SEX
+ORDER BY SEQ_GROUP, 나이 , 성별;
+
+
+
+
+
+/*아티스트 2번
+ 곡번호 | 나이  | 성별  | 좋아요수 | 싫어요수 */
+SELECT 
+	UD.SEQ_GROUP 곡번호
+	,YEAR(CURDATE())-YEAR(M.BIRTH)+1 나이
+	, M.SEX 성별
+	, COUNT(CASE WHEN UD.TYPES LIKE 'U' THEN 1 END) 좋아요수
+	, COUNT(CASE WHEN UD.TYPES LIKE 'D' THEN 1 END) 싫어요수 
+FROM UPDOWN UD
+	JOIN MEMBER M
+	ON UD.MEMBER_ID = M.MEMBER_ID
+WHERE SG_ELEMENT LIKE 'MUSIC'
+GROUP BY UD.SEQ_GROUP, M.MEMBER_ID, M.SEX
+ORDER BY SEQ_GROUP, 나이, 성별;
+
+
+
+
+/* 선호도 - 장르
+장르번호 | 나이 | 성별 | 좋아요수  
+(장르좋아요만 반영)
+(곡좋아요에 대한 장르도 반영할 것인가??)
+*/
+SELECT 
+	UD.SEQ_GROUP 장르번호
+	,YEAR(CURDATE())-YEAR(M.BIRTH)+1 나이
+	, M.SEX 성별
+	,COUNT(CASE WHEN UD.TYPES LIKE 'U' THEN 1 END) 좋아요수
+FROM UPDOWN UD
+	JOIN MEMBER M
+	ON UD.MEMBER_ID = M.MEMBER_ID
+WHERE SG_ELEMENT LIKE 'GENRE'
+GROUP BY UD.SEQ_GROUP, M.MEMBER_ID, M.SEX
+ORDER BY UD.SEQ_GROUP, 나이, 성별;
+;
+
+
+
+/*선호도 - 아티스트
+ 아티스트번호 | 나이 | 성별 | 좋아요수 */
+SELECT 
+	UD.SEQ_GROUP 아티스트번호
+	,YEAR(CURDATE())-YEAR(M.BIRTH)+1 나이
+	, M.SEX 성별
+	,COUNT(CASE WHEN UD.TYPES LIKE 'U' THEN 1 END) 좋아요수
+FROM UPDOWN UD
+	 JOIN MEMBER M
+	 ON UD.MEMBER_ID LIKE M.MEMBER_ID
+WHERE SG_ELEMENT LIKE 'ARTIST'
+GROUP BY UD.SEQ_GROUP, M.MEMBER_ID, M.SEX
+ORDER BY UD.SEQ_GROUP, 나이, 성별;
+
+<!-- ADMIN 쿼리 -->
+
 
 /*아티스트 1번*/
 SELECT VI.뮤직번호, VI.성별, COUNT(VI.성별) 성별
@@ -1861,4 +1936,274 @@ INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_3', 'jpg', 173 );
 INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_3', 'jpg', 174 );
 INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_1', 'jpg', 175 );
 INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_1', 'jpg', 176 );			
-			
+
+
+<!-- DJ게시판 CONTENTS 변경 -->
+UPDATE article SET CONTENTS = '97,85,62,96,115,138,76,110,57' WHERE ARTICLE_SEQ LIKE 160 ;
+UPDATE article SET CONTENTS = '73,92,67,81,101,108' WHERE ARTICLE_SEQ LIKE 161 ;
+UPDATE article SET CONTENTS = '93,74,110,109,115,79,108,89' WHERE ARTICLE_SEQ LIKE 162 ;
+UPDATE article SET CONTENTS = '120,149,77,139,153,154,80,137,81' WHERE ARTICLE_SEQ LIKE 163 ;
+UPDATE article SET CONTENTS = '133,151,110,109,102,62,89' WHERE ARTICLE_SEQ LIKE 164 ;
+UPDATE article SET CONTENTS = '150,78,88,71,152,59,117,81,153,114' WHERE ARTICLE_SEQ LIKE 165 ;
+UPDATE article SET CONTENTS = '82,78,125,58,133,92,103,106,142,79' WHERE ARTICLE_SEQ LIKE 166 ;
+UPDATE article SET CONTENTS = '110,106,70,116,67,84,135,64' WHERE ARTICLE_SEQ LIKE 167 ;
+UPDATE article SET CONTENTS = '125,57,151,111,150,88,122,65,80,96' WHERE ARTICLE_SEQ LIKE 168 ;
+UPDATE article SET CONTENTS = '141,133,101,151,83,158,74,137' WHERE ARTICLE_SEQ LIKE 169 ;
+UPDATE article SET CONTENTS = '88,147,85,120,76,108' WHERE ARTICLE_SEQ LIKE 170 ;
+UPDATE article SET CONTENTS = '139,114,120,76,156,134,106,68' WHERE ARTICLE_SEQ LIKE 171 ;
+UPDATE article SET CONTENTS = '68,83,59,66,75,91' WHERE ARTICLE_SEQ LIKE 172 ;
+UPDATE article SET CONTENTS = '152,149,150,141,97,147' WHERE ARTICLE_SEQ LIKE 173 ;
+UPDATE article SET CONTENTS = '62,96,59,114,139,109,73,97,103' WHERE ARTICLE_SEQ LIKE 174 ;
+UPDATE article SET CONTENTS = '81,147,110,109,123,116,137,139,90' WHERE ARTICLE_SEQ LIKE 175 ;
+UPDATE article SET CONTENTS = '135,138,141,134,102,71,107,133' WHERE ARTICLE_SEQ LIKE 176 ;
+
+
+ALTER TABLE mv ADD COLUMN ytb VARCHAR(100);
+<iframe width="1090" height="613" src="https://www.youtube.com/embed/TNWMZIf7eSg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+<!-- 187번부터 -->
+insert into mv ( MV_SEQ,
+ MV_TITLE,
+ MUSIC_SEQ,
+ RELEASE_DATE,
+ ytb)
+ values(
+ 	187,
+ 	'사이렌',
+ 	57,
+ 	'2018.09.04',
+ 	'https://www.youtube.com/embed/TNWMZIf7eSg'
+ );
+
+insert into mv ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+values(
+   188,
+   '가시나',
+   73,
+   '2017.08.22',
+   'https://www.youtube.com/embed/ur0hCdne2-s'
+);
+insert into mv ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+values(
+   189,
+   'Aqua Man',
+   63,
+   '2017.07.11',
+   'https://www.youtube.com/embed/8nq32TQBwXI'
+);
+insert into mv ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+values(
+   190,
+   '삐삐',
+   65,
+   '2018.10.10',
+   'https://www.youtube.com/embed/nM0xDI5R50E'
+);
+ 
+ 
+<!-- chart 일주일치 -->
+select  v1.seq_group, count(*) cnt , v1.view_date, (select count(*) from view_record v2 where v2.view_date like v1.view_date and v2.seq_group in (69,83,75) ) tcnt,((count(*)/(select count(*) from view_record v2 where v2.view_date like v1.view_date and v2.seq_group in (69,83,75))) * 100) per 
+from view_record v1
+where v1.seq_group IN (69,83,75)
+group by v1.seq_group, v1.view_date
+order by v1.view_date, count(*) desc;
+
+<!-- IN 쿼리문 -->
+select v.seq_group
+from view_record v
+where v.view_date like '2018-10-22%' 
+group by v.seq_group 
+order by  
+desc limit 3;
+
+
+
+<!-- chart 일주일치 -->
+select  v1.seq_group, count(*) cnt , v1.view_date,
+		(select count(*) from view_record v2 where v2.view_date like v1.view_date and v2.seq_group in (69,83,75) ) tcnt,
+		((count(*)/(select count(*) from view_record v2 where v2.view_date like v1.view_date and v2.seq_group in (
+					select tmp.mseq 
+					from
+					(
+						select v.seq_group mseq, count(*) cnt
+						from view_record v
+						where v.view_date like '2018-10-22%' 
+						group by v.seq_group 
+						order by cnt 
+						desc limit 3) tmp
+				    ))) * 100) per 
+from view_record v1
+where v1.seq_group IN (
+					select tmp.mseq 
+					from
+						(select v.seq_group mseq, count(*) cnt
+						from view_record v
+						where v.view_date like '2018-10-22%' 
+						group by v.seq_group 
+						order by cnt 
+						desc limit 3) tmp
+				    )
+    and v1.view_date NOT LIKE '2019%'
+group by v1.seq_group, v1.view_date
+order by v1.view_date, count(*) desc;
+
+
+
+update article
+set hash = '2,5,12'
+where ARTICLE_SEQ like 160;
+
+update article
+set hash = '4,12,13'
+where ARTICLE_SEQ like 171;
+
+
+<!-- 3번 댄스에대한 up -->
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',108,'music','u'),
+('sound',122,'music','u'),
+('sound',119,'music','u'),
+('sound',116,'music','u'),
+('sound',59,'music','u'),
+('sound',73,'music','u'),
+('sound',57,'music','u'),
+('sound',77,'music','u');
+
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',3,'genre','u'),
+('sound',3,'genre','u'),
+('sound',3,'genre','u'),
+('sound',3,'genre','u'),
+('sound',3,'genre','u'),
+('sound',3,'genre','u'),
+('sound',3,'genre','u'),
+('sound',3,'genre','u');
+
+<!-- 1번 발라드에대한 up -->
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',66,'music','u'),
+('sound',89,'music','u'),
+('sound',84,'music','u'),
+('sound',95,'music','u'),
+('sound',69,'music','u');
+
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',1,'genre','u'),
+('sound',1,'genre','u'),
+('sound',1,'genre','u'),
+('sound',1,'genre','u'),
+('sound',1,'genre','u');
+
+<!-- 2번 힙합에대한 up -->
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',79 ,'music','u'),
+('sound',64 ,'music','u'),
+('sound',123 ,'music','u'),
+('sound',63 ,'music','u');
+
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',2 ,'genre','u'),
+('sound',2 ,'genre','u'),
+('sound',2 ,'genre','u'),
+('sound',2 ,'genre','u');
+
+
+
+<!-- 6번 알앤비소울에대한 up -->
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',124  ,'music','u'),
+('sound',65  ,'music','u'),
+('sound',125  ,'music','u');
+
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',6  ,'genre','u'),
+('sound',6  ,'genre','u'),
+('sound',6  ,'genre','u');
+
+
+<!-- 11번 방탄에대한 up -->
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',11  ,'artist','u');
+<!-- 19번 트와이스에대한 up -->
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',19  ,'artist','u');
+<!-- 20번 레벨에대한 up -->
+insert into updown(member_id,seq_group,sg_element,types) 
+values
+('sound',20 ,'artist','u');
+
+
+<!-- 댓글 테이블 생성 -->
+
+create table COMMENT(
+    COMMENT_SEQ INT AUTO_INCREMENT PRIMARY KEY,
+    MEMBER_ID VARCHAR(20),
+    SEQ_GROUP INT,
+    MSG VARCHAR(300),
+    REGI_DATE TIMESTAMP DEFAULT now()
+);
+
+ 
+ 
+INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('shin',30,'지노형 얼른 전역하세요ㅠㅠ');
+INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('criss',30,'지노형 인생 살고싶다..');
+INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('zuzu',30,'진짜 인생 떙곡임');
+
+
+<!-- 이슬 #일주일 -->
+SELECT  MUS.MUSIC_TITLE,AR.ARTIST_NAME,V1.SEQ_GROUP,COUNT(*) CNT , DATE_FORMAT(V1.VIEW_DATE,'%m-%d')AS VIEW_DATE,
+        FLOOR((COUNT(*)/(SELECT COUNT(*) FROM VIEW_RECORD V2 WHERE V2.VIEW_DATE LIKE V1.VIEW_DATE AND V2.SEQ_GROUP IN (
+                    SELECT TMP.MSEQ
+                    FROM
+                    (
+                        SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
+                        FROM VIEW_RECORD V
+                        WHERE V.VIEW_DATE LIKE '2018-10-25%' and V.SG_ELEMENT LIKE 'music'
+                        GROUP BY V.SEQ_GROUP
+                        ORDER BY CNT
+                        DESC LIMIT 3) TMP
+                    ))) * 100) PER
+FROM VIEW_RECORD V1
+JOIN MUSIC MUS ON V1.SEQ_GROUP LIKE MUS.MUSIC_SEQ
+   JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
+WHERE V1.SEQ_GROUP IN (
+                    SELECT TMP.MSEQ
+                    FROM
+                        (SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
+                        FROM VIEW_RECORD V
+                        WHERE V.VIEW_DATE LIKE '2018-10-25%' and V.SG_ELEMENT LIKE 'music'
+                        GROUP BY V.SEQ_GROUP
+                        ORDER BY CNT
+                        DESC LIMIT 3) TMP
+                    )
+         
+   AND V1.VIEW_DATE BETWEEN '2018-10-19%' AND '2018-10-26%'
+GROUP BY V1.SEQ_GROUP, V1.VIEW_DATE
+ORDER BY V1.VIEW_DATE DESC, COUNT(*) DESC;
+
+
+
+DELETE FROM COMMENT WHERE SEQ_GROUP NOT LIKE -1;
+
