@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soundlab.web.admin.AdminMapper">
+	<resultMap type="map" id="admin">
+		<result property="songSeq" column="song_seq"/>
+		<result property="musicTitle" column="music_title"/>
+		<result property="genreSeq" column="genre_seq"/>
+		<result property="genreName" column="genre_name"/>				
+		<result property="artSeq" column="art_seq"/>
+		<result property="artistName" column="artist_name"/>
+		<result property="albumSeq" column="album_seq"/>
+		<result property="albumTitle" column="album_title"/>
+		<result property="age" column="age"/>
+		<result property="ageGroup" column="age_group"/>
+		<result property="sex" column="sex"/>
+		<result property="str" column="str"/>
+		<result property="good" column="good"/>
+		<result property="bad" column="bad"/>
+		<result property="sumStr" column="sum_str"/>
+		<result property="sumGood" column="sum_good"/>
+	</resultMap>
+	<select id="artiGS" resultMap="admin">
+		SELECT * FROM NR_GS
+	</select>
+	<select id="ageGenre" resultMap="admin">
+	SELECT * FROM AGE_GENRE
+	</select>
+	<select id="ageArtistK" resultMap="admin">
+	SELECT * FROM AGE_ARTIST
+	</select>
+	<select id="ageArtistPivot" resultMap="admin">
+	SELECT 
+		AGE_GROUP AS "연령",
+		SUM(CASE WHEN ARTIST_NAME = "방탄소년단" THEN SUM_GOOD END) AS "방탄소년단",
+		SUM(CASE WHEN ARTIST_NAME = "트와이스" THEN SUM_GOOD END) AS "트와이스",
+		SUM(CASE WHEN ARTIST_NAME = "레드벨벳" THEN SUM_GOOD END) AS "레드벨벳"
+	FROM (SELECT AGE_GROUP , ARTIST_NAME, SUM_GOOD
+		FROM AGE_ARTIST) AS T
+	GROUP BY AGE_GROUP
+	</select>
+	
+	
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
