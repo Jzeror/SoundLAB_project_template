@@ -460,7 +460,7 @@ nr = (()=>{
 									.attr({
 										src:$.img()+"/logo_admin.png",
 										alt:"SoundLAB 로고",
-										style:"max-width: 500px; resize: both;"
+										style:"resize: both;"
 										,
 									})
 								),
