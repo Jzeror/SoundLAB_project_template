@@ -178,31 +178,26 @@ sh = (()=>{
           	 },200);
          });
          $('#forBtn').click(e=>{
-        	$('#contents').html(banner()+cloud()+topFive());
-	       		sj.forYou();
-	       		setTimeout(()=>{
-	       			sh.service.removeSec('#foryouSec');
-					fn.scroll({ id : $("#foryouSec"), len : 200});
-	          	},200);
-	       		
-			 /*$.ajax({
+			 $.ajax({
 	    		 url : sh.ctx()+'/member/auth',
 		       	  method : 'get',
 		       	  success : d=>{
 		       		$('#contents').html(banner()+cloud()+topFive());
 		       		sj.forYou();
-		       		sh.service.removeSec('#foryouSec');
-					fn.scroll({ id : $("#foryouSec"), len : 200});
+		       		setTimeout(()=>{
+		       			sh.service.removeSec('#foryouSec');
+						fn.scroll({ id : $("#foryouSec"), len : 200});
+		          	},200);
 		       	  },
 		       	  error : m=>{
 		       		alert('로그인이 필요한 서비스입니다.');
-		       		if(m.status == 401){
+		       		/*if(m.status == 401){
 		       			alert('m 401 :: '+m.status);
 		       			$('#wrapper').html('<img src="${context}/resources/img/Error-404.gif" alt="error404" style="width: 100%;height: 100%;"/>');
-		       		}
+		       		}*/
 	    			sh.service.login();
 		       	  }
-	    	 });*/
+	    	 });
          });
          
         $('#logoImg').click(()=>{
@@ -621,6 +616,12 @@ sh.service ={
         	 clazz : 'success dupleCheck',
         	 txt : '중복확인',
              at : $('#idInput')
+         })
+         .click(e=>{
+        	 $.getJSON(sh.ctx()+'/member/'+$('#memberId').val(),d=>{
+        		alert(d.valid);
+        		
+        	 });
          });
          
          ui.btn({
@@ -679,12 +680,11 @@ sh.service ={
                     success : d=>{
                         console.log('join success in :::');
                         alert(d.valid);
-                        sh.service.login();
+                        if(d.valid === '회원가입성공'){
+                        	sh.service.login();
+                        }
                     }
                   });
-                
-            }else{
-                alert('false logic');
             }
          });
          $('#logoImg').click(e=>{

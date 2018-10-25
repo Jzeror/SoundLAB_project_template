@@ -34,6 +34,19 @@ public class MemberCtrl {
 		return rm;
 	}
 	
+	@GetMapping("/{memberId}")
+	public Map<String,Object> duple(@PathVariable String memberId) {
+		logger.info("MemberController ::: duple ");
+		rm.clear();
+		String valid = "없는 아이디입니다.";
+		rm.put("memberId", memberId);
+		if(mp.count(rm) != 0) {
+			valid = "아이디가 존재합니다.";
+		}
+		rm.put("valid", valid);
+		return rm;
+	}
+	
 	
 	@PostMapping("/login")
 	public Map<String,Object> login(@RequestBody Map<String,Object> pm) {
@@ -65,18 +78,20 @@ public class MemberCtrl {
 		pm.put("genres", JSONArray.fromObject(pm.get("genres")));
 		pm.put("artists", JSONArray.fromObject(pm.get("artists")));
 		logger.info("memberId {} pass {} ",pm.get("memberId"),pm.get("pass"));
-		String valid = "회원가입성공";
+		String valid = "이미 존재하는 아이디입니다.";
 		logger.info("name {} nick {} ",pm.get("name"),pm.get("nick"));
 		logger.info("ssn {} email {} ",pm.get("ssn"),pm.get("email"));
 		logger.info("phone {} genres {} ",pm.get("phone"),pm.get("genres"));
 		logger.info("artists {} sex {}",pm.get("artists"),pm.get("sex"));
-		mp.post(pm);
-		logger.info("MemberController ::: join :: post fin");
-		mp.upGenre(pm);
-		logger.info("MemberController ::: join :: upGenre fin");
-		mp.upArtist(pm);
-		logger.info("MemberController ::: join :: upArtist fin");
-		
+		if(mp.count(rm) == 0) {
+			mp.post(pm);
+			logger.info("MemberController ::: join :: post fin");
+			mp.upGenre(pm);
+			logger.info("MemberController ::: join :: upGenre fin");
+			mp.upArtist(pm);
+			logger.info("MemberController ::: join :: upArtist fin");
+			valid = "회원가입성공";
+		}
 		
 		rm.put("valid", valid);
 		

@@ -433,7 +433,17 @@ jt ={
 					$('<textarea/>')
 					.attr({id:'msg',rows:"6",cols:"105",placeholder:"내용을 입력해주세요"})
 					.addClass('msg')
-					.appendTo($('#jt_cmt_body'));
+					.appendTo($('#jt_cmt_body'))
+					.click(e=>{
+						$.ajax({
+				    		 url : sh.ctx()+'/member/auth',
+					       	  method : 'get',
+					       	  error : m=>{
+					       		alert('로그인이 필요한 서비스입니다.');
+				    			sh.service.login();
+					       	  }
+				    	 });
+					});
 					$('<div/>').attr({id:'jt_cmt_btn_div'}).addClass('col-md-2').appendTo($('#jt_cmt'));
 					$('<button/>')
 					.attr({id:'jt_cmt_btn','type':'button'})
@@ -451,22 +461,16 @@ jt ={
 							}),
 							success : d=>{
 								$('.msg').val('');
-								$('#jt_cmt_counts').text('총 댓글수 :'+x.rowCount);
-								$('.jt_album_row').empty();
-								$('.pagination').remove();
-								jt.album_read({id:d.seqGroup,pageNo:1});
+								$('#jt_cmt_counts').text('총 댓글수 :'+x.rowCount+1);
+								jt.album_read({id:d.seqGroup,pageNo:1,rowCount:x.rowCount+1});
 							
 							},
 							error:(m1,m2,m3)=>{alert(m3);}
 						})
 							
 					});
-				
-					$('<br/>').appendTo($('#jt_content'));
-					$('<div/>').addClass('jt_cmt_count container').appendTo($('#jt_content'));
-					$('<div/>').attr({id:'jt_cmt_div'}).appendTo('.jt_cmt_count');
-					$('<span/>').attr({id:'jt_cmt_counts','style':'font-size:20px'})
-					.text('총 댓글수 :'+x.rowCount).appendTo($('#jt_cmt_div'));
+					
+					
 					/*let array=["최신순"];
 			        $.each(array,(x,j)=>{
 			            
@@ -475,9 +479,9 @@ jt ={
 			                alert(j+" 버튼");
 			            });
 			        });*/
-					$('<hr/>').appendTo($('#jt_content'));	
+					$('<br/>').appendTo($('#jt_content'));
 				
-					jt.album_read({id:x.album.ALBUMSEQ, pageNo:1});
+					jt.album_read({id:x.album.ALBUMSEQ, pageNo:1, rowCount:x.rowCount});
 			
 		
 		},
@@ -485,16 +489,20 @@ jt ={
 		album_read: x=>{
 			console.log('ALBUMSEQ:::'+x.id);
 			console.log('pageNo:::'+x.pageNo);
+			$('.jt_cmt_count').remove();
+			$('.jt_album_row').remove();
+			$('.pagination').remove();
+			$('<div/>').addClass('jt_cmt_count container').appendTo($('#jt_content'));
+			$('<div/>').attr({id:'jt_cmt_div'}).appendTo('.jt_cmt_count');
+			$('<span/>').attr({id:'jt_cmt_counts','style':'font-size:15px'})
+			.text('총 댓글수 :'+x.rowCount).appendTo($('#jt_cmt_div'));
 			$.getJSON($.ctx()+'/detailPg/list/'+x.id+'/'+x.pageNo,d=>{
-				$.getScript($.js()+'/compo.js',()=>{
-					$('<div/>').append(
-			                $('<div/>').addClass('row jt_album_row').append(
-			                    $('<div/>').addClass('col-md-12').append(
-			                            $('<div/>').addClass('blog-comment').attr({id : 'jt_blog-comment'})
-			                    
-			                    )    
-			                )
-			            ).appendTo($('#jt_content'))
+		                $('<div/>').addClass('row jt_album_row').append(
+		                    $('<div/>').addClass('col-md-12').append(
+		                            $('<div/>').addClass('blog-comment').attr({id : 'jt_blog-comment'})
+		                    
+		                    )    
+		                ).appendTo($('#jt_content'))
 			            
 			            for(let i=0 ; i<d.list.length; i++){
 			                $('<div/>').addClass('clearfix').append(
@@ -523,9 +531,7 @@ jt ={
 						.append($('<a/>').addClass("page-link").html(i))
 						.appendTo(ul).click(e=>{
 							e.preventDefault();
-							$('.jt_album_row').empty();
-							$('.pagination').remove();
-							jt.album_read({id:d.seqGroup , pageNo:i});
+							jt.album_read({id:d.seqGroup , pageNo:i, rowCount :x.rowCount});
 						});
 					}
 					let disp = (d.page.existPrev)? "": "disabled" ;
@@ -533,15 +539,13 @@ jt ={
 					$('<li id="epo" />').addClass("page-item "+disp).append($("<span />").addClass("page-link").html("Previous")).prependTo(ul);
 					$('<li id="eno" />').addClass("page-item "+disn).append($("<span />").addClass("page-link").html("Next")).appendTo(ul);
 					if(d.page.existPrev){$('#epo').click(e=>
-							{	$('.jt_album_row').empty();
-								$('.pagination').remove();
-								jt.album_read({id:d.seqGroup , pageNo:parseInt(d.page.beginPage-1)});});}
+							{	
+								jt.album_read({id:d.seqGroup , pageNo:parseInt(d.page.beginPage-1),rowCount :x.rowCount});});}
 					if(d.page.existNext){$('#eno').click(e=>
-							{	$('.jt_album_row').empty();
-								$('.pagination').remove();
-								jt.album_read({id:d.seqGroup , pageNo:parseInt(d.page.endPage+1)});});}
+							{	
+								jt.album_read({id:d.seqGroup , pageNo:parseInt(d.page.endPage+1),rowCount :x.rowCount});});}
 
-					});
+					
 				})
 
 		},
