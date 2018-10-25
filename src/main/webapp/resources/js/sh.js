@@ -201,9 +201,9 @@ sh = (()=>{
          });
          
         $('#logoImg').click(()=>{
-        	$.getJSON(sh.ctx()+'/dummy/loginRecord',d=>{
+        	/*$.getJSON(sh.ctx()+'/dummy/loginRecord',d=>{
         		alert('seq ::' + d.seq);
-        	});
+        	});*/
             home();
         });
 
