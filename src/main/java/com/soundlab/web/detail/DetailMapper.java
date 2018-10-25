@@ -12,7 +12,10 @@ import com.soundlab.web.bean.music;
 public interface DetailMapper {
 	public Map<?,?> getAlbum(String albumSeq);
 	public List<music> getAlbumMusic(String albumseq);
-	public int listComment(String keyword);
+	public Integer count(String albumSeq);
+	public void create(Map<?,?> map);
+	public Integer countMy(Map<?,?> map);
+	public List<?> getMy(Map<?,?> map);
 
 	
 }

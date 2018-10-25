@@ -1,16 +1,18 @@
 package com.soundlab.web.detail;
 
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.soundlab.web.cmm.Util;
+import com.soundlab.web.page.PageProxy;
 import com.soundlab.web.page.Pagination;
 import com.soundlab.web.service.ServiceCtrl;
 
@@ -23,6 +25,7 @@ public class DetailCtrl {
 	@Autowired Pagination page;
 	
 	
+	
 	@GetMapping("/detail/{albumSeq}")
 	public Map<String,Object> detail(@PathVariable String albumSeq){
 		logger.info("DetailPgCtrl ::: detail");
@@ -30,26 +33,59 @@ public class DetailCtrl {
 		
 		map.put("album", dm.getAlbum(albumSeq));
 		map.put("musics", dm.getAlbumMusic(albumSeq));
+		
+		map.put("rowCount", dm.count(albumSeq));
 		System.out.println("앨범정보::"+map.get("album"));
-		System.out.println("musics::"+map.get("musics"));;
+		System.out.println("musics::"+map.get("musics"));
+		System.out.println("rowCount::"+map.get("rowCount"));
 	
 		return map;
 	}
-	@RequestMapping("/detilPg/comment/{id}/{pageNo}")
-	public @ResponseBody Map<String,Object> albumCmt(
-				@PathVariable String pageNo,
-				@PathVariable String id){
-		logger.info("DetailPgCtrl ::: comment");
-		map.clear();
-		map.put("pageNum", pageNo);
-		map.put("countRow", dm.listComment(id));
-		page.carryOut(map);
-		Util.log.accept("::Detail albumCmt() :: page ::"+page);
-		map.put("keyword", id);
-		map.put("page", page);
+	@PostMapping("/write")
+	public Map<String, Object> albumComment(@RequestBody Map<String,Object> am){
+		logger.info("DetailPgCtrl ::: write");
+		System.out.println(am);
 		
+		map.clear();
+		map.put("memberId", am.get("memberId"));
+		map.put("seqGroup", am.get("seqGroup"));
+		map.put("msg", am.get("msg"));
+		dm.create(map);
 		
 		return map;
+		
+	}
+	
+	@GetMapping("/list/{seqGroup}/{pageNo}")
+	public Map<String,Object> albumlist(@PathVariable String seqGroup, @PathVariable String pageNo) {
+		logger.info("DetailPgCtrl ::: list");
+		map.clear();
+		
+		System.out.println("seqGroup::"+seqGroup);
+		System.out.println("pageNo::"+pageNo);
+		map.put("pageNumber", pageNo);
+		map.put("seqGroup", seqGroup);
+		map.put("rowCount", dm.countMy(map));
+		
+		PageProxy pxy = new PageProxy();
+		pxy.carryOut(map);
+		page = pxy.getPagination();
+		map.clear();
+		System.out.println("map클리어 후 seqGroup::"+seqGroup);
+		map.put("seqGroup", seqGroup);
+		map.put("beginRow", page.getBeginRow());
+		map.put("endRow", page.getEndRow());
+		map.put("list", dm.getMy(map));
+		map.put("page", page);
+		
+		System.out.println("seqGroup::"+map.get("seqGroup"));
+		System.out.println("beginRow::"+map.get("beginRow"));
+		System.out.println("endRow::"+map.get("endRow"));
+		System.out.println("list::"+map.get("list"));
+		System.out.println("page::"+map.get("page"));
+	
+		return map;
+		
 	}
 
 

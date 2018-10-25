@@ -37,7 +37,9 @@ ui={
           * dark           검정
           * link           링크*/
      input : x=>$("<input/>").attr({id : x.id, type: x.type,  placeholder: x.holder }).addClass(x.clazz).appendTo(x.at),
-     
+     page : x=>{
+    	 return $('<ul class="pagination">').attr({id:'jt_pagination'}).appendTo($('<nav aria-label="...">'));
+ 	}
 }
 fn = {
 	scroll : x=> $('html, body').animate({scrollTop : $(x.id).offset().top-x.len}, 400),
