@@ -68,11 +68,6 @@ public class MusicCtrl {
 			 Util.log.accept("date2:: " +map.get("date2"));
 			 topList = musMapper.monthChart(map);
 		}
-		
-		
-		/*for(int i =0; i<21; i++) {
-			topList.get(i).get("topList")
-		}*/
 		return topList;
 	}
 	
