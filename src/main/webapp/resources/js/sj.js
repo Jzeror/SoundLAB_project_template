@@ -65,9 +65,51 @@ sj ={
 					$foryouSec.appendTo($('#contents'));
 					
 					$.getJSON($.ctx()+'/foryou/'+$.cookie("loginID"),d=>{
+						
+						
+						let fms = [], fal = [], fat = [], ald = [];
+						
+						$.each(d.fy,(i,v)=>{
+							if(v.msRank <= 5){
+								let w = {
+										musicSeq : v.msSeq,
+										musicTitle : v.msTitle,
+										artistSeq : v.msArtist,
+										artistName : v.msArtistName,
+										albumSeq : v.msAlbum,
+										albumTitle : v.msAlbumTitle
+								}, x = {
+										albumSeq : v.alSeq,
+										albumTitle : v.alTitle,
+										artistSeq : v.alArtist,
+										artistName : v.alArtistName,
+										imgName : v.alImgName,
+										ext : v.alImgExt
+								}, y = {
+										artistSeq : v.atArtistSeq,
+										artistName : v.atArtistName,
+										imgName : v.atImgName,
+										ext : v.atImgExt
+								};
+								fms.push(w);
+								fal.push(x);
+								fat.push(y);
+							}
+							if(v.mSeq > 0){
+								let z = {
+										musicSeq : v.musicSeq,
+										musicTitle : v.musicTitle,
+										artistName : v.artistName,
+										albumTitle : v.albumTitle
+								};
+								ald.push(z);		
+							}
+						});
+						
+						
 					$('<div/>')
 					.addClass('clearfix')
-					.attr({id:'dj-detail', 'style':'margin-bottom:0px;'})
+					.attr({id:'for-music', 'style':'margin-bottom:0px;'})
 					.append(
 							$('<div/>').addClass('container').append(
 									$('<div/>').addClass('row').append(
@@ -102,8 +144,8 @@ sj ={
 					
 					
 					let $pl = $('<div/>').addClass('sj-music-playlist').appendTo($('#fy-music-list'));
-					let ml = d.mList;
-					$.each(ml,(i,v)=>{
+					$.each(fms,(i,v)=>{
+						
 						$('<div/>').addClass('single-music').append(
 								$('<div/>').addClass('sj-music-item row').append(
 										$('<label/>').addClass('col-xs-1 container check-con').append(
@@ -157,7 +199,7 @@ sj ={
 					
 					$('<div/>')
 					.addClass('clearfix')
-					.attr({id:'for-album-dt', 'style':'margin-bottom:0px;'})
+					.attr({id:'for-album', 'style':'margin-bottom:0px;'})
 					.append(
 							$('<div/>').addClass('container').append(
 									$('<div/>').addClass('row').append(
@@ -167,16 +209,7 @@ sj ={
 													.addClass('sj-music-content sj-d-flex sj-flex-wrap').append(
 															$('<div/>').attr({id:'for-album-li','style':'width:20%;overflow-y:auto;'}),
 															$('<div/>').addClass('sj-music-content-songs sj-h-100')
-															.attr({'style':'flex:0 0 80%;max-width:80%;width:80%;'})
-															.append(
-																	$('<div/>').addClass('sj-music-songs-info sj-mb-10 sj-d-flex sj-flex-wrap sj-align-items-center sj-justify-content-between').append(
-																			$('<div/>').addClass('sj-songs-info-title').append(
-																					$('<h4/>').html('Title'),
-																					$('<h6/>').html('soundLAB')
-																			)
-																	),
-																	$('<div/>').addClass('sj-music-list-area')
-															)
+															.attr({id:'for-album-dt', 'style':'flex:0 0 80%;max-width:80%;width:80%;'})
 													)
 											)
 									)
@@ -197,8 +230,7 @@ sj ={
 					
 					let $li = $('<div/>').addClass('list-group').attr({'style':'margin:0;'}).appendTo('#for-album-li');
 					
-					let alList = d.alList;
-					$.each(alList,(i, v)=>{
+					$.each(fal,(i, v)=>{
 						$('<div/>')
 						.addClass('sj-for-album-item sj-bg-img')
 						.attr({'style':'background-image:url('+$.ctx()+'/resources/img/album/'+v.imgName+'.'+v.ext+');'})
@@ -213,13 +245,19 @@ sj ={
 							let $this = $(this);
 							$this.siblings('.sj-for-album-item.active').removeClass('active');
 							$this.addClass('active');
+							$.getJSON($.ctx()+'/foryou/albums/'+v.albumSeq,d=>{
+								sj.service.fy_album_dt(d.albumDt);
+							})
 						});
 					});
 					
 					$('.sj-for-album-item:first').addClass('active');
 					
+					sj.service.fy_album_dt(ald);
 					
 					
+					
+					// for - artist
 					
 					$('<div/>')
 					.addClass('clearfix')
@@ -240,21 +278,14 @@ sj ={
 											
 					
 					let $accUl = $('<ul/>').appendTo($('#for-artist'));
-					let arArr = [
-						{arti:'방탄소년단',gen:'장르',src:'방탄소년단_LY_Answer'},
-						{arti:'블랙핑크',gen:'장르',src:'블랙핑크_SQUARE_UP'},
-						{arti:'선미',gen:'장르',src:'선미_WARNING'},
-						{arti:'트와이스',gen:'장르',src:'트와이스_Summer_Nights'},
-						{arti:'에이핑크',gen:'장르',src:'에이핑크_ONE_SIX'},
-						];
-					for(let i of arArr){
+					$.each(fat,(i,v)=>{
 						$('<li/>').append(
 								$('<div/>')
 								.addClass('sj-bg-img')
-								.attr({'style':'background-image:url('+$.ctx()+'/resources/img/album/'+i.src+'.jpg);'}),
-								$('<div/>').addClass('sj-acc-img-cnt').html(i.arti)
+								.attr({'style':'background-image:url('+$.ctx()+'/resources/img/artist/'+v.imgName+'.'+v.ext+');'}),
+								$('<div/>').addClass('sj-acc-img-cnt').html(v.artistName)
 						).appendTo($accUl);
-					}
+					});
 					
 				});
 			}
@@ -399,11 +430,10 @@ sj.service = {
 																				$('<h6/>').html(djInfo.memberId),
 																				$('<h6/>').html(djInfo.hashtag)
 																		),
-																		$('<div/>').addClass('sj-songs-info-title').append(
-																				$('<h6/>').html(djInfo.viewCnt),
-																				$('<a/>').attr({href:'#'}).addClass('btn sj-like-btn').append(
-																						$('<span/>').addClass('glyphicon glyphicon-heart')
-																				)
+																		$('<div/>').addClass('sj-songs-info-title')
+																		.attr({style:'position: absolute;right: 10%;top: 5%;'})
+																		.append(
+																				$('<h6/>').html(djInfo.viewCnt)
 																		)
 																),
 																$('<div/>').append(
@@ -465,6 +495,72 @@ sj.service = {
 					).appendTo($pl)
 				});
 			}); // getJSON end
+		},
+		fy_album_dt : x=>{
+			$('#for-album-dt').empty();
+			
+			
+			$('<div/>').addClass('sj-music-songs-info sj-mb-10 sj-d-flex sj-flex-wrap sj-align-items-center sj-justify-content-between').append(
+					$('<div/>').addClass('sj-songs-info-title').append(
+							$('<h4/>').html(x[0].albumTitle),
+							$('<h6/>').html(x[0].artistName)
+					)
+			).appendTo($('#for-album-dt'));
+			$('<div/>').addClass('sj-music-list-area sj-pl-scroll').attr({id:'fy-al-dtmusic'}).appendTo($('#for-album-dt'));
+			
+			
+			
+			let $pl = $('<div/>').addClass('sj-music-playlist').appendTo($('#fy-al-dtmusic'));
+			
+			$.each(x,(i,v)=>{
+				
+				$('<div/>').addClass('single-music').append(
+						$('<div/>').addClass('sj-music-item row').append(
+								$('<label/>').addClass('col-xs-1 container check-con').append(
+										$('<input/>').attr({type:'checkbox'}).click(e=>{
+											$('.check-con input[name=allCheck]:checkbox')
+											.prop('checked',
+													$('.sj-music-item .check-con input:checkbox').length
+															=== $('.sj-music-item .check-con input:checked').length
+															? true : false);
+										}),
+										$('<span/>').addClass('sj-checkmark')
+								),
+								$('<div/>').addClass('col-xs-4').html(v.musicTitle),
+								$('<div/>').addClass('col-xs-2').append(
+										$('<strong/>').html(v.artistName)
+								),
+								$('<div/>').addClass('col-xs-1').append(
+										$('<button/>').addClass('btn btn-default').append(
+												$('<span/>').addClass('glyphicon glyphicon-thumbs-down')
+										)
+								),
+								$('<div/>').addClass('col-xs-2').html(v.albumTitle),
+								$('<div/>').addClass('btn-group col-xs-3').append(
+										$('<button/>').addClass('btn btn-default').append(
+												$('<span/>').addClass('glyphicon glyphicon-play')
+										),
+										$('<button/>').addClass('btn btn-default').append(
+												$('<span/>').addClass('glyphicon glyphicon-heart')
+										).click(function(e){
+											if($(this).hasClass('active')){
+												console.log('Cancle !!');
+												$(this).removeClass('active');
+											}else{
+												console.log('Love it !!');
+												$(this).addClass('active');
+											} 
+										}),
+										$('<button/>').addClass('btn btn-default').append(
+												$('<span/>').addClass('glyphicon glyphicon-thumbs-down')
+										)
+								)
+						)
+				).appendTo($pl)
+			
+			});
+			
+			
 		}
 };
 
