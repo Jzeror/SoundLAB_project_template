@@ -27,6 +27,15 @@
 			FROM  MUSIC 
 		 	WHERE ALBUM_SEQ LIKE #{albumSeq}
 	</select>
+	<select id="count" resultType="int">
+		SELECT COUNT(*) 
+			FROM ALBUM AS A
+				JOIN COMMENT AS C
+				ON A.ALBUM_SEQ =  C.SEQ_GROUP
+	 WHERE ALBUM_SEQ LIKE #{albumSeq};
+
+	
+	</select>
 	
 	<!-- 댓글 -->
 	
@@ -39,6 +48,29 @@
 	<select id="cmtRead" resultType="map">
 	
 	SELECT * FROM COMMENT WHERE SEQ_GROUP LIKE #{seqGroup};
+	</select>
+	<select id="countMy" resultType="int">
+	SELECT COUNT(*) FROM COMMENT WHERE SEQ_GROUP LIKE #{seqGroup};
+	
+	</select>
+	
+	
+	<select id="getMy" resultType="map">
+			SELECT 
+			
+			T.*
+		FROM
+		(
+		   SELECT  CAST(@ROWNUM := @ROWNUM + 1 AS SIGNED INTEGER) AS BNO,
+		    DATE_FORMAT(REGI_DATE,'%Y-%m-%d %H:%i:%s')AS REGI_DATE,
+		    MEMBER_ID, SEQ_GROUP,MSG,COMMENT_SEQ
+		   FROM
+		       COMMENT, (SELECT @ROWNUM :=0) R
+		       WHERE SEQ_GROUP NOT LIKE '-1' AND SEQ_GROUP LIKE #{seqGroup}
+		   ORDER BY REGI_DATE DESC
+		) T
+		WHERE T.BNO BETWEEN #{beginRow} AND #{endRow};
+	
 	</select>
 	
 	<!-- <select id="list" resultType="map">

@@ -29,7 +29,9 @@
     <!-- Random number generator -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.3/lib/alea.min.js"></script>
     <!-- d3-cloud library -->
-    <script src="${context}/resources/js/d3.layout.cloud.js"></script>
+    
+    <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js" type="text/JavaScript"></script>
+    <%-- <script src="${context}/resources/js/d3.layout.cloud.js"></script>  --%>
 	<script src="${context}/resources/js/wordcloud.js"></script>
 
 	

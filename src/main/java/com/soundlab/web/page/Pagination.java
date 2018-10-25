@@ -11,30 +11,27 @@ import lombok.Data;
 @Component
 @Lazy
 public class Pagination implements Proxy {
-	private int pageSize, blockSize, countRow, countPage, pageNum, block,
-	endRow, beginRow, beginPage, endPage, nextBlock, prevBlock;
-	private boolean nextPage, prevPage;
+	int pageSize , blockSize ,  beginPage ,  endPage ,
+    pageCount ,  rowCount ,   blockCount,  beginRow ,
+    endRow ,   pageNumber,   prevBlock,   nextBlock;
+  boolean existPrev , existNext ;
 
 	@Override
-	public void carryOut(Object o) {
-	@SuppressWarnings("unchecked")
-	Map<String, Object> map = (Map<String, Object>) o;
-	pageNum = Integer.parseInt(map.get("pageNum").toString());
-	pageSize = 5 ;
-	blockSize = 5 ;
-	countRow = Integer.parseInt(map.get("countRow").toString());
-	countPage = countRow / pageSize + ((countRow % pageSize == 0) ? 0 : 1 ); // 총 페이지
-	block = ( pageNum + (blockSize - 1) ) / blockSize ;
-	int nextPage = ((countPage - block * blockSize > 0))? countPage - block * blockSize : 0 ,
-	prevPage = (countPage - ( nextPage + blockSize ) > 0)? countPage-( nextPage + blockSize ) : 0 ;
-	this.nextPage = nextPage > 0 ;
-	this.prevPage = prevPage > 0 ;
-	endRow = pageNum * pageSize;
-	beginRow = pageNum * pageSize - (pageSize - 1);
-	endPage = ((countPage - nextPage) % blockSize == 0) ? block * blockSize : countPage ;
-	beginPage = block * blockSize - (blockSize - 1) ;
-	nextBlock = (this.nextPage) ? beginPage + blockSize : 0 ;
-	prevBlock = (this.prevPage) ? beginPage - blockSize : 0 ;
-	// beginRow endRow prevPage prevBlock nextPage nextBlock
+	public void carryOut(Map<?,?> map) {
+		System.out.println("pagination 들어옴!!");
+		this.pageNumber = Integer.parseInt(map.get("pageNumber").toString()); 
+		this.pageSize = 5;
+		this.blockSize = 5;
+		this.rowCount = (int)map.get("rowCount");
+		this.pageCount = (rowCount%pageSize==0)? rowCount/pageSize : rowCount/pageSize+1;
+		this.blockCount = (pageCount%blockSize==0)? pageCount/blockSize : pageCount/blockSize+1;
+		this.beginRow = (pageNumber-1)*pageSize +1;
+		this.endRow = pageNumber*pageSize;
+		this.beginPage = pageNumber - ((pageNumber-1)%blockSize);
+		this.endPage = ((beginPage + pageSize -1)<pageCount)? beginPage+blockSize-1 : pageCount;
+		this.prevBlock = beginPage - blockSize;
+		this.nextBlock = beginPage + blockSize;
+		this.existPrev = (prevBlock >= 0);
+		this.existNext = (nextBlock <= pageCount);
 	}
 }
