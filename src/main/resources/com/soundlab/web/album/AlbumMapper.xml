@@ -4,24 +4,28 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.soundlab.web.album.AlbumMapper">
 <select id="newAl_recent" resultType="java.util.Map">
-	SELECT 
+	SELECT DISTINCT
   AL.ALBUM_TITLE, 
+  COUNT(SEQ_GROUP)AS LIKE_COUNT,
   AR.ARTIST_NAME,
-  AL.RELEASE_DATE,
+  DATE_FORMAT(AL.RELEASE_DATE,'%Y-%m-%d')AS REGI_DATE,
   
   (SELECT CONCAT(IMG_NAME, '.', EXT)
                     FROM IMG
                    WHERE SEQ LIKE AL.ALBUM_SEQ) IMG
- FROM MUSIC MUS
+  FROM MUSIC MUS
          JOIN ALBUM AL ON MUS.ALBUM_SEQ LIKE AL.ALBUM_SEQ
          JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
- ORDER BY   AL.RELEASE_DATE DESC LIMIT 6
+           JOIN UPDOWN UP ON MUS.MUSIC_SEQ LIKE UP.SEQ_GROUP
+WHERE SG_ELEMENT LIKE 'music' AND AL.RELEASE_DATE IS NOT NULL
+GROUP BY ALBUM_TITLE
+ORDER BY REGI_DATE DESC, AL.RELEASE_DATE DESC LIMIT 6
 </select>
 <select id="newAl_like" resultType="java.util.Map">
 	SELECT DISTINCT AL.ALBUM_TITLE, 
   COUNT(SEQ_GROUP)AS LIKE_COUNT,
     SEQ_GROUP,
-
+  DATE_FORMAT(AL.RELEASE_DATE,'%Y-%m-%d')AS REGI_DATE,
   AR.ARTIST_NAME,
   AL.RELEASE_DATE,
   MUS.MUSIC_TITLE,
@@ -36,4 +40,38 @@ WHERE SG_ELEMENT LIKE 'music' AND AL.RELEASE_DATE IS NOT NULL
 GROUP BY ALBUM_TITLE
 ORDER BY  COUNT(SEQ_GROUP) DESC, RELEASE_DATE DESC, AL.RELEASE_DATE DESC LIMIT 6
 </select>	
+
+<select id="al_comment" resultType="java.util.Map" parameterType="com.soundlab.web.bean.comment">
+insert into comment(member_id,seq_group,msg)
+values(#{memberId},'-1',#{msg})
+</select>
+<select id="viewComment" resultType="java.util.Map" >
+SELECT MEMBER_ID, MSG,
+ DATE_FORMAT(REGI_DATE,'%Y-%m-%d %H:%i:%s')AS REGI_DATE
+FROM COMMENT 
+WHERE SEQ_GROUP LIKE '-1'
+ORDER BY REGI_DATE DESC
+</select>
+<select id="carousel" resultType="java.util.Map" parameterType="map">
+SELECT DISTINCT CAST(@RNUM := @RNUM + 1 AS SIGNED INTEGER) AS NO, A.*
+  FROM (  SELECT AL.ALBUM_TITLE,
+                 AR.ARTIST_NAME,
+                 MUS.MUSIC_TITLE,
+                 V.VIEW_DATE,
+                 COUNT(SEQ_GROUP) AS VIEW_COUNT,
+                 (SELECT CONCAT(IMG_NAME, '.', EXT)
+                    FROM IMG
+                   WHERE SEQ LIKE AL.ALBUM_SEQ) IMG
+            FROM MUSIC MUS
+                 JOIN VIEW_RECORD V ON V.SEQ_GROUP LIKE MUS.MUSIC_SEQ
+                 JOIN ALBUM AL ON MUS.ALBUM_SEQ LIKE AL.ALBUM_SEQ
+                 JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
+           WHERE VIEW_DATE BETWEEN CONCAT(#{date2},'%') AND  CONCAT(#{date1},'%')
+        GROUP BY ALBUM_TITLE
+        ORDER BY VIEW_COUNT DESC
+           LIMIT 10) AS A,
+       (SELECT @RNUM := 0) AS B;
+       
+</select>
+
 </mapper>

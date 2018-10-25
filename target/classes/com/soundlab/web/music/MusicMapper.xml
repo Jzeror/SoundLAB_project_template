@@ -6,103 +6,101 @@
 
 	<select id="realChart" resultType="java.util.Map"
 		parameterType="map">
-		SELECT
-		CAST(@RNUM := @RNUM + 1 AS signed integer )AS NO , A.*
-		FROM
-		(SELECT
-		AL.ALBUM_TITLE,
-		AR.ARTIST_NAME,
-		MUS.MUSIC_TITLE,
-		V.VIEW_DATE,
-		COUNT(SEQ_GROUP)AS VIEW_COUNT,
-		(SELECT CONCAT(IMG_NAME,'.', EXT)
-		FROM IMG WHERE SEQ LIKE AL.ALBUM_SEQ )IMG
-		FROM MUSIC MUS
-		JOIN VIEW_RECORD V ON V.SEQ_GROUP LIKE MUS.MUSIC_SEQ
-		JOIN ALBUM AL ON MUS.ALBUM_SEQ LIKE AL.ALBUM_SEQ
-		JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
-		WHERE VIEW_DATE LIKE '${todayDate}%'
-		GROUP BY SEQ_GROUP
-		ORDER BY VIEW_COUNT DESC LIMIT 50)AS A,
-		( SELECT @RNUM := 0 )AS B
-
-	</select>
-	<select id="dayChart" resultType="java.util.Map"
-		parameterType="map">
-		SELECT
-		CAST(@RNUM := @RNUM + 1 AS signed integer )AS NO , A.*
-		FROM
-		(SELECT
-		AL.ALBUM_TITLE,
-		AR.ARTIST_NAME,
-		MUS.MUSIC_TITLE,
-		V.VIEW_DATE,
-		COUNT(SEQ_GROUP)AS VIEW_COUNT,
-		(SELECT CONCAT(IMG_NAME,'.', EXT)
-		FROM IMG WHERE SEQ LIKE AL.ALBUM_SEQ )IMG
-		FROM MUSIC MUS
-		JOIN VIEW_RECORD V ON V.SEQ_GROUP LIKE MUS.MUSIC_SEQ
-		JOIN ALBUM AL ON MUS.ALBUM_SEQ LIKE AL.ALBUM_SEQ
-		JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
-		WHERE VIEW_DATE LIKE '${yesterDate}%'
-		GROUP BY SEQ_GROUP
-		ORDER BY VIEW_COUNT DESC LIMIT 50)AS A,
-		( SELECT @RNUM := 0 )AS B
+	SELECT CAST(@RNUM := @RNUM + 1 AS SIGNED INTEGER) AS NO, A.*
+  FROM (  SELECT AL.ALBUM_TITLE,
+                 AR.ARTIST_NAME,
+                 MUS.MUSIC_TITLE,
+                 V.VIEW_DATE,
+                 COUNT(SEQ_GROUP) AS VIEW_COUNT,
+                 (SELECT CONCAT(IMG_NAME, '.', EXT)
+                    FROM IMG
+                   WHERE SEQ LIKE AL.ALBUM_SEQ) IMG
+            FROM MUSIC MUS
+                 JOIN VIEW_RECORD V ON V.SEQ_GROUP LIKE MUS.MUSIC_SEQ
+                 JOIN ALBUM AL ON MUS.ALBUM_SEQ LIKE AL.ALBUM_SEQ
+                 JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
+           WHERE VIEW_DATE BETWEEN CONCAT(#{date2},'%') AND CONCAT(#{date1},'%')
+        GROUP BY VIEW_DATE,SEQ_GROUP
+        ORDER BY VIEW_COUNT DESC
+           LIMIT 50) AS A,
+       (SELECT @RNUM := 0) AS B;
 
 	</select>
 	<select id="weekChart" resultType="java.util.Map"
 		parameterType="map">
-		SELECT
-		CAST(@RNUM := @RNUM + 1 AS signed integer )AS NO , A.*
-		FROM
-		(SELECT
-		AL.ALBUM_TITLE,
-		AR.ARTIST_NAME,
-		MUS.MUSIC_TITLE,
-		V.VIEW_DATE,
-		COUNT(SEQ_GROUP)AS VIEW_COUNT,
-		(SELECT CONCAT(IMG_NAME,'.', EXT)
-		FROM IMG WHERE SEQ LIKE AL.ALBUM_SEQ )IMG
-		FROM MUSIC MUS
-		JOIN VIEW_RECORD V ON V.SEQ_GROUP LIKE MUS.MUSIC_SEQ
-		JOIN ALBUM AL ON MUS.ALBUM_SEQ LIKE AL.ALBUM_SEQ
-		JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
-		WHERE VIEW_DATE BETWEEN '${week1}%' AND '${week2}%'
-		GROUP BY SEQ_GROUP
-		ORDER BY VIEW_COUNT DESC LIMIT 50)AS A,
-		( SELECT @RNUM := 0 )AS B
+		SELECT CAST(@RNUM := @RNUM + 1 AS SIGNED INTEGER) AS NO, A.*
+  FROM (  SELECT AL.ALBUM_TITLE,
+                 AR.ARTIST_NAME,
+                 MUS.MUSIC_TITLE,
+                 V.VIEW_DATE,
+                 COUNT(SEQ_GROUP) AS VIEW_COUNT,
+                 (SELECT CONCAT(IMG_NAME, '.', EXT)
+                    FROM IMG
+                   WHERE SEQ LIKE AL.ALBUM_SEQ) IMG
+            FROM MUSIC MUS
+                 JOIN VIEW_RECORD V ON V.SEQ_GROUP LIKE MUS.MUSIC_SEQ
+                 JOIN ALBUM AL ON MUS.ALBUM_SEQ LIKE AL.ALBUM_SEQ
+                 JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
+           WHERE VIEW_DATE BETWEEN CONCAT(#{date2},'%') AND CONCAT(#{date1},'%')
+        GROUP BY VIEW_DATE,SEQ_GROUP
+        ORDER BY VIEW_COUNT DESC
+           LIMIT 50) AS A,
+       (SELECT @RNUM := 0) AS B;
+
+	</select>
+	<select id="monthChart" resultType="java.util.Map"
+		parameterType="map">
+		SELECT CAST(@RNUM := @RNUM + 1 AS SIGNED INTEGER) AS NO, A.*
+  FROM (  SELECT AL.ALBUM_TITLE,
+                 AR.ARTIST_NAME,
+                 MUS.MUSIC_TITLE,
+                 V.VIEW_DATE,
+                 COUNT(SEQ_GROUP) AS VIEW_COUNT,
+                 (SELECT CONCAT(IMG_NAME, '.', EXT)
+                    FROM IMG
+                   WHERE SEQ LIKE AL.ALBUM_SEQ) IMG
+            FROM MUSIC MUS
+                 JOIN VIEW_RECORD V ON V.SEQ_GROUP LIKE MUS.MUSIC_SEQ
+                 JOIN ALBUM AL ON MUS.ALBUM_SEQ LIKE AL.ALBUM_SEQ
+                 JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
+           WHERE VIEW_DATE BETWEEN CONCAT(#{date2},'%') AND CONCAT(#{date1},'%')
+        GROUP BY VIEW_DATE,SEQ_GROUP
+        ORDER BY VIEW_COUNT DESC
+           LIMIT 50) AS A,
+       (SELECT @RNUM := 0) AS B;
 
 	</select>
 	
 <select id="top50lineChart" resultType="java.util.Map"
 		parameterType="map">
 SELECT  MUS.MUSIC_TITLE,AR.ARTIST_NAME,V1.SEQ_GROUP,COUNT(*) CNT , DATE_FORMAT(V1.VIEW_DATE,'%d')AS VIEW_DATE,
-		((COUNT(*)/(SELECT COUNT(*) FROM VIEW_RECORD V2 WHERE V2.VIEW_DATE LIKE V1.VIEW_DATE AND V2.SEQ_GROUP IN (
-					SELECT TMP.MSEQ 
-					FROM
-					(
-						SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
-						FROM VIEW_RECORD V
-						WHERE V.VIEW_DATE LIKE  '${todayDate}%' 
-						GROUP BY V.SEQ_GROUP 
-						ORDER BY CNT 
-						DESC LIMIT 3) TMP
-				    ))) * 100) PER 
+       FLOOR((COUNT(*)/(SELECT COUNT(*) FROM VIEW_RECORD V2 WHERE V2.VIEW_DATE LIKE V1.VIEW_DATE AND V2.SEQ_GROUP IN (
+                   SELECT TMP.MSEQ
+                   FROM
+                   (
+                       SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
+                       FROM VIEW_RECORD V
+                       WHERE V.VIEW_DATE LIKE CONCAT(#{todayDate},'%') and V.SG_ELEMENT LIKE 'music'
+                       GROUP BY V.SEQ_GROUP
+                       ORDER BY CNT
+                       DESC LIMIT 3) TMP
+                   ))) * 100) PER
 FROM VIEW_RECORD V1
- JOIN MUSIC MUS ON V1.SEQ_GROUP LIKE MUS.MUSIC_SEQ
-    JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
+JOIN MUSIC MUS ON V1.SEQ_GROUP LIKE MUS.MUSIC_SEQ
+  JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
 WHERE V1.SEQ_GROUP IN (
-					SELECT TMP.MSEQ 
-					FROM
-						(SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
-						FROM VIEW_RECORD V
-						WHERE V.VIEW_DATE LIKE  '${todayDate}%'
-						GROUP BY V.SEQ_GROUP 
-						ORDER BY CNT 
-						DESC LIMIT 3) TMP
-				    )
-    AND V1.VIEW_DATE NOT LIKE '2019%'
+                   SELECT TMP.MSEQ
+                   FROM
+                       (SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
+                       FROM VIEW_RECORD V
+                       WHERE V.VIEW_DATE LIKE CONCAT(#{todayDate},'%') and V.SG_ELEMENT LIKE 'music'
+                       GROUP BY V.SEQ_GROUP
+                       ORDER BY CNT
+                       DESC LIMIT 3) TMP
+                   )
+
+  AND V1.VIEW_DATE BETWEEN CONCAT(#{chartDate2},'%') AND CONCAT(#{chartDate1},'%')
 GROUP BY V1.SEQ_GROUP, V1.VIEW_DATE
-ORDER BY V1.VIEW_DATE DESC , COUNT(*) DESC
+ORDER BY V1.VIEW_DATE DESC, COUNT(*) DESC
 </select>
 </mapper>

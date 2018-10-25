@@ -34,6 +34,8 @@
     <%-- <script src="${context}/resources/js/d3.layout.cloud.js"></script>  --%>
 	<script src="${context}/resources/js/wordcloud.js"></script>
 
+
+
 	
 </head>
 <body data-spy="scroll" data-target="#header">

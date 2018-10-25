@@ -1,5 +1,7 @@
 package com.soundlab.web.album;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.soundlab.web.cmm.Util;
+import com.soundlab.web.bean.comment;
 
 @RestController
 @RequestMapping("/album")
@@ -23,23 +27,37 @@ public class AlbumCtrl {
 	@GetMapping("/newAl/{x}")
 	public List<Map<?,?>> newAl_recent(@PathVariable String x){
 		List<Map<?,?>> newAl = null;
-		  Util.log.accept("앨범 넘어온값 ::"+x);
-		 
-		  
 		  if(x.equals("newAl_recent")) {
 				 newAl=alMapper.newAl_recent();
-				  Util.log.accept("앨범 넘어온값 newAl_recent ::"+newAl);
 		  }else {
 			  newAl=alMapper.newAl_like();
-			  Util.log.accept("앨범 넘어온값 newAl_like ::"+newAl);
 		  }
-
-		
-		
-		
-		
 		return newAl;
-		
-		
 	}
+	@PostMapping("/alComment")
+	public void alCommentAdd(@RequestBody comment comment){
+		alMapper.al_comment(comment);
+	}
+	@GetMapping("/viewComment")
+	public List<Map<?,?>> viewComment(){
+		List<Map<?,?>> viewComment = null;		
+		viewComment= alMapper.viewComment();
+		return viewComment;
+	}
+	@GetMapping("/carousel")
+	public List<Map<?,?>> carousel(){
+		List<Map<?,?>> carousel = null;
+		Calendar cal = Calendar.getInstance();
+
+        cal.add(Calendar.DATE, +1);
+        String date1 = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+        map.put("date1", date1);
+        cal.add(Calendar.DATE, -2);
+        String date2 = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+        map.put("date2", date2);		
+		carousel= alMapper.carousel(map);
+		return carousel;
+	}
+	
+	
 }
