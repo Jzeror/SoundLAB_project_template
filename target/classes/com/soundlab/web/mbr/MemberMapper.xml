@@ -73,6 +73,10 @@
 	    DELETE FROM MEMBER
 	    WHERE MEMBER_ID LIKE #{memberId}
 	  </delete>
-	  
+	  <insert id="loginRecord">
+	  	INSERT INTO LOGIN_RECORD
+	  	(MEMBER_ID,SEX)
+	  	VALUES(#{memberId},(SELECT SEX FROM MEMBER WHERE MEMBER_ID LIKE #{memberId}))
+	  </insert>
 	  
 </mapper>

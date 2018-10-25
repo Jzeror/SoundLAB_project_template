@@ -13,5 +13,5 @@ public interface MemberMapper {
 	public int count(Map<?,?> p);
 	public void update(Map<?,?> p);
 	public void delete(String p);
-	public void deleteUD(String p);
+	public void loginRecord(Map<?,?> p);
 }

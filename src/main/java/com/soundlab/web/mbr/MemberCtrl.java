@@ -49,6 +49,7 @@ public class MemberCtrl {
 	
 	
 	@PostMapping("/login")
+	@Transactional
 	public Map<String,Object> login(@RequestBody Map<String,Object> pm) {
 		logger.info("MemberController ::: login ");
 		rm.clear();
@@ -60,6 +61,7 @@ public class MemberCtrl {
 			rm = mp.get(pm);
 			if(rm != null) {
 				valid = (rm.get("memberId").equals("admin"))?"admin":"user";
+				mp.loginRecord(rm);
 			}else {
 				rm = new HashMap<>();
 			}
