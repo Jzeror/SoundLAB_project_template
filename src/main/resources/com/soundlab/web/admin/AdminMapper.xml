@@ -20,28 +20,32 @@
 		<result property="bad" column="bad"/>
 		<result property="sumStr" column="sum_str"/>
 		<result property="sumGood" column="sum_good"/>
+		<result property="date" column="date"/>
+		<result property="sumVisit" column="sum_visit"/>
+		<result property="mSumVisit" column="m_sum_visit"/>
+		<result property="fSumVisit" column="f_sum_visit"/>
+		
 	</resultMap>
 	<select id="artiGS" resultMap="admin">
 		SELECT * FROM NR_GS
+		WHERE ARTIST_NAME LIKE #{artist_name}
 	</select>
 	<select id="ageGenre" resultMap="admin">
 	SELECT * FROM AGE_GENRE
 	</select>
-	<select id="ageArtistK" resultMap="admin">
+	<select id="ageArtist" resultMap="admin">
 	SELECT * FROM AGE_ARTIST
+	</select> 
+	<select id="sexGenre" resultMap="admin">
+	SELECT * FROM SEX_GENRE
 	</select>
-	<select id="ageArtistPivot" resultMap="admin">
-	SELECT 
-		AGE_GROUP AS "연령",
-		SUM(CASE WHEN ARTIST_NAME = "방탄소년단" THEN SUM_GOOD END) AS "방탄소년단",
-		SUM(CASE WHEN ARTIST_NAME = "트와이스" THEN SUM_GOOD END) AS "트와이스",
-		SUM(CASE WHEN ARTIST_NAME = "레드벨벳" THEN SUM_GOOD END) AS "레드벨벳"
-	FROM (SELECT AGE_GROUP , ARTIST_NAME, SUM_GOOD
-		FROM AGE_ARTIST) AS T
-	GROUP BY AGE_GROUP
+	<select id="sexArtist" resultMap="admin">
+	SELECT * FROM SEX_ARTIST
 	</select>
-	
-	
+	<select id="cntVisiter" resultMap="admin">
+	SELECT * FROM VISITER
+	<!-- WHERE DATE BETWEEN '2018-10-15' AND '2018-10-22' -->
+	</select>
 	
 	
 </mapper>
