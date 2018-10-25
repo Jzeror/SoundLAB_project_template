@@ -90,15 +90,15 @@ nr = (()=>{
         $cnts.empty();
     	section({cls:"forms"}).appendTo($cnts);
     	period().appendTo($("#row"));
-    	nr.chart.age_genre(1);
-    	nr.chart.age_genre(2);
-    	nr.chart.age_genre(3);
-    	nr.chart.age_genre(4);
+    	
     	card({size:"3", title:"연령별 장르 선호도", id:"donutchart1",style:""}).appendTo($("#row"));
     	card({size:"3", title:"연령별 장르 선호도", id:"donutchart2",style:""}).appendTo($("#row"));
     	card({size:"3", title:"연령별 장르 선호도", id:"donutchart3",style:""}).appendTo($("#row"));
     	card({size:"3", title:"연령별 장르 선호도", id:"donutchart4",style:""}).appendTo($("#row"));
-    	
+    	nr.chart.age_genre(1);
+    	nr.chart.age_genre(2);
+    	nr.chart.age_genre(3);
+    	nr.chart.age_genre(4);
     	nr.chart.age_artist();
     	card({size:"12", title:"연령별 아티스트 선호도 TOP3", id:"ID__1",style:""}).appendTo($("#row"));
     	card({size:"6", title:"선호3", id:"ID__1",style:""}).appendTo($("#row"));

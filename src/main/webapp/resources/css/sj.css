@@ -593,10 +593,14 @@ label.check-con {
 #for-artist.accordian ul li:hover {
 	width: 60%;
 }
-#for-artist.accordian ul li:hover .sj-acc-img-cnt{
+#for-artist.accordian ul li:hover div.sj-bg-img {
+	opacity: 1;
+}
+#for-artist.accordian ul li:hover .sj-acc-img-cnt {
 	opacity: 1;
 }
 #for-artist.accordian li div.sj-bg-img {
+	opacity:0.5;
 	display: block;
 	height: 470px;
 }

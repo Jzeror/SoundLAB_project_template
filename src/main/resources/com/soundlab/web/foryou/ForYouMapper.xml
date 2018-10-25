@@ -4,7 +4,82 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="com.soundlab.web.foryou.ForYouMapper">
-  	<resultMap type="map" id="foryou">
+  <resultMap type="map" id="fy">
+  	<result property="msRank" column="MS_RANK"/>
+  	<result property="msSeq" column="MS_SEQ"/>
+  	<result property="msTitle" column="MS_TITLE"/>
+  	<result property="msArtist" column="MS_ARTIST"/>
+  	<result property="msArtistName" column="MS_ARTIST_NAME"/>
+  	<result property="msAlbum" column="MS_ALBUM"/>
+  	<result property="msAlbumTitle" column="MS_ALBUM_TITLE"/>
+  	<result property="alRank" column="AL_RANK"/>
+  	<result property="alArtist" column="AL_ARTIST"/>
+  	<result property="alArtistName" column="AL_ARTIST_NAME"/>
+  	<result property="alSeq" column="AL_SEQ"/>
+  	<result property="alTitle" column="AL_TITLE"/>
+  	<result property="alImgName" column="AL_IMG_NAME"/>
+  	<result property="alImgExt" column="AL_IMG_EXT"/>
+  	<result property="atRank" column="AT_RANK"/>
+  	<result property="atArtistSeq" column="AT_ARTIST_SEQ"/>
+  	<result property="atArtistName" column="AT_ARTIST_NAME"/>
+  	<result property="atImgName" column="AT_IMG_NAME"/>
+  	<result property="atImgExt" column="AT_IMG_EXT"/>
+  	<result property="mSeq" column="MSEQ"/>
+  	<result property="musicSeq" column="MUSIC_SEQ"/>
+  	<result property="musicTitle" column="MUSIC_TITLE"/>
+  	<result property="artistName" column="ARTIST_NAME"/>
+  	<result property="albumSeq" column="ALBUM_SEQ"/>
+  	<result property="albumTitle" column="ALBUM_TITLE"/>
+  	
+  	<result property="artistSeq" column="ARTIST_SEQ"/>
+  </resultMap>
+  <select id="getForYou" resultMap="fy">
+	SELECT
+	*
+	FROM SJ_FORYOU_V SJ 
+	RIGHT JOIN
+	(SELECT
+	IFNULL(A.MSEQ,'0') AS MSEQ,
+	A.MUSIC_SEQ,
+	A.MUSIC_TITLE,
+	A.ARTIST_NAME,
+	A.ALBUM_SEQ,
+	A.ALBUM_TITLE
+	FROM
+	(SELECT
+	ROW_NUMBER() OVER(ORDER BY M.MUSIC_SEQ) AS MSEQ,
+	M.MUSIC_SEQ,
+	M.MUSIC_TITLE,
+	AL.ARTIST_NAME,
+	M.ALBUM_SEQ,
+	AL.ALBUM_TITLE
+	FROM
+	SJ_FORYOU_V S
+	JOIN MUSIC M
+	ON S.AL_SEQ LIKE M.ALBUM_SEQ
+	JOIN ALBUM AL
+	ON M.ALBUM_SEQ LIKE AL.ALBUM_SEQ
+	WHERE S.AL_RANK LIKE 1)A
+	RIGHT JOIN SJ_EMPTY_SIX SR
+	ON A.MSEQ LIKE SR.NUM)DT
+	ON DT.MSEQ LIKE SJ.MS_RANK
+	;
+  </select>
+  <select id="getAlbumDetail" resultMap="fy">
+	SELECT
+	MS.MUSIC_SEQ,
+	MS.MUSIC_TITLE,
+	MS.ARTIST_SEQ,
+	AB.ARTIST_NAME,
+	AB.ALBUM_TITLE
+	FROM MUSIC MS 
+	JOIN ALBUM AB
+	ON MS.ALBUM_SEQ = AB.ALBUM_SEQ
+	WHERE MS.ALBUM_SEQ LIKE #{p}
+	ORDER BY MS.MUSIC_SEQ
+	;
+  </select>
+  	<!-- <resultMap type="map" id="foryou">
       <result property="viewCnt" column="VIEW_CNT"/>
       <result property="imgName" column="IMG_NAME"/>
       <result property="ext" column="EXT"/>
@@ -139,5 +214,6 @@
 	GROUP BY AT.ARTIST_SEQ
 	ORDER BY VIEW_CNT DESC)A
 	WHERE A.RANKING <![CDATA[<=]]> 5
-  </select>
+  </select> -->
+  
   </mapper>

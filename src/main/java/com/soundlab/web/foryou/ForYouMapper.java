@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ForYouMapper {
-	public List<Object> getMusic(String p);
+	public List<Object> getForYou();
+	public List<Object> getAlbumDetail(String p);
+/*	public List<Object> getMusic(String p);
 	public List<Object> getAlbum();
-	public List<Object> getArtist(String p);
+	public List<Object> getArtist(String p); */
 }
