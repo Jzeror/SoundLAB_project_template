@@ -25,15 +25,29 @@ sh = (()=>{
      var home =()=>{
          console.log('sh.home ::');
 	     w.html(nav()+banner()+cloud()+topFive()+footer());
-	     let hashcnt = [389,344,284,244,218,178,172,140,139,139,127,125,118,111,110];
-	     let hashdata = {"count":{"신나는":hashcnt[0],"차분한":hashcnt[1],"어쿠스틱":hashcnt[2],"트로피칼":hashcnt[3],"부드러운":hashcnt[4],"드라이브":hashcnt[5],"휴식":hashcnt[6],"편집숍&카페":hashcnt[7],"헬스":hashcnt[8],"클럽":hashcnt[9],"스트레스":hashcnt[10],"이별":hashcnt[11],"사랑&고백":hashcnt[12],"새벽감성":hashcnt[13],"위로":hashcnt[14]},
-	    		 "sample_title":{"신나는":[hashcnt[0]],"차분한":[hashcnt[1]],"어쿠스틱":[hashcnt[2]],"트로피칼":[hashcnt[3]],"부드러운":[hashcnt[4]],"드라이브":[hashcnt[5]],"휴식":[hashcnt[6]],"편집숍&카페":[hashcnt[7]],"헬스":[hashcnt[8]],"클럽":[hashcnt[9]],"스트레스":[hashcnt[10]],"이별":[hashcnt[11]],"사랑&고백":[hashcnt[12]],"새벽감성":[hashcnt[13]],"위로":[hashcnt[14]]}
-	     };
 	     
-	     WordCloud({
-	    		container : '#cloud-container',
-	    		data : hashdata
+	     $.getJSON($ctx+'/main/hash',d=>{
+	    	 let hashcnt = [389,344,284,244,218,178,172,140,139,139,127,125,118,111,110];
+	    	 //let hashcnt = [289,244,184,144,118,78,72,40,39,39,27,25,18,11,10];
+	    	 //let hashcnt = d.cnt;
+	    	 let hashdata = {"count":{"신나는":hashcnt[0],"차분한":hashcnt[1],"어쿠스틱":hashcnt[2],"트로피칼":hashcnt[3],"부드러운":hashcnt[4],"드라이브":hashcnt[5],"휴식":hashcnt[6],"편집숍&카페":hashcnt[7],"헬스":hashcnt[8],"클럽":hashcnt[9],"스트레스":hashcnt[10],"이별":hashcnt[11],"사랑&고백":hashcnt[12],"새벽감성":hashcnt[13],"위로":hashcnt[14]},
+		    		 "sample_title":{"신나는":[hashcnt[0]],"차분한":[hashcnt[1]],"어쿠스틱":[hashcnt[2]],"트로피칼":[hashcnt[3]],"부드러운":[hashcnt[4]],"드라이브":[hashcnt[5]],"휴식":[hashcnt[6]],"편집숍&카페":[hashcnt[7]],"헬스":[hashcnt[8]],"클럽":[hashcnt[9]],"스트레스":[hashcnt[10]],"이별":[hashcnt[11]],"사랑&고백":[hashcnt[12]],"새벽감성":[hashcnt[13]],"위로":[hashcnt[14]]}
+		     };
+	    	 WordCloud({
+		    		container : '#cloud-container',
+		    		data : hashdata
+		     });
+	    	/*  setInterval(function(){
+	    		  $('#cloud-container').empty();
+	    		  WordCloud({
+			    		container : '#cloud-container',
+			    		data : hashdata
+			     });
+	    	 },10000)*/
+		     
+	    	 
 	     });
+	     
 	     
 	     
          /*w.html(nav()+footer());*/
@@ -192,10 +206,10 @@ sh = (()=>{
          });
          
         $('#logoImg').click(()=>{
-        	/*$.getJSON(sh.ctx()+'/dummy/loginRecord',d=>{
+        	/*$.getJSON(sh.ctx()+'/dummy/chart',d=>{
         		alert('seq ::' + d.seq);
         	});*/
-             /*home();*/
+            home();
         });
 
      };
@@ -322,7 +336,7 @@ var banner =()=> '<section id="banner" class="banner">'
 		+'</div>'
      +'</section>';
 		
-var cloud =()=> '<section id="cloud" class="cloud" style="text-align:center">'
+var cloud =()=> '<section id="cloud" class="cloud">'
      +'</br>'
      +'</br>'
      +'</br>'
@@ -647,7 +661,7 @@ sh.service ={
                 });
                 alert(artists);
                 $.ajax({
-                    url : sh.ctx()+'/member/join',
+                    url : sh.ctx()+'/member/member',
                     method : 'post',
                     contentType : 'application/json',
                     data : JSON.stringify({
@@ -696,22 +710,41 @@ sh.service ={
      mypage : ()=>{
          console.log('sh.service.mypage::');
          $(sh.w()).html(sh.mypage());
+         $('#memberId').val($.cookie('loginID'));
          let $mypageForm = $('#joinForm');
          ui.btn({
         	 clazz : 'success dupleCheck',
         	 txt : '정보수정',
              at : $('#idInput')
          }).click(e=>{
+        	 let memberId = $('#memberId').val();
+        	 let pass = $('#pass').val();
+        	 let email = $('#email').val()+'@'+$('#domain').val();
+        	 let phone =  $('#phone').val();
         	 if(fn.mypageValidation(
-                     { id : $('#memberId').val(),
-                       pass : $('#pass').val(),
+                     { id : memberId,
+                       pass : pass,
                        pass2 : $('#pass2').val(),
-                       email : $('#email').val()+'@'+$('#mail').val(),
-                       phone : $('#phone').val()
+                       email : email,
+                       phone : phone
                      })){
-                alert('true logic');
-            }else{
-                alert('false logic');
+        		 $.ajax({
+                     url : sh.ctx()+'/member/member',
+                     method : 'put',
+                     contentType : 'application/json',
+                     data : JSON.stringify({
+                         memberId : memberId,
+                         pass : pass,
+                         email : email,
+                         phone : phone,
+                     }),
+                     success : d=>{
+                         console.log('update success in :::');
+                         alert(d.valid);
+                         $.removeCookie("loginID");
+                         sh.service.login();
+                     }
+                   });
             }
          });
          
@@ -720,11 +753,20 @@ sh.service ={
         	 txt : '회원탈퇴',
              at : $mypageForm
          }).click(e=>{
-        	 alert('탈퇴되었습니다.');
+        	 $.ajax({
+                 url : sh.ctx()+'/member/'+$.cookie('loginID'),
+                 method : 'delete',
+                 success : d=>{
+                     console.log('delete success in :::');
+                     alert(d.valid);
+                     $.removeCookie("loginID");
+                     sh.home();
+                 }
+               });
          });
          
          $('#logoImg').click(e=>{
-              sh.home({ auth : false});
+              sh.home();
          });
          
      },

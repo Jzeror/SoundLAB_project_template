@@ -13,6 +13,9 @@
 		<result property="sex" column="SEX"/>
 		<result property="email" column="E_MAIL"/>
 	</resultMap>
+	
+	
+	
 	  <select id="get" resultMap="mbr">
 	    SELECT MEMBER_ID, PASS, NAME, BIRTH, PHONE, NICK, SEX, E_MAIL FROM MEMBER 
 	    <where>
@@ -37,7 +40,7 @@
 	  </select>
 	  <insert id="post">
 	  	INSERT INTO MEMBER
-	  	(MEMBER_ID, PASS, NAME, BIRTH, PHONE, NICK, SEX, E_MAIL, join_date)
+	  	(MEMBER_ID, PASS, NAME, BIRTH, PHONE, NICK, SEX, E_MAIL)
 	  	VALUES
 	  	(#{memberId},#{pass},#{name},#{ssn},#{phone},#{nick},#{sex},#{email})
 	  </insert>
@@ -61,4 +64,15 @@
 	  	 'artist','u')
 	  	</foreach>
 	  </insert>
+	  <update id="update">
+	  	UPDATE MEMBER
+	  	SET PASS=#{pass}, PHONE=#{phone}, E_MAIL=#{email}
+	  	WHERE MEMBER_ID LIKE #{memberId}
+	  </update>
+	  <delete id="delete">
+	    DELETE FROM MEMBER
+	    WHERE MEMBER_ID LIKE #{memberId}
+	  </delete>
+	  
+	  
 </mapper>

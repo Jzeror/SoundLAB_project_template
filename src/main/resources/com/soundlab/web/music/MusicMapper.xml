@@ -19,7 +19,7 @@
                  JOIN VIEW_RECORD V ON V.SEQ_GROUP LIKE MUS.MUSIC_SEQ
                  JOIN ALBUM AL ON MUS.ALBUM_SEQ LIKE AL.ALBUM_SEQ
                  JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
-           WHERE VIEW_DATE BETWEEN '${date2}%' AND  '${date1}%'
+           WHERE VIEW_DATE BETWEEN CONCAT(#{date2},'%') AND CONCAT(#{date1},'%')
         GROUP BY VIEW_DATE,SEQ_GROUP
         ORDER BY VIEW_COUNT DESC
            LIMIT 50) AS A,
@@ -41,7 +41,7 @@
                  JOIN VIEW_RECORD V ON V.SEQ_GROUP LIKE MUS.MUSIC_SEQ
                  JOIN ALBUM AL ON MUS.ALBUM_SEQ LIKE AL.ALBUM_SEQ
                  JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
-           WHERE VIEW_DATE BETWEEN '${date2}%' AND  '${date1}%'
+           WHERE VIEW_DATE BETWEEN CONCAT(#{date2},'%') AND CONCAT(#{date1},'%')
         GROUP BY VIEW_DATE,SEQ_GROUP
         ORDER BY VIEW_COUNT DESC
            LIMIT 50) AS A,
@@ -63,7 +63,7 @@
                  JOIN VIEW_RECORD V ON V.SEQ_GROUP LIKE MUS.MUSIC_SEQ
                  JOIN ALBUM AL ON MUS.ALBUM_SEQ LIKE AL.ALBUM_SEQ
                  JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
-           WHERE VIEW_DATE BETWEEN '${date2}%' AND  '${date1}%'
+           WHERE VIEW_DATE BETWEEN CONCAT(#{date2},'%') AND CONCAT(#{date1},'%')
         GROUP BY VIEW_DATE,SEQ_GROUP
         ORDER BY VIEW_COUNT DESC
            LIMIT 50) AS A,
@@ -80,7 +80,7 @@ SELECT  MUS.MUSIC_TITLE,AR.ARTIST_NAME,V1.SEQ_GROUP,COUNT(*) CNT , DATE_FORMAT(V
                    (
                        SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
                        FROM VIEW_RECORD V
-                       WHERE V.VIEW_DATE LIKE '${todayDate}%' and V.SG_ELEMENT LIKE 'music'
+                       WHERE V.VIEW_DATE LIKE CONCAT(#{todayDate},'%') and V.SG_ELEMENT LIKE 'music'
                        GROUP BY V.SEQ_GROUP
                        ORDER BY CNT
                        DESC LIMIT 3) TMP
@@ -93,13 +93,13 @@ WHERE V1.SEQ_GROUP IN (
                    FROM
                        (SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
                        FROM VIEW_RECORD V
-                       WHERE V.VIEW_DATE LIKE '${todayDate}%' and V.SG_ELEMENT LIKE 'music'
+                       WHERE V.VIEW_DATE LIKE CONCAT(#{todayDate},'%') and V.SG_ELEMENT LIKE 'music'
                        GROUP BY V.SEQ_GROUP
                        ORDER BY CNT
                        DESC LIMIT 3) TMP
                    )
 
-  AND V1.VIEW_DATE BETWEEN '${chartDate2}%' AND '${chartDate1}%'
+  AND V1.VIEW_DATE BETWEEN CONCAT(#{chartDate2},'%') AND CONCAT(#{chartDate1},'%')
 GROUP BY V1.SEQ_GROUP, V1.VIEW_DATE
 ORDER BY V1.VIEW_DATE DESC, COUNT(*) DESC
 </select>

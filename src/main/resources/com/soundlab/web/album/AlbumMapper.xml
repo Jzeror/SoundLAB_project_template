@@ -43,7 +43,7 @@ ORDER BY  COUNT(SEQ_GROUP) DESC, RELEASE_DATE DESC, AL.RELEASE_DATE DESC LIMIT 6
 
 <select id="al_comment" resultType="java.util.Map" parameterType="com.soundlab.web.bean.comment">
 insert into comment(member_id,seq_group,msg)
-values('${memberId}','-1','${msg}')
+values(#{memberId},'-1',#{msg})
 </select>
 <select id="viewComment" resultType="java.util.Map" >
 SELECT MEMBER_ID, MSG,
@@ -66,7 +66,7 @@ SELECT DISTINCT CAST(@RNUM := @RNUM + 1 AS SIGNED INTEGER) AS NO, A.*
                  JOIN VIEW_RECORD V ON V.SEQ_GROUP LIKE MUS.MUSIC_SEQ
                  JOIN ALBUM AL ON MUS.ALBUM_SEQ LIKE AL.ALBUM_SEQ
                  JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
-           WHERE VIEW_DATE BETWEEN '${date2}%' AND  '${date1}%'
+           WHERE VIEW_DATE BETWEEN CONCAT(#{date2},'%') AND  CONCAT(#{date1},'%')
         GROUP BY ALBUM_TITLE
         ORDER BY VIEW_COUNT DESC
            LIMIT 10) AS A,

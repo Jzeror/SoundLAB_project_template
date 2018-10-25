@@ -165,6 +165,10 @@ create table UPDOWN(
     TYPES VARCHAR(10)
 );
 
+SELECT constraint_name, constraint_type
+FROM information_schema.table_constraints
+WHERE table_name = 'ARTICLE';
+
 
 
 ALTER TABLE UPDOWN ADD CONSTRAINT UPDOWN_FK_MEMBER_ID FOREIGN KEY (MEMBER_ID) REFERENCES MEMBER(MEMBER_ID);
@@ -2172,3 +2176,82 @@ INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('criss',30,'지노형 인생
 INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('zuzu',30,'진짜 인생 떙곡임');
 
 
+<!-- 이슬 #일주일 -->
+SELECT  MUS.MUSIC_TITLE,AR.ARTIST_NAME,V1.SEQ_GROUP,COUNT(*) CNT , DATE_FORMAT(V1.VIEW_DATE,'%m-%d')AS VIEW_DATE,
+        FLOOR((COUNT(*)/(SELECT COUNT(*) FROM VIEW_RECORD V2 WHERE V2.VIEW_DATE LIKE V1.VIEW_DATE AND V2.SEQ_GROUP IN (
+                    SELECT TMP.MSEQ
+                    FROM
+                    (
+                        SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
+                        FROM VIEW_RECORD V
+                        WHERE V.VIEW_DATE LIKE '2018-10-25%' and V.SG_ELEMENT LIKE 'music'
+                        GROUP BY V.SEQ_GROUP
+                        ORDER BY CNT
+                        DESC LIMIT 3) TMP
+                    ))) * 100) PER
+FROM VIEW_RECORD V1
+JOIN MUSIC MUS ON V1.SEQ_GROUP LIKE MUS.MUSIC_SEQ
+   JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
+WHERE V1.SEQ_GROUP IN (
+                    SELECT TMP.MSEQ
+                    FROM
+                        (SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
+                        FROM VIEW_RECORD V
+                        WHERE V.VIEW_DATE LIKE '2018-10-25%' and V.SG_ELEMENT LIKE 'music'
+                        GROUP BY V.SEQ_GROUP
+                        ORDER BY CNT
+                        DESC LIMIT 3) TMP
+                    )
+         
+   AND V1.VIEW_DATE BETWEEN '2018-10-19%' AND '2018-10-26%'
+GROUP BY V1.SEQ_GROUP, V1.VIEW_DATE
+ORDER BY V1.VIEW_DATE DESC, COUNT(*) DESC;
+
+
+
+DELETE FROM COMMENT WHERE SEQ_GROUP NOT LIKE -1;
+
+DELETE FROM UPDOWN WHERE SEQ_GROUP IN (154,157,143,140,136);
+
+
+SELECT
+    table_name AS `Table`,
+    round(((data_length + index_length) / 1024 / 1024), 2) `Size in MB`
+FROM information_schema.TABLES
+WHERE table_schema = "mariadb"
+    AND table_name = "view_record"
+ORDER BY (data_length + index_length) DESC;
+
+ select seq_group, count(*) from view_record where view_date like '2018-11-17%' group by seq_group order by count(*) desc;
+
+ 
+ SELECT
+    table_name AS `Table`,
+    round(((data_length + index_length) / 1024 / 1024), 2) `Size in MB`
+FROM information_schema.TABLES
+WHERE table_schema = "mariadb"
+ORDER BY (data_length + index_length) DESC;
+
+SELECT
+    table_name 테이블,
+    round(((data_length + index_length) / 1024 / 1024), 2) 크기,
+    sum(round(((data_length + index_length) / 1024 / 1024), 2)) 합
+FROM information_schema.TABLES
+WHERE table_schema = "mariadb"
+ORDER BY (data_length + index_length) DESC;
+
+
+
+
+DELIMITER $$
+	  DROP PROCEDURE IF EXISTS deleteMember$$
+	  CREATE PROCEDURE deleteMember(memberId VARCHAR(20))
+	  BEGIN
+	  	DELETE FROM MEMBER
+	    WHERE MEMBER_ID LIKE #{memberId};
+	  	DELETE FROM UPDOWN
+	  	WHERE MEMBER_ID LIKE #{memberId};
+	  	DELETE FROM VIEW_RECORD
+	  	WHERE MEMBER_ID LIKE #{memberId};
+	  END $$
+DELIMITER ;

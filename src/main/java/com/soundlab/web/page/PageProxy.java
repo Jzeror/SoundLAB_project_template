@@ -1,14 +1,15 @@
 package com.soundlab.web.page;
 
+import java.util.Map;
+
 import lombok.Data;
 
 @Data
 public class PageProxy implements Proxy {
-	private Proxy p;
+	private Pagination pagination;
 	
-	@Override
-	public void carryOut(Object o) {
-		p = new Pagination();
-		p.carryOut(o);
+	public void carryOut(Map<?,?> map) {
+		this.pagination = new Pagination();
+		pagination.carryOut(map);
 	}
 }

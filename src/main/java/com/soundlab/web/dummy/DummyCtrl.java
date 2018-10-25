@@ -31,12 +31,12 @@ public class DummyCtrl {
 				 "tempus","tortor","velit","mattis","zuzu","ligula","libero","criss","congue"};
 		String[] woman = {  "sound2","tellus","tempor","turpis","varius","auctor","vitae","sound","dolor","mauris",
 				"magna","lorem","lacus","justo","porta","ipsum","felis","enimIn","massa"};
-		String[] date = {"2018-10-15 11:12:30","2018-10-16 11:12:30","2018-10-17 11:12:30",
-				"2018-10-18 11:12:30","2018-10-19 11:12:30","2018-10-20 11:12:30",
-				"2018-10-21 11:12:30","2018-10-22 11:12:30","2018-10-23 11:12:30",
-				"2018-10-24 11:12:30",
-				"2018-10-25 11:12:30","2018-10-26 11:12:30","2018-10-27 11:12:30",
-				"2018-10-28 11:12:30"};
+		String[] date = {"2018-10-15 10:12:30","2018-10-16 10:12:30","2018-10-17 10:18:50",
+				"2018-10-18 10:18:50","2018-10-19 10:18:50","2018-10-20 10:18:50",
+				"2018-10-21 10:18:50","2018-10-22 10:18:50","2018-10-23 10:18:50",
+				"2018-10-24 10:18:50",
+				"2018-10-25 10:18:50","2018-10-26 10:18:50","2018-10-27 10:18:50",
+				"2018-10-28 10:18:50"};
 		Map<String, String> mm = new HashMap<String, String>();
 		Map<String, String> wm = new HashMap<String, String>();
 		for(int i=0;i<14;i++) {
@@ -67,11 +67,10 @@ public class DummyCtrl {
 		logger.info("DummyCtrl ::: hash ");
 		rm.clear();
 		rm.put("memberId", "shin");
-		int[] sq= {5,10,15};
-		for(int j=0;j<3;j++) {
-			rm.put("seq", sq[j]);
-			for(int i=0;i<20;i++) {
-				
+		for(int j=0;j<100;j++) {
+			rm.put("seq", (int)(Math.random()*15 + 1));
+			int cnt = (int)(Math.random()*70 + 1);
+			for(int i=0;i<cnt;i++) {
 				dp.hashRecord(rm);
 			}
 		}
@@ -219,7 +218,7 @@ public class DummyCtrl {
 	    158 | 흥탄소년단
 	    159 | 잡아줘 (Hold Me Tight)
 	    30곡*/
-		int[] bangmusics = { 74,
+		/*int[] bangmusics = { 74,
 				75,
 			    76,
 			   133,
@@ -248,8 +247,46 @@ public class DummyCtrl {
 			   156,
 			   157,
 			   158,
-			   159};
+			   159};*/
 		
+		/*방탄곡 업 몇개 지우고 넣음
+		int[] bangmusics = {
+			   136, //9개
+			   140, //10개
+			   143,  //10개
+			   154,  // 15개
+			   157   // 10개
+			   };
+		 for(int i=0;i<9;i++) {
+			int memIndex = (int)(Math.random()*16);
+			rm.put("memberId", mems[memIndex]);
+			rm.put("seq", bangmusics[0]);
+			dp.musicUp(rm);
+		}
+		 for(int i=0;i<10;i++) {
+				int memIndex = (int)(Math.random()*16);
+				rm.put("memberId", mems[memIndex]);
+				rm.put("seq", bangmusics[1]);
+				dp.musicUp(rm);
+			}
+		 for(int i=0;i<10;i++) {
+				int memIndex = (int)(Math.random()*16);
+				rm.put("memberId", mems[memIndex]);
+				rm.put("seq", bangmusics[2]);
+				dp.musicUp(rm);
+			}
+		 for(int i=0;i<15;i++) {
+				int memIndex = (int)(Math.random()*16);
+				rm.put("memberId", mems[memIndex]);
+				rm.put("seq", bangmusics[3]);
+				dp.musicUp(rm);
+			}
+		 for(int i=0;i<10;i++) {
+				int memIndex = (int)(Math.random()*16);
+				rm.put("memberId", mems[memIndex]);
+				rm.put("seq", bangmusics[4]);
+				dp.musicUp(rm);
+			}*/
 		 /*116 | Dance The Night Away
 		 117 | CHILLAX
 		 118 | Shot thru the heart
@@ -262,7 +299,7 @@ public class DummyCtrl {
 		 180 | Heart Shaker
 		 181 | TT
 		 11곡*/
-		int[] twicemusics = {   116,
+		/*int[] twicemusics = {   116,
 				   117,
 				   118,
 				   119,
@@ -272,7 +309,7 @@ public class DummyCtrl {
 				   178,
 				   179,
 				   180,
-				   181 };
+				   181 };*/
 		
 		 /*105 | Power Up
 		 106 | 한 여름의 크리스마스
@@ -285,7 +322,7 @@ public class DummyCtrl {
 		 185 | Rookie
 		 186 | Ice Cream Cake
 		 10곡*/
-		int[] revelmusics = {
+		/*int[] revelmusics = {
 				 105,
 				 106,
 				 107,
@@ -296,7 +333,7 @@ public class DummyCtrl {
 				 184,
 				 185,
 				 186	
-		};
+		};*/
 		
 		//장르업
 		/*for(int i=0;i<100;i++) {
@@ -381,89 +418,123 @@ public class DummyCtrl {
 		logger.info("DummyCtrl ::: chart ");
 		rm.clear();
 		/*rm.put("memberId", "shin");
-		rm.put("seq", 59);
-		rm.put("element", "music");
-		for(int i=0;i<70;i++) {
+		rm.put("seq", 63);
+		for(int i=0;i<400;i++) {
 			dp.post(rm);
 		}*/
 		/*75
 		 */ 
+		
 		int[] lst = {  
-				   57  
-				  ,58
-				  ,59
-				  ,62
-				  ,63
-				  ,64
-				  ,65
-				  ,66
-				  ,67
-				  ,68
-				  ,70
-				  ,71
-				  ,72
-				  ,73
-				  ,76
-				  ,77
-				  ,78
+				  73
+				  ,124
+					
 				  ,79
-				  ,80
-				  ,81
-				  ,82
-				  ,84
-				  ,85
-				  ,86
-				  ,87
+							  ,80		
+					 ,110
+				  ,72
+					 ,121
+			
+
+							 ,118
+					
+					  ,66
+					 ,85
+					  ,68
+					  ,70
+						  ,71
+					  ,86
+					  ,83
 				  ,88
-				  ,90
-				  ,91
-				  ,92
-				  ,93
-				  ,94
-				  ,95
-				  ,96
-				  ,97
-				  ,98
-				  ,99
-				 ,100
-				 ,104
-				 ,105
-				 ,106
-				 ,107
-				 ,101
-				 ,102
-				 ,103
-				 ,108
-				 ,109
-				 ,110
-				 ,111
-				 ,112
-				 ,113
-				 ,117
-				 ,118
-				 ,114
-				 ,116
-				 ,119
-				 ,121
-				 ,120
-				 ,122
-				 ,125
-				 ,124
-				 ,89
-				 ,115
-				 ,74
-				 ,75
-				 ,123
-				 ,83
-				 ,69};
+
+					 ,107
+					 ,64
+	  ,122
+		 ,125
+
+			 ,114
+	 
+								  ,102
+								  ,57 
+								  ,103
+							
+								  ,91
+										  ,67
+										  ,106
+						
+					
+						  ,59
+						  ,77
+							 ,116
+
+					
+					  ,97
+					  ,115
+						 ,99
+						 ,100
+						 ,69
+
+					  ,81
+								  ,104	
+								  
+								  ,87
+								 ,119
+				,62
+						  
+					 ,101
+					 ,112
+			
+					  ,78
+					  ,120
+
+					  ,117
+
+
+					  ,58
+					   ,94
+					   ,95
+					   ,96   
+					   ,123
+					   ,113
+					    ,93
+					  ,92
+
+					  ,98 
+					  		  ,109	
+
+
+					  	
+					  	  ,111
+					  			
+					  					  ,84
+					  					  ,90
+
+					  						 ,108
+					  							
+					  						  ,76
+						 ,82
+						 ,105
+							
+			
+		
+				 ,63 //빈지노 아쿠아맨
+				
+				 
+				
+				 ,75  // 방탄 아임파인
+				 ,74  // 방탄 아이돌
+				 
+				 ,65 //아이유 삐삐
+				 ,89  // 박효신 기프트
+				 
+				
+		};
 		rm.put("memberId", "shin");
-		int count = 1;
 		for(int s=0;s<67;s++) {
 			rm.put("seq", lst[s]);
 			for(int i=0;i<s+1;i++) {
 				dp.post(rm);
 			}
-			//count+=10;
 		}
 		
 		return rm;
