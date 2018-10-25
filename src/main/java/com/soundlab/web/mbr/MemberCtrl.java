@@ -7,8 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,7 +57,7 @@ public class MemberCtrl {
 		return rm;
 	}
 	
-	@PostMapping("/join")
+	@PostMapping("/member")
 	@Transactional
 	public Map<String,Object> join(@RequestBody Map<String,Object> pm) {
 		logger.info("MemberController ::: join ");
@@ -75,6 +78,30 @@ public class MemberCtrl {
 		logger.info("MemberController ::: join :: upArtist fin");
 		
 		
+		rm.put("valid", valid);
+		
+		return rm;
+	}
+	
+	//pass, email, phone
+	@PutMapping("/member")
+	public Map<String,Object> update(@RequestBody Map<String,Object> pm) {
+		logger.info("MemberController ::: update ");
+		rm.clear();
+		logger.info("memberId {} pass {} ",pm.get("memberId"),pm.get("pass"));
+		String valid = "회원정보가 변경되었습니다.";
+		mp.update(pm);
+		rm.put("valid", valid);
+		
+		return rm;
+	}
+	@DeleteMapping("/{memberId}")
+	public Map<String,Object> delete(@PathVariable String memberId) {
+		logger.info("MemberController ::: delete ");
+		rm.clear();
+		logger.info("memberId {}",memberId);
+		String valid = "계정삭제";
+		mp.delete(memberId);
 		rm.put("valid", valid);
 		
 		return rm;

@@ -165,6 +165,10 @@ create table UPDOWN(
     TYPES VARCHAR(10)
 );
 
+SELECT constraint_name, constraint_type
+FROM information_schema.table_constraints
+WHERE table_name = 'ARTICLE';
+
 
 
 ALTER TABLE UPDOWN ADD CONSTRAINT UPDOWN_FK_MEMBER_ID FOREIGN KEY (MEMBER_ID) REFERENCES MEMBER(MEMBER_ID);
@@ -2207,3 +2211,47 @@ ORDER BY V1.VIEW_DATE DESC, COUNT(*) DESC;
 
 DELETE FROM COMMENT WHERE SEQ_GROUP NOT LIKE -1;
 
+DELETE FROM UPDOWN WHERE SEQ_GROUP IN (154,157,143,140,136);
+
+
+SELECT
+    table_name AS `Table`,
+    round(((data_length + index_length) / 1024 / 1024), 2) `Size in MB`
+FROM information_schema.TABLES
+WHERE table_schema = "mariadb"
+    AND table_name = "view_record"
+ORDER BY (data_length + index_length) DESC;
+
+ select seq_group, count(*) from view_record where view_date like '2018-11-17%' group by seq_group order by count(*) desc;
+
+ 
+ SELECT
+    table_name AS `Table`,
+    round(((data_length + index_length) / 1024 / 1024), 2) `Size in MB`
+FROM information_schema.TABLES
+WHERE table_schema = "mariadb"
+ORDER BY (data_length + index_length) DESC;
+
+SELECT
+    table_name 테이블,
+    round(((data_length + index_length) / 1024 / 1024), 2) 크기,
+    sum(round(((data_length + index_length) / 1024 / 1024), 2)) 합
+FROM information_schema.TABLES
+WHERE table_schema = "mariadb"
+ORDER BY (data_length + index_length) DESC;
+
+
+
+
+DELIMITER $$
+	  DROP PROCEDURE IF EXISTS deleteMember$$
+	  CREATE PROCEDURE deleteMember(memberId VARCHAR(20))
+	  BEGIN
+	  	DELETE FROM MEMBER
+	    WHERE MEMBER_ID LIKE #{memberId};
+	  	DELETE FROM UPDOWN
+	  	WHERE MEMBER_ID LIKE #{memberId};
+	  	DELETE FROM VIEW_RECORD
+	  	WHERE MEMBER_ID LIKE #{memberId};
+	  END $$
+DELIMITER ;

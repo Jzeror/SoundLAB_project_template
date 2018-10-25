@@ -11,4 +11,7 @@ public interface MemberMapper {
 	public void upArtist(Map<?,?> p);
 	public Map<String,Object> get(Map<?,?> p);
 	public int count(Map<?,?> p);
+	public void update(Map<?,?> p);
+	public void delete(String p);
+	public void deleteUD(String p);
 }

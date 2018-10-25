@@ -37,13 +37,13 @@ sh = (()=>{
 		    		container : '#cloud-container',
 		    		data : hashdata
 		     });
-	    	  setInterval(function(){
+	    	/*  setInterval(function(){
 	    		  $('#cloud-container').empty();
 	    		  WordCloud({
 			    		container : '#cloud-container',
 			    		data : hashdata
 			     });
-	    	 },10000)
+	    	 },10000)*/
 		     
 	    	 
 	     });
@@ -209,7 +209,7 @@ sh = (()=>{
         	/*$.getJSON(sh.ctx()+'/dummy/chart',d=>{
         		alert('seq ::' + d.seq);
         	});*/
-             /*home();*/
+            home();
         });
 
      };
@@ -661,7 +661,7 @@ sh.service ={
                 });
                 alert(artists);
                 $.ajax({
-                    url : sh.ctx()+'/member/join',
+                    url : sh.ctx()+'/member/member',
                     method : 'post',
                     contentType : 'application/json',
                     data : JSON.stringify({
@@ -710,22 +710,41 @@ sh.service ={
      mypage : ()=>{
          console.log('sh.service.mypage::');
          $(sh.w()).html(sh.mypage());
+         $('#memberId').val($.cookie('loginID'));
          let $mypageForm = $('#joinForm');
          ui.btn({
         	 clazz : 'success dupleCheck',
         	 txt : '정보수정',
              at : $('#idInput')
          }).click(e=>{
+        	 let memberId = $('#memberId').val();
+        	 let pass = $('#pass').val();
+        	 let email = $('#email').val()+'@'+$('#domain').val();
+        	 let phone =  $('#phone').val();
         	 if(fn.mypageValidation(
-                     { id : $('#memberId').val(),
-                       pass : $('#pass').val(),
+                     { id : memberId,
+                       pass : pass,
                        pass2 : $('#pass2').val(),
-                       email : $('#email').val()+'@'+$('#mail').val(),
-                       phone : $('#phone').val()
+                       email : email,
+                       phone : phone
                      })){
-                alert('true logic');
-            }else{
-                alert('false logic');
+        		 $.ajax({
+                     url : sh.ctx()+'/member/member',
+                     method : 'put',
+                     contentType : 'application/json',
+                     data : JSON.stringify({
+                         memberId : memberId,
+                         pass : pass,
+                         email : email,
+                         phone : phone,
+                     }),
+                     success : d=>{
+                         console.log('update success in :::');
+                         alert(d.valid);
+                         $.removeCookie("loginID");
+                         sh.service.login();
+                     }
+                   });
             }
          });
          
@@ -734,11 +753,20 @@ sh.service ={
         	 txt : '회원탈퇴',
              at : $mypageForm
          }).click(e=>{
-        	 alert('탈퇴되었습니다.');
+        	 $.ajax({
+                 url : sh.ctx()+'/member/'+$.cookie('loginID'),
+                 method : 'delete',
+                 success : d=>{
+                     console.log('delete success in :::');
+                     alert(d.valid);
+                     $.removeCookie("loginID");
+                     sh.home();
+                 }
+               });
          });
          
          $('#logoImg').click(e=>{
-              sh.home({ auth : false});
+              sh.home();
          });
          
      },
