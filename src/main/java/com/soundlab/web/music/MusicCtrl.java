@@ -29,7 +29,7 @@ public class MusicCtrl {
 	private @ResponseBody List<Map<?,?>> top50(@PathVariable String x) {
 		Util.log.accept(":: MusicCtrl :: list() :: page :: " );
 		List<Map<?,?>> topList = null;
-        Calendar cal = Calendar.getInstance();
+       /* Calendar cal = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
 
         String todayDate= new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //오늘
@@ -39,31 +39,58 @@ public class MusicCtrl {
         cal.add(Calendar.DATE, 1 - cal.get(Calendar.DAY_OF_WEEK)-7); //주간
         String week1 = simpleDateFormat.format(cal.getTime()); 
         cal.add(Calendar.DATE, 7 - cal.get(Calendar.DAY_OF_WEEK)); 
-        String week2 = simpleDateFormat.format(cal.getTime()); 
+        String week2 = simpleDateFormat.format(cal.getTime()); */
 
-		if(x.equals("realChart") ) {			
-			 map.put("todayDate",todayDate);
+		if(x.equals("realChart") ) {
+			 Calendar cal = Calendar.getInstance();
+			 cal.add(Calendar.DATE, +1);
+		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
+		     cal.add(Calendar.DATE, -2);
+		     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
 			 topList = musMapper.realChart(map);			
-		}else if (x.equals("dayChart")){
-			 map.put("yesterDate",yesterDate);
-			 topList = musMapper.dayChart(map);
-		}else if (x.equals("weekChart") ){
-			 map.put("week1",week1);
-			 map.put("week2",week2);
-			 topList = musMapper.weekChart(map);
+		}else if (x.equals("weekChart")){
+			Calendar cal = Calendar.getInstance();
+			 cal.add(Calendar.DATE, 1);
+		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
+		     cal.add(Calendar.DATE, -7);
+		     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
+			 topList = musMapper.realChart(map);	
+			 Util.log.accept("date1:: " +map.get("date1"));
+			 Util.log.accept("date2:: " +map.get("date2"));
+		}else if (x.equals("monthChart") ){
+			Calendar cal = Calendar.getInstance();
+			 cal.add(Calendar.DATE, 1);
+		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
+		     cal.add(Calendar.DATE, -30);
+		     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
+			 topList = musMapper.realChart(map);	
+			 Util.log.accept("date1:: " +map.get("date1"));
+			 Util.log.accept("date2:: " +map.get("date2"));
+			 topList = musMapper.monthChart(map);
 		}
+		
+		
+		/*for(int i =0; i<21; i++) {
+			topList.get(i).get("topList")
+		}*/
 		return topList;
 	}
 	
 	@GetMapping("/top50lineChart")
 	public List<Map<?,?>> top50lineChart() {
 		  List<Map<?,?>> chartData = null;
+		  Calendar cal = Calendar.getInstance();
 		  String todayDate= new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //오늘
 		  map.put("todayDate",todayDate);
-		  chartData = musMapper.top50lineChart(map);
-		  Util.log.accept("차트용 :: 날짜 ::"+map.get("todayDate"));
-		  Util.log.accept("차트용 :: 데이타 ::"+chartData);
+		  cal.add(cal.DATE, +1); 
+	      String chartDate1 = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+	      map.put("chartDate1",chartDate1);
+	      
+	      cal.add(cal.DATE, -7); 
+	      String chartDate2  = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
+		  map.put("chartDate2",chartDate2);
 		  
+		  chartData = musMapper.top50lineChart(map);
 		
 		return chartData;
 		
