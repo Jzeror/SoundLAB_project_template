@@ -1,4 +1,3 @@
-
  .ls_my-4 {
 	margin-left:1.2rem;
 }
@@ -34,6 +33,7 @@
 	border-top-color: #eee;
 	width: 10%;
 		text-align: center;
+		
 }
 .ls_table-filter th {
  padding: 10px;
@@ -41,7 +41,7 @@
     vertical-align: top;
     color: #369;
     border-bottom: 1px solid #036;
-    ext-align: left;
+   text-align: center;
 }
 
 
@@ -93,43 +93,35 @@
   transition: background-color .3s ease;
 }
 
-.ls_table-filter {
+ .ls_table-filter tr{
   background-color: #fff;
   border-bottom: 1px solid #eee;
    margin: auto;
-}
+} 
 #ls_panel{
 	border: none;
 }
 
 
-#ls_topTable_tr{
-  cursor : default;
-  background-color: #eee;
- border-bottom: 1px solid #eee;
- margin-bottom: auto;
- margin-top: : auto;
-}
+
 .ls_ckbox{
 	text-align: center;
-}
-.ls_table-filter tbody tr td  {
-  padding: 10px;
-  vertical-align: middle;
-  border-top-color: #eee;
-  margin:  auto;
 }
 
 
 .ls_table-filter tbody tr.selected td {
   background-color: #eee;
 }
-
-
-
-.ls_table-filter tr td:nth-child(2) {
-  width: 60px;
-}
+#tableTd1 {width: 5%;}
+#tableTd2 {width: 3%;}
+#tableTd3 {width: 10%;}
+#tableTd4 {width: 20%;}
+#tableTd5 {width: 10%;}
+#tableTd6 {width: 10%;}
+#tableTd7 {width: 5%;}
+#tableTd8 {width: 5%;}
+#tableTd9 {width: 5%;}
+#tableTd10 {width: 8%;}
 
 .ckbox {
   position: relative;
@@ -745,5 +737,7 @@ a {
     border-bottom: 1px solid #eee;
     height: 80px;
     width: 420px;
-	
+}
+#infiScl{
+	width: 100%;
 }

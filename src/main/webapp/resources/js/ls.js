@@ -2,6 +2,8 @@
 var ls = ls || {};
 ls ={
 		chart :x=>{
+	
+			var bool_sw = true;
 			$.getJSON(sh.ctx()+'/music/top50/'+x,d=>{
 				
 				 if(!($("#chartSec").length >0)){ 
@@ -85,8 +87,9 @@ ls ={
 															)
 											)
 					).appendTo($('#chart-top50')),
-					
+					ls.tHeader(),
 					ls.top50table(d),
+					
 
 					$('#allCheck').click(()=>{
 		                if($('#allCheck').is(':checked')){
@@ -121,7 +124,7 @@ ls ={
 							          let options = {
 							        	      
 							        	        subtitle: '현재시간 : '+new Date().toLocaleString(),
-							        	        fontSize : 20,
+							        	        fontSize : 15,
 							        	        width: 1100,
 							        	        height: 350,
 							        	   
@@ -158,7 +161,47 @@ ls ={
 										)
 								).appendTo('#chart_title');
 					})
-					
+				
+						let no= 31;
+					//무한 스크롤
+		     	$(window).on("scroll", function() {
+		     	
+		        		var scrollHeight = $(document).height();
+		        		var scrollPosition = $(window).height() + $(window).scrollTop();		
+
+		        		$("#scrollHeight").text(scrollHeight);
+		        		$("#scrollPosition").text(scrollPosition);
+		        		$("#bottom").text(scrollHeight - scrollPosition);
+		        		
+		        
+		        		if ( scrollPosition > scrollHeight - 100) {
+		        			if(bool_sw){ 
+		    		     		sendData(); //실행 
+		    		     		} 
+		    		     		function sendData(){ 
+		    		     		bool_sw = false;
+		    		     	
+		    	
+		    		     	
+		    		     			$.getJSON($.ctx()+'/music/infiSc/'+no,d=>{
+		    		     				if(no <= 50){
+			        					ls.top50table(d);
+			        						no=no+5;
+			        						  setTimeout(function(){bool_sw = true;},500) 
+		    		     		} 
+		    		     				
+		    		     			})
+		    		     		}
+		    		     		
+		        		}
+		        	
+		        		;
+		        	});
+
+		     	
+		     	
+		     	
+		     	
 					
 					}
 	        	});
@@ -224,13 +267,7 @@ ls ={
 							
 							ls.new_alList(d);
 							ls.al_comments();
-							$('<div/>').attr({id : 'morePage'}).addClass("ls_album_panel container").append(
-									$('<button/>').attr({id : 'al_morePage'}).addClass("btn btn-brand btn-primary").html('더보기')
-									.click(()=>{ 
-									 alert('al_morePage click'); 
-									 
-									 })		
-							).appendTo($albumSec);
+							
 					
 		
 			}
@@ -242,15 +279,12 @@ ls ={
 			
 			
 		},
-		
-		
-	
-		 top50table :d=>{
+		 tHeader :()=>{
 				$('<section/>').addClass("ls_topTable table-container").append(
-						$('<table/>').addClass("ls_table table ls_table-filter").attr({id :'topTable'})
+						$('<table/>').addClass("ls_table table ls_table-`filter").attr({id :'topHeader'})
 				).appendTo($('#pull-left'));
 				$('<tbody/>').append(
-						$('<tr/>').append(
+						$('<tr/>').addClass('ls_table-filter').append(
 										$('<th/>').attr({style : 'width:5%'}).append(
 												$('<input/>').attr({type : 'checkbox', id :'allCheck' }).attr({style : 'width:15px'}),
 												$('<label for="allCheck">')
@@ -268,61 +302,74 @@ ls ={
 								$('<th/>').attr('width','5%').html('영상'),
 								$('<th/>').attr('width','8%').html('싫어요')
 						)
-				).appendTo($('#topTable'));
+				).appendTo($('#topHeader'));
+		 },
+		
+	
+		 top50table :d=>{
+				$('<section/>').addClass("ls_topTable table-container").append(
+						$('<table/>').addClass("ls_table table ls_table-filter").attr({id :'topTable'})
+				).appendTo($('#pull-left'));
+			
 			for(var i =0; i<d.length;i++){
-
-				 $('<tr/>').append(
-							$('<td/>').append(
-									$('<div/>').addClass('ckbox').append(
-											$('<input/>').attr({type : 'checkbox', id :'checkbox'+i, name :'chkBox'}),
-											$('<label for="checkbox'+i+'">') 
-									)
-							),
-							$('<td/>').attr('width','5%').html(i+1).append(
-							),
-							$('<td/>').append(
-											$('<img/>').attr({
-												src : $.ctx()+'/resources/img/album/'+d[i].IMG,
-												id : 'ls_album_photo'
-											}).click(()=>{
-												alert('앨범 사진 클릭');
-											})
-							),
-							$('<td/>').html(d[i].MUSIC_TITLE).attr({style : 'text-overflow: ellipsis'}).click(()=>{
-								alert('제목 클릭');
 				
-							}),
-							$('<td/>').html(d[i].ARTIST_NAME).click(()=>{
-								alert('아티스트 클릭');
-							}),
-							$('<td/>').html(d[i].ALBUM_TITLE).click(()=>{
-								alert('앨범명 클릭');
-							}),
-							$('<td/>').append(
-									$('<i/>').addClass('ls_fa fa fa-play-circle-o')
-									.click(()=>{
-										alert('듣기 클릭');
-									})),
-							$('<td/>').append(
-									$('<i/>').addClass('ls_fa fa fa-heart')
-									.click(()=>{
-										alert('하트 클릭');
-									})),
-							$('<td/>').append(
-									$('<i/>').addClass('ls_fa glyphicon glyphicon-facetime-video')
-									.click(()=>{
-										alert('뮤비 클릭');
-									})),
-							$('<td/>').append(
-									$('<i/>').addClass('ls_fa fa fa-thumbs-down')
-									.click(()=>{
-										alert('싫어요 클릭');
-									}))
-					).appendTo($('#topTable'));
+						$('<tr/>').append(
+								$('<td/>').attr({id : 'tableTd1'}).append(
+										$('<div/>').addClass('ckbox').append(
+												$('<input/>').attr({type : 'checkbox', id :'checkbox'+i, name :'chkBox'}),
+												$('<label for="checkbox'+i+'">') 
+										)
+								),
+								$('<td/>').attr({id : 'tableTd2'}).html(d[i].NO).append(
+								),
+								$('<td/>').attr({id : 'tableTd3'}).append(
+												$('<img/>').attr({
+													src : $.ctx()+'/resources/img/album/'+d[i].IMG,
+													id : 'ls_album_photo'
+												}).click(()=>{
+													alert('앨범 사진 클릭');
+												})
+								),
+								$('<td/>').attr({id : 'tableTd4'}).html(d[i].MUSIC_TITLE)
+								.attr({style : 'text-overflow: ellipsis'}).click(()=>{
+									alert('제목 클릭');
+					
+								}),
+								$('<td/>').attr({id : 'tableTd5'}).html(d[i].ARTIST_NAME).click(()=>{
+									alert('아티스트 클릭');
+								}),
+								$('<td/>').attr({id : 'tableTd6'}).html(d[i].ALBUM_TITLE).click(()=>{
+									alert('앨범명 클릭');
+								}),
+								$('<td/>').attr({id : 'tableTd7'}).append(
+										$('<i/>').addClass('ls_fa fa fa-play-circle-o')
+										.click(()=>{
+											alert('듣기 클릭');
+										})),
+								$('<td/>').attr({id : 'tableTd8'}).append(
+										$('<i/>').addClass('ls_fa fa fa-heart')
+										.click(()=>{
+											alert('하트 클릭');
+										})),
+								$('<td/>').attr({id : 'tableTd9'}).append(
+										$('<i/>').addClass('ls_fa glyphicon glyphicon-facetime-video')
+										.click(()=>{
+											alert('뮤비 클릭');
+										})),
+								$('<td/>').attr({id : 'tableTd10'}).append(
+										$('<i/>').addClass('ls_fa fa fa-thumbs-down')
+										.click(()=>{
+											alert('싫어요 클릭');
+										}))
+							
+				).appendTo($('#topTable'));
+				 
 			 }
 			
 		},
 		new_alList :d=>{
+
+			
 			$('#ls_newA').empty();
 			$('<ul/>').addClass('ls_cards').attr({id : 'ls_newA'}).appendTo($('#ls_newAlLe'));
 			
