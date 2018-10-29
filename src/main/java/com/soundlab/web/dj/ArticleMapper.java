@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ArticleMapper {
 	public List<Object> get(Map<String, Object> p);
-	public List<Object> getDetail(String p);
+	public List<Object> getDetail(Map<String, Object> p);
 }

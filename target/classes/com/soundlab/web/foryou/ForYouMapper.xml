@@ -5,13 +5,22 @@
   
   <mapper namespace="com.soundlab.web.foryou.ForYouMapper">
   <resultMap type="map" id="fy">
-  	<result property="msRank" column="MS_RANK"/>
-  	<result property="msSeq" column="MS_SEQ"/>
-  	<result property="msTitle" column="MS_TITLE"/>
-  	<result property="msArtist" column="MS_ARTIST"/>
-  	<result property="msArtistName" column="MS_ARTIST_NAME"/>
-  	<result property="msAlbum" column="MS_ALBUM"/>
-  	<result property="msAlbumTitle" column="MS_ALBUM_TITLE"/>
+  	<result property="msRankA" column="MS_RANK_A"/>
+  	<result property="msSeqA" column="MS_SEQ_A"/>
+  	<result property="msTitleA" column="MS_TITLE_A"/>
+  	<result property="msGenreA" column="MS_GENRE_A"/>
+  	<result property="msArtistA" column="MS_ARTIST_A"/>
+  	<result property="msArtistNameA" column="MS_ARTIST_NAME_A"/>
+  	<result property="msAlbumA" column="MS_ALBUM_A"/>
+  	<result property="msAlbumTitleA" column="MS_ALBUM_TITLE_A"/>
+  	<result property="msRankB" column="MS_RANK_B"/>
+  	<result property="msSeqB" column="MS_SEQ_B"/>
+  	<result property="msTitleB" column="MS_TITLE_B"/>
+  	<result property="msGenreB" column="MS_GENRE_B"/>
+  	<result property="msArtistB" column="MS_ARTIST_B"/>
+  	<result property="msArtistNameB" column="MS_ARTIST_NAME_B"/>
+  	<result property="msAlbumB" column="MS_ALBUM_B"/>
+  	<result property="msAlbumTitleB" column="MS_ALBUM_TITLE_B"/>
   	<result property="alRank" column="AL_RANK"/>
   	<result property="alArtist" column="AL_ARTIST"/>
   	<result property="alArtistName" column="AL_ARTIST_NAME"/>
@@ -62,8 +71,7 @@
 	WHERE S.AL_RANK LIKE 1)A
 	RIGHT JOIN SJ_EMPTY_SIX SR
 	ON A.MSEQ LIKE SR.NUM)DT
-	ON DT.MSEQ LIKE SJ.MS_RANK
-	;
+	ON DT.MSEQ LIKE SJ.MS_RANK_A
   </select>
   <select id="getAlbumDetail" resultMap="fy">
 	SELECT
@@ -77,143 +85,13 @@
 	ON MS.ALBUM_SEQ = AB.ALBUM_SEQ
 	WHERE MS.ALBUM_SEQ LIKE #{p}
 	ORDER BY MS.MUSIC_SEQ
-	;
   </select>
-  	<!-- <resultMap type="map" id="foryou">
-      <result property="viewCnt" column="VIEW_CNT"/>
-      <result property="imgName" column="IMG_NAME"/>
-      <result property="ext" column="EXT"/>
-      <result property="musicSeq" column="MUSIC_SEQ"/>
-      <result property="musicTitle" column="MUSIC_TITLE"/>
-      <result property="artistName" column="ARTIST_NAME"/>
-      <result property="albumTitle" column="ALBUM_TITLE"/>
-      <result property="hashtag" column="HASHTAG"/>
-      <result property="vCount" column="V_COUNT"/>
-      <result property="albumSeq" column="ALBUM_SEQ"/>
-      <result property="imgName" column="IMG_NAME"/>
-      <result property="ext" column="EXT"/>
-      <result property="artistSeq" column="ARTIST_SEQ"/>
-    </resultMap>
-
-  <select id="getMusic" resultMap="foryou">
-	SELECT *
-	FROM
-		(SELECT
-  			COUNT(V.SEQ_GROUP) VIEW_CNT,
-			M.MUSIC_SEQ,
-			M.MUSIC_TITLE,
-			M.ARTIST_SEQ,
-			AT.ARTIST_NAME,
-			AB.ALBUM_SEQ,
-			AB.ALBUM_TITLE,
-			M.GENRE_SEQ,
-			ROW_NUMBER() OVER(ORDER BY VIEW_CNT DESC) AS RANKING
-		FROM
-			view_record V
-			JOIN MUSIC M
-				ON V.SEQ_GROUP LIKE M.MUSIC_SEQ
-			LEFT JOIN ARTIST AT
-				ON M.ARTIST_SEQ LIKE AT.ARTIST_SEQ
-			LEFT JOIN ALBUM AB
-				ON M.ALBUM_SEQ LIKE AB.ALBUM_SEQ
-			LEFT JOIN (SELECT * FROM UPDOWN WHERE MEMBER_ID LIKE #{p}) UD
-				ON M.MUSIC_SEQ LIKE UD.SEQ_GROUP
-		WHERE
-		  GENRE_SEQ IN (SELECT
-							B.GENRE_SEQ 
-						FROM
-							(SELECT
-								A.*,
-								@G_RANK := @G_RANK + 1 AS RANKING
-							FROM
-								(SELECT
-									*,
-									COUNT(MG.GENRE) AS G_COUNT
-								FROM
-									UPDOWN U
-									LEFT JOIN MUSIC_GENRE MG
-										ON U.SEQ_GROUP LIKE MG.GENRE_SEQ
-								WHERE U.MEMBER_ID LIKE #{p}
-									AND U.SG_ELEMENT LIKE 'genre'
-								GROUP BY U.SEQ_GROUP, U.MEMBER_ID
-								ORDER BY G_COUNT DESC) A, (SELECT @G_RANK := 0)R
-						)B
-						WHERE B.RANKING <![CDATA[ <= ]]> 2)
-			AND UD.UD_SEQ IS NULL
-		GROUP BY V.SEQ_GROUP
-	)C
-	WHERE C.RANKING BETWEEN 1 AND 5
-	ORDER BY C.RANKING
-
-  </select>
-  
-  <select id="getAlbum" resultMap="foryou">
-  	SELECT
-	  *
-	FROM
-	  (SELECT
-	  ROW_NUMBER() OVER(ORDER BY VIEW_CNT DESC) AS RANKING,
-	  M.ARTIST_SEQ,
-	  AT.ARTIST_NAME,
-	  M.ALBUM_SEQ,
-	  AB.ALBUM_TITLE,
-	  COUNT(*) VIEW_CNT,
-	  AB.ALBUM_GENRE,
-	  I.IMG_NAME,
-	  I.EXT
-	FROM
-	  VIEW_RECORD VR
-	  JOIN MUSIC M
-	    ON VR.SEQ_GROUP LIKE M.MUSIC_SEQ
-	  JOIN ALBUM AB
-	    ON M.ALBUM_SEQ LIKE AB.ALBUM_SEQ
-	  JOIN ARTIST AT
-	    ON M.ARTIST_SEQ LIKE AT.ARTIST_SEQ
-	  LEFT JOIN IMG I
-	    ON AB.ALBUM_SEQ LIKE I.SEQ
-	WHERE (AB.ALBUM_GENRE LIKE (SELECT
-	                              CONCAT('%',GENRE,'%')
-	                            FROM
-	                              SJ_FAVOR_G
-	                            WHERE RANKING LIKE 1)
-	    OR AB.ALBUM_GENRE LIKE (SELECT
-	                              CONCAT('%',GENRE,'%')
-	                            FROM
-	                              SJ_FAVOR_G
-	                            WHERE RANKING LIKE 2) )
-	  AND AB.INTRO IS NOT NULL
-	GROUP BY M.ALBUM_SEQ
-	)A
-	WHERE
-	  A.RANKING BETWEEN 1 AND 5
-	ORDER BY A.RANKING
-  </select>
-  
-  <select id="getArtist" resultMap="foryou">
-  	SELECT
-	  * 
-	FROM
-	(SELECT
-	  ROW_NUMBER() OVER(ORDER BY VIEW_CNT DESC) AS RANKING,
-	  M.ARTIST_SEQ,
-	  AT.ARTIST_NAME,
-	  COUNT(*) VIEW_CNT,
-	  I.IMG_NAME,
-	  I.EXT
-	FROM VIEW_RECORD VR
-	  JOIN MUSIC M
-	    ON VR.SEQ_GROUP LIKE M.MUSIC_SEQ
-	  JOIN ARTIST AT
-	    ON M.ARTIST_SEQ = AT.ARTIST_SEQ
-	  LEFT JOIN (SELECT * FROM UPDOWN WHERE MEMBER_ID LIKE #{p}) UD
-	    ON AT.ARTIST_SEQ LIKE UD.SEQ_GROUP
-	  LEFT JOIN IMG I
-	    ON I.SEQ LIKE M.ARTIST_SEQ
-	WHERE VR.MEMBER_ID LIKE #{p}
-	  AND UD.UD_SEQ IS NULL
-	GROUP BY AT.ARTIST_SEQ
-	ORDER BY VIEW_CNT DESC)A
-	WHERE A.RANKING <![CDATA[<=]]> 5
-  </select> -->
-  
+  <insert id="putMusicUp">
+ 	INSERT INTO UPDOWN ( MEMBER_ID , SEQ_GROUP , SG_ELEMENT , TYPES )
+ 	VALUES (#{id},#{seq},'music','u')
+  </insert>
+  <insert id="putGenreUp">
+ 	INSERT INTO UPDOWN ( MEMBER_ID , SEQ_GROUP , SG_ELEMENT , TYPES )
+ 	VALUES (#{id},#{seq},'genre','u')
+  </insert>
   </mapper>

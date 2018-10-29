@@ -17,6 +17,7 @@
       <result property="artistName" column="ARTIST_NAME"/>
       <result property="albumTitle" column="ALBUM_TITLE"/>
       <result property="hashtag" column="HASHTAG"/>
+      <result property="type" column="TYPES"/>
     </resultMap>
 
   <select id="get" resultMap="atc">
@@ -55,7 +56,32 @@
   </select>
   
   <select id="getDetail" resultMap="atc">
-  	SELECT * FROM SJ_DJ_VIEW WHERE ARTICLE_SEQ LIKE #{p}
+SELECT
+SD.*
+<if test="id != null">
+	,IFNULL(UD.TYPES,'-') TYPES
+</if>
+
+FROM SJ_DJ_VIEW SD
+<if test="id != null">
+LEFT JOIN (
+SELECT
+*
+FROM(
+SELECT
+MAX(UD_SEQ) MAX_SEQ
+FROM UPDOWN UD
+WHERE MEMBER_ID LIKE #{id}
+GROUP BY UD.SEQ_GROUP
+ORDER BY UD_SEQ DESC
+)A
+JOIN(SELECT * FROM UPDOWN U) B
+ON A.MAX_SEQ LIKE B.UD_SEQ
+ORDER BY B.SEQ_GROUP
+) UD
+ON SD.MUSIC_SEQ LIKE UD.SEQ_GROUP
+</if>
+WHERE ARTICLE_SEQ LIKE #{seq}
   </select>
   
   </mapper>

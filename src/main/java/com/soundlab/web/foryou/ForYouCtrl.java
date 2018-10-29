@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.soundlab.web.tx.TxService;
+
 @RestController
 public class ForYouCtrl {
 	@Autowired ForYouMapper fm;
+	@Autowired TxService ts;
 	@RequestMapping("/foryou/{id}")
 	public @ResponseBody Map<String, Object> getForYou(@PathVariable String id){
 		System.out.println("cookieID :: "+id);
@@ -28,4 +31,12 @@ public class ForYouCtrl {
 		System.out.println(res.get("albumDt"));
 		return res;
 	}
+	@RequestMapping("/foryou/musicUp/{id}/{seq}")
+	public void putUpdown(@PathVariable String id, @PathVariable String seq){
+		Map<String, Object> p = new HashMap<>();
+		p.put("id", id);
+		p.put("seq", seq);
+		ts.putMusicUp(p);
+	}
+	
 }

@@ -27,10 +27,14 @@ public class ArticleCtrl {
 		System.out.println(res.get("djlist"));
 		return res;
 	}
-	@RequestMapping("/dj/{seq}/musics")
-	public @ResponseBody Map<String, Object> getDetail(@PathVariable String seq){
+	
+	@RequestMapping("/dj/{seq}/musics/{id}")
+	public @ResponseBody Map<String, Object> getDetail(@PathVariable String seq,@PathVariable String id){
 		Map<String, Object> res = new HashMap<>();
-		res.put("mlist", am.getDetail(seq));
+		Map<String, Object> p = new HashMap<>();
+		p.put("seq", seq);
+		if(!id.equals("undefined")) p.put("id", id);
+		res.put("mlist", am.getDetail(p));
 		return res;
 	}
 }
