@@ -1,4 +1,4 @@
-/*package com.soundlab.web.dummy;
+package com.soundlab.web.dummy;
 
 import java.util.Map;
 
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class CreateDummy {
 
 	public static void main(String[] args) {
-		hashView();
+		chartview();
 
 	}
 	
@@ -15,110 +15,111 @@ public class CreateDummy {
 	
 	 static void chartview() {
 				int[] lst = {  
-						  73
-						  ,124
-						  ,79
-							  ,80		
-							 ,110
-						  ,72
-							 ,121
-									 ,118
-							  ,66
-							 ,85
-							  ,68
-							  ,70
-								  ,71
-							  ,86
-							  ,83
-						  ,88
-
-							 ,107
-							 ,64
-			  ,122
-				 ,125
-
-					 ,114
-			 
-										  ,102
-										  ,57 
-										  ,103
-									
-										  ,91
-												  ,67
-												  ,106
-								
 							
-								  ,59
-								  ,77
-									 ,116
+									  
+														  104	
+														  
+														  ,87
+														 ,119
+										,62
+												  
+											 ,101
+											 ,112
+											  ,83
+											  ,88
+										  	  ,111
+												 ,107
+												 ,64
+										   ,123
+										   ,113
+										    ,93
+										  ,92
+										  ,78
+										  ,120
 
-							
-							  ,97
-							  ,115
-								 ,99
-								 ,100
-								 ,69
-
-							  ,81
-										  ,104	
-										  
-										  ,87
-										 ,119
-						,62
-								  
-							 ,101
-							 ,112
-					
-							  ,78
-							  ,120
-
-							  ,117
+										  ,117
 
 
-							  ,58
-							   ,94
-							   ,95
-							   ,96   
-							   ,123
-							   ,113
-							    ,93
-							  ,92
+										  ,58
+										   ,94
+										   ,95
+										   ,96
+										   ,73
+											  ,124
+											  ,79
+												  ,80		
+												 ,110
+											  ,72
+											  ,66
+												 ,85
+												  ,68
+												  ,122
+													 ,125
 
-							  ,98 
-							  		  ,109	
-							  	  ,111
-							  					  ,84
-							  					  ,90
-							  						 ,108
-							  						  ,76
-								 ,82
-								 ,105
-						 ,63 //빈지노 아쿠아맨
-						
-						 
-						
-						 ,75  // 방탄 아임파인
-						 ,74  // 방탄 아이돌
-						 
-						 ,65 //아이유 삐삐
-						 ,89  // 박효신 기프트
+														 ,114
+														 ,116
+
+															
+														  ,97
+														  ,115
+															 ,99
+															 ,100
+															 ,69
+
+														  ,81
+											
+												  					  ,84
+												  					  ,90
+												  						 ,108	
+																  ,102
+																  ,57 
+																  ,103
+																  ,86
+																  ,89  // 박효신 기프트		
+																  						 
+																				
+																				  	
+																					 ,74  // 방탄 아이돌
+																  ,91
+																		  ,67
+																		  ,106
+														
+												  						  ,76
+																			 ,82
+																			 ,105
+																	 
+														  ,59
+														  ,77
+									  ,70
+										  ,71
+										  ,75  // 방탄 아임파인
+											 ,121
+													 ,118
+															  ,98 
+													  		  ,109	
+									  					
+													  		 ,65 //아이유 삐삐
+										  ,63 //빈지노 아쿠아맨
+														
+														
 				};
-				for(int s=0;s<67;s++) {
-					rm.put("seq", lst[s]);
+				for(int s=17;s<67;s++) {
 					for(int i=0;i<s+1;i++) {
-						dp.post(rm);
+						System.out.println("INSERT INTO VIEW_RECORD (MEMBER_ID, SEQ_GROUP, SG_ELEMENT, VIEW_DATE)\n" 
+								+"VALUES\n" 
+								+"('shin',"+lst[s]+",'music','2018-11-01 20:20:34');");
 					}
 				}
 	 }
 	
 	
 	
-	<insert id="hashRecord">
+	/*<insert id="hashRecord">
   	INSERT INTO VIEW_RECORD
   	(MEMBER_ID, SEQ_GROUP, SG_ELEMENT)
   	VALUES
   	(#{memberId},#{seq},'hash')
-  </insert>
+  </insert>*/
 	static void hashView() {
 		//단어구름, 해시태그, 디제이 게시판 
 		for(int i=0;i<300;i++) {
@@ -141,7 +142,7 @@ public class CreateDummy {
 				"velit","massa",
 				"nulla","lorem"
 		};
-		 74 | IDOL
+		 /*74 | IDOL
 	     75 | I`m Fine
 	     76 | Euphoria
 	    133 | FAKE LOVE
@@ -171,7 +172,7 @@ public class CreateDummy {
 	    157 | 쩔어
 	    158 | 흥탄소년단
 	    159 | 잡아줘 (Hold Me Tight)
-	    30곡
+	    30곡*/
 		int[] bangmusics = { 74,
 				75,
 			    76,
@@ -202,12 +203,12 @@ public class CreateDummy {
 			   157,
 			   158,
 			   159};
-		<insert id="bangRecord">
+		/*<insert id="bangRecord">
 	  	INSERT INTO VIEW_RECORD
 	  	(MEMBER_ID, SEQ_GROUP, SG_ELEMENT, VIEW_DATE)
 	  	VALUES
 	  	(#{memberId},#{seq},'music', '2019-01-01 20:20:34')
-	  </insert>
+	  </insert>*/
 		for(int i=0;i<500;i++) {
 			int memIndex = (int)(Math.random()*16);
 			int	bangmusicIndex = (int)(Math.random()*30);
@@ -219,4 +220,3 @@ public class CreateDummy {
 		
 	}
 }
-*/

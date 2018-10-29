@@ -17,13 +17,15 @@ sh = (()=>{
             $.getScript(sh.js()+'/jt.js'),
             $.getScript(sh.js()+'/nr.js')
          ).done(d=>{
-        	 $.removeCookie("loginID");
+        	 //$.removeCookie("loginID");
+        	 
         	 home(); 
          });
          
      };
      var home =()=>{
          console.log('sh.home ::');
+         $.removeCookie("kakao");
          w.html(nav()+banner()+slider()+mainContents()+footer());
 		 $('<main id="id_main">')
 		 .html(
@@ -105,8 +107,8 @@ sh = (()=>{
 		});
 
          
-	     $.getJSON($ctx+'/main/hash',d=>{
-	    	 /*let hashcnt = [389,344,284,244,218,178,172,140,139,139,127,125,118,111,110];*/
+	  /*   $.getJSON($ctx+'/main/hash',d=>{
+	    	 let hashcnt = [389,344,284,244,218,178,172,140,139,139,127,125,118,111,110];
 	    	 let hashcnt = d.cnt;
 	    	 let hashdata = {"count":{"신나는":hashcnt[0],"차분한":hashcnt[1],"어쿠스틱":hashcnt[2],"트로피칼":hashcnt[3],"부드러운":hashcnt[4],"드라이브":hashcnt[5],"휴식":hashcnt[6],"편집숍&카페":hashcnt[7],"헬스":hashcnt[8],"클럽":hashcnt[9],"스트레스":hashcnt[10],"이별":hashcnt[11],"사랑&고백":hashcnt[12],"새벽감성":hashcnt[13],"위로":hashcnt[14]},
 		    		 "sample_title":{"신나는":[hashcnt[0]],"차분한":[hashcnt[1]],"어쿠스틱":[hashcnt[2]],"트로피칼":[hashcnt[3]],"부드러운":[hashcnt[4]],"드라이브":[hashcnt[5]],"휴식":[hashcnt[6]],"편집숍&카페":[hashcnt[7]],"헬스":[hashcnt[8]],"클럽":[hashcnt[9]],"스트레스":[hashcnt[10]],"이별":[hashcnt[11]],"사랑&고백":[hashcnt[12]],"새벽감성":[hashcnt[13]],"위로":[hashcnt[14]]}
@@ -124,15 +126,37 @@ sh = (()=>{
 	    			 fn.scroll({ id : $("#djSec"), len : 200});
 	    			 let hashbtn = $('input:checkbox[value="'+$(this).text()+'"]');
 	    			 hashbtn.closest('label').addClass('active');
-	    			/* hashbtn.prop('checked',true).trigger('change');*/
+	    			 hashbtn.prop('checked',true).trigger('change');
 	    			 hashbtn.prop('checked',true).change();
 	          	 },300);
 	    	  });
 	    
-	     });
+	     });*/
 	     
 	     
-	     $.getJSON($ctx+'/main/chart',d=>{
+	     $.getJSON($ctx+'/main/mainContents',d=>{
+	    	 let hashcnt = d.cnt;
+	    	 let hashdata = {"count":{"신나는":hashcnt[0],"차분한":hashcnt[1],"어쿠스틱":hashcnt[2],"트로피칼":hashcnt[3],"부드러운":hashcnt[4],"드라이브":hashcnt[5],"휴식":hashcnt[6],"편집숍&카페":hashcnt[7],"헬스":hashcnt[8],"클럽":hashcnt[9],"스트레스":hashcnt[10],"이별":hashcnt[11],"사랑&고백":hashcnt[12],"새벽감성":hashcnt[13],"위로":hashcnt[14]},
+		    		 "sample_title":{"신나는":[hashcnt[0]],"차분한":[hashcnt[1]],"어쿠스틱":[hashcnt[2]],"트로피칼":[hashcnt[3]],"부드러운":[hashcnt[4]],"드라이브":[hashcnt[5]],"휴식":[hashcnt[6]],"편집숍&카페":[hashcnt[7]],"헬스":[hashcnt[8]],"클럽":[hashcnt[9]],"스트레스":[hashcnt[10]],"이별":[hashcnt[11]],"사랑&고백":[hashcnt[12]],"새벽감성":[hashcnt[13]],"위로":[hashcnt[14]]}
+		     };
+	    	 WordCloud({
+		    		container : '#cloud-container',
+		    		data : hashdata
+		     });
+	    	
+	    	$('#cloud-container').on("click",'text',function(event){
+	    		 $("#djSec").remove();
+	    		 //sh.service.removeSec();
+	    		 sj.dj();
+	    		 setTimeout(()=>{
+	    			 fn.scroll({ id : $("#djSec"), len : 200});
+	    			 let hashbtn = $('input:checkbox[value="'+$(this).text()+'"]');
+	    			 hashbtn.closest('label').addClass('active');
+	    			 //hashbtn.prop('checked',true).trigger('change');
+	    			 hashbtn.prop('checked',true).change();
+	          	 },300);
+	    	  });
+	    	 
 	    	 
 	    	 let titles = [];
 	    	 let musicSeq = [];
@@ -215,6 +239,7 @@ sh = (()=>{
               $('#loginBtn').attr('id','logoutBtn').text('logout').click(()=>{
                   alert('로그아웃');
                   $.removeCookie("loginID");
+                  $.removeCookie("kakao");
                   home();
               });
               $('#joinBtn').attr('id','myPageBtn').text('My page').click(()=>{
@@ -549,6 +574,27 @@ var login = ()=> '<section id="loginSec" class="loginSec" >'
 	 +'</div>'
 	 +'</div>'
      +'</section>';
+var login2 = ()=> '<section id="loginSec" class="loginSec" >'
++'<div class="container-fluid">'
++'<div class="col-md-4">'
++'</div>'
++'<div class="col-md-5">'
+/* loginBox */
++'<div id="loginBox" class="loginBox">'
++'<div id="logoForm" class="logoForm">'
++'<img src="'+$.img()+'/logo.png" id="logoImg" class="loginLogo"><h2 class="loginInst">로그인 후 이용하실 수 있습니다.</h2>'
++'</div>'
++'<div id="loginForm" class="loginForm">'
++'<input id="memberId" class="loginInput" type="text" placeholder="아이디" required/></br>'
++'<input id="pass" class="loginInput" type="password" placeholder="비밀번호" required/></br>'
++'</div>'
++'</div>'
+/*--loginBox--*/
++'</div>'
++'<div class="col-md-3">'
++'</div>'
++'</div>'
++'</section>';
 var join = ()=> '<section id="joinSec" class="joinSec">'
 	 +'<div class="container-fluid">'
 	 +'<div class="col-md-4">'
@@ -688,6 +734,7 @@ var mypage =()=>'<section id="mypageSec" class="joinSec">'
          mainContents : mainContents,
          footer : footer,
          login : login,
+         login2 : login2,
          join : join,
          mypage : mypage
       };
@@ -721,9 +768,41 @@ sh.service ={
               });
           
           ui.br({len : 4, at : $loginForm});
+          ui.btn({ id : 'loginConf', clazz : 'success loginConf', txt : '로그인', at : $loginForm})
+          .click(e=>{
+               if(fn.loginValidation({ id : $memberId.val(), pass : $pass.val()})){
+                   $.ajax({
+                       url : sh.ctx()+'/member/login',
+                       method : 'post',
+                       contentType : 'application/json',
+                       data : JSON.stringify({
+                           memberId : $memberId.val(),
+                           pass : $pass.val()
+                       }),
+                       success : d=>{
+                           console.log('login success in :::');
+                           if(d.valid === "admin"){
+                        	   sh.service.loginInfo(d);
+                        	   nr.init();
+                           }
+                           else if(d.valid === "user"){
+                               sh.service.loginInfo(d);
+                               sh.home();
+                           }else{
+                               alert(d.valid+'가 틀렸습니다.');
+                               sh.service.login();
+                           }
+                       }
+                     });
+                }
+      });
           $('<a/>').attr({id:'kakao-login-btn', href:'/oauth/authorize?client_id={15e9bb1b311247918da5a29ec083b4b1}&redirect_uri={http://localhost/oauth}&response_type=code'}).appendTo($loginForm);
           $('<a/>').attr({href:'http://developers.kakao.com/logout'}).appendTo($loginForm);
-          Kakao.init('2cc6f2bb03b5c2f7532151a1692ca793');
+          if($.cookie("kakao")==null){
+        	  Kakao.init('2cc6f2bb03b5c2f7532151a1692ca793');
+              $.cookie("kakao","t");
+          }
+          
           Kakao.Auth.createLoginButton({
               container: '#kakao-login-btn',
               success: function(authObj) {
@@ -731,26 +810,61 @@ sh.service ={
             	  Kakao.API.request({
             		  url:'/v1/user/me',
                       success : d=>{
-                          console.log('login success in :::'+d.id +':: pass ::'+d.pass);
-                          $.each(d,(i,v)=>{
-                        	 alert('i ::' +i);
-                        	 alert('v :: '+ v);
-                        	 if(i==='properties'){
-                        		 $.each(v,(k,z)=>{
-                        			console.log('properties ::'+k);
-                        			console.log('value ::'+z);
-                        		 });
-                        	 }
-                          });
+                          console.log("id : "+d.id);
+                          console.log("email : "+d.kaccount_email);
+                          console.log("pw : "+d.uuid);
+                          console.log("age : "+d.properties.age_rang);
+                          console.log("birthday : "+d.properties.birthday);
+                          console.log("gender : "+d.properties.gender);
+                          console.log("profile image : "+d.properties.profile_image);
+                          console.log("nickname : "+d.properties.nickname);
                           $.ajax({
                               url : sh.ctx()+'/member/kakao',
                               method : 'post',
                               contentType : 'application/json',
                               data : JSON.stringify({
-                                  memberId : d.id,
+                                  KAKAO_ID : d.id,
+                                  KAKAO_PASS : d.uuid
                               }),
-                              success : d=>{
-                                  console.log('login success in :::' +d.memberId);
+                              success : x=>{
+                            	  if(x.valid === 'Y'){
+                            		  console.log('최초 아님 KAKAO login success in :::' +x.memberId);
+                            		  $.cookie("loginID",x.memberId);
+                            		  sh.home();
+                            	  }else{
+                            		  alert('카카오톡 최초 로그인시 기존 아이디 로그인이 필요합니다.');
+                            		  $(sh.w()).html(sh.login2());
+                            		  let $loginForm = $('#loginForm');
+                            		  ui.br({len : 4, at : $loginForm});
+                                      ui.btn({ id : 'loginConf', clazz : 'success loginConf2', txt : '로그인', at : $loginForm})
+                                      .click(e=>{
+                                    	  
+                                           if(fn.loginValidation({ id : $('#memberId').val(), pass : $('#pass').val()})){
+                                               $.ajax({
+                                                   url : sh.ctx()+'/member/login',
+                                                   method : 'post',
+                                                   contentType : 'application/json',
+                                                   data : JSON.stringify({
+                                                       memberId : $('#memberId').val(),
+                                                       pass : $('#pass').val(),
+                                                       KAKAO_ID : x.kId,
+                                                       KAKAO_PASS : x.kPass
+                                                   }),
+                                                   success : f=>{
+                                                       console.log('최초 KAKAO login success in :::');
+                                                       if(f.valid === "user"){
+                                                    	   $.cookie("loginID",f.memberId);
+                                                 		   sh.home();
+                                                       }else{
+                                                           alert(f.valid+'가 틀렸습니다.');
+                                                           sh.service.login();
+                                                       }
+                                                   }
+                                                 });
+                                            }
+                                  });
+                            	  }
+                                  
                                   
                               }
                             });
@@ -761,34 +875,7 @@ sh.service ={
                  alert(JSON.stringify(err));
               }
             });
-          ui.btn({ id : 'loginConf', clazz : 'success loginConf', txt : '로그인', at : $loginForm})
-              .click(e=>{
-                   if(fn.loginValidation({ id : $memberId.val(), pass : $pass.val()})){
-                       $.ajax({
-                           url : sh.ctx()+'/member/login',
-                           method : 'post',
-                           contentType : 'application/json',
-                           data : JSON.stringify({
-                               memberId : $memberId.val(),
-                               pass : $pass.val()
-                           }),
-                           success : d=>{
-                               console.log('login success in :::');
-                               if(d.valid === "admin"){
-                            	   sh.service.loginInfo(d);
-                            	   nr.init();
-                               }
-                               else if(d.valid === "user"){
-                                   sh.service.loginInfo(d);
-                                   sh.home();
-                               }else{
-                                   alert(d.valid+'가 틀렸습니다.');
-                                   sh.service.login();
-                               }
-                           }
-                         });
-                    }
-          });
+          
        
          $('#logoImg').click(e=>{
         	  e.preventDefault();

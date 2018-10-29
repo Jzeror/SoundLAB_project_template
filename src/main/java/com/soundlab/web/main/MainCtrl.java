@@ -23,6 +23,27 @@ public class MainCtrl {
 	@Autowired Map<String,Object> rm;
 	@Autowired MainMapper mp;
 	
+	@GetMapping("/mainContents")
+	public Map<String,Object> mainContents() {
+		logger.info("MainCtrl ::: mainContents ");
+		rm.clear();
+		System.out.println("hash ::: "+mp.getHash());
+		rm.put("cnt", mp.getHash());
+		
+		Calendar cal = Calendar.getInstance();
+		 cal.add(Calendar.DATE, -1);
+	     rm.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
+		 cal.add(Calendar.DATE, +2);
+	     rm.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));		    
+		 Util.log.accept("date1:: " +rm.get("date1"));
+		 Util.log.accept("date2:: " +rm.get("date2"));
+		
+		System.out.println("chart ::: "+mp.getChart(rm));
+		rm.put("top5", mp.getChart(rm));
+		
+		return rm;
+	}
+	
 	@GetMapping("/hash")
 	public Map<String,Object> hash() {
 		logger.info("MainCtrl ::: hash ");

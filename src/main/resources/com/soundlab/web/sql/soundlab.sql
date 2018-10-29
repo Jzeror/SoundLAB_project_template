@@ -171,7 +171,7 @@ ALTER TABLE UPDOWN ADD CONSTRAINT UPDOWN_FK_MEMBER_ID FOREIGN KEY (MEMBER_ID) RE
 create table KAKAO(
     MEMBER_ID VARCHAR(20) PRIMARY KEY,
     KAKAO_ID VARCHAR(20),
-    KAKAO_PASS VARCHAR(20)
+    KAKAO_PASS VARCHAR(60)
 );
 
 ALTER TABLE KAKAO ADD CONSTRAINT KAKAO_FK_MEMBER_ID FOREIGN KEY (MEMBER_ID) REFERENCES MEMBER(MEMBER_ID);
@@ -2519,5 +2519,17 @@ DELIMITER $$
 	  	WHERE MEMBER_ID LIKE #{memberId};
 	  END $$
 DELIMITER ;
+
+
+
+
+
+
+
+
+--------------------------------------- 더미 ------------------------------------------------------------------------
+------------------ view record ------------------------------------------------------------------------------------
+
+
 
 

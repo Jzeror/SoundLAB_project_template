@@ -14,7 +14,17 @@
 		<result property="email" column="E_MAIL"/>
 	</resultMap>
 	
-	
+	 <select id="kakao" resultType="int">
+	    SELECT COUNT(*) FROM KAKAO 
+	    <where>
+	    	<if test=" memberId != null and memberId != '' ">
+	    		KAKAO_ID LIKE #{KAKAO_ID}
+	    	</if>
+	    	<if test=" pass != null and pass != '' ">
+	    		AND KAKAO_PASS LIKE #{KAKAO_PASS}
+	    	</if>
+	    </where>
+	  </select>
 	
 	  <select id="get" resultMap="mbr">
 	    SELECT MEMBER_ID, PASS, NAME, BIRTH, PHONE, NICK, SEX, E_MAIL FROM MEMBER 
@@ -27,6 +37,11 @@
 	    	</if>
 	    </where>
 	  </select>
+	  
+	  <select id="getKakao" resultMap="string">
+	    SELECT MEMBER_ID FROM KAKAO WHERE KAKAO_ID LIKE #{KAKAO_ID} AND KAKAO_PASS LIKE #{KAKAO_PASS}
+	  </select>
+	  
 	  <select id="count" resultType="int">
 	    SELECT COUNT(*) FROM MEMBER 
 	    <where>
@@ -43,6 +58,12 @@
 	  	(MEMBER_ID, PASS, NAME, BIRTH, PHONE, NICK, SEX, E_MAIL)
 	  	VALUES
 	  	(#{memberId},#{pass},#{name},#{ssn},#{phone},#{nick},#{sex},#{email})
+	  </insert>
+	  <insert id="postKakao">
+	  	INSERT INTO KAKAO
+	  	(MEMBER_ID, KAKAO_ID, KAKAO_PASS)
+	  	VALUES
+	  	(#{memberId},#{KAKAO_ID},#{KAKAO_PASS})
 	  </insert>
 	  <insert id="upGenre" parameterType="map">
 	  	INSERT INTO UPDOWN
