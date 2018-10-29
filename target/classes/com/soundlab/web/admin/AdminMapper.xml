@@ -56,7 +56,7 @@
 	
 	<!-- 선호도 -->
 	<select id="ageGenre" resultMap="admin">
-	SELECT * FROM AGE_GENRE
+	SELECT * FROM NR_AGE_GENRE
 	</select>
 	<select id="ageArtist" resultMap="admin">
 	SELECT * FROM AGE_ARTIST
