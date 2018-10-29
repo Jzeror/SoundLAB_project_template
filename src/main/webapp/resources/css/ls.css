@@ -565,6 +565,8 @@ overflow: hidden;
 } 
 .ls_fa-line-chart{
   margin-right: 30px;
+  float: left;
+  
 	
 }
 
@@ -576,7 +578,7 @@ overflow: hidden;
 }
 
 .rank_time ul em, .rank_time ul em, .rank_time ul em {
-color: #ff9752;
+
     line-height: 20px;
     overflow: hidden;
     float: left;
@@ -590,18 +592,19 @@ color: #ff9752;
     width: 80px;
     height: 25px;
     background: url(//cdnimg.melon.co.kr/resource/image/web/chart/bg_rank01.png) no-repeat left top;
-    color: #94f315;
+    color: #3e9eff;
 }
 .rank_time ul li.lank02 {
     width: 79px;
     height: 25px;
     background: url(//cdnimg.melon.co.kr/resource/image/web/chart/bg_rank02.png) no-repeat left top;
+   color: #ff0080;
 }
 .rank_time ul li.lank03 {
     width: 80px;
     height: 25px;
     background: url(//cdnimg.melon.co.kr/resource/image/web/chart/bg_rank03.png) no-repeat left top;
-    color: #39c5c2;
+    color: #f0ac0f;
 }
 .rank_time ul li {
     overflow: hidden;
@@ -623,16 +626,8 @@ color: #ff9752;
 }
 
 
-hr {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border: 0;
-    border-top: 1px solid #FFFFFF;
-}
-a {
-    color: #82b440;
-    text-decoration: none;
-}
+
+
 .blog-comment::before,
 .blog-comment::after,
 .blog-comment-form::before,
@@ -740,4 +735,8 @@ a {
 }
 #infiScl{
 	width: 100%;
+}
+.ls_chart_time{
+	font-size: 16px;
+	    color: #aaaaaa;
 }

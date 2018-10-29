@@ -6,13 +6,14 @@
 
 	<select id="top50List" resultType="java.util.Map"
 		parameterType="map">
-	SELECT CAST(@RNUM := @RNUM + 1 AS SIGNED INTEGER) AS NO, A.*
+SELECT CAST(@RNUM := @RNUM + 1 AS SIGNED INTEGER) AS NO, A.*
   FROM (  SELECT AL.ALBUM_TITLE,
                  AR.ARTIST_NAME,
                  MUS.MUSIC_TITLE,
-                 V.VIEW_DATE,
-                  MUS.MUSIC_SEQ,
-                   AL.ALBUM_SEQ,
+                 MUS.MUSIC_SEQ,
+                 AL.ALBUM_SEQ,
+                 AR.ARTIST_SEQ,
+                  DATE_FORMAT(V.VIEW_DATE,'%m-%d')AS VIEW_DATE,
                  COUNT(SEQ_GROUP) AS VIEW_COUNT,
                  (SELECT CONCAT(IMG_NAME, '.', EXT)
                     FROM IMG
@@ -21,11 +22,14 @@
                  JOIN VIEW_RECORD V ON V.SEQ_GROUP LIKE MUS.MUSIC_SEQ
                  JOIN ALBUM AL ON MUS.ALBUM_SEQ LIKE AL.ALBUM_SEQ
                  JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
-           WHERE VIEW_DATE BETWEEN CONCAT(#{date2},'%') AND CONCAT(#{date1},'%')
-        GROUP BY MUSIC_TITLE
-        ORDER BY VIEW_COUNT DESC
-           LIMIT 30) AS A,
-       (SELECT @RNUM := 0) AS B;
+           WHERE VIEW_DATE BETWEEN CONCAT(#{date1},'%') AND CONCAT(#{date2},'%')
+   GROUP BY V.SEQ_GROUP, V.VIEW_DATE
+ORDER BY V.VIEW_DATE DESC, COUNT(*) DESC
+           LIMIT 30 ) AS A,
+       (SELECT @RNUM := 0) AS B
+
+
+
 
 	</select>
 	
@@ -69,13 +73,13 @@ ORDER BY V1.VIEW_DATE DESC, COUNT(*) DESC
   SELECT C.*
        FROM
        (SELECT CAST(@RNUM := @RNUM + 1 AS SIGNED INTEGER) AS NO, A.*
-  FROM (  SELECT AL.ALBUM_TITLE,
+  FROM ( SELECT AL.ALBUM_TITLE,
                  AR.ARTIST_NAME,
-                 MUS.MUSIC_TITLE,
-                 MUS.MUSIC_SEQ,
-                 AL.ALBUM_SEQ,
                  AR.ARTIST_SEQ,
-                  DATE_FORMAT(V.VIEW_DATE,'%m-%d')AS VIEW_DATE,
+                 MUS.MUSIC_TITLE,
+                 V.VIEW_DATE,
+                  MUS.MUSIC_SEQ,
+                   AL.ALBUM_SEQ,
                  COUNT(SEQ_GROUP) AS VIEW_COUNT,
                  (SELECT CONCAT(IMG_NAME, '.', EXT)
                     FROM IMG
@@ -84,7 +88,7 @@ ORDER BY V1.VIEW_DATE DESC, COUNT(*) DESC
                  JOIN VIEW_RECORD V ON V.SEQ_GROUP LIKE MUS.MUSIC_SEQ
                  JOIN ALBUM AL ON MUS.ALBUM_SEQ LIKE AL.ALBUM_SEQ
                  JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
-           WHERE VIEW_DATE BETWEEN '2018-10-25%' AND  '2018-10-27%'
+     WHERE VIEW_DATE BETWEEN CONCAT(#{date2},'%') AND CONCAT(#{date1},'%')
         GROUP BY MUSIC_TITLE
         ORDER BY VIEW_COUNT DESC
            LIMIT 50 ) AS A,

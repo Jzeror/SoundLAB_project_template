@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.soundlab.web.bean.album;
 import com.soundlab.web.bean.comment;
+import com.soundlab.web.bean.music;
+import com.soundlab.web.cmm.Util;
 
 @RestController
 @RequestMapping("/album")
@@ -29,9 +32,12 @@ public class AlbumCtrl {
 		List<Map<?,?>> newAl = null;
 		  if(x.equals("newAl_recent")) {
 				 newAl=alMapper.newAl_recent();
+				  Util.log.accept("album:: " +newAl);
 		  }else {
 			  newAl=alMapper.newAl_like();
+			  Util.log.accept("album:: " +newAl);
 		  }
+		
 		return newAl;
 	}
 	@PostMapping("/alComment")
@@ -58,6 +64,15 @@ public class AlbumCtrl {
 		carousel= alMapper.carousel(map);
 		return carousel;
 	}
-	
+	@GetMapping("/getMusSeq/{x}")
+	public List<Map<?,?>> getMusSeq(@PathVariable int x){
+		  Util.log.accept("getMusSeq:: " +x);
+		  List<Map<?,?>> musSeq = null;
+		  map.put("alSeq", x);
+		  musSeq = alMapper.getMusSeq(map);
+		 Util.log.accept("musSeqList:: " +musSeq);
+		
+		return musSeq;
+	}
 	
 }

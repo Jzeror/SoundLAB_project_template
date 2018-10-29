@@ -33,27 +33,29 @@ public class MusicCtrl {
 
 		if(x.equals("realChart") ) {
 			 Calendar cal = Calendar.getInstance();
-			 cal.add(Calendar.DATE, +1);
-		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
-		     cal.add(Calendar.DATE, -2);
-		     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
-			 topList = musMapper.top50List(map);		
+			 cal.add(Calendar.DATE, -1);
+		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
+			 cal.add(Calendar.DATE, +2);
+		     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));		    
+			 topList = musMapper.top50List(map);
+			 Util.log.accept("date1:: " +map.get("date1"));
+			 Util.log.accept("date2:: " +map.get("date2"));
 			 System.out.println("topList:::::"+topList);
 		}else if (x.equals("weekChart")){
 			Calendar cal = Calendar.getInstance();
-			 cal.add(Calendar.DATE, 1);
-		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
-		     cal.add(Calendar.DATE, -7);
-		     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
+			 cal.add(Calendar.DATE, -7);
+		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
+			 cal.add(Calendar.DATE, +7);
+		     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
 			 topList = musMapper.top50List(map);	
 			 Util.log.accept("date1:: " +map.get("date1"));
 			 Util.log.accept("date2:: " +map.get("date2"));
 		}else if (x.equals("monthChart") ){
 			Calendar cal = Calendar.getInstance();
-			 cal.add(Calendar.DATE, 1);
-		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
-		     cal.add(Calendar.DATE, -30);
-		     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
+			 cal.add(Calendar.DATE, -30);
+		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
+			 cal.add(Calendar.DATE, +31);
+		     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
 			 topList = musMapper.top50List(map);	
 			 Util.log.accept("date1:: " +map.get("date1"));
 			 Util.log.accept("date2:: " +map.get("date2"));
