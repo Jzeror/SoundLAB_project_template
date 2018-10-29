@@ -62,8 +62,8 @@ VALUES(ISEQ.NEXTVAL,'','','');
 <!-- ERD -- 테이블 --> 
 create table ALBUM(
     ALBUM_SEQ INT PRIMARY KEY,
-    ALBUM_TITLE VARCHAR(20) NOT NULL,
-    INTRO VARCHAR(200),
+    ALBUM_TITLE VARCHAR(50),
+    INTRO VARCHAR(2000),
     AGENCY_NAME VARCHAR(20),
     RELEASE_DATE VARCHAR(20),
     ALBUM_TYPE VARCHAR(20),
@@ -75,18 +75,20 @@ create table ALBUM(
 
 create table MUSIC_GENRE(
     GENRE_SEQ INT PRIMARY KEY,
-    GENRE VARCHAR(20) NOT NULL
+    GENRE VARCHAR(20) 
 );
 
 
 create table ARTIST(
     ARTIST_SEQ INT PRIMARY KEY,
-    ARTIST_NAME VARCHAR(20) NOT NULL,
+    ARTIST_NAME VARCHAR(20),
     SEX VARCHAR(10),
     BIRTH VARCHAR(20),
     DEBUT VARCHAR(20),
     NATION VARCHAR(20),
-    GROUP_NAME VARCHAR(20)
+    GROUP_NAME VARCHAR(20),
+    INTRO1 VARCHAR(500),
+    INTRO2 VARCHAR(2000),
 );
 
 create table IMG(
@@ -98,120 +100,102 @@ create table IMG(
 
 create table MV(
     MV_SEQ INT PRIMARY KEY,
-    MV_TITLE VARCHAR(20) NOT NULL,
+    MV_TITLE VARCHAR(20),
     MUSIC_SEQ INT,
-    RELEASE_DATE VARCHAR(20)
+    RELEASE_DATE VARCHAR(20),
+    YTB VARCHAR(100)
 );
 
-ALTER TABLE MV ADD CONSTRAINT MV_FK_MUSIC_SEQ FOREIGN KEY (MUSIC_SEQ) REFERENCES MUSIC(MUSIC_SEQ);
-
+ALTER TABLE MV ADD CONSTRAINT MV_FK_MUSIC_SEQ FOREIGN KEY (MUSIC_SEQ) REFERENCES MUSIC(MUSIC_SEQ) ON DELETE CASCADE;
 
 create table MUSIC(
     MUSIC_SEQ INT PRIMARY KEY,
-    MUSIC_TITLE VARCHAR(20) NOT NULL,
+    MUSIC_TITLE VARCHAR(50),
     ALBUM_SEQ INT,
     ARTIST_SEQ INT,
     GENRE_SEQ INT,
-    LYRICS TEXT,
-    PLAYTIME VARCHAR(20),
-    RELEASE_DATE VARCHAR(20)
+    RELEASE_DATE VARCHAR(20),
+    MUSIC_ADDR VARCHAR(100)
 );
 
-ALTER TABLE MUSIC ADD CONSTRAINT MUSIC_FK_ALBUM_SEQ FOREIGN KEY (ALBUM_SEQ) REFERENCES ALBUM(ALBUM_SEQ);
-ALTER TABLE MUSIC ADD CONSTRAINT MUSIC_FK_ARTIST_SEQ FOREIGN KEY (ARTIST_SEQ) REFERENCES ARTIST(ARTIST_SEQ);
-ALTER TABLE MUSIC ADD CONSTRAINT MUSIC_FK_GENRE_SEQ FOREIGN KEY (GENRE_SEQ) REFERENCES MUSIC_GENRE(GENRE_SEQ);
-
+ALTER TABLE MUSIC ADD CONSTRAINT MUSIC_FK_ALBUM_SEQ FOREIGN KEY (ALBUM_SEQ) REFERENCES ALBUM(ALBUM_SEQ) ON DELETE CASCADE;
+ALTER TABLE MUSIC ADD CONSTRAINT MUSIC_FK_ARTIST_SEQ FOREIGN KEY (ARTIST_SEQ) REFERENCES ARTIST(ARTIST_SEQ) ON DELETE CASCADE;;
+ALTER TABLE MUSIC ADD CONSTRAINT MUSIC_FK_GENRE_SEQ FOREIGN KEY (GENRE_SEQ) REFERENCES MUSIC_GENRE(GENRE_SEQ) ON DELETE CASCADE;;
 
 
 create table PLAYLIST(
     PL_SEQ INT PRIMARY KEY,
-    MEMBER_ID VARCHAR(20) NOT NULL,
+    MEMBER_ID VARCHAR(20) 
     MUSIC_SEQ INT,
     PL_TITLE VARCHAR(20),
-    REGI_DATE TIMESTAMP NOT NULL DEFAULT now()
+    REGI_DATE TIMESTAMP DEFAULT now()
 );
 
-ALTER TABLE PLAYLIST ADD CONSTRAINT PLAYLIST_FK_MEMBER_ID FOREIGN KEY (MEMBER_ID) REFERENCES MEMBER(MEMBER_ID);
-ALTER TABLE PLAYLIST ADD CONSTRAINT PLAYLIST_FK_MUSIC_SEQ FOREIGN KEY (MUSIC_SEQ) REFERENCES MUSIC(MUSIC_SEQ);
+ALTER TABLE PLAYLIST ADD CONSTRAINT PLAYLIST_FK_MEMBER_ID FOREIGN KEY (MEMBER_ID) REFERENCES MEMBER(MEMBER_ID) ON DELETE CASCADE;
+ALTER TABLE PLAYLIST ADD CONSTRAINT PLAYLIST_FK_MUSIC_SEQ FOREIGN KEY (MUSIC_SEQ) REFERENCES MUSIC(MUSIC_SEQ) ON DELETE CASCADE;
 
 
 
 create table VIEW_RECORD(
-    VIEW_SEQ INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    VIEW_SEQ INT AUTO_INCREMENT PRIMARY KEY,
     MEMBER_ID VARCHAR(20) NOT NULL,
     SEQ_GROUP INT,
     SG_ELEMENT VARCHAR(10),
-    VIEW_DATE TIMESTAMP NOT NULL DEFAULT now()
+    VIEW_DATE TIMESTAMP DEFAULT now()
 );
-
-ALTER TABLE  VIEW_RECORD DROP FOREIGN KEY  VIEW_RECORD_FK_MEMBER_ID;
 
 ALTER TABLE VIEW_RECORD ADD CONSTRAINT VIEW_RECORD_FK_MEMBER_ID FOREIGN KEY (MEMBER_ID) REFERENCES MEMBER(MEMBER_ID) ON DELETE CASCADE;
 
 create table MEMBER(
     MEMBER_ID VARCHAR(20) PRIMARY KEY,
-    PASS VARCHAR(20) NOT NULL,
+    PASS VARCHAR(20),
     NAME VARCHAR(20),
     BIRTH VARCHAR(20),
     PHONE VARCHAR(20),
     NICK VARCHAR(20),
     SEX VARCHAR(20),
-    E_MAIL VARCHAR(30)
+    E_MAIL VARCHAR(30),
+    JOIN_DATE TIMESTAMP DEFAULT now()
 );
 
 create table UPDOWN(
     UD_SEQ INT AUTO_INCREMENT PRIMARY KEY,
-    MEMBER_ID VARCHAR(20) NOT NULL,
+    MEMBER_ID VARCHAR(20),
     SEQ_GROUP INT,
     SG_ELEMENT VARCHAR(10),
     TYPES VARCHAR(10)
 );
 
-SELECT constraint_name, constraint_type
-FROM information_schema.table_constraints
-WHERE table_name = 'UPDOWN';
-
-ALTER TABLE  UPDOWN DROP FOREIGN KEY  UPDOWN_FK_MEMBER_ID;
 ALTER TABLE UPDOWN ADD CONSTRAINT UPDOWN_FK_MEMBER_ID FOREIGN KEY (MEMBER_ID) REFERENCES MEMBER(MEMBER_ID) ON DELETE CASCADE;
 
 create table KAKAO(
     MEMBER_ID VARCHAR(20) PRIMARY KEY,
-    KAKAO_ID VARCHAR(20) NOT NULL,
-    KAKAO_PASS VARCHAR(20) NOT NULL
+    KAKAO_ID VARCHAR(20),
+    KAKAO_PASS VARCHAR(20)
 );
 
 ALTER TABLE KAKAO ADD CONSTRAINT KAKAO_FK_MEMBER_ID FOREIGN KEY (MEMBER_ID) REFERENCES MEMBER(MEMBER_ID);
 
 create table ARTICLE(
     ARTICLE_SEQ INT PRIMARY KEY,
-    MEMBER_ID VARCHAR(20) NOT NULL,
+    MEMBER_ID VARCHAR(20),
     BOARD_SEQ INT,
     TITLE VARCHAR(50),
-    CONTENTS TEXT,
-    PLAYTIME VARCHAR(20),
-    REGI_DATE TIMESTAMP NOT NULL DEFAULT now(),
-    VIEW_CNT INT DEFAULT 0
+    CONTENTS VARCHAR(50),
+    HASH VARCHAR(50),
+    REGI_DATE TIMESTAMP DEFAULT now()
 );
-
-ALTER TABLE  ARTICLE DROP FOREIGN KEY  ARTICLE_FK_BOARD_SEQ;
-
-
 ALTER TABLE ARTICLE ADD CONSTRAINT ARTICLE_FK_MEMBER_ID FOREIGN KEY (MEMBER_ID) REFERENCES MEMBER(MEMBER_ID) ON DELETE CASCADE;
 ALTER TABLE ARTICLE ADD CONSTRAINT ARTICLE_FK_BOARD_SEQ FOREIGN KEY (BOARD_SEQ) REFERENCES BOARD(BOARD_SEQ) ON DELETE CASCADE;
 
 create table BOARD(
-    BOARD_SEQ INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    BOARD_NAME VARCHAR(20) NOT NULL
+    BOARD_SEQ INT AUTO_INCREMENT PRIMARY KEY,
+    BOARD_NAME VARCHAR(20)
 );
 
-ALTER TABLE ARTICLE CHANGE CONTENTS CONTENTS VARCHAR(50);
-ALTER TABLE ARTICLE CHANGE PLAYTIME HASH VARCHAR(50);
-ALTER TABLE ARTICLE CHANGE REGI_DATE REGIDATE TIMESTAMP DEFAULT now();
-ALTER TABLE ARTICLE DROP COLUMN REGIDATE;
-ALTER TABLE ARTICLE ADD COLUMN REGI_DATE TIMESTAMP DEFAULT now();
 
 INSERT INTO BOARD(BOARD_NAME) VALUES('DJ');
-
+INSERT INTO BOARD(BOARD_NAME) VALUES('COMMENT');
 
 
 
@@ -219,6 +203,28 @@ CREATE TABLE HASHTAG(
 	HASHTAG_SEQ INT AUTO_INCREMENT PRIMARY KEY,
 	HASH VARCHAR(20)
 );
+
+
+<!-- 댓글 테이블 생성 -->
+
+create table COMMENT(
+    COMMENT_SEQ INT AUTO_INCREMENT PRIMARY KEY,
+    MEMBER_ID VARCHAR(20),
+    SEQ_GROUP INT,
+    MSG VARCHAR(300),
+    REGI_DATE TIMESTAMP DEFAULT now()
+);
+ALTER TABLE COMMENT ADD CONSTRAINT COMMENT_FK_MEMBER_ID FOREIGN KEY (MEMBER_ID) REFERENCES MEMBER(MEMBER_ID) ON DELETE CASCADE;
+
+INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('shin',30,'지노형 얼른 전역하세요ㅠㅠ');
+INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('criss',30,'지노형 인생 살고싶다..');
+INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('zuzu',30,'진짜 인생 떙곡임');
+
+
+
+SELECT constraint_name, constraint_type
+FROM information_schema.table_constraints
+WHERE table_name = 'UPDOWN';
 
 <!-- 신나는,차분한,어쿠스틱,트로피칼,부드러운,드라이브,휴식,편집숍/카페,헬스,클럽,스트레스,이별,사랑/고백,새벽감성,위로, -->
 INSERT INTO HASHTAG(HASH) VALUES('신나는'),('차분한'),('어쿠스틱'),('트로피칼'),('부드러운'),('드라이브'),('휴식'),('편집숍/카페'),('헬스'),('클럽'),('스트레스'),('이별'),('사랑/고백'),('새벽감성'),('위로');
@@ -239,7 +245,12 @@ INSERT INTO MEMBER(
 VALUES(
 	'shin', '1111', '신승호', '920807', '01033650158', '사운드랩', '남', 'kanu0158@naver.com'
 );
-
+INSERT INTO MEMBER(
+	MEMBER_ID, PASS, NAME, BIRTH, PHONE, NICK, SEX, E_MAIL
+)
+VALUES(
+	'sound', 'sound', '사운드', '920807', '01012341234', '사운드랩', '남', 'soundlab@naver.com'
+);
 
 INSERT INTO MEMBER(
 	MEMBER_ID, PASS, NAME, BIRTH, PHONE, NICK, SEX, E_MAIL
@@ -300,113 +311,111 @@ VALUES(
 );
 
 
-ALTER TABLE ARTIST DROP COLUMN ARTIST_TYPE;
-
 INSERT INTO Artist(
 	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
 )
 VALUES(
-	7, '선미', '여', '920502', '201308', '대한민국', '솔로'
+	7, '선미', '여', '920502', '2013.08.01', '대한민국', '솔로'
 );
 
 INSERT INTO Artist(
 	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
 )
 VALUES(
-	8, '빈지노', '남', '870912', '201207', '대한민국', '솔로'
+	8, '빈지노', '남', '870912', '2012.07.26', '대한민국', '솔로'
 );
 
 INSERT INTO Artist(
 	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
 )
 VALUES(
-	9, '아이유', '여', '930516', '200809', '대한민국', '솔로'
+	9, '아이유', '여', '930516', '2008.09.11', '대한민국', '솔로'
 );
 INSERT INTO Artist(
 	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
 )
 VALUES(
-	10, '임창정', '남', '731130', '199504', '대한민국', '솔로'
+	10, '임창정', '남', '731130', '1995.04.08', '대한민국', '솔로'
 );
 INSERT INTO Artist(
 	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
 )
 VALUES(
-	11, '방탄소년단', '남', '130612', '201306', '대한민국', '그룹'
+	11, '방탄소년단', '남', '130612', '2013.06.12', '대한민국', '그룹'
 );
 INSERT INTO Artist(
 	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
 )
 VALUES(
-	12, '에이핑크', '여', '110419', '201104', '대한민국', '그룹'
-);
-
-INSERT INTO Artist(
-	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
-)
-VALUES(
-	13, '로꼬', '남', '891225', '201209', '대한민국', '솔로'
-);
-INSERT INTO Artist(
-	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
-)
-VALUES(
-	14, '바이브', '남', '020201', '20020201', '대한민국', '그룹'
-);
-INSERT INTO Artist(
-	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
-)
-VALUES(
-	15, '아이콘', '남', '150915', '20150915', '대한민국', '그룹'
-);
-INSERT INTO Artist(
-	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
-)
-VALUES(
-	16, '로이킴', '남', '930703', '20121127', '대한민국', '솔로'
-);
-INSERT INTO Artist(
-	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
-)
-VALUES(
-	17, '폴킴', '남', '880211', '20140121', '대한민국', '솔로'
-);
-INSERT INTO Artist(
-	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
-)
-VALUES(
-	18, '블랙핑크', '여', '160808', '20160808', '대한민국', '그룹'
-);
-INSERT INTO Artist(
-	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
-)
-VALUES(
-	19, '트와이스', '여', '151020', '20151020', '대한민국', '그룹'
-);
-INSERT INTO Artist(
-	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
-)
-VALUES(
-	20, '레드벨벳', '여', '140804', '20140804', '대한민국', '그룹'
-);
-INSERT INTO Artist(
-	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
-)
-VALUES(
-	21, '10cm', '남', '830301', '20100401', '대한민국', '솔로'
-);
-INSERT INTO Artist(
-	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
-)
-VALUES(
-	22, '볼빨간사춘기', '여', '160422', '20160422', '대한민국', '그룹'
+	12, '에이핑크', '여', '110419', '2011.04.19', '대한민국', '그룹'
 );
 
 INSERT INTO Artist(
 	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
 )
 VALUES(
-	23, '마마무', '여', '140601', '20140601', '대한민국', '그룹'
+	13, '로꼬', '남', '891225', '2012.09.30', '대한민국', '솔로'
+);
+INSERT INTO Artist(
+	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
+)
+VALUES(
+	14, '바이브', '남', '020201', '2002.02.01', '대한민국', '그룹'
+);
+INSERT INTO Artist(
+	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
+)
+VALUES(
+	15, '아이콘', '남', '150915', '2015.09.15', '대한민국', '그룹'
+);
+INSERT INTO Artist(
+	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
+)
+VALUES(
+	16, '로이킴', '남', '930703', '2012.11.27', '대한민국', '솔로'
+);
+INSERT INTO Artist(
+	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
+)
+VALUES(
+	17, '폴킴', '남', '880211', '2014.01.21', '대한민국', '솔로'
+);
+INSERT INTO Artist(
+	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
+)
+VALUES(
+	18, '블랙핑크', '여', '160808', '2016.08.08', '대한민국', '그룹'
+);
+INSERT INTO Artist(
+	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
+)
+VALUES(
+	19, '트와이스', '여', '151020', '2015.10.20', '대한민국', '그룹'
+);
+INSERT INTO Artist(
+	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
+)
+VALUES(
+	20, '레드벨벳', '여', '140804', '2014.08.04', '대한민국', '그룹'
+);
+INSERT INTO Artist(
+	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
+)
+VALUES(
+	21, '10cm', '남', '830301', '2010.04.01', '대한민국', '솔로'
+);
+INSERT INTO Artist(
+	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
+)
+VALUES(
+	22, '볼빨간사춘기', '여', '160422', '2016.04.22', '대한민국', '그룹'
+);
+
+INSERT INTO Artist(
+	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
+)
+VALUES(
+	23, '마마무', '여', '140601', '2014.06.01', '대한민국', '그룹'
 );
 
 
@@ -414,33 +423,33 @@ INSERT INTO Artist(
 	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
 )
 VALUES(
-	24, '박원', '남', '100526', '20100526', '대한민국', '솔로'
+	24, '박원', '남', '100526', '2010.05.26', '대한민국', '솔로'
 );
 
 INSERT INTO Artist(
 	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
 )
 VALUES(
-	25, '윤종신', '남', '691015', '19900501', '대한민국', '솔로'
+	25, '윤종신', '남', '691015', '1990.05.01', '대한민국', '솔로'
 );
 
 INSERT INTO Artist(
 	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
 )
 VALUES(
-	26, '벤', '여', '910730', '20120901', '대한민국', '솔로'
+	26, '벤', '여', '910730', '2012.09.01', '대한민국', '솔로'
 );
 INSERT INTO Artist(
 	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
 )
 VALUES(
-	27, '멜로망스', '남', '150310', '20150310', '대한민국', '그룹'
+	27, '멜로망스', '남', '150310', '2015.03.10', '대한민국', '그룹'
 );
 INSERT INTO Artist(
 	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
 )
 VALUES(
-	28, '먼데이키즈', '남', '051103', '20051103', '대한민국', '그룹'
+	28, '먼데이키즈', '남', '051103', '2005.11.03', '대한민국', '그룹'
 );
 
 
@@ -448,21 +457,14 @@ VALUES(
 
 create table ALBUM(
     ALBUM_SEQ INT PRIMARY KEY,
-    ALBUM_TITLE VARCHAR(20) NOT NULL,
-    INTRO VARCHAR(200),
+    ALBUM_TITLE VARCHAR(50),
     AGENCY_NAME VARCHAR(20),
     RELEASE_DATE VARCHAR(20),
     ALBUM_TYPE VARCHAR(20),
     ARTIST_NAME VARCHAR(20),
-    ALBUM_GENRE VARCHAR(20)
+    ALBUM_GENRE VARCHAR(20),
+    INTRO VARCHAR(2000)
 );
-
-DELETE FROM ALBUM
-WHERE ALBUM_SEQ LIKE 42;
-
-ALTER TABLE ALBUM CHANGE ALBUM_TITLE ALBUM_TITLE VARCHAR(50) NOT NULL;
-ALTER TABLE ALBUM DROP COLUMN INTRO;
-ALTER TABLE ALBUM ADD INTRO VARCHAR(2000);
 
 INSERT INTO ALBUM(
 	ALBUM_SEQ, ALBUM_TITLE, INTRO, AGENCY_NAME, RELEASE_DATE, ALBUM_TYPE, ARTIST_NAME, ALBUM_GENRE
@@ -985,13 +987,7 @@ VALUES(
 
 
 
-create table MUSIC(
-    MUSIC_SEQ INT PRIMARY KEY,
-    MUSIC_TITLE VARCHAR(20) NOT NULL,
-    ALBUM_SEQ INT,
-    ARTIST_SEQ INT,
-    GENRE_SEQ INT
-);
+
 
 
 
@@ -1025,14 +1021,14 @@ INSERT INTO Artist(
 	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
 )
 VALUES(
-	60, '박효신', '남', '811201', '19991201', '대한민국', '솔로'
+	60, '박효신', '남', '811201', '1999.12.01', '대한민국', '솔로'
 );
 
 INSERT INTO Artist(
 	ARTIST_SEQ, ARTIST_NAME, SEX, BIRTH, DEBUT, NATION, GROUP_NAME
 )
 VALUES(
-	61, '장범준', '남', '890516', '20120329', '대한민국', '솔로'
+	61, '장범준', '남', '890516', '2012.03.29', '대한민국', '솔로'
 );
 
 
@@ -1420,15 +1416,14 @@ VALUES(
 125,'See U Later',44, 18, 6);
 ---------------------------------------블랙핑크
  
-desc img;
-drop table img;
+
  
 INSERT INTO IMG(
  IMG_NAME, EXT, SEQ
 )
 VALUES
 (
-'트와이스_Summer_Magic','jpg', 48),
+'레드벨벳_Summer_Magic','jpg', 48),
 ('10cm_4_1','jpg', 49),
 ('볼빨간사춘기_Red_Diary','jpg', 50), 
 ('마마무_RED_MOON','jpg', 51),
@@ -1456,29 +1451,9 @@ VALUES
 ('먼데이키즈_가을안부','jpg', 46),
 ('멜로망스_The_Fairy_Tale','jpg', 47);
 
-
-
-
-ALTER TABLE updown CHANGE LIKE_SEQ UD_SEQ INT NOT NULL;
-ALTER TABLE updown CHANGE ud_seq ud_seq INT AUTO_INCREMENT; 
-desc updown;
-
-
-INSERT INTO VIEW_RECORD(
- MEMBER_ID, SEQ_GROUP, SG_ELEMENT
-)
-VALUES(
-'shin',89, 'music'
-);
-
-DELETE FROM VIEW_RECORD
-WHERE MEMBER_ID LIKE 'shin';
-
-
- select seq_group,count(*) from view_record group by seq_group;
- select music_seq, music_title from music;
- select seq_group from view_record where view_date >= '2018-10-15%' and view_date <= '2018-10-17%';
-
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_아이유','jpg',9);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_빈지노','jpg',8);
+ 
 UPDATE artist
 SET intro1 = 
 '장범준은 대한민국의 싱어송라이터이다. 2011년 Mnet "슈퍼스타 K3"에서 준우승 하며 이름을 알린 밴드 버스커버스커의 리더이며, 그룹의 작사, 작곡 편곡을 담당하고 있다. 프로그램 방
@@ -1495,36 +1470,8 @@ SET intro2 =
  모션으로 화제가 되기도 했다.'
 where artist_seq like 61;
 
-INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_아이유','jpg',9);
-INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_빈지노','jpg',8);
 
 
-
-
-
-
- 
- ALTER TABLE artist ADD intro varchar(2000);
- 
- UPDATE artist
- SET debut = '2013.08.01'
- where artist_seq like 7;
-
- ALTER TABLE member ADD join_date timestamp DEFAULT now();
-
- ALTER TABLE member CHANGE join_date join_date timestamp DEFAULT now();
-
- 
- ALTER TABLE member DROP COLUMN join_date;
- 
- ALTER TABLE member DROP COLUMN join_date;
- 
- select * from member;
-
- 
- ALTER TABLE updown CHANGE UD_SEQ UD_SEQ INT NOT NULL AUTO_INCREMENT;
- 
-  
 INSERT INTO ALBUM(
    ALBUM_SEQ, ALBUM_TITLE, ARTIST_NAME, ALBUM_GENRE
 )
@@ -1660,7 +1607,7 @@ MUSIC_SEQ, MUSIC_TITLE, ALBUM_SEQ, ARTIST_SEQ, GENRE_SEQ
 <!-- seq 160번부터 -->
 INSERT INTO ARTICLE( ARTICLE_SEQ, MEMBER_ID, BOARD_SEQ, HASH)
 VALUES
-('160','sound',1,'1,9,11'),
+('160','sound',1,'2,5,12'),
 ('161','sound',1,'2,5,11'),
 ('162','sound',1,'1,10,15'),
 ('163','sound',1,'1,3,13'),
@@ -1671,18 +1618,13 @@ VALUES
 ('168','sound',1,'4,6,7'),
 ('169','sound',1,'1,3,5'),
 ('170','sound',1,'6,7,8'),
-('171','sound',1,'4,13,15'),
+('171','sound',1,'4,12,13'),
 ('172','sound',1,'4,9,14'),
 ('173','sound',1,'5,7,11'),
 ('174','sound',1,'1,2,3'),
 ('175','sound',1,'4,8,15'),
 ('176','sound',1,'6,10,11')
 
-
-
-desc updown;
-desc login_record;
-desc member;
 
 INSERT INTO MEMBER(MEMBER_ID,PASS,BIRTH,SEX)
 VALUES('pizza','1111','770803','남');
@@ -1708,10 +1650,6 @@ MUSIC_SEQ, MUSIC_TITLE, ARTIST_SEQ, GENRE_SEQ
 (186,'Ice Cream Cake', 20,3)
 ;
 
-
-UPDATE MUSIC
-SET ARTIST_SEQ = 20
-where MUSIC_SEQ like 186;
 
 INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('libero','1111','030901','남');
 INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('metus','1111','010630','남');
@@ -1746,27 +1684,6 @@ INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('semper','1111','660712','�
 INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('felis','1111','690101','여');
 INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('vitae','1111','660808','여');
 
-UPDATE article SET TITLE = '하나 별 밤을 듯합니다', CONTENTS = '102,101,72,181,64,178' WHERE ARTICLE_SEQ LIKE 160 ;
-UPDATE article SET TITLE = '봄이 소녀들의 멀리 까닭입니다', CONTENTS = '156,85,106,180,122,178,63,89,88' WHERE ARTICLE_SEQ LIKE 161 ;
-UPDATE article SET TITLE = '보고, 파란 어머니, 시와 있습니다', CONTENTS = '111,87,95,117,140,156,105,155,106,116' WHERE ARTICLE_SEQ LIKE 162 ;
-UPDATE article SET TITLE = '아이들의 무덤 별 흙으로 거외다', CONTENTS = '122,58,82,70,98,145,148' WHERE ARTICLE_SEQ LIKE 163 ;
-UPDATE article SET TITLE = '프랑시스 별이 이런 걱정도 까닭입니다', CONTENTS = '141,184,139,123,62,182,114' WHERE ARTICLE_SEQ LIKE 164 ;
-UPDATE article SET TITLE = '부끄러운 내린 아침이 버리었습니다', CONTENTS = '82,111,106,87,159,115' WHERE ARTICLE_SEQ LIKE 165 ;
-UPDATE article SET TITLE = '된 묻힌 가슴속에 마리아 봅니다', CONTENTS = '108,158,135,112,118,90,92,181,121,124' WHERE ARTICLE_SEQ LIKE 166 ;
-UPDATE article SET TITLE = '새워 지나가는 별 까닭입니다', CONTENTS = '67,84,105,80,149,93,58,63,136' WHERE ARTICLE_SEQ LIKE 167 ;
-UPDATE article SET TITLE = '하나에 당신은 묻힌 거외다', CONTENTS = '119,77,136,182,62,157' WHERE ARTICLE_SEQ LIKE 168 ;
-UPDATE article SET TITLE = '이네들은 흙으로 벌레는 시와 까닭입니다', CONTENTS = '115,57,69,95,178,102' WHERE ARTICLE_SEQ LIKE 169 ;
-UPDATE article SET TITLE = '밤이 너무나 둘 이제 그리워 듯합니다', CONTENTS = '120,93,88,184,138,135,73' WHERE ARTICLE_SEQ LIKE 170 ;
-UPDATE article SET TITLE = '어머니, 불러 책상을 있습니다', CONTENTS = '93,181,108,67,110,113' WHERE ARTICLE_SEQ LIKE 171 ;
-UPDATE article SET TITLE = '이네들은 사람들의 이런 버리었습니다', CONTENTS = '69,94,93,139,117,150,124,102' WHERE ARTICLE_SEQ LIKE 172 ;
-UPDATE article SET TITLE = '하나에 소녀들의 별 까닭입니다', CONTENTS = '77,119,90,151,135,108,141' WHERE ARTICLE_SEQ LIKE 173 ;
-UPDATE article SET TITLE = '나의 어머님, 위에도 이름자를 봅니다', CONTENTS = '86,85,82,97,179,68,80,74,62,133,58' WHERE ARTICLE_SEQ LIKE 174 ;
-UPDATE article SET TITLE = '하나에 무덤 덮어 풀이 써 봅니다', CONTENTS = '97,124,92,149,147,99,153,58,85,67' WHERE ARTICLE_SEQ LIKE 175 ;
-UPDATE article SET TITLE = '책상을 하나에 마리아 릴케 까닭입니다', CONTENTS = '181,88,105,141,108,138,99,158,86' WHERE ARTICLE_SEQ LIKE 176 ;
-
-
-DELETE FROM view_record
-WHERE member_id LIKE 'shin';
 
 
 SELECT seq_group, count(*) FROM UPDOWN WHERE SG_ELEMENT LIKE 'genre' GROUP BY seq_group;
@@ -1777,154 +1694,8 @@ SELECT ud.seq_group, ud.member_id, m.sex, m.birth  FROM UPDOWN ud join member m 
 
 
 
-<!-- ADMIN 쿼리 -->
-/*아티스트 1번
- 곡번호 | 나이  | 성별  | 스트리밍수 */
-SELECT 
-	v.SEQ_GROUP 곡번호
-	,YEAR(CURDATE())-YEAR(M.BIRTH)+1 나이
-	, M.SEX 성별
-	, COUNT(v.SEQ_GROUP) 스트리밍수
-FROM VIEW_RECORD v
-	JOIN MEMBER m
-	ON v.MEMBER_ID = M.MEMBER_ID
-WHERE SG_ELEMENT LIKE 'music'
-GROUP BY v.SEQ_GROUP, M.MEMBER_ID, M.SEX
-ORDER BY SEQ_GROUP, 나이 , 성별;
-
-
-
-
-
-/*아티스트 2번
- 곡번호 | 나이  | 성별  | 좋아요수 | 싫어요수 */
-SELECT 
-	UD.SEQ_GROUP 곡번호
-	,YEAR(CURDATE())-YEAR(M.BIRTH)+1 나이
-	, M.SEX 성별
-	, COUNT(CASE WHEN UD.TYPES LIKE 'U' THEN 1 END) 좋아요수
-	, COUNT(CASE WHEN UD.TYPES LIKE 'D' THEN 1 END) 싫어요수 
-FROM UPDOWN UD
-	JOIN MEMBER M
-	ON UD.MEMBER_ID = M.MEMBER_ID
-WHERE SG_ELEMENT LIKE 'MUSIC'
-GROUP BY UD.SEQ_GROUP, M.MEMBER_ID, M.SEX
-ORDER BY SEQ_GROUP, 나이, 성별;
-
-
-
-
-/* 선호도 - 장르
-장르번호 | 나이 | 성별 | 좋아요수  
-(장르좋아요만 반영)
-(곡좋아요에 대한 장르도 반영할 것인가??)
-*/
-SELECT 
-	UD.SEQ_GROUP 장르번호
-	,YEAR(CURDATE())-YEAR(M.BIRTH)+1 나이
-	, M.SEX 성별
-	,COUNT(CASE WHEN UD.TYPES LIKE 'U' THEN 1 END) 좋아요수
-FROM UPDOWN UD
-	JOIN MEMBER M
-	ON UD.MEMBER_ID = M.MEMBER_ID
-WHERE SG_ELEMENT LIKE 'GENRE'
-GROUP BY UD.SEQ_GROUP, M.MEMBER_ID, M.SEX
-ORDER BY UD.SEQ_GROUP, 나이, 성별;
-;
-
-
-
-/*선호도 - 아티스트
- 아티스트번호 | 나이 | 성별 | 좋아요수 */
-SELECT 
-	UD.SEQ_GROUP 아티스트번호
-	,YEAR(CURDATE())-YEAR(M.BIRTH)+1 나이
-	, M.SEX 성별
-	,COUNT(CASE WHEN UD.TYPES LIKE 'U' THEN 1 END) 좋아요수
-FROM UPDOWN UD
-	 JOIN MEMBER M
-	 ON UD.MEMBER_ID LIKE M.MEMBER_ID
-WHERE SG_ELEMENT LIKE 'ARTIST'
-GROUP BY UD.SEQ_GROUP, M.MEMBER_ID, M.SEX
-ORDER BY UD.SEQ_GROUP, 나이, 성별;
-
-<!-- ADMIN 쿼리 -->
-
-
-/*아티스트 1번*/
-SELECT VI.뮤직번호, VI.성별, COUNT(VI.성별) 성별
-FROM
-(
-SELECT M.MEMBER_ID 아이디, M.BIRTH 생일, M.SEX 성별, V.SEQ_GROUP 뮤직번호
-FROM MEMBER M 
-	JOIN (SELECT MEMBER_ID, SEQ_GROUP
-		  FROM VIEW_RECORD
-		  WHERE SEQ_GROUP IN (
-				SELECT MUSIC_SEQ
-				FROM MUSIC
-				WHERE ARTIST_SEQ LIKE 11)) V 
-	ON M.MEMBER_ID = V.MEMBER_ID
-) VI	
-GROUP BY VI.뮤직번호, VI.성별;
-
-/*아티스트 2번*/
-SELECT ud.seq_group,ROUND(AVG(YEAR(CURDATE())-YEAR(m.birth)+1)) 평균연령, m.sex 성별
-, COUNT(CASE WHEN ud.TYPES LIKE 'u' THEN 1 END) 좋아요수
-, COUNT(CASE WHEN ud.TYPES LIKE 'd' THEN 1 END) 싫어요수 
-FROM updown ud
-	JOIN MEMBER m
-	ON ud.member_id = m.member_id
-WHERE sg_element like 'music'
-GROUP BY ud.seq_group, ud.member_id, m.member_id, m.sex
-ORDER BY SEQ_GROUP, 평균연령 , 성별;
-
-
-/*노래당 스트리밍수  */
-SELECT SEQ_GROUP 곡번호, count(seq_group) 스트리밍수
-		  FROM VIEW_RECORD
-		  WHERE SEQ_GROUP IN (
-				SELECT MUSIC_SEQ
-				FROM MUSIC
-				WHERE ARTIST_SEQ LIKE 11)
-GROUP BY SEQ_GROUP;
-
-
-	
-SELECT V.MEMBER_ID, count(v.seq_group), ud.MEMBER_ID,COUNT(ud.seq_group)
-FROM VIEW_RECORD V
-left JOIN updown ud
-	ON (V.MEMBER_ID = ud.MEMBER_ID AND ud.SEQ_GROUP LIKE 74 AND ud.TYPES LIKE 'u')
-WHERE V.SEQ_GROUP LIKE 74 
-group by V.MEMBER_ID, ud.MEMBER_ID;
-
-
-JOIN updown ud
-	ON V.MEMBER_ID = ud.MEMBER_ID	
-JOIN MEMBER M
-	ON V.MEMBER_ID = M.MEMBER_ID
-
-WHERE V.SEQ_GROUP LIKE 74;
-
-select count(*)
-from view_record
-where view_record
-
-
-JOIN UPDOWN UD
-	ON V.MEMBER_ID = M.MEMBER_ID
-	AND V.MEMBER_ID = UD.MEMBER_ID
-
 	
 INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_선미','jpg',7);
-
-SELECT MEMBER_ID, SEQ_GROUP
-FROM VIEW_RECORD
-WHERE SEQ_GROUP IN (
-			SELECT MUSIC_SEQ
-			FROM MUSIC
-			WHERE ARTIST_SEQ LIKE 11);
-	
-
 			
 <!-- DJ게시판 이미지 -->			
 INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_1', 'jpg', 160 );
@@ -1947,27 +1718,25 @@ INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_1', 'jpg', 176 );
 
 
 <!-- DJ게시판 CONTENTS 변경 -->
-UPDATE article SET CONTENTS = '97,85,62,96,115,138,76,110,57' WHERE ARTICLE_SEQ LIKE 160 ;
-UPDATE article SET CONTENTS = '73,92,67,81,101,108' WHERE ARTICLE_SEQ LIKE 161 ;
-UPDATE article SET CONTENTS = '93,74,110,109,115,79,108,89' WHERE ARTICLE_SEQ LIKE 162 ;
-UPDATE article SET CONTENTS = '120,149,77,139,153,154,80,137,81' WHERE ARTICLE_SEQ LIKE 163 ;
-UPDATE article SET CONTENTS = '133,151,110,109,102,62,89' WHERE ARTICLE_SEQ LIKE 164 ;
-UPDATE article SET CONTENTS = '150,78,88,71,152,59,117,81,153,114' WHERE ARTICLE_SEQ LIKE 165 ;
-UPDATE article SET CONTENTS = '82,78,125,58,133,92,103,106,142,79' WHERE ARTICLE_SEQ LIKE 166 ;
-UPDATE article SET CONTENTS = '110,106,70,116,67,84,135,64' WHERE ARTICLE_SEQ LIKE 167 ;
-UPDATE article SET CONTENTS = '125,57,151,111,150,88,122,65,80,96' WHERE ARTICLE_SEQ LIKE 168 ;
-UPDATE article SET CONTENTS = '141,133,101,151,83,158,74,137' WHERE ARTICLE_SEQ LIKE 169 ;
-UPDATE article SET CONTENTS = '88,147,85,120,76,108' WHERE ARTICLE_SEQ LIKE 170 ;
-UPDATE article SET CONTENTS = '139,114,120,76,156,134,106,68' WHERE ARTICLE_SEQ LIKE 171 ;
-UPDATE article SET CONTENTS = '68,83,59,66,75,91' WHERE ARTICLE_SEQ LIKE 172 ;
-UPDATE article SET CONTENTS = '152,149,150,141,97,147' WHERE ARTICLE_SEQ LIKE 173 ;
-UPDATE article SET CONTENTS = '62,96,59,114,139,109,73,97,103' WHERE ARTICLE_SEQ LIKE 174 ;
-UPDATE article SET CONTENTS = '81,147,110,109,123,116,137,139,90' WHERE ARTICLE_SEQ LIKE 175 ;
-UPDATE article SET CONTENTS = '135,138,141,134,102,71,107,133' WHERE ARTICLE_SEQ LIKE 176 ;
 
+UPDATE article SET TITLE = '하나 별 밤을 듯합니다', CONTENTS = '97,85,62,96,115,138,76,110,57' WHERE ARTICLE_SEQ LIKE 160 ;
+UPDATE article SET TITLE = '봄이 소녀들의 멀리 까닭입니다', CONTENTS = '73,92,67,81,101,108' WHERE ARTICLE_SEQ LIKE 161 ;
+UPDATE article SET TITLE = '보고, 파란 어머니, 시와 있습니다', CONTENTS = '93,74,110,109,115,79,108,89' WHERE ARTICLE_SEQ LIKE 162 ;
+UPDATE article SET TITLE = '아이들의 무덤 별 흙으로 거외다',  CONTENTS = '120,149,77,139,153,154,80,137,81' WHERE ARTICLE_SEQ LIKE 163 ;
+UPDATE article SET TITLE = '프랑시스 별이 이런 걱정도 까닭입니다', CONTENTS = '133,151,110,109,102,62,89' WHERE ARTICLE_SEQ LIKE 164 ;
+UPDATE article SET TITLE = '부끄러운 내린 아침이 버리었습니다',  CONTENTS = '150,78,88,71,152,59,117,81,153,114' WHERE ARTICLE_SEQ LIKE 165 ;
+UPDATE article SET TITLE = '된 묻힌 가슴속에 마리아 봅니다', CONTENTS = '82,78,125,58,133,92,103,106,142,79' WHERE ARTICLE_SEQ LIKE 166 ;
+UPDATE article SET TITLE = '새워 지나가는 별 까닭입니다', CONTENTS = '110,106,70,116,67,84,135,64' WHERE ARTICLE_SEQ LIKE 167 ;
+UPDATE article SET TITLE = '하나에 당신은 묻힌 거외다', CONTENTS = '125,57,151,111,150,88,122,65,80,96' WHERE ARTICLE_SEQ LIKE 168 ;
+UPDATE article SET TITLE = '이네들은 흙으로 벌레는 시와 까닭입니다',  CONTENTS = '141,133,101,151,83,158,74,137' WHERE ARTICLE_SEQ LIKE 169 ;
+UPDATE article SET TITLE = '밤이 너무나 둘 이제 그리워 듯합니다', CONTENTS = '88,147,85,120,76,108' WHERE ARTICLE_SEQ LIKE 170 ;
+UPDATE article SET TITLE = '어머니, 불러 책상을 있습니다',  CONTENTS = '139,114,120,76,156,134,106,68' WHERE ARTICLE_SEQ LIKE 171 ;
+UPDATE article SET TITLE = '이네들은 사람들의 이런 버리었습니다',  CONTENTS = '68,83,59,66,75,91' WHERE ARTICLE_SEQ LIKE 172 ;
+UPDATE article SET TITLE = '하나에 소녀들의 별 까닭입니다', CONTENTS = '152,149,150,141,97,147' WHERE ARTICLE_SEQ LIKE 173 ;
+UPDATE article SET TITLE = '나의 어머님, 위에도 이름자를 봅니다', CONTENTS = '62,96,59,114,139,109,73,97,103' WHERE ARTICLE_SEQ LIKE 174 ;
+UPDATE article SET TITLE = '하나에 무덤 덮어 풀이 써 봅니다',  CONTENTS = '81,147,110,109,123,116,137,139,90' WHERE ARTICLE_SEQ LIKE 175 ;
+UPDATE article SET TITLE = '책상을 하나에 마리아 릴케 까닭입니다',  CONTENTS = '135,138,141,134,102,71,107,133' WHERE ARTICLE_SEQ LIKE 176 ;
 
-ALTER TABLE mv ADD COLUMN ytb VARCHAR(100);
-<iframe width="1090" height="613" src="https://www.youtube.com/embed/TNWMZIf7eSg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
 <!-- 187번부터 -->
 insert into mv ( MV_SEQ,
@@ -2020,64 +1789,6 @@ values(
    'https://www.youtube.com/embed/nM0xDI5R50E'
 );
  
- 
-<!-- chart 일주일치 -->
-select  v1.seq_group, count(*) cnt , v1.view_date, (select count(*) from view_record v2 where v2.view_date like v1.view_date and v2.seq_group in (69,83,75) ) tcnt,((count(*)/(select count(*) from view_record v2 where v2.view_date like v1.view_date and v2.seq_group in (69,83,75))) * 100) per 
-from view_record v1
-where v1.seq_group IN (69,83,75)
-group by v1.seq_group, v1.view_date
-order by v1.view_date, count(*) desc;
-
-<!-- IN 쿼리문 -->
-select v.seq_group
-from view_record v
-where v.view_date like '2018-10-22%' 
-group by v.seq_group 
-order by  
-desc limit 3;
-
-
-
-<!-- chart 일주일치 -->
-select  v1.seq_group, count(*) cnt , v1.view_date,
-		(select count(*) from view_record v2 where v2.view_date like v1.view_date and v2.seq_group in (69,83,75) ) tcnt,
-		((count(*)/(select count(*) from view_record v2 where v2.view_date like v1.view_date and v2.seq_group in (
-					select tmp.mseq 
-					from
-					(
-						select v.seq_group mseq, count(*) cnt
-						from view_record v
-						where v.view_date like '2018-10-22%' 
-						group by v.seq_group 
-						order by cnt 
-						desc limit 3) tmp
-				    ))) * 100) per 
-from view_record v1
-where v1.seq_group IN (
-					select tmp.mseq 
-					from
-						(select v.seq_group mseq, count(*) cnt
-						from view_record v
-						where v.view_date like '2018-10-22%' 
-						group by v.seq_group 
-						order by cnt 
-						desc limit 3) tmp
-				    )
-    and v1.view_date NOT LIKE '2019%'
-group by v1.seq_group, v1.view_date
-order by v1.view_date, count(*) desc;
-
-
-
-update article
-set hash = '2,5,12'
-where ARTICLE_SEQ like 160;
-
-update article
-set hash = '4,12,13'
-where ARTICLE_SEQ like 171;
-
-
 <!-- 3번 댄스에대한 up -->
 insert into updown(member_id,seq_group,sg_element,types) 
 values
@@ -2161,61 +1872,610 @@ values
 insert into updown(member_id,seq_group,sg_element,types) 
 values
 ('sound',20 ,'artist','u');
-
-
-<!-- 댓글 테이블 생성 -->
-
-create table COMMENT(
-    COMMENT_SEQ INT AUTO_INCREMENT PRIMARY KEY,
-    MEMBER_ID VARCHAR(20),
-    SEQ_GROUP INT,
-    MSG VARCHAR(300),
-    REGI_DATE TIMESTAMP DEFAULT now()
-);
-
  
- 
-INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('shin',30,'지노형 얼른 전역하세요ㅠㅠ');
-INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('criss',30,'지노형 인생 살고싶다..');
-INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('zuzu',30,'진짜 인생 떙곡임');
+
+update music set music_addr = 'https://www.youtube.com/embed/mjTdMX27ThM' where music_seq like 57;
+update music set music_addr = 'https://www.youtube.com/embed/Pf88Wdj68JY' where music_seq like 73;
+update music set music_addr = 'https://www.youtube.com/embed/DUTUHUbJ6u8' where music_seq like 72;
+update music set music_addr = 'https://www.youtube.com/embed/3yoRkQBVUzM' where music_seq like 63;
+update music set music_addr = 'https://www.youtube.com/embed/HFRoJrcG-B0' where music_seq like 64;
+update music set music_addr = 'https://www.youtube.com/embed/d4Wcqe1a6xk' where music_seq like 59;
 
 
-<!-- 이슬 #일주일 -->
-SELECT  MUS.MUSIC_TITLE,AR.ARTIST_NAME,V1.SEQ_GROUP,COUNT(*) CNT , DATE_FORMAT(V1.VIEW_DATE,'%m-%d')AS VIEW_DATE,
-        FLOOR((COUNT(*)/(SELECT COUNT(*) FROM VIEW_RECORD V2 WHERE V2.VIEW_DATE LIKE V1.VIEW_DATE AND V2.SEQ_GROUP IN (
-                    SELECT TMP.MSEQ
-                    FROM
-                    (
-                        SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
-                        FROM VIEW_RECORD V
-                        WHERE V.VIEW_DATE LIKE '2018-10-25%' and V.SG_ELEMENT LIKE 'music'
-                        GROUP BY V.SEQ_GROUP
-                        ORDER BY CNT
-                        DESC LIMIT 3) TMP
-                    ))) * 100) PER
-FROM VIEW_RECORD V1
-JOIN MUSIC MUS ON V1.SEQ_GROUP LIKE MUS.MUSIC_SEQ
-   JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
-WHERE V1.SEQ_GROUP IN (
-                    SELECT TMP.MSEQ
-                    FROM
-                        (SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
-                        FROM VIEW_RECORD V
-                        WHERE V.VIEW_DATE LIKE '2018-10-25%' and V.SG_ELEMENT LIKE 'music'
-                        GROUP BY V.SEQ_GROUP
-                        ORDER BY CNT
-                        DESC LIMIT 3) TMP
-                    )
-         
-   AND V1.VIEW_DATE BETWEEN '2018-10-19%' AND '2018-10-26%'
-GROUP BY V1.SEQ_GROUP, V1.VIEW_DATE
-ORDER BY V1.VIEW_DATE DESC, COUNT(*) DESC;
+--------- 아래부턴 뷰 생성쿼리   ----------
+<!-- ADMIN 쿼리 -->
+-- 누리 CREATE VIEW 하기 #
+--1. 새로운 회원 수 : NR_NEW_USER ==================================================================
+CREATE VIEW NR_NEW_USER AS
+  SELECT DATE(JOIN_DATE) DATE, COUNT(MEMBER_ID) NEW_USER
+    FROM MEMBER
+GROUP BY DATE(JOIN_DATE);
+--2.# 당일 스트리밍 수  : NR_DAY_STR ==============================================================
+CREATE VIEW NR_DAY_STR AS
+  SELECT DATE(VIEW_DATE) DATE, COUNT(MEMBER_ID) STRM
+    FROM VIEW_RECORD
+   WHERE SG_ELEMENT = "MUSIC"
+GROUP BY DATE(VIEW_DATE);
+--3.=====방문자 통계 :NR_VISITER======================================================================
+CREATE VIEW NR_VISITER AS
+SELECT M.DATE, M.M_SUM_VISIT, F.F_SUM_VISIT
+  FROM (  SELECT DATE(LOGIN_DATE) DATE, SEX MALE, COUNT(LR_SEQ) M_SUM_VISIT
+            FROM LOGIN_RECORD
+           WHERE SEX LIKE '남'
+        GROUP BY DATE(LOGIN_DATE), SEX) M
+       LEFT JOIN
+       (  SELECT DATE(LOGIN_DATE) DATE, SEX FEMALE, COUNT(LR_SEQ) F_SUM_VISIT
+            FROM LOGIN_RECORD
+           WHERE SEX LIKE '여'
+        GROUP BY DATE(LOGIN_DATE), SEX) F
+          ON M.DATE = F.DATE;
+--================================================================
+/*4.아티스트 1번  ::nr_art1
+ 곡번호 | 나이  | 성별  | 스트리밍수 */
+CREATE VIEW NR_ART1 AS
+  SELECT v.SEQ_GROUP 곡번호,
+         MU.MUSIC_TITLE 곡명,
+         YEAR(CURDATE()) - YEAR(M.BIRTH) + 1 나이,
+         M.SEX 성별,
+         COUNT(v.SEQ_GROUP) 스트리밍수
+    FROM MUSIC MU,
+         VIEW_RECORD v
+         JOIN MEMBER m ON v.MEMBER_ID = M.MEMBER_ID
+   WHERE     SG_ELEMENT LIKE 'music'
+         AND v.SEQ_GROUP = MU.MUSIC_SEQ
+         AND M.member_id NOT LIKE 'shin'
+GROUP BY v.SEQ_GROUP, M.MEMBER_ID, M.SEX
+ORDER BY SEQ_GROUP, 나이, 성별;
+/*5.아티스트 2번  ::nr_art2
+ 곡번호 | 나이  | 성별  | 좋아요수 | 싫어요수 */
+CREATE VIEW NR_ART2 AS 
+  SELECT UD.SEQ_GROUP 곡번호,
+         YEAR(CURDATE()) - YEAR(M.BIRTH) + 1 나이,
+         M.SEX 성별,
+         COUNT(CASE WHEN UD.TYPES LIKE 'U' THEN 1 END) 좋아요수,
+         COUNT(CASE WHEN UD.TYPES LIKE 'D' THEN 1 END) 싫어요수
+    FROM UPDOWN UD JOIN MEMBER M ON UD.MEMBER_ID = M.MEMBER_ID
+   WHERE SG_ELEMENT LIKE 'MUSIC' AND M.member_id NOT LIKE 'shin'
+GROUP BY UD.SEQ_GROUP, M.MEMBER_ID, M.SEX
+ORDER BY SEQ_GROUP, 나이, 성별;
+/* 6.아티스트 종합  ::nr_art
+ 곡번호 | 나이  | 성별  | 스트리밍수 | 좋아요수 | 싫어요수 */
+CREATE VIEW NR_ART AS
+SELECT A1.곡번호 song_seq,
+       A1.나이 age,
+       A1.성별 sex,
+       A1.스트리밍수 str,
+       A2.좋아요수 good,
+       A2.싫어요수 bad
+  FROM nr_art1 A1
+       LEFT JOIN nr_art2 A2
+          ON     A1.곡번호 = A2.곡번호
+             AND A1.나이 = A2.나이
+             AND A1.성별 = A2.성별;
+/* 7. 아티스트 분석  :: nr_artist_stats ========================================================*/
+CREATE VIEW NR_ARTIST_STATS AS
+  SELECT a.artist_seq,
+         a.artist_name,
+         m.album_seq,
+         album_title,
+         song_seq,
+         music_title,
+         sum(str) sum_str,
+         sum(good) sum_good
+    FROM nr_art n,
+         album b,
+         music m,
+         artist a
+   WHERE     n.song_seq = m.music_seq
+         AND m.artist_seq = a.artist_seq
+         AND m.album_seq = b.album_seq
+GROUP BY song_seq;
+-- 선호도 =============================================
+/*8.선호도 - 아티스트 ::NR_PREF
+ 아티스트번호 | 나이 | 성별 | 좋아요수 */
+CREATE VIEW NR_PREF AS
+  SELECT UD.SEQ_GROUP ART_SEQ,
+         A.ARTIST_NAME,
+         YEAR(CURDATE()) - YEAR(M.BIRTH) + 1 AGE,
+         M.SEX SEX,
+         COUNT(CASE WHEN UD.TYPES LIKE 'U' THEN 1 END) GOOD
+    FROM ARTIST A,
+         UPDOWN UD
+         JOIN MEMBER M ON UD.MEMBER_ID LIKE M.MEMBER_ID
+   WHERE SG_ELEMENT LIKE 'ARTIST' AND UD.SEQ_GROUP = A.ARTIST_SEQ
+GROUP BY UD.SEQ_GROUP, M.MEMBER_ID, M.SEX
+ORDER BY UD.SEQ_GROUP, AGE, SEX;
+/* 9.선호도 - 장르 ::nr_genre-------------------------------------------------
+장르번호 | 장르 이름 | 나이 | 성별 | 좋아요수  
+(장르좋아요만 반영)
+*/
+CREATE VIEW NR_GENRE AS
+SELECT t.genre_seq,
+       g.genre genre_name,
+       age,
+       sex,
+       good
+  FROM (  SELECT UD.SEQ_GROUP genre_seq,
+                 YEAR(CURDATE()) - YEAR(M.BIRTH) + 1 age,
+                 M.SEX sex,
+                 COUNT(CASE WHEN UD.TYPES LIKE 'U' THEN 1 END) good
+            FROM UPDOWN UD JOIN MEMBER M ON UD.MEMBER_ID = M.MEMBER_ID
+           WHERE     SG_ELEMENT LIKE 'GENRE'
+                 AND UD.SEQ_GROUP IN (SELECT GENRE_SEQ FROM music_genre)
+        GROUP BY UD.SEQ_GROUP, M.MEMBER_ID, M.SEX
+        ORDER BY UD.SEQ_GROUP, age, sex) t,
+       music_genre g
+ WHERE t.genre_seq = g.genre_seq;
+/*10. 1번 장르 & 나이 */
+CREATE VIEW NR_AGE_GENRE AS
+  SELECT GENRE_SEQ,
+         GENRE_NAME,
+         CASE
+            WHEN AGE >= 10 AND AGE < 20 THEN '10대'
+            WHEN AGE >= 20 AND AGE < 30 THEN '20대'
+            WHEN AGE >= 30 AND AGE < 40 THEN '30대'
+            WHEN AGE >= 40 AND AGE < 50 THEN '40대'
+            ELSE '50대 이상'
+         END AS AGE_GROUP,
+         SUM(GOOD) SUM_GOOD
+    FROM nr_genre
+GROUP BY GENRE_SEQ,
+         CASE
+            WHEN AGE >= 10 AND AGE < 20 THEN '10대'
+            WHEN AGE >= 20 AND AGE < 30 THEN '20대'
+            WHEN AGE >= 30 AND AGE < 40 THEN '30대'
+            WHEN AGE >= 40 AND AGE < 50 THEN '40대'
+            ELSE '50대 이상'
+         END
+ORDER BY AGE_GROUP;
+/*11. 2번 나이별 아티스트 선호  ::AGE_ARTIST==========================================================
+아티스트 번호 | 아티스트이름 | 연령  | 좋아요합계 */
+CREATE VIEW NR_AGE_ARTIST AS
+  SELECT ART_SEQ,
+         ARTIST_NAME,
+         CASE
+            WHEN AGE >= 10 AND AGE < 20 THEN '10대'
+            WHEN AGE >= 20 AND AGE < 30 THEN '20대'
+            WHEN AGE >= 30 AND AGE < 40 THEN '30대'
+            WHEN AGE >= 40 AND AGE < 50 THEN '40대'
+            ELSE '50대 이상'
+         END AS AGE_GROUP,
+         SUM(GOOD) SUM_GOOD
+    FROM NR_PREF
+   WHERE artist_name IN ("레드벨벳", "방탄소년단", "트와이스")
+GROUP BY ART_SEQ,
+         CASE
+            WHEN AGE >= 10 AND AGE < 20 THEN '10대'
+            WHEN AGE >= 20 AND AGE < 30 THEN '20대'
+            WHEN AGE >= 30 AND AGE < 40 THEN '30대'
+            WHEN AGE >= 40 AND AGE < 50 THEN '40대'
+            ELSE '50대 이상'
+         END
+ORDER BY AGE_GROUP, ART_SEQ;
+--12.====3번 성별 장르=:NR_SEX_GENRE======================================================================
+--pref - 성별-장르
+/* ['장르', '남', '여'],
+   ['발라드', 9, 16], */
+CREATE VIEW NR_SEX_GENRE AS
+  SELECT GENRE_NAME,
+         CASE WHEN SEX = "남" THEN "M" WHEN SEX = "여" THEN "F" END AS MF,
+         SUM(GOOD) SUM_GOOD
+    FROM NR_GENRE
+GROUP BY GENRE_NAME,
+         CASE WHEN SEX = "남" THEN "M" WHEN SEX = "여" THEN "F" END
+ORDER BY GENRE_NAME, MF DESC;
+--13.=======4번 성별 아티스트=:NR_SEX_ARTIST============================================================
+CREATE VIEW NR_SEX_ARTIST AS
+  SELECT ARTIST_NAME,
+         CASE WHEN SEX = "남" THEN "M" WHEN SEX = "여" THEN "F" END AS MF,
+         SUM(GOOD) SUM_GOOD
+    FROM NR_PREF
+   WHERE artist_name IN ("레드벨벳", "방탄소년단", "트와이스")
+GROUP BY ARTIST_NAME,
+         CASE WHEN SEX = "남" THEN "M" WHEN SEX = "여" THEN "F" END
+ORDER BY ARTIST_NAME;
+-- 14.아티스트의 나이 좋아요 수 비교 =NR_ARTI_AGE=============================================
+-- 인간 승리다ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ
+/*
+['Year', '아티스트', '남', '여'],
+          ['10대', 5, 10],
+          ['20대', 13, 5, ],
+          ['30대', 9, 5],
+          ['40대', 3, 2 ]
+*/
+CREATE VIEW NR_ARTI_AGE AS
+    SELECT ARTIST_NAME ,
+        CASE
+            WHEN AGE >= 10 AND AGE < 20 THEN '10대'
+            WHEN AGE >= 20 AND AGE < 30 THEN '20대'
+            WHEN AGE >= 30 AND AGE < 40 THEN '30대'
+            WHEN AGE >= 40 AND AGE < 50 THEN '40대'
+         END AS AGE_GROUP,
+           SUM(CASE WHEN SEX LIKE "남" THEN GOOD END) M,
+           SUM(CASE WHEN SEX LIKE "여" THEN GOOD END) F
+FROM NR_PREF
+GROUP BY ARTIST_NAME,AGE_GROUP,
+         CASE
+            WHEN AGE >= 10 AND AGE < 20 THEN '10대'
+            WHEN AGE >= 20 AND AGE < 30 THEN '20대'
+            WHEN AGE >= 30 AND AGE < 40 THEN '30대'
+            WHEN AGE >= 40 AND AGE < 50 THEN '40대'
+         END
+;
+--15. 아티스트의 성별 좋아요 수 비교 ==============================================
+
+CREATE VIEW  NR_ARTIST_MF AS
+SELECT artist_name, 
+    sum(CASE WHEN sex like '남' then good end) M,  
+    sum(CASE WHEN sex like '여' then good end) F
+FROM NR_PREF
+group by artist_name, sex
+;
+
+--16. 해시태그 : NR_HASH =============================================
+    /* 1~5:스타일,  6~10: 상황&장소 , 11~15:감정&기분  */
+CREATE VIEW NR_HASH AS
+select SEQ_GROUP HASH_SEQ,HASH,DATE(VIEW_DATE) DAY,COUNT(VIEW_DATE) COUNT_VIEW
+from view_record V
+LEFT JOIN HASHTAG H
+ON V.SEQ_GROUP = H.HASHTAG_SEQ
+where SG_ELEMENT LIKE "HASH"
+GROUP BY SEQ_GROUP
+;
 
 
 
-DELETE FROM COMMENT WHERE SEQ_GROUP NOT LIKE -1;
 
-DELETE FROM UPDOWN WHERE SEQ_GROUP IN (154,157,143,140,136);
+
+<!---------------------------- 아래부턴 소진 뷰 쿼리문 목록들  ------------------------------>
+
+--1.## EMPTY_ROW VIEW (11,6)
+CREATE OR REPLACE VIEW SJ_EMPTY_ROW AS
+  SELECT 1 NUM
+  UNION ALL SELECT 2
+    UNION ALL SELECT 3
+    UNION ALL SELECT 4
+    UNION ALL SELECT 5
+    UNION ALL SELECT 6
+    UNION ALL SELECT 7
+    UNION ALL SELECT 8
+    UNION ALL SELECT 9
+    UNION ALL SELECT 10
+    UNION ALL SELECT 11;
+--2.    
+CREATE OR REPLACE VIEW SJ_EMPTY_SIX AS
+  SELECT 1 NUM
+  UNION ALL SELECT 2
+    UNION ALL SELECT 3
+    UNION ALL SELECT 4
+    UNION ALL SELECT 5
+    UNION ALL SELECT 6;
+    
+--3.## DJ_VIEW
+CREATE OR REPLACE VIEW SJ_DJ_VIEW
+AS
+SELECT 
+  M.ARTICLE_SEQ,
+  I.IMG_NAME,
+  I.EXT,
+  M.MEMBER_ID,
+  M.TITLE,
+  M.REGI_DATE,
+  MU.MUSIC_SEQ,
+  MU.MUSIC_TITLE,
+  AR.ARTIST_NAME,
+  MU.GENRE_SEQ,
+  AL.ALBUM_TITLE,
+  HT.HASHTAG,
+  HT.HASH
+FROM
+  (SELECT
+  A.*,
+  SUBSTRING_INDEX(SUBSTRING_INDEX(A.CONTENTS, ',', N.NUM), ',', -1) AS MUSIC_SEQ
+  FROM
+    SJ_EMPTY_ROW N
+  JOIN ARTICLE A
+    ON CHAR_LENGTH(A.CONTENTS) - CHAR_LENGTH(REPLACE(A.CONTENTS,',',''))>= N.NUM-1
+  ) M JOIN MUSIC MU
+  ON M.MUSIC_SEQ LIKE MU.MUSIC_SEQ
+  LEFT JOIN ALBUM AL
+  ON MU.ALBUM_SEQ LIKE AL.ALBUM_SEQ
+  LEFT JOIN ARTIST AR
+  ON MU.ARTIST_SEQ LIKE AR.ARTIST_SEQ
+  LEFT JOIN (SELECT 
+  M.ARTICLE_SEQ,
+  M.HASH,
+  GROUP_CONCAT(H.HASH) AS HASHTAG
+  FROM (SELECT A.*,
+               SUBSTRING_INDEX(SUBSTRING_INDEX(A.HASH, ',', N.NUM), ',', -1) AS HASH_SEQ
+          FROM SJ_EMPTY_ROW N
+               JOIN ARTICLE A
+                  ON CHAR_LENGTH(A.HASH) - CHAR_LENGTH(REPLACE(A.HASH, ',', '')) >= N.NUM - 1
+               
+    ) M
+       JOIN HASHTAG H
+       ON M.HASH_SEQ LIKE H.HASHTAG_SEQ
+  GROUP BY M.ARTICLE_SEQ)HT
+  ON M.ARTICLE_SEQ LIKE HT.ARTICLE_SEQ
+  LEFT JOIN IMG I
+    ON I.SEQ LIKE M.ARTICLE_SEQ
+  ORDER BY ARTICLE_SEQ ASC, MUSIC_SEQ ASC
+  ; 
+
+--4.## 장르뽑는 VIEW
+CREATE OR REPLACE VIEW SJ_GENREV AS
+SELECT
+ROW_NUMBER() OVER(ORDER BY A.MEMBER_ID, A.LIKE_CNT DESC) AS RANKING,
+A.*
+FROM
+(SELECT
+*,
+COUNT(*) AS LIKE_CNT
+FROM
+UPDOWN U
+LEFT JOIN MUSIC_GENRE MG
+ON U.SEQ_GROUP LIKE MG.GENRE_SEQ
+WHERE U.SG_ELEMENT LIKE 'genre'
+GROUP BY U.MEMBER_ID, U.SEQ_GROUP)A
+WHERE A.MEMBER_ID LIKE 'sound'
+ORDER BY RANKING;
+
+--5.## 노래추천, 앨범추천, 아티스트추천 합치기
+CREATE OR REPLACE VIEW SJ_FORYOU_V AS
+SELECT
+A.RANKING MS_RANK_A,
+A.MUSIC_SEQ MS_SEQ_A,
+A.MUSIC_TITLE MS_TITLE_A,
+A.GENRE MS_GENRE_A,
+A.ARTIST_SEQ MS_ARTIST_A,
+A.ARTIST_NAME MS_ARTIST_NAME_A,
+A.ALBUM_SEQ MS_ALBUM_A,
+A.ALBUM_TITLE MS_ALBUM_TITLE_A,
+B.RANKING MS_RANK_B,
+B.MUSIC_SEQ MS_SEQ_B,
+B.MUSIC_TITLE MS_TITLE_B,
+B.GENRE MS_GENRE_B,
+B.ARTIST_SEQ MS_ARTIST_B,
+B.ARTIST_NAME MS_ARTIST_NAME_B,
+B.ALBUM_SEQ MS_ALBUM_B,
+B.ALBUM_TITLE MS_ALBUM_TITLE_B,
+C.RANKING AL_RANK,
+C.ARTIST_SEQ AL_ARTIST,
+C.ARTIST_NAME AL_ARTIST_NAME,
+C.ALBUM_SEQ AL_SEQ,
+C.ALBUM_TITLE AL_TITLE,
+C.IMG_NAME AL_IMG_NAME,
+C.EXT AL_IMG_EXT,
+D.RANKING AT_RANK,
+D.ARTIST_SEQ AT_ARTIST_SEQ,
+D.ARTIST_NAME AT_ARTIST_NAME,
+IFNULL(D.IMG_NAME,'vanilla') AT_IMG_NAME,
+IFNULL(D.EXT,'jpg') AT_IMG_EXT
+FROM
+(SELECT
+*
+FROM
+(SELECT
+ROW_NUMBER() OVER(ORDER BY MS_VCNT DESC) AS RANKING,
+MS.MUSIC_SEQ,
+MS.MUSIC_TITLE,
+VR_MS.VIEW_CNT MS_VCNT,
+MS.GENRE_SEQ,
+GR.GENRE,
+MS.ARTIST_SEQ,
+AB.ARTIST_NAME,
+MS.ALBUM_SEQ,
+AB.ALBUM_TITLE,
+UD_MS.SG_ELEMENT MS_LIKE,
+UD_MS.TYPES MS_UD,
+UD_AT.SG_ELEMENT AT_LIKE,
+UD_AT.TYPES AT_UD
+FROM
+MUSIC MS
+JOIN ALBUM AB
+ON MS.ALBUM_SEQ = AB.ALBUM_SEQ
+JOIN MUSIC_GENRE GR
+ON MS.GENRE_SEQ LIKE GR.GENRE_SEQ
+LEFT JOIN (SELECT *,COUNT(*) AS VIEW_CNT FROM VIEW_RECORD WHERE VIEW_DATE <= CURDATE() GROUP BY SEQ_GROUP) VR_MS
+ON MS.MUSIC_SEQ LIKE VR_MS.SEQ_GROUP
+LEFT JOIN (SELECT * FROM UPDOWN WHERE MEMBER_ID LIKE 'sound') UD_MS
+ON MS.MUSIC_SEQ LIKE UD_MS.SEQ_GROUP
+LEFT JOIN (SELECT * FROM UPDOWN WHERE MEMBER_ID LIKE 'sound') UD_AT
+ON MS.ARTIST_SEQ LIKE UD_AT.SEQ_GROUP
+WHERE MS.GENRE_SEQ IN (SELECT
+B.GENRE_SEQ
+FROM
+(SELECT
+ROW_NUMBER() OVER(ORDER BY A.MEMBER_ID, A.LIKE_CNT DESC) AS RANKING,
+A.*
+FROM
+(SELECT
+*,
+COUNT(*) AS LIKE_CNT
+FROM
+UPDOWN U
+LEFT JOIN MUSIC_GENRE MG
+ON U.SEQ_GROUP LIKE MG.GENRE_SEQ
+WHERE U.SG_ELEMENT LIKE 'genre'
+GROUP BY U.MEMBER_ID, U.SEQ_GROUP)A
+WHERE A.MEMBER_ID LIKE 'sound'
+ORDER BY RANKING)B
+WHERE RANKING LIKE 1)
+  AND UD_MS.SG_ELEMENT IS NULL
+  AND (UD_AT.TYPES NOT LIKE 'd' OR UD_AT.TYPES IS NULL)
+GROUP BY MS.MUSIC_SEQ
+ORDER BY VR_MS.VIEW_CNT DESC)C
+WHERE C.RANKING <= 5
+)A,
+(SELECT
+*
+FROM
+(SELECT
+ROW_NUMBER() OVER(ORDER BY MS_VCNT DESC) AS RANKING,
+MS.MUSIC_SEQ,
+MS.MUSIC_TITLE,
+VR_MS.VIEW_CNT MS_VCNT,
+MS.GENRE_SEQ,
+GR.GENRE,
+MS.ARTIST_SEQ,
+AB.ARTIST_NAME,
+MS.ALBUM_SEQ,
+AB.ALBUM_TITLE,
+UD_MS.SG_ELEMENT MS_LIKE,
+UD_MS.TYPES MS_UD,
+UD_AT.SG_ELEMENT AT_LIKE,
+UD_AT.TYPES AT_UD
+FROM
+MUSIC MS
+JOIN ALBUM AB
+ON MS.ALBUM_SEQ = AB.ALBUM_SEQ
+JOIN MUSIC_GENRE GR
+ON MS.GENRE_SEQ LIKE GR.GENRE_SEQ
+LEFT JOIN (SELECT *,COUNT(*) AS VIEW_CNT FROM VIEW_RECORD WHERE VIEW_DATE <= CURDATE() GROUP BY SEQ_GROUP) VR_MS
+ON MS.MUSIC_SEQ LIKE VR_MS.SEQ_GROUP
+LEFT JOIN (SELECT * FROM UPDOWN WHERE MEMBER_ID LIKE 'sound') UD_MS
+ON MS.MUSIC_SEQ LIKE UD_MS.SEQ_GROUP
+LEFT JOIN (SELECT * FROM UPDOWN WHERE MEMBER_ID LIKE 'sound') UD_AT
+ON MS.ARTIST_SEQ LIKE UD_AT.SEQ_GROUP
+WHERE MS.GENRE_SEQ IN (SELECT
+B.GENRE_SEQ
+FROM
+(SELECT
+ROW_NUMBER() OVER(ORDER BY A.MEMBER_ID, A.LIKE_CNT DESC) AS RANKING,
+A.*
+FROM
+(SELECT
+*,
+COUNT(*) AS LIKE_CNT
+FROM
+UPDOWN U
+LEFT JOIN MUSIC_GENRE MG
+ON U.SEQ_GROUP LIKE MG.GENRE_SEQ
+WHERE U.SG_ELEMENT LIKE 'genre'
+GROUP BY U.MEMBER_ID, U.SEQ_GROUP)A
+WHERE A.MEMBER_ID LIKE 'sound'
+ORDER BY RANKING)B
+WHERE RANKING LIKE 2)
+  AND UD_MS.SG_ELEMENT IS NULL
+  AND (UD_AT.TYPES NOT LIKE 'd' OR UD_AT.TYPES IS NULL)
+GROUP BY MS.MUSIC_SEQ
+ORDER BY VR_MS.VIEW_CNT DESC)C
+WHERE C.RANKING <= 5
+)B,
+(SELECT
+*
+FROM
+(SELECT
+ROW_NUMBER() OVER(ORDER BY AB_VCNT DESC) AS RANKING,
+MS.ARTIST_SEQ,
+AB.ARTIST_NAME,
+MS.ALBUM_SEQ,
+AB.ALBUM_TITLE,
+VR_AB.VIEW_CNT AB_VCNT,
+AB.ALBUM_GENRE,
+UD_AT.SG_ELEMENT AT_LIKE,
+UD_AT.TYPES AT_UD,
+I.IMG_NAME,
+I.EXT
+FROM
+MUSIC MS
+JOIN ALBUM AB
+ON MS.ALBUM_SEQ = AB.ALBUM_SEQ
+LEFT JOIN (SELECT 
+MSC.ALBUM_SEQ, 
+COUNT(*) AS VIEW_CNT 
+FROM VIEW_RECORD VRD 
+JOIN MUSIC MSC 
+ON VRD.SEQ_GROUP 
+LIKE MSC.MUSIC_SEQ  
+WHERE VIEW_DATE <= CURDATE() 
+GROUP BY MSC.ALBUM_SEQ) VR_AB
+ON MS.ALBUM_SEQ LIKE VR_AB.ALBUM_SEQ
+LEFT JOIN (SELECT * FROM UPDOWN WHERE MEMBER_ID LIKE 'sound') UD_AT
+ON MS.ARTIST_SEQ LIKE UD_AT.SEQ_GROUP
+LEFT JOIN IMG I
+ON MS.ALBUM_SEQ LIKE I.SEQ
+WHERE (UD_AT.TYPES NOT LIKE 'd'
+OR UD_AT.TYPES IS NULL)
+AND (AB.ALBUM_GENRE LIKE (SELECT
+CONCAT('%',GENRE,'%')
+FROM
+SJ_GENREV
+WHERE RANKING LIKE 1)
+OR AB.ALBUM_GENRE LIKE (SELECT
+CONCAT('%',GENRE,'%')
+FROM
+SJ_GENREV
+WHERE RANKING LIKE 2))
+GROUP BY AB.ALBUM_SEQ
+ORDER BY VR_AB.VIEW_CNT DESC)A
+WHERE A.RANKING <= 5)C,
+(SELECT
+* 
+FROM
+(SELECT
+ROW_NUMBER() OVER(ORDER BY VIEW_CNT DESC) AS RANKING,
+M.ARTIST_SEQ,
+AT.ARTIST_NAME,
+COUNT(*) AS VIEW_CNT,
+I.IMG_NAME,
+I.EXT
+FROM VIEW_RECORD VR
+JOIN MUSIC M
+ON VR.SEQ_GROUP LIKE M.MUSIC_SEQ
+JOIN ARTIST AT
+ON M.ARTIST_SEQ = AT.ARTIST_SEQ
+LEFT JOIN (SELECT * FROM UPDOWN WHERE MEMBER_ID LIKE 'sound') UD
+ON AT.ARTIST_SEQ LIKE UD.SEQ_GROUP
+LEFT JOIN IMG I
+ON I.SEQ LIKE M.ARTIST_SEQ
+WHERE VR.MEMBER_ID LIKE 'sound'
+AND UD.UD_SEQ IS NULL
+AND VR.VIEW_DATE <= CURDATE()
+GROUP BY AT.ARTIST_SEQ
+ORDER BY VIEW_CNT DESC)A
+WHERE A.RANKING <= 5)D
+WHERE A.RANKING LIKE B.RANKING
+AND A.RANKING LIKE C.RANKING
+AND A.RANKING LIKE D.RANKING
+;
+
+
+
+
+
+<!---------------------------- 아래부턴 진태 쿼리문 목록들  ------------------------------>
+
+
+CREATE OR REPLACE VIEW JT_VIEW_PLAYER AS
+
+SELECT
+    M.MUSIC_SEQ,
+    M.MUSIC_TITLE,
+    M.music_addr,
+    A.ARTIST_NAME,
+    M.ALBUM_SEQ,
+    A.ALBUM_TITLE
+FROM MUSIC AS M
+     JOIN ALBUM AS A
+     ON M.ALBUM_SEQ = A.ALBUM_SEQ
+;
+
+
+
+
+
+
+
+<!---------------------------- 아래부턴 이슬 쿼리문 목록들  뷰는 없고 쿼리 정리 아직 안됌 ------------------------------>
+
+
+
+
+
+
+<!----------------------------기타 ------------------------------>
+
 
 
 SELECT
@@ -2260,13 +2520,4 @@ DELIMITER $$
 	  END $$
 DELIMITER ;
 
-ALTER TABLE MUSIC DROP COLUMN LYRICS;
-ALTER TABLE MUSIC ADD COLUMN REGI_DATE TIMESTAMP DEFAULT now();
 
-
-update music set music_addr = 'https://www.youtube.com/embed/mjTdMX27ThM' where music_seq like 57;
-update music set music_addr = 'https://www.youtube.com/embed/Pf88Wdj68JY' where music_seq like 73;
-update music set music_addr = 'https://www.youtube.com/embed/DUTUHUbJ6u8' where music_seq like 72;
-update music set music_addr = 'https://www.youtube.com/embed/3yoRkQBVUzM' where music_seq like 63;
-update music set music_addr = 'https://www.youtube.com/embed/HFRoJrcG-B0' where music_seq like 64;
-update music set music_addr = 'https://www.youtube.com/embed/d4Wcqe1a6xk' where music_seq like 59;

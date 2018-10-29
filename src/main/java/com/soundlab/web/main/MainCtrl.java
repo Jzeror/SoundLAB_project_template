@@ -1,5 +1,7 @@
 package com.soundlab.web.main;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.soundlab.web.cmm.Util;
 
 
 
@@ -32,8 +36,17 @@ public class MainCtrl {
 	public Map<String,Object> chart() {
 		logger.info("MainCtrl ::: chart ");
 		rm.clear();
-		System.out.println("hash ::: "+mp.getChart());
-		rm.put("top5", mp.getChart());
+		
+		Calendar cal = Calendar.getInstance();
+		 cal.add(Calendar.DATE, -1);
+	     rm.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
+		 cal.add(Calendar.DATE, +2);
+	     rm.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));		    
+		 Util.log.accept("date1:: " +rm.get("date1"));
+		 Util.log.accept("date2:: " +rm.get("date2"));
+		
+		System.out.println("chart ::: "+mp.getChart(rm));
+		rm.put("top5", mp.getChart(rm));
 		
 		return rm;
 	}

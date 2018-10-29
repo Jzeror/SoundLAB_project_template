@@ -500,7 +500,7 @@ sj.service = {
 											$('<button/>').addClass('btn ').append(
 													$('<span/>').addClass('glyphicon glyphicon-play')
 											).click(e=>{
-												jt.player(v.musicSeq);
+												jt.music_player(v.musicSeq);
 											}),
 											$('<button/>').addClass('btn '+((v.type == 'u')?'active':'')).append(
 													$('<span/>').addClass('glyphicon glyphicon-heart')
@@ -595,7 +595,7 @@ sj.service = {
 										$('<button/>').addClass('btn btn-default').append(
 												$('<span/>').addClass('glyphicon glyphicon-play')
 										).click(e=>{
-											jt.player(v.musicSeq);
+											jt.music_player(v.musicSeq);
 										}),
 										$('<button/>').addClass('btn btn-default').append(
 												$('<span/>').addClass('glyphicon glyphicon-heart')
@@ -641,7 +641,7 @@ sj.service = {
 										$('<button/>').addClass('btn').append(
 												$('<span/>').addClass('glyphicon glyphicon-play')
 										).click(e=>{
-											jt.player(v.musicSeq);
+											jt.music_player(v.musicSeq);
 										}),
 										$('<button/>').addClass('btn').append(
 												$('<span/>').addClass('glyphicon glyphicon-heart')
@@ -668,7 +668,7 @@ sj.service = {
 				seqs += v.value + ((i < x.length-1)?',':'');
 			});
 			console.log(seqs);
-			jt.player(seqs);
+			jt.music_player(seqs);
 		}
 };
 
