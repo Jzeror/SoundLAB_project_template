@@ -1,6 +1,6 @@
 "use strict";
 var jt = jt || {};
-jt ={
+jt ={//
 		search :x=>{ //앞에서 넘어온 map
 			console.log(x.musics.MUSIC_SEQ);
 			let art = x.artist;
