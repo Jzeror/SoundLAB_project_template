@@ -86,12 +86,41 @@
 	WHERE MS.ALBUM_SEQ LIKE #{p}
 	ORDER BY MS.MUSIC_SEQ
   </select>
+  
   <insert id="putMusicUp">
  	INSERT INTO UPDOWN ( MEMBER_ID , SEQ_GROUP , SG_ELEMENT , TYPES )
- 	VALUES (#{id},#{seq},'music','u')
+ 	VALUES ('sound',#{p},'music','u')
   </insert>
   <insert id="putGenreUp">
  	INSERT INTO UPDOWN ( MEMBER_ID , SEQ_GROUP , SG_ELEMENT , TYPES )
- 	VALUES (#{id},#{seq},'genre','u')
+ 	VALUES ('sound',#{p},'genre','u')
+  </insert>
+  <delete id="delMusicDown">
+  	DELETE FROM UPDOWN 
+  	WHERE SEQ_GROUP LIKE #{p}
+  	AND TYPES LIKE 'd'
+  	AND MEMBER_ID LIKE 'sound'
+  </delete>
+  
+  <delete id="delMusicUp">
+	DELETE FROM UPDOWN
+	WHERE MEMBER_ID LIKE 'sound'
+	AND SEQ_GROUP LIKE #{p}
+	AND TYPES LIKE 'u'
+  </delete>
+  <delete id="delGenreUp">
+  	DELETE FROM UPDOWN
+  	WHERE UD_SEQ LIKE (
+	  	SELECT MIN(UD_SEQ)
+		FROM UPDOWN 
+		WHERE MEMBER_ID LIKE 'sound' 
+		AND SEQ_GROUP LIKE #{p}
+		AND TYPES LIKE 'u'
+		GROUP BY SEQ_GROUP
+		)
+  </delete>
+  <insert id="putMusicDown">
+  	INSERT INTO UPDOWN ( MEMBER_ID , SEQ_GROUP , SG_ELEMENT , TYPES )
+ 	VALUES ('sound',#{p},'music','d')
   </insert>
   </mapper>

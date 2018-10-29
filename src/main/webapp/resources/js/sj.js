@@ -126,12 +126,10 @@ sj ={
 							$('<div/>').addClass('container').append(
 									$('<div/>').addClass('row').append(
 											$('<div/>').addClass('col-xs-12').append(
-													$('<div/>').addClass('sj-music-content sj-d-flex sj-flex-wrap').attr({'style':'height:300px'}).append(
+													$('<div/>').addClass('sj-music-content sj-d-flex sj-flex-wrap').attr({'style':'height:400px'}).append(
 															$('<div/>').addClass('sj-music-content-songs sj-h-100').attr({'style':'flex:none; width:100%; max-width:100%;'}).append(
 																	$('<div/>').addClass('sj-music-songs-info sj-mb-10 sj-d-flex sj-flex-wrap sj-align-items-center').append(
 																			$('<div/>').addClass('sj-songs-info-title').attr({'style':'width:100%;'}).append(
-																					$('<h6/>')
-																					.html('즐겨듣는 곡과 비슷한 곡'),
 																							$('<div/>').addClass('sj-foryou-switch row')
 																							.attr({'style':'margin: 10px 0;'})
 																							.append(
@@ -160,18 +158,19 @@ sj ={
 																					}),
 																					$('<span/>').addClass('sj-checkmark')
 																			),
-																			$('<div/>').addClass('sj-meta-title').append($('<p/>').html('제목')),
-																			$('<div/>').addClass('sj-meta-artist').append($('<p/>').html('아티스트')),
-																			$('<button/>').addClass('btn btn-secondary').html('전체듣기')
+																			$('<div/>').addClass('sj-fym-title').append($('<p/>').html('제목')),
+																			$('<div/>').addClass('sj-fym-artist').append($('<p/>').html('아티스트')),
+																			$('<div/>').addClass('sj-fym-album').append($('<p/>').html('아티스트')),
+																			$('<button/>').attr({'style':'background-color:#eee;'}).addClass('btn btn-secondary').html('전체듣기')
 																			.click(e=>{
 																				sj.service.music_player($('.sj-music-item .check-con input[name=musicCk]:checkbox'));
 																			}),
-																			$('<button/>').addClass('btn btn-secondary').html('선택듣기')
+																			$('<button/>').attr({'style':'background-color:#eee;'}).addClass('btn btn-secondary').html('선택듣기')
 																			.click(e=>{
 																				sj.service.music_player($('.sj-music-item .check-con input[name=musicCk]:checkbox:checked'));
 																			})
 																	),
-																	$('<div/>').addClass('sj-music-list-area sj-pl-scroll').attr({id:'fy-music-list'})
+																	$('<div/>').addClass('sj-music-list-area sj-pl-scroll').attr({id:'fy-music-list','style':'height:60%;'})
 															)
 													)
 											)
@@ -192,11 +191,11 @@ sj ={
 									$('<div/>').addClass('row').append(
 											$('<div/>').addClass('col-xs-12').append(
 													$('<div/>')
-													.attr({'style':'padding:2.5rem 0rem 2.5rem 5rem;'})
+													.attr({'style':'padding:2.5rem 0rem 2.5rem 5rem;border:1px solid #EEEEEE;'})
 													.addClass('sj-music-content sj-d-flex sj-flex-wrap').append(
 															$('<div/>').attr({id:'for-album-li','style':'width:20%;overflow-y:auto;'}),
 															$('<div/>').addClass('sj-music-content-songs sj-h-100')
-															.attr({id:'for-album-dt', 'style':'flex:0 0 80%;max-width:80%;width:80%;'})
+															.attr({id:'for-album-dt', 'style':'flex:0 0 80%;max-width:80%;width:80%;border:none;'})
 													)
 											)
 									)
@@ -254,7 +253,7 @@ sj ={
 									$('<div/>').addClass('row').append(
 											$('<div/>').addClass('col-xs-12').append(
 													$('<div/>')
-													.attr({'style':'padding:5rem;align-items:center'})
+													.attr({'style':'padding:5rem;align-items:center;border:1px solid #EEEEEE;'})
 													.addClass('sj-music-content sj-d-flex sj-flex-wrap').append(
 															$('<div/>').attr({id:'for-artist'}).addClass('accordian')
 													)
@@ -301,6 +300,7 @@ sj.service = {
 									if($this.find('h4').text() != $('#sj-dt-container .sj-songs-info-title>h4').text()){
 										$('#sj-dj-detail').empty();
 										sj.service.dj_pld($this.attr('id'));
+										$.getJSON($.ctx()+'/dj/hashs/'+$.cookie('loginID')+'/'+$this.children('label').html());
 									}else{
 										$('#sj-dj-detail').remove();
 									}
@@ -321,6 +321,7 @@ sj.service = {
 								$('<div/>')
 								.attr({id:v.articleSeq})
 								.addClass('col-md-4 col-sm-6 col-xs-12 sj-dj-item').append(
+										$('<label/>').attr({'style':'display:none;'}).html(v.hash),
 										$('<div/>')
 										.addClass('sj-bg-img img-responsive')
 										.attr({
@@ -425,7 +426,7 @@ sj.service = {
 														.addClass('sj-music-content-img sj-h-100 sj-bg-img')
 														.attr({'style':'background-image: url('+$.ctx()+'/resources/img/'+djInfo.imgName+'.'+djInfo.ext+');'}),
 														$('<button/>').addClass('close')
-														.attr({'aria-label':'Close','style':'position: absolute; right: 5px; z-index: 11; color:#fff; font-size:2.5em'})
+														.attr({'aria-label':'Close','style':'position: absolute; right: 5px; z-index: 11; color:#383A3F; font-size:2.5em'})
 														.html('<span aria-hidden="true">&times;</span>')
 														.click(e=>{
 															$('#sj-dj-detail').remove();
@@ -447,15 +448,15 @@ sj.service = {
 																				}),
 																				$('<span/>').addClass('sj-checkmark')
 																		),
-																		$('<div/>').addClass('sj-meta-title').append($('<p/>').html('제목')),
-																		$('<div/>').addClass('sj-meta-artist').append($('<p/>').html('아티스트')),
+																		$('<div/>').addClass('sj-dj-meta-title').append($('<p/>').html('제목')),
+																		$('<div/>').addClass('sj-dj-meta-artist').append($('<p/>').html('아티스트')),
 																		$('<button/>').addClass('btn btn-secondary').html('전체듣기')
 																		.click(e=>{
 																			sj.service.music_player($('.sj-music-item .check-con input:checkbox'));
 																		}),
 																		$('<button/>').addClass('btn btn-secondary').html('선택듣기')
 																		.click(e=>{
-																		sj.service.music_player($('.sj-music-item .check-con input:checkbox:checked'));
+																			sj.service.music_player($('.sj-music-item .check-con input:checkbox:checked'));
 																		})
 																),
 																$('<div/>').addClass('sj-music-list-area sj-pl-scroll').attr({id:'dj-playlist-d'})
@@ -483,27 +484,44 @@ sj.service = {
 											}),
 											$('<span/>').addClass('sj-checkmark')
 									),
-									$('<div/>').addClass('sj-meta-title sj-text-crop').append($('<p/>').html(v.musicTitle)),
-									$('<div/>').addClass('sj-meta-artist sj-text-crop').append($('<p/>').html(v.artistName)),
+									$('<div/>').addClass('sj-dj-meta-title sj-text-crop').append($('<span/>').html(v.musicTitle)),
+									$('<div/>').addClass('sj-dj-meta-artist sj-text-crop').append($('<span/>').html(v.artistName)),
 									$('<div/>').addClass('btn-group').append(
-											$('<button/>').addClass('btn btn-default').append(
+											$('<button/>').addClass('btn ').append(
 													$('<span/>').addClass('glyphicon glyphicon-play')
 											).click(e=>{
 												jt.player(v.musicSeq);
 											}),
-											$('<button/>').addClass('btn btn-default '+((v.type == 'u')?'active':'')).append(
+											$('<button/>').addClass('btn '+((v.type == 'u')?'active':'')).append(
 													$('<span/>').addClass('glyphicon glyphicon-heart')
 											).click(function(e){
 												let $this = $(this);
 												if($this.hasClass('active')){
 													$this.removeClass('active');
+													if($.cookie("loginID")=='sound') $.getJSON($.ctx()+'/foryou/delML/'+v.musicSeq+'/'+v.genreSeq);
 												}else{
 													$this.addClass('active');
+													if($this.siblings().hasClass('active')) $this.siblings().removeClass('active');
+													if($.cookie("loginID")=='sound') $.getJSON($.ctx()+'/foryou/putML/'+v.musicSeq+'/'+v.genreSeq);
 												} 
 											}),
-											$('<button/>').addClass('btn btn-default '+((v.type == 'd')?'active':'')).append(
+											$('<button/>').addClass('btn '+((v.type == 'd')?'active':'')).append(
 													$('<span/>').addClass('glyphicon glyphicon-thumbs-down')
-											)
+											).click(function(e){
+												let $this = $(this);
+												if($this.hasClass('active')){
+													$this.removeClass('active');
+													if($.cookie("loginID")=='sound') $.getJSON($.ctx()+'/foryou/delMH/'+v.musicSeq);
+												}else{
+													$this.addClass('active');
+													if($this.siblings().hasClass('active')){
+														if($.cookie("loginID")=='sound') $.getJSON($.ctx()+'/foryou/putMH/'+v.musicSeq+'/'+v.genreSeq);
+														$this.siblings().removeClass('active');
+													}else{
+														if($.cookie("loginID")=='sound') $.getJSON($.ctx()+'/foryou/putMH/'+v.musicSeq);
+													}
+												} 
+											})
 									)
 							)
 					).appendTo($pl)
@@ -513,36 +531,34 @@ sj.service = {
 		fy_album_dt : x=>{
 			$('#for-album-dt').empty();
 			
-			
 			$('<div/>').addClass('sj-music-songs-info sj-mb-10 sj-d-flex sj-flex-wrap sj-align-items-center sj-justify-content-between').append(
 					$('<div/>').addClass('sj-songs-info-title').append(
 							$('<h4/>').html(x[0].albumTitle),
-							$('<h6/>').html(x[0].artistName),
-							$('<div/>').addClass('sj-songs-meta').append(
-									$('<label/>').addClass('check-con').append(
-											$('<input/>').attr({type:'checkbox',name:'allCheckAlbumDt'})
-											.click(function(e){
-												let $this = $(this);
-												$('.sj-music-item .check-con input[name=albumCk]:checkbox').prop('checked',($this.is(':checked')?true:false));
-											}),
-											$('<span/>').addClass('sj-checkmark')
-									),
-									$('<div/>').addClass('sj-meta-title').append($('<p/>').html('제목')),
-									$('<div/>').addClass('sj-meta-artist').append($('<p/>').html('아티스트')),
-									$('<button/>').addClass('btn btn-secondary').html('전체듣기')
-									.click(e=>{
-										sj.service.music_player($('.sj-music-item .check-con input[name=albumCk]:checkbox'));
-									}),
-									$('<button/>').addClass('btn btn-secondary').html('선택듣기')
-									.click(e=>{
-										sj.service.music_player($('.sj-music-item .check-con input[name=albumCk]:checkbox:checked'));
-									})
-							)
+							$('<h6/>').html(x[0].artistName)
 					)
 			).appendTo($('#for-album-dt'));
+			$('<div/>').addClass('sj-songs-meta').append(
+					$('<label/>').addClass('check-con').append(
+							$('<input/>').attr({type:'checkbox',name:'allCheckAlbumDt'})
+							.click(function(e){
+								let $this = $(this);
+								$('.sj-music-item .check-con input[name=albumCk]:checkbox').prop('checked',($this.is(':checked')?true:false));
+							}),
+							$('<span/>').addClass('sj-checkmark')
+					),
+					$('<div/>').addClass('sj-meta-title').append($('<p/>').html('제목')),
+					$('<div/>').addClass('sj-meta-artist').append($('<p/>').html('아티스트')),
+					$('<button/>').addClass('btn btn-secondary').html('전체듣기')
+					.click(e=>{
+						sj.service.music_player($('.sj-music-item .check-con input[name=albumCk]:checkbox'));
+					}),
+					$('<button/>').addClass('btn btn-secondary').html('선택듣기')
+					.click(e=>{
+						sj.service.music_player($('.sj-music-item .check-con input[name=albumCk]:checkbox:checked'));
+					})
+			).appendTo($('#for-album-dt'));
+			
 			$('<div/>').addClass('sj-music-list-area sj-pl-scroll').attr({id:'fy-al-dtmusic'}).appendTo($('#for-album-dt'));
-			
-			
 			
 			let $pl = $('<div/>').addClass('sj-music-playlist').appendTo($('#fy-al-dtmusic'));
 			
@@ -563,11 +579,6 @@ sj.service = {
 								$('<div/>').addClass('col-xs-4 sj-text-crop').append($('<p/>').html(v.musicTitle)),
 								$('<div/>').addClass('col-xs-2 sj-text-crop').append(
 										$('<p/>').html(v.artistName)
-								),
-								$('<div/>').addClass('col-xs-1').append(
-										$('<button/>').addClass('btn btn-default').append(
-												$('<span/>').addClass('glyphicon glyphicon-thumbs-down')
-										)
 								),
 								$('<div/>').addClass('col-xs-2 sj-text-crop').append($('<p/>').html(v.albumTitle)),
 								$('<div/>').addClass('btn-group col-xs-3').append(
@@ -611,23 +622,18 @@ sj.service = {
 										}),
 										$('<span/>').addClass('sj-checkmark')
 								),
-								$('<div/>').addClass('col-xs-4 sj-text-crop').append($('<p/>').html(v.musicTitle)),
-								$('<div/>').addClass('col-xs-2 sj-text-crop').append(
+								$('<div/>').addClass('sj-fym-title sj-text-crop').append($('<p/>').html(v.musicTitle)),
+								$('<div/>').addClass('sj-fym-artist sj-text-crop').append(
 										$('<p/>').html(v.artistName)
 								),
-								$('<div/>').addClass('col-xs-1').append(
-										$('<button/>').addClass('btn btn-default').append(
-												$('<span/>').addClass('glyphicon glyphicon-thumbs-down')
-										)
-								),
-								$('<div/>').addClass('col-xs-2 sj-text-crop').append($('<p/>').html(v.albumTitle)),
-								$('<div/>').addClass('btn-group col-xs-3').append(
-										$('<button/>').addClass('btn btn-default').append(
+								$('<div/>').addClass('sj-fym-album sj-text-crop').append($('<p/>').html(v.albumTitle)),
+								$('<div/>').addClass('btn-group').append(
+										$('<button/>').addClass('btn').append(
 												$('<span/>').addClass('glyphicon glyphicon-play')
 										).click(e=>{
 											jt.player(v.musicSeq);
 										}),
-										$('<button/>').addClass('btn btn-default').append(
+										$('<button/>').addClass('btn').append(
 												$('<span/>').addClass('glyphicon glyphicon-heart')
 										).click(function(e){
 											if($(this).hasClass('active')){
@@ -636,7 +642,7 @@ sj.service = {
 												$(this).addClass('active');
 											} 
 										}),
-										$('<button/>').addClass('btn btn-default').append(
+										$('<button/>').addClass('btn').append(
 												$('<span/>').addClass('glyphicon glyphicon-thumbs-down')
 										)
 								)
@@ -652,6 +658,7 @@ sj.service = {
 				seqs += v.value + ((i < x.length-1)?',':'');
 			});
 			console.log(seqs);
+			jt.player(seqs);
 		}
 };
 

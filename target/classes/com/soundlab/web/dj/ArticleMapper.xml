@@ -15,8 +15,10 @@
       <result property="musicSeq" column="MUSIC_SEQ"/>
       <result property="musicTitle" column="MUSIC_TITLE"/>
       <result property="artistName" column="ARTIST_NAME"/>
+      <result property="genreSeq" column="GENRE_SEQ"/>
       <result property="albumTitle" column="ALBUM_TITLE"/>
       <result property="hashtag" column="HASHTAG"/>
+      <result property="hash" column="HASH" />
       <result property="type" column="TYPES"/>
     </resultMap>
 
@@ -27,11 +29,11 @@
 		D.EXT,
 		D.TITLE,
 		D.MEMBER_ID,
-		D.VIEW_CNT,
-		D.HASHTAG
+		D.HASHTAG,
+		D.HASH
 	FROM (
 		SELECT
-			ROW_NUMBER() OVER(ORDER BY VIEW_CNT DESC, TITLE ASC) AS 'BNO',
+			ROW_NUMBER() OVER(ORDER BY TITLE ASC) AS 'BNO',
 			A.*
 		FROM
 			ARTICLE A
@@ -83,5 +85,8 @@ ON SD.MUSIC_SEQ LIKE UD.SEQ_GROUP
 </if>
 WHERE ARTICLE_SEQ LIKE #{seq}
   </select>
-  
+  <insert id="putHashView">
+ 	INSERT INTO VIEW_RECORD (MEMBER_ID, SEQ_GROUP, SG_ELEMENT)
+ 	VALUES (#{id},#{seq},'hash')
+  </insert>
   </mapper>

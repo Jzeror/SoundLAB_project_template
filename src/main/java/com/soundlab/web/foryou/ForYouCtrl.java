@@ -31,12 +31,34 @@ public class ForYouCtrl {
 		System.out.println(res.get("albumDt"));
 		return res;
 	}
-	@RequestMapping("/foryou/musicUp/{id}/{seq}")
-	public void putUpdown(@PathVariable String id, @PathVariable String seq){
-		Map<String, Object> p = new HashMap<>();
-		p.put("id", id);
-		p.put("seq", seq);
+	@RequestMapping("/foryou/putML/{mSeq}/{gSeq}")
+	public void putMusicUp(@PathVariable String mSeq, @PathVariable String gSeq){
+		Map<String, String> p = new HashMap<>();
+		p.put("mSeq", mSeq);
+		p.put("gSeq", gSeq);
 		ts.putMusicUp(p);
+	}
+	@RequestMapping("/foryou/delML/{mSeq}/{gSeq}")
+	public void delMusicUp(@PathVariable String mSeq, @PathVariable String gSeq){
+		Map<String, String> p = new HashMap<>();
+		p.put("mSeq", mSeq);
+		p.put("gSeq", gSeq);
+		ts.delMusicUp(p);
+	}
+	@RequestMapping("/foryou/putMH/{mSeq}")
+	public void putMusicDown(@PathVariable String mSeq){
+		fm.putMusicDown(mSeq);
+	}
+	@RequestMapping("/foryou/putMH/{mSeq}/{gSeq}")
+	public void putMusicDown(@PathVariable String mSeq, @PathVariable String gSeq){
+		Map<String, String> p = new HashMap<>();
+		p.put("mSeq", mSeq);
+		p.put("gSeq", gSeq);
+		ts.putMusicDown(p);
+	}
+	@RequestMapping("/foryou/delMH/{mSeq}")
+	public void delMusicDown(@PathVariable String mSeq){
+		fm.delMusicDown(mSeq);
 	}
 	
 }

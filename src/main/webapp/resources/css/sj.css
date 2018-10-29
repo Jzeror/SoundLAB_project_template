@@ -178,15 +178,15 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 .sj-music-content {
 	position: relative;
 	z-index: 2;
-	background-color: #383A3F;
+	background-color: #FFFFFF;
 	width: calc(100% - 30px);
 	margin:auto;
 	height: 570px;
 }
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 992px) {
 	.sj-music-content {
-		height: 1050px;
+		height: 850px;
 	}
 }
 
@@ -207,7 +207,7 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 	width: 35%;
 }
 
-@media only screen and (min-width: 768px) and (max-width: 991px) {
+/* @media only screen and (min-width: 768px) and (max-width: 991px) {
 	.sj-music-content .sj-music-content-img {
 		-webkit-box-flex: 0;
 		-ms-flex: 0 0 30%;
@@ -215,16 +215,16 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 		max-width: 30%;
 		width: 30%;
 	}
-}
+} */
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 991px) {
 	.sj-music-content .sj-music-content-img {
 		-webkit-box-flex: 0;
 		-ms-flex: 0 0 100%;
 		flex: 0 0 100%;
 		max-width: 100%;
 		width: 100%;
-		height: 200px !important;
+		height: 300px !important;
 	}
 }
 
@@ -237,9 +237,10 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 	position: relative;
 	z-index: 10;
 	padding: 2.5rem 5rem 2.5rem 5rem;
+	border:1px solid #EEE;
 }
 
-@media only screen and (min-width: 768px) and (max-width: 991px) {
+/* @media only screen and (min-width: 768px) and (max-width: 991px) {
 	.sj-music-content .sj-music-content-songs {
 		-webkit-box-flex: 0;
 		-ms-flex: 0 0 70%;
@@ -248,16 +249,16 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 		width: 70%;
 	}
 }
-
-@media only screen and (max-width: 767px) {
-	.sj-music-content .sj-music-list-area {
+ */
+@media only screen and (max-width: 991px) {
+	/* .sj-music-content .sj-music-list-area {
 		position: relative;
 		z-index: 2;
 		height: 70%;
 		width: 100%;
 		overflow-x: hidden;
 		overflow-y: auto;
-	}
+	} */
 	.sj-music-content .sj-music-content-songs {
 		-webkit-box-flex: 0;
 		-ms-flex: 0 0 100%;
@@ -265,7 +266,7 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 		max-width: 100%;
 		width: 100%;
 		padding: 3rem;
-		height: 850px;
+		height: 550px;
 	}
 }
 
@@ -274,7 +275,7 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 	width: 100%;
 }
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 991px) {
 	.sj-music-content .sj-music-content-songs .sj-music-songs-info .sj-songs-info-title
 		{
 		-webkit-box-flex: 0;
@@ -299,17 +300,17 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 	font-size: 24px;
 	margin-bottom: 0;
 	font-weight: 900;
-	color: #ffffff;
+	color: #383A3F;
 }
 
-@media only screen and (min-width: 768px) and (max-width: 991px) {
+/* @media only screen and (min-width: 768px) and (max-width: 991px) {
 	.sj-music-content .sj-music-content-songs .sj-music-songs-info .sj-songs-info-title h4
 		{
 		font-size: 18px;
 	}
 }
-
-@media only screen and (max-width: 767px) {
+ */
+@media only screen and (max-width: 991px) {
 	.sj-music-content .sj-music-content-songs .sj-music-songs-info {
 		-webkit-box-flex: 0;
 		-ms-flex: 0 0 100%;
@@ -317,6 +318,10 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 		max-width: 100%;
 		width: 100%;
 	}
+	/* .sj-music-content .sj-music-content-songs .sj-music-songs-info .sj-songs-info-title h4
+		{
+		font-size: 18px;
+	} */
 }
 
 .sj-music-content .sj-music-content-songs .single-music {
@@ -338,16 +343,16 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 	margin-bottom: 0;
 }
 
-@media only screen and (min-width: 768px) and (max-width: 991px) {
+/* @media only screen and (min-width: 768px) and (max-width: 991px) {
 	.sj-music-content .sj-music-content-songs .single-music h6 {
 		font-size: 14px;
 		top: 3px;
 	}
 }
-
+ 
 .sj-music-content .sj-music-content-songs .single-music.active h6 {
 	color: white;
-}
+}*/
 
 /* .sj-music-content .sj-music-content-songs .sj-songs-footer {
 	position: absolute;
@@ -373,11 +378,11 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 }
 
 .sj-pl-scroll::-webkit-scrollbar-thumb {
-	background: #fff;
+	background: #F6B352;
 }
 
 .sj-pl-scroll::-webkit-scrollbar-thumb:hover {
-	background: #ff3385;
+	background: #F68657;
 }
 
 #for-album-li::-webkit-scrollbar {
@@ -465,7 +470,7 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 }
 
 .sj-music-playlist {
-	color: #fff;
+	color: #383A3F;
 }
 
 label.check-con {
@@ -482,7 +487,7 @@ label.check-con {
 }
 
 .check-con input:checked ~ .sj-checkmark {
-	background-color: #ff3385;
+	background-color: #F6B352;
 }
 
 .check-con input:checked ~ .sj-checkmark:after {
@@ -514,13 +519,17 @@ label.check-con {
 }
 
 .sj-music-item .btn-group .btn.active, .btn-group .btn:hover {
-	background: #27203f;
-	color: #ff3385;
+	background: #ffffff;
+	color: #F68657;
 	text-shadow: none;
 }
 
-.sj-music-item .btn-default.active {
-	text-shadow: none;
+.sj-music-item .btn.active {
+	text-shadow:none;
+	box-shadow:none;
+}
+.sj-music-item .btn {
+	background-color:white;
 }
 
 /* foryou album list */
@@ -679,14 +688,14 @@ label.check-con {
 	white-space: nowrap;
     overflow:hidden;
 }
-.sj-text-crop p {
+.sj-text-crop span {
 	transform:translateX(0);
     transition:1s;
     margin:0;
 }
-.sj-text-crop:hover p{
+.sj-text-crop:hover span{
 	transform:translateX(-50%);
-}
+	}
 
 #djSec button, #djSec .btn {
 	outline:0;
@@ -696,27 +705,44 @@ label.check-con {
 	display:flex;
 	align-items:center;
 	height:5rem;
-	weight:100%;
+	width:100%;
 }
 .sj-songs-meta p{
-	color:#ffffff;
+	color:#383A3F;
 	margin:0;
 }
 @media ( max-width : 767px) {
+	.sj-dj-meta-title {
+		width:calc( 100%/12*4 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-dj-meta-artist {
+		width:calc( 100%/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
 }
 
 @media ( min-width : 767px) and (max-width : 992px ) {
+	.sj-dj-meta-title {
+		width:calc( ( 690px - 6rem )/12*4 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-dj-meta-artist {
+		width:calc( ( 690px - 6rem )/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
 }
 
 @media ( min-width : 992px ) and (max-width : 1200px) {
-	.sj-meta-title {
-		width:calc( ( 591.5px - 10rem )/12*5 ) ; /* ( 1170px - 30px - 30px )*65% */
+	.sj-dj-meta-title {
+		width:calc( ( 591.5px - 10rem )/12*4 ) ; /* ( 1170px - 30px - 30px )*65% */
 		padding: 0 15px;
 	}
-	.sj-meta-artist {
+	.sj-dj-meta-artist {
 		width:calc( ( 591.5px - 10rem )/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
 		padding: 0 15px;
 	}
+	
 }
 
 @media ( min-width : 1200px ) {
@@ -726,6 +752,26 @@ label.check-con {
 	}
 	.sj-meta-artist {
 		width:calc( ( 721.5px - 10rem )/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-dj-meta-title {
+		width:calc( ( 721.5px - 10rem )/12*5 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-dj-meta-artist {
+		width:calc( ( 721.5px - 10rem )/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fym-title {
+		width:calc( ( 1110px - 10rem )/12*4 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fym-artist {
+		width:calc( ( 1110px - 10rem )/12*2 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fym-album {
+		width:calc( ( 1110px - 10rem )/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
 		padding: 0 15px;
 	}
 }
