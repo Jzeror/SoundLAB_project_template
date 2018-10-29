@@ -20,12 +20,16 @@
 			WHERE A.ALBUM_SEQ LIKE #{albumSeq};
 	</select>
 	
-	 <select id="getAlbumMusic" resultType="com.soundlab.web.bean.music" parameterType="string">
-			SELECT
-		  		MUSIC_SEQ 'MUSICSEQ',
-		  		MUSIC_TITLE 'MUSICTITLE'
-			FROM  MUSIC 
-		 	WHERE ALBUM_SEQ LIKE #{albumSeq}
+	 <select id="getAlbumMusic" resultType="map" parameterType="string">
+				SELECT 
+					M.MUSIC_SEQ,
+					M.MUSIC_TITLE,
+					A.ARTIST_NAME,
+					A.ALBUM_SEQ
+				FROM MUSIC AS M
+					JOIN ALBUM AS A
+					ON M.ALBUM_SEQ = A.ALBUM_SEQ
+				WHERE M.ALBUM_SEQ LIKE #{albumSeq};
 	</select>
 	<select id="count" resultType="int">
 		SELECT COUNT(*) 

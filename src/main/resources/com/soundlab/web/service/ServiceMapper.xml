@@ -14,12 +14,22 @@
 		WHERE A.ARTIST_NAME LIKE #{artist}
 	</select>
 	
-	<select id="getMusicList" resultType="com.soundlab.web.bean.music" parameterType="string">
-			SELECT
+	<select id="getMusicList" resultType="map" parameterType="string">
+			<!-- SELECT
 		  		MUSIC_SEQ 'MUSICSEQ',
 		  		MUSIC_TITLE 'MUSICTITLE'
 			FROM  MUSIC 
-		 	WHERE ARTIST_SEQ LIKE #{artistSeq}
+		 	WHERE ARTIST_SEQ LIKE #{artistSeq} -->
+		 	SELECT 
+				M.MUSIC_SEQ,
+				M.MUSIC_TITLE,
+				A.ARTIST_NAME,
+				A.ARTIST_SEQ
+				FROM MUSIC AS M
+				JOIN ARTIST AS A
+				ON M.ARTIST_SEQ = A.ARTIST_SEQ
+				WHERE M.ARTIST_SEQ LIKE #{artistSeq};
+		 	
 	</select>
 	
 	<select id="getAlbumList"  resultType="map" parameterType="string">
@@ -52,6 +62,18 @@
 			FROM MUSIC MC
 			WHERE MC.ARTIST_SEQ LIKE #{artistSeq}
 			)
+	</select>
+	
+	<select id="getPlayer" resultType="map" >
+		SELECT * FROM JT_VIEW_PLAYER
+			<where>
+				<if test= "musicSeq != null">
+					MUSIC_SEQ in (${musicSeq})
+				</if>
+				<if test= "albumSeq != null">
+					AND ALBUM_SEQ in (${albumSeq})
+				</if>
+	 		 </where>
 	</select>
 
 </mapper>
