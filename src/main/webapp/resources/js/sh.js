@@ -52,14 +52,6 @@ sh = (()=>{
 		   +'</div>'
 		 +'</div>'
 		 +'<div class="buttons">'
-		 /*+'<a id="prev" class="left carousel-control sh-slider-left" role="button" data-slide="prev">'
-		  +'<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>'
-		  +'<span class="sr-only">Previous</span>'
-		+'</a>'
-		+'<a id="next" class="right carousel-control sh-slider-right" role="button" data-slide="next">'
-		  +'<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>'
-		  +'<span class="sr-only">Next</span>'
-		+'</a>'*/
 		 +'<button id="prev">'
 		 +'<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>'
 		 +'</button>'
@@ -261,7 +253,7 @@ sh = (()=>{
     		 } 
     	 });
          
-    	 $('#chartBtn').click(e=>{
+    	 $('.chartBtn').click(e=>{
     		 e.preventDefault();
     		 if(!($("#banner").length >0)){   //not exist
     			 home(); 
@@ -488,7 +480,7 @@ var mainContents =()=> '<section id="mainContents">'
      +'</br>'
      +'</br>'
 	     +'<table class="sh-listbox">'
-	     +'<caption>실시간 차트</caption>'
+	     +'<a id="main-chart" class="chartBtn">실시간 차트</a>'
 	    +'<thead>'
 	        +'<tr class="sh-list sh-hover">'
 	            +'<th scope="col" class="col-md-1">순위</th>'

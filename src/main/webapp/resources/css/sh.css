@@ -424,7 +424,7 @@ html, body, main {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: -440px;
+  bottom: -400px;
   font-size: 20px;
   color: #F68657;
   
@@ -444,7 +444,7 @@ html, body, main {
 /*-- 배너 --*/
 
 #mainContents {
-	margin : -150px 0px 0px 0px;
+	margin : -90px 0px 0px 0px;
 	padding : 0px 0px 0px 0px;
 }
 
@@ -472,6 +472,13 @@ html, body, main {
     margin: 0 13px 0 3px;
     
 } */
+
+#main-chart{
+   font-size: 30px;
+   cursor: pointer;
+   text-decoration: none;
+   font-weight: 10;
+}
 
 .sh-title {
 	float: left;
