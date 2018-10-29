@@ -300,28 +300,18 @@ sj.service = {
 										$('<h2/>').attr('style','margin-left: 1.2rem;').addClass('my-4').html('DJ PLAYLIST'),
 										$('<div/>').attr({id : 'djCarousel'}).addClass('carousel slide')
 								).on('click','.sj-dj-item',function(e){
-									$.ajax({
-							    		 url : sh.ctx()+'/member/auth',
-								       	  method : 'get',
-								       	  success : d=>{
-								       		$('#djCarousel').carousel('pause');
-											
-											let $this = $(this);
-											
-											if($this.find('h4').text() != $('#sj-dt-container .sj-songs-info-title>h4').text()){
-												$('#sj-dj-detail').empty();
-												sj.service.dj_pld($this.attr('id'));
-												$.getJSON($.ctx()+'/dj/hashs/'+$.cookie('loginID')+'/'+$this.children('label').html());
-											}else{
-												$('#sj-dj-detail').remove();
-											}  
-								       	  },
-								       	  error : m=>{
-								       		alert('로그인이 필요한 서비스입니다.');
-							    			sh.service.login();
-								       	  }
-							    	 });
 									
+									$('#djCarousel').carousel('pause');
+									
+									let $this = $(this);
+									
+									if($this.find('h4').text() != $('#sj-dt-container .sj-songs-info-title>h4').text()){
+										$('#sj-dj-detail').empty();
+										sj.service.dj_pld($this.attr('id'));
+										$.getJSON($.ctx()+'/dj/hashs/'+$.cookie('loginID')+'/'+$this.children('label').html());
+									}else{
+										$('#sj-dj-detail').remove();
+									}
 									
 								})
 						)
@@ -607,15 +597,27 @@ sj.service = {
 										$('<button/>').addClass('btn').append(
 												$('<span/>').addClass('fa fa-heart')
 										).click(function(e){
-											if($(this).hasClass('active')){
-												$(this).removeClass('active');
+											console.log('sibal');
+											let $this = $(this);
+											if($this.hasClass('active')){
+												$this.removeClass('active');
 											}else{
-												$(this).addClass('active');
+												$this.addClass('active');
+												if($this.siblings().hasClass('active')) $this.siblings().removeClass('active');
 											} 
 										}),
 										$('<button/>').addClass('btn').append(
 												$('<span/>').addClass('fa fa-thumbs-down')
-										)
+										).click(function(e){
+											console.log('Click');
+											let $this = $(this);
+											if($this.hasClass('active')){
+												$this.removeClass('active');
+											}else{
+												$this.addClass('active');
+												if($this.siblings().hasClass('active')) $this.siblings().removeClass('active');
+											} 
+										})
 								)
 						)
 				).appendTo($pl)

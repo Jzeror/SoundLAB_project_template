@@ -743,7 +743,7 @@ label.check-con {
 	}
 	
  */
-#djSec button, #djSec .btn {
+#djSec button, #djSec .btn, #foryouSec button, #foryouSec .btn {
 	outline:0;
 }
 
