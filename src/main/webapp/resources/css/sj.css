@@ -188,6 +188,9 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 	.sj-music-content {
 		height: 850px;
 	}
+	#for-artist-con .sj-music-content {
+		height: 570px;
+	}
 }
 
 .sj-music-content .sj-music-list-area {
@@ -250,6 +253,13 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 	}
 }
  */
+ 
+#for-album-dt {
+	flex:0 0 80%;
+	max-width:80%;
+	width:80%;
+	border:none;
+}
 @media only screen and (max-width: 991px) {
 	/* .sj-music-content .sj-music-list-area {
 		position: relative;
@@ -259,7 +269,7 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 		overflow-x: hidden;
 		overflow-y: auto;
 	} */
-	.sj-music-content .sj-music-content-songs {
+	.sj-music-content .sj-music-content-songs, #for-album-dt {
 		-webkit-box-flex: 0;
 		-ms-flex: 0 0 100%;
 		flex: 0 0 100%;
@@ -329,8 +339,11 @@ sj을 포함시켜서 겹치지 않게 부탁드려요
 	z-index: 1;
 	height: 5rem;
 }
-.sj-music-content .sj-music-content-songs .single-music:hover {
+.sj-music-item:hover {
 	color:#F6B352;
+}
+.sj-music-item:hover .btn-group {
+	color:#383A3F;
 }
 .sj-music-content .sj-music-content-songs .single-music h6 {
 	position: absolute;
@@ -544,7 +557,8 @@ label.check-con {
 	opacity: 0;
 	background: rgba(0, 0, 0, 0);
 	width: 100%;
-	height: 100%
+	height: 100%;
+	padding:4rem;
 }
 
 .sj-for-album-eff:hover, .sj-for-album-item.active>div.sj-for-album-eff
@@ -558,6 +572,12 @@ label.check-con {
 	margin-bottom: 0;
 	font-weight: 900;
 	color: #ffffff;
+}
+.sj-for-album-eff>h6 {
+	font-size: 12px;
+	margin-bottom: 0;
+	font-weight: 1000;
+	color: #F6B352;
 }
 
 /* foryou artist */
@@ -605,22 +625,47 @@ label.check-con {
 
 .sj-acc-img-cnt {
 	opacity: 0;
-	transition: opacity 1.5s;
-	background: rgba(0, 0, 0, 0.3);
-	position: absolute;
-	left: 0;
-	bottom: 50%;
-	width: 100%;
-	text-align: center;
+    transition: opacity 0.5s;
+    background: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    left: 15%;
+    bottom: 15%;
+    width: 70%;
+    text-align: center;
+    height: 70%;
 }
 
-.sj-acc-img-cnt a {
+
+.sj-acc-img-cnt>p {
 	display: block;
 	color: #fff;
 	text-decoration: none;
-	padding: 20px;
-	font-size: 16px;
+	margin: 25% 0;
+    font-size: 7rem;
+    font-weight:1000;
 }
+
+@media ( max-width : 767px) {
+	.sj-acc-img-cnt>p {
+		margin: 65% 0;
+		font-size:4.5rem;
+	}
+}
+
+@media ( min-width : 767px) and (max-width : 992px ) {
+	.sj-acc-img-cnt>p {
+		margin: 50% 0;
+		font-size:5rem;
+	}
+}
+
+@media ( min-width : 992px ) and (max-width : 1200px) {
+	.sj-acc-img-cnt>p {
+		margin: 33% 0;
+	}
+}
+
+
 
 .sj-hash-btn {
 	color : #383A3F;
@@ -688,7 +733,7 @@ label.check-con {
 	white-space: nowrap;
     overflow:hidden;
 }
-.sj-text-crop span {
+/* .sj-text-crop span {
 	transform:translateX(0);
     transition:1s;
     margin:0;
@@ -696,7 +741,8 @@ label.check-con {
 .sj-text-crop:hover span{
 	transform:translateX(-50%);
 	}
-
+	
+ */
 #djSec button, #djSec .btn {
 	outline:0;
 }
@@ -712,53 +758,104 @@ label.check-con {
 	margin:0;
 }
 @media ( max-width : 767px) {
-	.sj-dj-meta-title {
+	.sj-dj-title {
 		width:calc( 100%/12*4 ) ; /* ( 1170px - 30px - 30px )*65% */
 		padding: 0 15px;
 	}
-	.sj-dj-meta-artist {
+	.sj-dj-artist {
+		width:calc( 100%/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fym-title {
+		width:calc( 100%/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fym-artist {
+		width:calc( 100%/12*2 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fym-album {
+		width:calc( 100%/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fya-title {
+		width:calc( 100%/12*4 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fya-artist {
 		width:calc( 100%/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
 		padding: 0 15px;
 	}
 }
 
 @media ( min-width : 767px) and (max-width : 992px ) {
-	.sj-dj-meta-title {
+	.sj-dj-title {
 		width:calc( ( 690px - 6rem )/12*4 ) ; /* ( 1170px - 30px - 30px )*65% */
 		padding: 0 15px;
 	}
-	.sj-dj-meta-artist {
+	.sj-dj-artist {
+		width:calc( ( 690px - 6rem )/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fym-title {
+		width:calc( ( 690px - 6rem )/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fym-artist {
+		width:calc( ( 690px - 6rem )/12*2 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fym-album {
+		width:calc( ( 690px - 6rem )/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fya-title {
+		width:calc( ( 690px - 6rem )/12*4 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fya-artist {
 		width:calc( ( 690px - 6rem )/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
 		padding: 0 15px;
 	}
 }
 
 @media ( min-width : 992px ) and (max-width : 1200px) {
-	.sj-dj-meta-title {
+	.sj-dj-title {
 		width:calc( ( 591.5px - 10rem )/12*4 ) ; /* ( 1170px - 30px - 30px )*65% */
 		padding: 0 15px;
 	}
-	.sj-dj-meta-artist {
+	.sj-dj-artist {
 		width:calc( ( 591.5px - 10rem )/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
 		padding: 0 15px;
 	}
-	
+	.sj-fym-title {
+		width:calc( ( 910px - 10rem )/12*4 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fym-artist {
+		width:calc( ( 910px - 10rem )/12*2 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fym-album {
+		width:calc( ( 910px - 10rem )/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fya-title {
+		width:calc( ( 690px - 10rem )/12*4 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fya-artist {
+		width:calc( ( 690px - 10rem )/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
 }
 
 @media ( min-width : 1200px ) {
-	.sj-meta-title {
+	.sj-dj-title {
 		width:calc( ( 721.5px - 10rem )/12*5 ) ; /* ( 1170px - 30px - 30px )*65% */
 		padding: 0 15px;
 	}
-	.sj-meta-artist {
-		width:calc( ( 721.5px - 10rem )/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
-		padding: 0 15px;
-	}
-	.sj-dj-meta-title {
-		width:calc( ( 721.5px - 10rem )/12*5 ) ; /* ( 1170px - 30px - 30px )*65% */
-		padding: 0 15px;
-	}
-	.sj-dj-meta-artist {
+	.sj-dj-artist {
 		width:calc( ( 721.5px - 10rem )/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
 		padding: 0 15px;
 	}
@@ -774,6 +871,39 @@ label.check-con {
 		width:calc( ( 1110px - 10rem )/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
 		padding: 0 15px;
 	}
+	.sj-fya-title {
+		width:calc( ( 846.5px - 10rem )/12*5 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
+	.sj-fya-artist {
+		width:calc( ( 846.5px - 10rem )/12*3 ) ; /* ( 1170px - 30px - 30px )*65% */
+		padding: 0 15px;
+	}
 }
 
+.sj-songs-meta button {
+	background-color:#EEEEEE;
+}
 
+#for-album-li {
+	width:20%;
+	overflow-y:auto;
+}
+
+@media only screen and (max-width: 991px) {
+	#for-album-li  {
+		-webkit-box-flex: 0;
+		-ms-flex: 0 0 100%;
+		flex: 0 0 100%;
+		max-width: 100%;
+		width: 100%;
+		height: 300px !important;
+	}
+}
+.sj-foryou-theme {
+	position:absolute;
+	top:3%;
+	font-size: 3.5rem;
+    font-weight: bold;
+	
+}

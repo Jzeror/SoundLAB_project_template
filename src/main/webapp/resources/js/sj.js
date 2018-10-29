@@ -127,7 +127,10 @@ sj ={
 									$('<div/>').addClass('row').append(
 											$('<div/>').addClass('col-xs-12').append(
 													$('<div/>').addClass('sj-music-content sj-d-flex sj-flex-wrap').attr({'style':'height:400px'}).append(
-															$('<div/>').addClass('sj-music-content-songs sj-h-100').attr({'style':'flex:none; width:100%; max-width:100%;'}).append(
+															$('<div/>').addClass('sj-music-content-songs sj-h-100').attr({'style':'flex:none; width:100%; max-width:100%;padding-top:8rem;'}).append(
+																	$('<p/>')
+																	.attr({'style':'top:5%;'})
+																	.addClass('sj-foryou-theme').html('Music <span style="color:#F6B352;">For</span> You'),
 																	$('<div/>').addClass('sj-music-songs-info sj-mb-10 sj-d-flex sj-flex-wrap sj-align-items-center').append(
 																			$('<div/>').addClass('sj-songs-info-title').attr({'style':'width:100%;'}).append(
 																							$('<div/>').addClass('sj-foryou-switch row')
@@ -160,12 +163,12 @@ sj ={
 																			),
 																			$('<div/>').addClass('sj-fym-title').append($('<p/>').html('제목')),
 																			$('<div/>').addClass('sj-fym-artist').append($('<p/>').html('아티스트')),
-																			$('<div/>').addClass('sj-fym-album').append($('<p/>').html('아티스트')),
-																			$('<button/>').attr({'style':'background-color:#eee;'}).addClass('btn btn-secondary').html('전체듣기')
+																			$('<div/>').addClass('sj-fym-album').append($('<p/>').html('앨범')),
+																			$('<button/>').addClass('btn').html('전체듣기')
 																			.click(e=>{
 																				sj.service.music_player($('.sj-music-item .check-con input[name=musicCk]:checkbox'));
 																			}),
-																			$('<button/>').attr({'style':'background-color:#eee;'}).addClass('btn btn-secondary').html('선택듣기')
+																			$('<button/>').addClass('btn').html('선택듣기')
 																			.click(e=>{
 																				sj.service.music_player($('.sj-music-item .check-con input[name=musicCk]:checkbox:checked'));
 																			})
@@ -191,11 +194,12 @@ sj ={
 									$('<div/>').addClass('row').append(
 											$('<div/>').addClass('col-xs-12').append(
 													$('<div/>')
-													.attr({'style':'padding:2.5rem 0rem 2.5rem 5rem;border:1px solid #EEEEEE;'})
+													.attr({'style':'padding:8rem 0rem 2.5rem 5rem;border:1px solid #EEEEEE;'})
 													.addClass('sj-music-content sj-d-flex sj-flex-wrap').append(
-															$('<div/>').attr({id:'for-album-li','style':'width:20%;overflow-y:auto;'}),
+															$('<p/>').addClass('sj-foryou-theme').html('Album <span style="color:#F6B352;">For</span> You'),
+															$('<div/>').attr({id:'for-album-li'}),
 															$('<div/>').addClass('sj-music-content-songs sj-h-100')
-															.attr({id:'for-album-dt', 'style':'flex:0 0 80%;max-width:80%;width:80%;border:none;'})
+															.attr({id:'for-album-dt'})
 													)
 											)
 									)
@@ -247,14 +251,15 @@ sj ={
 					
 					$('<div/>')
 					.addClass('clearfix')
-					.attr({id:'for-album-dt', 'style':'margin-bottom:0px;'})
+					.attr({id:'for-artist-con', 'style':'margin-bottom:0px;'})
 					.append(
 							$('<div/>').addClass('container').append(
 									$('<div/>').addClass('row').append(
 											$('<div/>').addClass('col-xs-12').append(
 													$('<div/>')
-													.attr({'style':'padding:5rem;align-items:center;border:1px solid #EEEEEE;'})
+													.attr({'style':'padding:8rem 5rem 5rem;align-items:center;border:1px solid #EEEEEE;'})
 													.addClass('sj-music-content sj-d-flex sj-flex-wrap').append(
+															$('<p/>').addClass('sj-foryou-theme').html('Artist <span style="color:#F6B352;">For</span> You'),
 															$('<div/>').attr({id:'for-artist'}).addClass('accordian')
 													)
 											)
@@ -269,7 +274,10 @@ sj ={
 								$('<div/>')
 								.addClass('sj-bg-img')
 								.attr({'style':'background-image:url('+$.ctx()+'/resources/img/artist/'+v.imgName+'.'+v.ext+');'}),
-								$('<div/>').addClass('sj-acc-img-cnt').html(v.artistName)
+								$('<div/>').addClass('sj-acc-img-cnt')
+								.append(
+									$('<p/>').html(v.artistName)
+								)
 						).appendTo($accUl);
 					});
 					
@@ -448,13 +456,13 @@ sj.service = {
 																				}),
 																				$('<span/>').addClass('sj-checkmark')
 																		),
-																		$('<div/>').addClass('sj-dj-meta-title').append($('<p/>').html('제목')),
-																		$('<div/>').addClass('sj-dj-meta-artist').append($('<p/>').html('아티스트')),
-																		$('<button/>').addClass('btn btn-secondary').html('전체듣기')
+																		$('<div/>').addClass('sj-dj-title').append($('<p/>').html('제목')),
+																		$('<div/>').addClass('sj-dj-artist').append($('<p/>').html('아티스트')),
+																		$('<button/>').addClass('btn').html('전체듣기')
 																		.click(e=>{
 																			sj.service.music_player($('.sj-music-item .check-con input:checkbox'));
 																		}),
-																		$('<button/>').addClass('btn btn-secondary').html('선택듣기')
+																		$('<button/>').addClass('btn').html('선택듣기')
 																		.click(e=>{
 																			sj.service.music_player($('.sj-music-item .check-con input:checkbox:checked'));
 																		})
@@ -484,16 +492,16 @@ sj.service = {
 											}),
 											$('<span/>').addClass('sj-checkmark')
 									),
-									$('<div/>').addClass('sj-dj-meta-title sj-text-crop').append($('<span/>').html(v.musicTitle)),
-									$('<div/>').addClass('sj-dj-meta-artist sj-text-crop').append($('<span/>').html(v.artistName)),
+									$('<div/>').addClass('sj-dj-title sj-text-crop').append($('<span/>').html(v.musicTitle)),
+									$('<div/>').addClass('sj-dj-artist sj-text-crop').append($('<span/>').html(v.artistName)),
 									$('<div/>').addClass('btn-group').append(
 											$('<button/>').addClass('btn ').append(
-													$('<span/>').addClass('glyphicon glyphicon-play')
+													$('<span/>').addClass('fa fa-play')
 											).click(e=>{
-												jt.player(v.musicSeq);
+												jt.music_player(v.musicSeq);
 											}),
 											$('<button/>').addClass('btn '+((v.type == 'u')?'active':'')).append(
-													$('<span/>').addClass('glyphicon glyphicon-heart')
+													$('<span/>').addClass('fa fa-heart')
 											).click(function(e){
 												let $this = $(this);
 												if($this.hasClass('active')){
@@ -506,7 +514,7 @@ sj.service = {
 												} 
 											}),
 											$('<button/>').addClass('btn '+((v.type == 'd')?'active':'')).append(
-													$('<span/>').addClass('glyphicon glyphicon-thumbs-down')
+													$('<span/>').addClass('fa fa-thumbs-down')
 											).click(function(e){
 												let $this = $(this);
 												if($this.hasClass('active')){
@@ -546,13 +554,13 @@ sj.service = {
 							}),
 							$('<span/>').addClass('sj-checkmark')
 					),
-					$('<div/>').addClass('sj-meta-title').append($('<p/>').html('제목')),
-					$('<div/>').addClass('sj-meta-artist').append($('<p/>').html('아티스트')),
-					$('<button/>').addClass('btn btn-secondary').html('전체듣기')
+					$('<div/>').addClass('sj-fya-title').append($('<p/>').html('제목')),
+					$('<div/>').addClass('sj-fya-artist').append($('<p/>').html('아티스트')),
+					$('<button/>').addClass('btn').html('전체듣기')
 					.click(e=>{
 						sj.service.music_player($('.sj-music-item .check-con input[name=albumCk]:checkbox'));
 					}),
-					$('<button/>').addClass('btn btn-secondary').html('선택듣기')
+					$('<button/>').addClass('btn').html('선택듣기')
 					.click(e=>{
 						sj.service.music_player($('.sj-music-item .check-con input[name=albumCk]:checkbox:checked'));
 					})
@@ -576,19 +584,18 @@ sj.service = {
 										}),
 										$('<span/>').addClass('sj-checkmark')
 								),
-								$('<div/>').addClass('col-xs-4 sj-text-crop').append($('<p/>').html(v.musicTitle)),
-								$('<div/>').addClass('col-xs-2 sj-text-crop').append(
+								$('<div/>').addClass('sj-fya-title sj-text-crop').append($('<p/>').html(v.musicTitle)),
+								$('<div/>').addClass('sj-fya-artist sj-text-crop').append(
 										$('<p/>').html(v.artistName)
 								),
-								$('<div/>').addClass('col-xs-2 sj-text-crop').append($('<p/>').html(v.albumTitle)),
-								$('<div/>').addClass('btn-group col-xs-3').append(
-										$('<button/>').addClass('btn btn-default').append(
-												$('<span/>').addClass('glyphicon glyphicon-play')
+								$('<div/>').addClass('btn-group').append(
+										$('<button/>').addClass('btn').append(
+												$('<span/>').addClass('fa fa-play')
 										).click(e=>{
-											jt.player(v.musicSeq);
+											jt.music_player(v.musicSeq);
 										}),
-										$('<button/>').addClass('btn btn-default').append(
-												$('<span/>').addClass('glyphicon glyphicon-heart')
+										$('<button/>').addClass('btn').append(
+												$('<span/>').addClass('fa fa-heart')
 										).click(function(e){
 											if($(this).hasClass('active')){
 												$(this).removeClass('active');
@@ -596,8 +603,8 @@ sj.service = {
 												$(this).addClass('active');
 											} 
 										}),
-										$('<button/>').addClass('btn btn-default').append(
-												$('<span/>').addClass('glyphicon glyphicon-thumbs-down')
+										$('<button/>').addClass('btn').append(
+												$('<span/>').addClass('fa fa-thumbs-down')
 										)
 								)
 						)
@@ -629,12 +636,12 @@ sj.service = {
 								$('<div/>').addClass('sj-fym-album sj-text-crop').append($('<p/>').html(v.albumTitle)),
 								$('<div/>').addClass('btn-group').append(
 										$('<button/>').addClass('btn').append(
-												$('<span/>').addClass('glyphicon glyphicon-play')
+												$('<span/>').addClass('fa fa-play')
 										).click(e=>{
-											jt.player(v.musicSeq);
+											jt.music_player(v.musicSeq);
 										}),
 										$('<button/>').addClass('btn').append(
-												$('<span/>').addClass('glyphicon glyphicon-heart')
+												$('<span/>').addClass('fa fa-heart')
 										).click(function(e){
 											if($(this).hasClass('active')){
 												$(this).removeClass('active');
@@ -643,7 +650,7 @@ sj.service = {
 											} 
 										}),
 										$('<button/>').addClass('btn').append(
-												$('<span/>').addClass('glyphicon glyphicon-thumbs-down')
+												$('<span/>').addClass('fa fa-thumbs-down')
 										)
 								)
 						)
@@ -658,7 +665,7 @@ sj.service = {
 				seqs += v.value + ((i < x.length-1)?',':'');
 			});
 			console.log(seqs);
-			jt.player(seqs);
+			jt.music_player(seqs);
 		}
 };
 
