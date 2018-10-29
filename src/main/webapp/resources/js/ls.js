@@ -396,15 +396,9 @@ ls ={
 												$('<div/>').append(
 														$('<button/>').addClass('ls_btn btn--block card__btn').html('앨범듣기')
 														.click(()=>{ 
-															$.getJSON(sh.ctx()+'/album/getMusSeq/'+v.ALBUM_SEQ,d=>{
-																let seqs='';
-																$.each(d, (i,v)=>{
-																	 seqs = v.MUSIC_SEQ + ((i < d.length-1)?',':'');
-																	
-																})
-																console.log(seqs);
-																jt.album_player(seqs);
-															})
+														
+																console.log(v.ALBUM_SEQ);
+																jt.album_player(v.ALBUM_SEQ);
 															
 														 })
 												)

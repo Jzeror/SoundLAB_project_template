@@ -1,3 +1,7 @@
+.nr-cnt-img{
+	height: 100px
+}
+
 .container-fluid {
     width: 100%;
     padding-right: 15px;
@@ -5,6 +9,7 @@
     margin-right: auto;
     margin-left: auto;
 }
+/* 
 
 .mr-3{margin-right:1rem!important}
 
@@ -55,13 +60,13 @@
  		[type=search]::-webkit-search-decoration{-webkit-appearance:none}
  		::-webkit-file-upload-button{font:inherit;-webkit-appearance:button}output{display:inline-block}
  		 
-/* 방문통계 이미지*/					
+방문통계 이미지					
 .main-img{
 	height:70px;
 	width:auto;
 } 		
 
-/* 버튼 */
+버튼
 .nrBtn {
 	background-color:#fde8ef;
 	-moz-border-radius:5px;
@@ -70,7 +75,7 @@
 	display:inline-block;
 	cursor:pointer;
 	color:#ffffff;
-	/* font-family:Arial; */
+	font-family:Arial;
 	font-size:12px;
 	font-weight:bold;
 	padding:0.5rem 1rem;
@@ -83,3 +88,53 @@
 	position:relative;
 	top:1px;
 }
+ */
+ /*
+* ==========================================================
+*     GENERAL
+* ==========================================================
+*/
+/* .text-uppercase {
+  letter-spacing: 0.2em;
+}
+a {
+  display: inline-block;
+  text-decoration: none;
+  color: #fff;
+}
+body {
+  overflow-x: hidden;
+}
+ i {
+  display: inline-block;
+}
+span {
+  display: inline-block;
+}
+ .page {
+  position: absolute;
+  top: 0;
+  right: 0;
+  -webkit-transition: width 0.3s linear;
+  transition: width 0.3s linear;
+  width: calc(100% - 200px);
+  background-color: #F4F7FA;
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+.page.active {
+  width: calc(100% - 70px);
+}
+h2 {
+  color: #555;
+  font-weight: 400;
+}
+.card {
+  margin-bottom: 30px;
+  -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+ */
+ 

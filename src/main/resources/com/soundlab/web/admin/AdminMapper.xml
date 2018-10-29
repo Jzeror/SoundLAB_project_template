@@ -22,31 +22,71 @@
 		<result property="sumGood" column="sum_good"/>
 		<result property="date" column="date"/>
 		<result property="sumVisit" column="sum_visit"/>
-		<result property="mSumVisit" column="m_sum_visit"/>
-		<result property="fSumVisit" column="f_sum_visit"/>
-		
+		<result property="mVisit" column="m_sum_visit"/>
+		<result property="fVisit" column="f_sum_visit"/>
+		<result property="newUser" column="new_user"/>
+		<result property="strm" column="strm"/>
+		<result property="teen" column="10s"/>
+		<result property="twent" column="20s"/>
+		<result property="thir" column="30s"/>
+		<result property="four" column="40s"/>
+		<result property="m" column="m"/>
+		<result property="f" column="f"/>
+		<result property="hashSeq" column="hash_seq"/>
+		<result property="day" column="day"/>
+		<result property="hash" column="hash"/>
+		<result property="countView" column="count_view"/>
 	</resultMap>
-	<select id="artiGS" resultMap="admin">
-		SELECT * FROM NR_GS
-		WHERE ARTIST_NAME LIKE #{artist_name}
+	
+	<!-- 아티스트 -->
+	<select id="artistStats" resultMap="admin">
+		SELECT * FROM nr_artist_stats
+		WHERE ARTIST_NAME LIKE #{artistName}
 	</select>
+	<select id="getPerSex" resultMap="admin">
+	SELECT ARTIST_NAME, SUM(M) M, SUM(F) F 
+	FROM NR_ARTIST_MF
+	WHERE ARTIST_NAME LIKE #{artistName}
+	</select>
+	<select id="getCntAge" resultMap="admin">
+	SELECT * FROM NR_ARTI_AGE
+	WHERE ARTIST_NAME LIKE #{artistName}
+	</select>
+	
+	
+	<!-- 선호도 -->
 	<select id="ageGenre" resultMap="admin">
-	SELECT * FROM AGE_GENRE
+	SELECT * FROM NR_AGE_GENRE
 	</select>
 	<select id="ageArtist" resultMap="admin">
 	SELECT * FROM AGE_ARTIST
 	</select> 
 	<select id="sexGenre" resultMap="admin">
-	SELECT * FROM SEX_GENRE
+	SELECT * FROM NR_SEX_GENRE
 	</select>
 	<select id="sexArtist" resultMap="admin">
 	SELECT * FROM SEX_ARTIST
 	</select>
+	
+	<!-- 방문자 -->
+	<select id="cntNew" resultMap="admin">
+	SELECT * FROM NR_NEW_USER 
+	WHERE DATE = '2018-10-25'
+	<!--  널값일때 처리해야돼 -->
+	<!-- WHERE DATE = CURDATE() -->
+	</select>
+	<select id="countStrm" resultMap="admin">
+	SELECT * FROM NR_DAY_STR
+	WHERE DATE = CURDATE()
+	</select>
 	<select id="cntVisiter" resultMap="admin">
-	SELECT substring(date,9,2) date, m_sum_visit, f_sum_visit FROM VISITER
+	SELECT * FROM VISITER 
 	WHERE DATE BETWEEN #{ago} AND #{now}
 	</select>
-	
+	<select id="getHash" resultMap="admin">
+	SELECT * FROM NR_HASH 
+	<!-- <![CDATA[WHERE HASH_SEQ BETWEEN #{num}-4 AND #{num}]]> -->
+	</select>
 	
 </mapper>
 
