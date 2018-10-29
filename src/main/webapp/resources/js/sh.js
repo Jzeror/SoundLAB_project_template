@@ -39,10 +39,10 @@ sh = (()=>{
 		     +'<img src="'+$.ctx()+'/resources/img/album/빈지노_24_26.jpg">'
 		  +'</div>'
 		   +'<div class="selected">'
-		     +'<img src="'+$.ctx()+'/resources/img/복면가왕.jpg">'
+		     +'<img src="'+$.ctx()+'/resources/img/album/방탄소년단_LY_Answer.jpg">'
 		   +'</div>'
 		   +'<div class="next">'
-		     +'<img src="'+$.ctx()+'/resources/img/쇼미더머니.jpg">'
+		     +'<img src="'+$.ctx()+'/resources/img/album/방탄소년단_WINGS.JPG">'
 		   +'</div>'
 		   +'<div class="nextRightSecond">'
 		     +'<img src="'+$.ctx()+'/resources/img/album/트와이스_Summer_Nights.jpg">'
@@ -171,7 +171,7 @@ sh = (()=>{
 	    		 });
 	    		 player = $('<td/>').addClass('sh-music-player').appendTo(tr);
 	    		 pa = $('<a/>').attr({href : '#'}).appendTo(player);
-	    		 $('<i/>').addClass('ls_fa fa fa-play-circle-o').appendTo(pa).click(e=>{
+	    		 $('<i/>').addClass('ls_fa fa fa-play').appendTo(pa).click(e=>{
 	    			 alert('웹플레이어 실행 :: '+ musicSeq[i]);
 	    		 });
 	    		 up = $('<td/>').addClass('sh-music-upbtn').appendTo(tr);
@@ -258,6 +258,7 @@ sh = (()=>{
     		 if(!($("#banner").length >0)){   //not exist
     			 home(); 
         	 }
+    		 sh.service.removeSec();
     		 let x = 'realChart';
    	       	 ls.chart(x)
        		 setTimeout(()=>{
@@ -269,6 +270,7 @@ sh = (()=>{
         	 if(!($("#banner").length >0)){   //not exist
     			 home(); 
         	 }
+        	 sh.service.removeSec();
         	 let x = 'newAl_recent';
            	 ls.album(x);
            	 setTimeout(()=>{
@@ -283,6 +285,7 @@ sh = (()=>{
         	 if(!($("#banner").length >0)){   //not exist
     			 home(); 
         	 }
+        	 sh.service.removeSec();
        		 sj.dj();
     		 setTimeout(()=>{
     			 fn.scroll({ id : $("#djSec"), len : 200});
@@ -297,6 +300,7 @@ sh = (()=>{
 	    		 url : sh.ctx()+'/member/auth',
 		       	  method : 'get',
 		       	  success : d=>{
+		       		sh.service.removeSec();  
             		sj.forYou();
 		       		setTimeout(()=>{
 						fn.scroll({ id : $("#foryouSec"), len : 200});
@@ -407,26 +411,26 @@ var banner =()=> '<section id="banner" class="banner">'
 		+'</ol>'
 		+'<div id="bannerImg" class="carousel-inner" role="listbox">'
 		  +'<div class="item active">'
-		    +'<img src="'+$img+'/gmf2018_poster.jpg" alt="First slide">'
+		    +'<img src="'+$img+'/메인캐러셀1.jpg" alt="First slide">'
 		    +'<div class="carousel-caption">'
-			+'<h4>2018 Grand Mint Festival</h2>'
-			+'<h5>일시 : 2018년 10월 20일(토요일)- 10월 21일(일요일)</h3>'
-			+'<h5>위치 : 올림픽 공원 (서울 송파구 올림픽로 424 올림픽공원)</h3>'
+			//+'<h4>2018 Grand Mint Festival</h2>'
+			//+'<h5>일시 : 2018년 10월 20일(토요일)- 10월 21일(일요일)</h3>'
+			//+'<h5>위치 : 올림픽 공원 (서울 송파구 올림픽로 424 올림픽공원)</h3>'
 		    +'</div>'
 		  +'</div>'
 		  +'<div class="item">'
-		    +'<img src="'+$img+'/seoulfashion2018_poster.jpg" alt="Second slide">'
+		    +'<img src="'+$img+'/메인캐러셀2.jpg" alt="Second slide">'
 		    +'<div class="carousel-caption">'
-		    +'<h4>2018 스타라이트 뮤지컬 페스티벌</h2>'
-			+'<h5>일시 : 2018년 10월 20일(토요일)-10월 21일(일요일)</h3>'
-			+'<h5>위치 : 인천 파라다이스 시티 호텔 (인천광역시 중구 영종해안남로321번길 186)</h3>'
+		    //+'<h4>2018 스타라이트 뮤지컬 페스티벌</h2>'
+			//+'<h5>일시 : 2018년 10월 20일(토요일)-10월 21일(일요일)</h3>'
+			//+'<h5>위치 : 인천 파라다이스 시티 호텔 (인천광역시 중구 영종해안남로321번길 186)</h3>'
 		    +'</div>'
 		  +'</div>'
 		  +'<div class="item">'
-		    +'<img src="'+$img+'/starlight2018_poster.jpg" alt="Third slide">'
+		    +'<img src="'+$img+'/메인캐러셀3.jpg" alt="Third slide">'
 		    +'<div class="carousel-caption">'
-		    +'<h4>할로윈 레드문 서울 패션 페스티벌 2018</h2>'
-			+'<h5>일시 : 2018년 10월 27일(토요일)</h3>'
+		    //+'<h4>할로윈 레드문 서울 패션 페스티벌 2018</h2>'
+			//+'<h5>일시 : 2018년 10월 27일(토요일)</h3>'
 		    +'</div>'  
 		  +'</div>'
 		+'</div>'
@@ -960,7 +964,15 @@ sh.service ={
          });
          
      },
-
+     removeSec : x=>{
+    	 let secs = ['#djSec','#albumSec','#foryouSec','#chartSec','#searchSec','#albumDetailSec'];
+    	 let len = secs.length;
+    	 for(let i=0;i<len;i++){
+    		 //if(secs[i] !== x){
+    			 $(secs[i]).remove();
+    		 //}
+    	 }
+     },
      loginInfo : x=>{
     	 $.cookie("loginID",x.memberId);
          if($('input:checkbox[class=saveID]:checked').length == 1){

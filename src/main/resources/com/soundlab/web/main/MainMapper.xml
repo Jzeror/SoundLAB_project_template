@@ -10,7 +10,7 @@
 	    GROUP BY seq_group 
 	    ORDER BY seq_group;
 	  </select>
-	  <select id="getChart" resultType="map">
+	  <select id="getChart" parameterType="map" resultType="map">
 	    select 
 			RANK() OVER (PARTITION BY v.sg_element ORDER BY count(*) desc) RANK,
 			v.seq_group MUSIC_SEQ ,count(*) 스트리밍, m.MUSIC_TITLE 타이틀,m.ARTIST_SEQ ARTIST_SEQ,
@@ -21,7 +21,7 @@
 			left join music m on v.SEQ_GROUP = m.MUSIC_SEQ
 		where 
 			v.sg_element like 'music' 
-			and v.view_date between '2018-10-27%' and '2018-10-29%'
+			and v.view_date between  CONCAT(#{date1},'%') AND CONCAT(#{date2},'%')
 		group by v.seq_group
 		order by count(*) desc limit 5;
 	  </select>

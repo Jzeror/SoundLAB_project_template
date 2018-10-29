@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MainMapper {
 	public List<Integer> getHash();
-	public List<?> getChart();
+	public List<?> getChart(Map<?,?> p);
 }
