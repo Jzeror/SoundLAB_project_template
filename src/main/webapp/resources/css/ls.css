@@ -627,7 +627,14 @@ overflow: hidden;
 
 
 
+<<<<<<< HEAD
 
+=======
+a {
+    color: #82b440;
+    text-decoration: none;
+}
+>>>>>>> refs/remotes/origin/jt
 .blog-comment::before,
 .blog-comment::after,
 .blog-comment-form::before,

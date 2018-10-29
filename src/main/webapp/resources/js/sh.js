@@ -241,10 +241,10 @@ sh = (()=>{
     	 });
     	 $('#searchInput').keyup(e=>{
     		 if(e.keyCode == 13) { 
-    			 alert('서치검색:::'+$('#searchInput').val());
+    			
     			 $.getJSON(sh.ctx()+'/service/search/'+$('#searchInput').val(),d=>{
     				 alert('아티스트이름~~::'+d.artist.ARTIST_NAME);
-    				 alert('뮤직타이틀::'+d.musics[0].musicTitle);
+    				
 					 jt.search(d);
 					 setTimeout(()=>{
 						 fn.scroll({ id : $("#jt_search"), len : 400});

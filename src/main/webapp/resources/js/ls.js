@@ -76,7 +76,7 @@ ls ={
 																$.each(ck,(i,v)=>{
 																	seqs += v.value + ((i < ck.length-1)?',':'');
 																});
-																jt.player(seqs);
+																jt.music_player(seqs);
 																console.log(seqs);
 																
 														}),
@@ -88,7 +88,7 @@ ls ={
 																		$.each(ck,(i,v)=>{
 																			seqs += v.value + ((i < ck.length-1)?',':'');
 																		});
-																		jt.player(seqs);
+																		jt.music_player(seqs);
 																		console.log(seqs);
 																		
 																	 
@@ -342,7 +342,7 @@ ls ={
 										$('<i/>').addClass('ls_fa fa fa-play-circle-o')
 										.click(()=>{
 											alert(v.MUSIC_SEQ);
-												jt.player(v.MUSIC_SEQ);
+												jt.music_player(v.MUSIC_SEQ);
 										})),
 								$('<td/>').attr({id : 'tableTd8'}).append(
 										$('<i/>').addClass('ls_fa fa fa-heart')
@@ -400,10 +400,10 @@ ls ={
 																let seqs='';
 																$.each(d, (i,v)=>{
 																	 seqs = v.MUSIC_SEQ + ((i < d.length-1)?',':'');
-																	console.log(seqs);
 																	
 																})
-																jt.player(seqs);
+																console.log(seqs);
+																jt.album_player(seqs);
 															})
 															
 														 })

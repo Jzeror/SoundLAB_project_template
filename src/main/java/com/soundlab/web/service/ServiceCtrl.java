@@ -48,9 +48,28 @@ public class ServiceCtrl {
 	}
 
 	
-	@GetMapping("/player")
-	public Map<String,Object> player(){
-		logger.info("ServiceCtrl ::: player");
+	@GetMapping("/player/music/{musicSeq}")
+	public Map<String,Object> playerMusic(@PathVariable String musicSeq){
+		logger.info("ServiceCtrl ::: MusicPlayer");
+		System.out.println("넘어온 musicSeq::"+musicSeq);
+		map.clear();
+		map.put("musicSeq", musicSeq);
+		
+		map.put("musics",sm.getPlayer(map));
+		System.out.println("music플레이어::"+map.get("musicSeq"));
+		System.out.println("뮤직스::"+map.get("musics"));
+		return map;
+	}
+	@GetMapping("/player/album/{albumSeq}")
+	public Map<String,Object> playerAlbum(@PathVariable String albumSeq){
+		logger.info("ServiceCtrl ::: AlbumPlayer");
+		System.out.println("넘어온  albumSeq::"+albumSeq);
+		map.clear();
+		map.put("albumSeq",albumSeq);
+		map.put("albums", sm.getPlayer(map));
+		System.out.println("album플레이어::"+map.get("albumSeq"));
+		System.out.println("앨범스::"+map.get("albums"));
+		
 		return map;
 	}
 }
