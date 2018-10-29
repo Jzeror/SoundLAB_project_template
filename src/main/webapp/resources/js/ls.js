@@ -386,7 +386,7 @@ ls ={
 										),
 										$('<div/>').addClass('ls_card__content').append(
 												$('<div/>').addClass('ls_card__title')
-												.html(d[i].ARTIST_NAME+' / '+v.ALBUM_TITLE),
+												.html(v.ARTIST_NAME+' / '+v.ALBUM_TITLE),
 												$('<div/>').addClass('ls_card__div').append(
 														$('<div/>').addClass('ls_card__text').html(v.REGI_DATE),
 														$('<div/>').addClass('glyphicon glyphicon-thumbs-up')
@@ -395,17 +395,9 @@ ls ={
 												
 												$('<div/>').append(
 														$('<button/>').addClass('ls_btn btn--block card__btn').html('앨범듣기')
-														.click(()=>{ 
-															$.getJSON(sh.ctx()+'/album/getMusSeq/'+v.ALBUM_SEQ,d=>{
-																let seqs='';
-																$.each(d, (i,v)=>{
-																	 seqs = v.MUSIC_SEQ + ((i < d.length-1)?',':'');
-																	console.log(seqs);
-																	
-																})
-																jt.player(seqs);
-															})
-															
+														.click(e=>{ 
+																console.log(v.ALBUM_SEQ);
+																jt.player(v.ALBUM_SEQ);
 														 })
 												)
 										)
@@ -524,7 +516,7 @@ ls ={
 																		contentType: 'application/json',
 																		//member_id,seq_group,msg
 																		data : JSON.stringify({
-																			memberId: nickname[i],
+																			memberId: arr1[nic1]+arr2[nic2],
 																			seqGroup : '-1',
 																			msg : $('#alcommentText').val()
 																		}),
