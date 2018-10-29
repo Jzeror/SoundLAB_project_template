@@ -30,19 +30,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.3/lib/alea.min.js"></script>
     <!-- d3-cloud library -->
     
-    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js" type="text/JavaScript"></script> -->
-    <script src="${context}/resources/js/d3.layout.cloud.js"></script>
+    <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js" type="text/JavaScript"></script>
+    <%-- <script src="${context}/resources/js/d3.layout.cloud.js"></script>  --%>
 	<script src="${context}/resources/js/wordcloud.js"></script>
-	<!-- <script src="https://d3js.org/d3-transition.v1.min.js"></script> -->
 
-	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+
+
 	
 </head>
 <body data-spy="scroll" data-target="#header">
 <div id="wrapper"></div>
 <script> /* 바디 안에 넣음, 전역메소드로 처리한 것 */
 app.init('${context}');
-
 </script>
 </body>
 </html>

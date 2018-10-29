@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
-
+/*
 @Repository
-public interface MainMapper {
+public interface MainMapper2 {
 	public List<Integer> getHash();
-	public List<?> getChart();
+	public Map<String,Object> getChart();
 }
+*/

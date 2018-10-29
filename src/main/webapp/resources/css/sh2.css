@@ -214,7 +214,7 @@ font-family: 'Do Hyeon', sans-serif;
 .loginForm {
     width: 450px;
     border: 2px solid #ccc;
-    padding: 2rem 2rem 0rem 2rem;
+    padding: 2rem 2rem 5rem 2rem;
 }
 .loginInput {
 	padding-left: 1rem;
@@ -223,9 +223,9 @@ font-family: 'Do Hyeon', sans-serif;
 	font-size: 2.1rem;
 }
 .loginConf {
-	margin: 0rem 0rem 4rem 1.5rem;
+	margin-top: 1rem;
 	height: 5rem;
-	width: 16rem;
+	width: 40rem;
 	font-size: 2.5rem;
 }
 .kakaoBtn {
@@ -246,8 +246,6 @@ font-family: 'Do Hyeon', sans-serif;
 	font-size: 2.8rem;
     margin: 0rem 2rem 3rem 2rem;
 }
-
-
 
 /*--로그인화면 --*/
 
@@ -340,230 +338,10 @@ font-family: 'Do Hyeon', sans-serif;
      
 }
 
-
-
-
-html, body, main {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-#main_carousel {
-  position: relative;
-  height: 400px;
-  top: 50%;
-  transform: translateY(-50%);
-  overflow: hidden;
-}
-#main_carousel div {
-  position: absolute;
-  transition: transform 1s, left 1s, opacity 1s, z-index 0s;
-  opacity: 1;
-}
-#main_carousel div img {
-  width: 400px;
-  transition: width 1s;
-}
-#main_carousel div.hideLeft {
-  left: 0%;
-  opacity: 0;
-  transform: translateY(50%) translateX(-50%);
-}
-#main_carousel div.hideLeft img {
-  width: 200px;
-}
-#main_carousel div.hideRight {
-  left: 100%;
-  opacity: 0;
-  transform: translateY(50%) translateX(-50%);
-}
-#main_carousel div.hideRight img {
-  width: 200px;
-}
-#main_carousel div.prev {
-  z-index: 5;
-  left: 30%;
-  transform: translateY(50px) translateX(-50%);
-}
-#main_carousel div.prev img {
-  width: 300px;
-}
-#main_carousel div.prevLeftSecond {
-  z-index: 4;
-  left: 15%;
-  transform: translateY(50%) translateX(-50%);
-  opacity: 0.7;
-}
-#main_carousel div.prevLeftSecond img {
-  width: 200px;
-}
-#main_carousel div.selected {
-  z-index: 10;
-  left: 50%;
-  transform: translateY(0px) translateX(-50%);
-}
-#main_carousel div.next {
-  z-index: 5;
-  left: 70%;
-  transform: translateY(50px) translateX(-50%);
-}
-#main_carousel div.next img {
-  width: 300px;
-}
-#main_carousel div.nextRightSecond {
-  z-index: 4;
-  left: 85%;
-  transform: translateY(50%) translateX(-50%);
-  opacity: 0.7;
-}
-#main_carousel div.nextRightSecond img {
-  width: 200px;
-}
-.buttons {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: -440px;
-  font-size: 20px;
-  color: #F68657;
-  
-}
-
-#prev{
-	border-radius: 50%;
-    background-color: white;
-    border: none;
-}
-
-#next{
-	border-radius: 50%;
-    background-color: white;
-    border: none;
-}
 /*-- 배너 --*/
 
-#mainContents {
-	margin : -150px 0px 0px 0px;
-	padding : 0px 0px 0px 0px;
-}
-
-.topFive {
-	margin: 30px 0px 0px 60px;
-}
 
 
-.sh-album-img {
-	display: none;
-	float: left;
-	margin: 0 13px 0 3px;
-}
-
-.sh-img-hover {
-	display: inline-block;
-	float: left;
-	margin: 0 13px 0 3px;
-	 width: 48px;
-    height: 48px;
-}
-/* .sh-cover:hover {
-	visibility: none;
-    float: left;
-    margin: 0 13px 0 3px;
-    
-} */
-
-.sh-title {
-	float: left;
-    margin: 4px 25px 0px 0px;
-    width: 44% !important;
-    max-width: 44%;
-    color: #0e0404cf;
-    font-weight: 600;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-	
-}
-.sh-artist {
-	float: left;
-    margin: 4px 0px 4px 0px;
-    width: 40% !important;
-    max-width: 40%;
-    color: #8b8b8b;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.sh-hover {
-	overflow: hidden;
-	height:0;
-	font-size:0;
-	line-height:0;
-	border-bottom:0;
-	text-indent: 9999px;
-	padding: 0px 0px 0px 0px;
-	margin: 0px 0px 0px 0px;
-}
-
-
-.sh-list {
-    border: 0.002rem solid #383a3f17;
-    border-left: 0rem;
-    border-right: 0rem; 
-}
-.sh-listbox{
-	border-top: 1rem solid #f6b352;
-    border-left: 0rem;
-    border-right: 0rem;
-    border-bottom: 0.3rem solid #383a3f17;
-    width: 450px;
-    height: 200px;
-}
-
-.sh-chart-rank {
-	font-size: 1.5rem;
-    font-weight: bold;
-    color: #0e0404ad;
-    text-decoration: none;
-    padding: 0px 0px 0px 15px;
-}
-.sh-music-info {
-	color: #8b8b8b;
-    text-decoration: none;
-    padding: 0px 0px 0px 20px;
-}
-.sh-music-player a i {
-	color: #0e0404cf;
-    text-decoration: none;
-    padding : 0px 0px 0px 3px;
-}
-/* .sh-music-upbtn a i {
-	color: #2b272757;
-    text-decoration: none;
-    padding : 0px 0px 0px 3px;
-}
-.sh-music-downbtn a i {
-	color: #2b272757;
-    text-decoration: none;
-    padding : 0px 0px 0px 5px;
-} */
-.sh-up {
-	color: #2b272757;
-    text-decoration: none;
-    padding : 0px 0px 0px 3px;
-}
-.sh-down {
-	color: #2b272757;
-    text-decoration: none;
-    padding : 0px 0px 0px 5px;
-}
-
-.sh-updown {
-	color: #f68657;
-    text-decoration: none;
-}
 /* 해시태그 */
 .label-background-strong {
   fill: white;

@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 
-
+/*
 @RestController
 @RequestMapping("/main")
-public class MainCtrl {
-	static final Logger logger = LoggerFactory.getLogger(MainCtrl.class);
+public class MainCtrl2 {
+	static final Logger logger = LoggerFactory.getLogger(MainCtrl2.class);
 	@Autowired Map<String,Object> rm;
-	@Autowired MainMapper mp;
+	@Autowired MainMapper2 mp;
 	
 	@GetMapping("/hash")
 	public Map<String,Object> hash() {
@@ -28,14 +28,5 @@ public class MainCtrl {
 		return rm;
 	}
 	
-	@GetMapping("/chart")
-	public Map<String,Object> chart() {
-		logger.info("MainCtrl ::: chart ");
-		rm.clear();
-		System.out.println("hash ::: "+mp.getChart());
-		rm.put("top5", mp.getChart());
-		
-		return rm;
-	}
-	
 }
+*/

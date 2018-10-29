@@ -2259,3 +2259,14 @@ DELIMITER $$
 	  	WHERE MEMBER_ID LIKE #{memberId};
 	  END $$
 DELIMITER ;
+
+ALTER TABLE MUSIC DROP COLUMN LYRICS;
+ALTER TABLE MUSIC ADD COLUMN REGI_DATE TIMESTAMP DEFAULT now();
+
+
+update music set music_addr = 'https://www.youtube.com/embed/mjTdMX27ThM' where music_seq like 57;
+update music set music_addr = 'https://www.youtube.com/embed/Pf88Wdj68JY' where music_seq like 73;
+update music set music_addr = 'https://www.youtube.com/embed/DUTUHUbJ6u8' where music_seq like 72;
+update music set music_addr = 'https://www.youtube.com/embed/3yoRkQBVUzM' where music_seq like 63;
+update music set music_addr = 'https://www.youtube.com/embed/HFRoJrcG-B0' where music_seq like 64;
+update music set music_addr = 'https://www.youtube.com/embed/d4Wcqe1a6xk' where music_seq like 59;
