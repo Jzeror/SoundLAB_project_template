@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.soundlab.web.cmm.Util;
 
+import sun.misc.Cleaner;
+
 
 
 @RestController
@@ -28,10 +30,15 @@ public class MusicCtrl {
 
 	@GetMapping("/top50/{x}")
 	private List<Map<?,?>> top50(@PathVariable String x) {
-		Util.log.accept(":: MusicCtrl :: list() :: page :: " );
+		map.clear();
+		Util.log.accept(":: MusicCtrl :: list() :: page :: "+x );
 		List<Map<?,?>> topList = null;
-
-		if(x.equals("realChart") ) {
+		String chartType = x.split(",")[0];
+		String id = x.split(",")[1];
+		Util.log.accept("id :: "+ id );
+		
+		if(chartType.equals("realChart") ) {
+			if(!id.equals("undefined")) map.put("id",id);
 			 Calendar cal = Calendar.getInstance();
 			 cal.add(Calendar.DATE, -1);
 		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
@@ -40,8 +47,10 @@ public class MusicCtrl {
 			 topList = musMapper.top50List(map);
 			 Util.log.accept("date1:: " +map.get("date1"));
 			 Util.log.accept("date2:: " +map.get("date2"));
+			 Util.log.accept("id:: " +map.get("id"));
 			 System.out.println("topList:::::"+topList);
-		}else if (x.equals("weekChart")){
+		}else if (chartType.equals("weekChart")){
+			if(!id.equals("undefined")) map.put("id",id);
 			Calendar cal = Calendar.getInstance();
 			 cal.add(Calendar.DATE, -7);
 		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
@@ -50,7 +59,10 @@ public class MusicCtrl {
 			 topList = musMapper.top50List(map);	
 			 Util.log.accept("date1:: " +map.get("date1"));
 			 Util.log.accept("date2:: " +map.get("date2"));
-		}else if (x.equals("monthChart") ){
+			 Util.log.accept("id:: " +map.get("id"));
+			 System.out.println("topList:::::"+topList);
+		}else if (chartType.equals("monthChart") ){
+			if(!id.equals("undefined")) map.put("id",id);
 			Calendar cal = Calendar.getInstance();
 			 cal.add(Calendar.DATE, -30);
 		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
@@ -59,6 +71,8 @@ public class MusicCtrl {
 			 topList = musMapper.top50List(map);	
 			 Util.log.accept("date1:: " +map.get("date1"));
 			 Util.log.accept("date2:: " +map.get("date2"));
+			 Util.log.accept("id:: " +map.get("id"));
+			 System.out.println("topList:::::"+topList);
 			 topList = musMapper.top50List(map);
 		}
 		return topList;
@@ -66,6 +80,7 @@ public class MusicCtrl {
 	
 	@GetMapping("/top50lineChart")
 	public List<Map<?,?>> top50lineChart() {
+		map.clear();
 		  List<Map<?,?>> chartData = null;
 		  Calendar cal = Calendar.getInstance();
 		  String todayDate= new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //오늘
@@ -80,19 +95,24 @@ public class MusicCtrl {
 		return chartData;
 	}
 	@GetMapping("/infiSc/{x}")
-	public List<Map<?,?>> infiSc(@PathVariable int x) {
+	
+	public List<Map<?,?>> infiSc(@PathVariable String x) {
+		map.clear();
 		  List<Map<?,?>> infiScMap = null;
-		  
-		  Calendar cal = Calendar.getInstance();
+			int no = Integer.parseInt(x.split(",")[0]);
+			String id = x.split(",")[1];
+			
+			if(!id.equals("undefined")) map.put("id",id);
+			Calendar cal = Calendar.getInstance();
 			 cal.add(Calendar.DATE, +1);
 		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
 		     cal.add(Calendar.DATE, -2);
 		     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
-		     map.put("PageNo", x);
-		     int PageNoEnd = x+4;
+		     map.put("PageNo", no);
+		     int PageNoEnd = no+4;
 		     map.put("PageNoEnd",PageNoEnd);
 			 infiScMap = musMapper.infiSc(map);
-			 
+			 Util.log.accept("infiScMap:: " +infiScMap);
 		return infiScMap;
 	
 	}

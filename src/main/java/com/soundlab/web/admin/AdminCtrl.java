@@ -22,15 +22,19 @@ public class AdminCtrl {
 	
 	@GetMapping("/visit")
 	public Map<String,Object> getVisitInfo() {
-		m.put("nu", mpr.cntNew());
+		logger.info("가입수 스트리밍수");
+		//int nu = 0;
+		//nu = mpr.cntNew();
+		m.clear();
 		m.put("st", mpr.countStrm());
+		m.put("nu", mpr.cntNew());
 		logger.info("nu에 담긴 값 :"+m.get("nu"));
 		logger.info("st에 담긴 값 :"+m.get("st"));
 		return m;
 	}
 	
 	@SuppressWarnings("unchecked")
-	@GetMapping("/visit/cntVisiter")
+	@GetMapping("/visiter/cntVisiter")
 	public List<Map<?,?>> cntVisiter(){
 		logger.info("일주일간 방문자 통계");
 		m.clear();
@@ -49,6 +53,11 @@ public class AdminCtrl {
 		m.put("AA", mpr.ageArtist());
 		m.put("SG", mpr.sexGenre());
 		m.put("SA", mpr.sexArtist());
+		
+		m.put("order", "sum_good");
+		m.put("goodlist", mpr.listTotalSong(m));
+		m.put("order", "sum_bad");
+		m.put("badlist", mpr.listTotalSong(m));
 		logger.info("AG에 담긴 값"+m.get("AG"));
 		logger.info("AA에 담긴 값 ::"+m.get("AA"));
 		logger.info("SG에 담긴 값: "+m.get("SG"));
@@ -64,15 +73,24 @@ public class AdminCtrl {
 		m.put("GS", mpr.artistStats(artistName));
 		m.put("mf", mpr.getPerSex(artistName));
 		m.put("artiAG", mpr.getCntAge(artistName));
+		
+		m.put("artistName", artistName);
+		m.put("order", "sum_good");
+		m.put("goodlist", mpr.listTopSong(m));
+		m.put("order", "sum_bad");
+		m.put("badlist", mpr.listTopSong(m));
+		
 		logger.info("GS에 담긴 값"+m.get("GS"));
 		logger.info("mf에 담긴 값"+m.get("mf"));
 		logger.info("artiAG에 담긴 값"+m.get("artiAG"));
+		logger.info("goodlist에 담긴 값"+m.get("goodlist"));
+		logger.info("badlist에 담긴 값"+m.get("badlist"));
 		return m;
 	}
 	
 	@GetMapping("/hash")
 	public Map<String,Object> readHash(){
-		logger.info("해시태그 진입");
+		logger.info("해시태그 진입 아오 ");
 		m.clear();
 		m.put("hs", mpr.getHash());
 		logger.info("해시 m : "+m.get("hs"));

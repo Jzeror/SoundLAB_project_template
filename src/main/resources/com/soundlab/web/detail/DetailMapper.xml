@@ -24,6 +24,7 @@
 				SELECT 
 					M.MUSIC_SEQ,
 					M.MUSIC_TITLE,
+					M.GENRE_SEQ,
 					A.ARTIST_NAME,
 					A.ALBUM_SEQ
 				FROM MUSIC AS M

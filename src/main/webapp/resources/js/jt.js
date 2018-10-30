@@ -3,6 +3,7 @@ var jt = jt || {};
 jt ={
 		search :z=>{ //앞에서 넘어온 map
 			$.getJSON($.ctx()+'/service/search/'+z+'/'+$.cookie('loginID'),x=>{
+
   				let art = x.artist;
   				let $cnts = $('#contents');
   				$cnts.empty();
@@ -210,9 +211,6 @@ jt ={
   					$('<h3/>').html('<뮤비>'+x.mv[i].MV_TITLE).addClass('mt-0').appendTo($('#jt_mv_div'+i));
   					$('<p/>').addClass('font-weight-bold').html('아티스트 : '+art.ARTIST_NAME).attr({'style':'font-size:15px'}).appendTo($('#jt_mv_div'+i));
   					$('<p/>').html('등록일 : '+x.mv[i].RELEASE_DATE).attr({'style':'font-size:15px'}).appendTo($('#jt_mv_div'+i));
-  					/*$('<p/>').html('좋아요').attr({'style':'font-size:15px'})
-  					.addClass('glyphicon glyphicon-thumbs-up')
-  					.appendTo($('#jt_mv_div'+i));*/
   					$('<hr/>').appendTo($('#jt_mv_li'+i));
   					$('<br/>').appendTo($('#jt_mv_li'+i));	
   				}
@@ -281,6 +279,7 @@ jt ={
 			.appendTo($('#jt_search_music'));
 			$('<tbody/>').append(
 			$('<tr/>').attr({id : 'jt_td_th'}).append(
+
 				$('<td/>').addClass('jt_td_table1')
 				.append(
 					$('<th/>').attr('width','5%').addClass('jt_ckbox').append(
@@ -297,6 +296,7 @@ jt ={
 						$('<span/>').html('영상'),
 						$('<span/>').html('싫어요')
 				)
+
 		     )		
 		).appendTo($('#jt_music_tb'));
 				$.each(x.musics,(i,j)=>{
@@ -324,7 +324,7 @@ jt ={
 									$('<i/>').addClass((j.TYPES == 'u')?'active':'').attr({id : 'jt_up'+i }).addClass('btn btn-brand fa fa-heart')
 									.click(function(){
 										if($.cookie("loginID")!=null){
-											sj.service.put_ud({thiz:$(this),btn:'like',mSeq:d.musicSeq,gSeq:d.genreSeq});
+											sj.service.put_ud({thiz:$(this),btn:'like',mSeq:j.MUSIC_SEQ,gSeq:j.GENRE_SEQ});
 										}else{
 											$.ajax({
 									    		 url : sh.ctx()+'/member/auth',
@@ -341,7 +341,7 @@ jt ={
 									$('<i/>').addClass((j.TYPES == 'd')?'active':'').attr({id : 'jt_down'+i }).addClass('btn btn-brand fa fa-thumbs-down')
 									.click(function(){
 										if($.cookie("loginID")!=null){
-											sj.service.put_ud({thiz:$(this),btn:'hate',mSeq:d.musicSeq,gSeq:d.genreSeq});
+											sj.service.put_ud({thiz:$(this),btn:'hate',mSeq:j.MUSIC_SEQ,gSeq:j.GENRE_SEQ});
 										}else{
 											$.ajax({
 									    		 url : sh.ctx()+'/member/auth',
@@ -357,6 +357,7 @@ jt ={
 								
 								)
 						).appendTo($('.jt_table'));
+
 				});
 				
 			
@@ -479,11 +480,13 @@ jt ={
 				$('<tbody/>').append(
 				$('<tr/>').attr({id : 'jt_td_th'}).append(
 				$('<td/>').append(
+
 					$('<th/>').addClass('jt_td_table1').addClass('jt_ckbox').append(
 							$('<input/>').attr({type : 'checkbox', id :'allCheck',style:'width:15px'}),
 									$('<label for="allCheck">')	
 										)
 								),
+
 								$('<th/>').addClass('jt_td_table2').html('NO'),
 								$('<th/>').addClass('jt_td_table3').html('곡명'),
 								$('<th/>').addClass('jt_td_table4').html('아티스트'),
@@ -497,6 +500,7 @@ jt ={
 			).appendTo($('#jt_music_tb'));
 				$.each(x.musics,(i,j)=>{
 					$('<tr/>').append(
+
 							$('<td/>').addClass('jt_td_table1').append(
 									$('<div/>').addClass('jt_ckbox').append(
 											$('<input/>').attr({type : 'checkbox', id :'checkbox'+i, name :'chk', value:j.MUSIC_SEQ}),
@@ -504,6 +508,7 @@ jt ={
 									)
 							),
 							
+
 							$('<td/>').addClass('jt_td_table2').html(i+1),
 							$('<td/>').addClass('jt_td_table3').html(j.MUSIC_TITLE),
 							$('<td/>').addClass('jt_td_table4').html(j.ARTIST_NAME),
@@ -516,10 +521,11 @@ jt ={
 											jt.music_player(d.musicSeq);
 										})
 									}),
+
 									$('<i/>').addClass((j.TYPES == 'u')?'active':'').attr({id : 'jt_up'+i }).addClass('btn btn-brand fa fa-heart')
 									.click(function(){
 										if($.cookie("loginID")!=null){
-											sj.service.put_ud({thiz:$(this),btn:'like',mSeq:d.musicSeq,gSeq:d.genreSeq});
+											sj.service.put_ud({thiz:$(this),btn:'like',mSeq:j.MUSIC_SEQ,gSeq:j.GENRE_SEQ});
 										}else{
 											$.ajax({
 									    		 url : sh.ctx()+'/member/auth',
@@ -535,7 +541,7 @@ jt ={
 									$('<i/>').addClass((j.TYPES == 'd')?'active':'').attr({id : 'jt_down'+i }).addClass('btn btn-brand fa fa-thumbs-down')
 									.click(function(){
 										if($.cookie("loginID")!=null){
-											sj.service.put_ud({thiz:$(this),btn:'hate',mSeq:d.musicSeq,gSeq:d.genreSeq});
+											sj.service.put_ud({thiz:$(this),btn:'hate',mSeq:j.MUSIC_SEQ,gSeq:j.GENRE_SEQ});
 										}else{
 											$.ajax({
 									    		 url : sh.ctx()+'/member/auth',
@@ -589,14 +595,7 @@ jt ={
 					.addClass('msg')
 					.appendTo($('#jt_cmt_body'))
 					.click(e=>{
-						$.ajax({
-				    		 url : sh.ctx()+'/member/auth',
-					       	  method : 'get',
-					       	  error : m=>{
-					       		alert('로그인이 필요한 서비스입니다.');
-				    			sh.service.login();
-					       	  }
-				    	 });
+						sh.service.auth();
 					});
 					$('<div/>').attr({id:'jt_cmt_btn_div'}).addClass('col-md-2').appendTo($('#jt_cmt'));
 					$('<button/>')
@@ -833,36 +832,41 @@ jt ={
 	                    	}
 	                    	
 	                    	$('<div/>')
-                            .attr({id:'jt_playBtnArea'}).addClass('playBtnArea jt_playckbox').appendTo(openWin.document.getElementById('jt_tab_area'));
-                            $('<input/>').attr({type : 'checkbox', id :'play_allCheck' }).appendTo(openWin.document.getElementById('jt_playBtnArea'))
-                            .click(function(e){
-                                let $this = $(this);
-                                let ckb = $(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox');
-                                if($this.is(':checked')){
-                                	ckb.prop('checked',true);
-                                }else{
-                                	ckb.prop('checked',false);
-                                }
-                            })
-                            ;
-                            $('<label for="play_allCheck">').appendTo(openWin.document.getElementById('jt_playBtnArea'));
-                            $('<a/>').attr({id:'playbtn_del',href:'#'})
-                            .append(
-                                    $('<button/>')
-                                    .addClass('btn btn-light').html('삭제')
-                                    .click(e=>{
-                                        $(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox:checked').parents('.jt_mplay_li').remove();
-                                    })
-                            )
-                            
-                            .appendTo(openWin.document.getElementById('jt_playBtnArea'));
-                              $(openWin.document.getElementById('play_allCheck')).click(e=>{
-                                  if($(openWin.document.getElementById('play_allCheck')).is(':checked')){
-                                      $('input[name=play_chk]:checkbox').prop('checked',true);
-                                  }else{
-                                      $('input[name=play_chk]:checkbox').prop('checked',false);
-                                  }
-                              });
+	                    	.attr({id:'jt_playBtnArea'}).addClass('playBtnArea jt_playckbox').appendTo(openWin.document.getElementById('jt_tab_area'));
+	                    	$('<input/>').attr({type : 'checkbox', id :'play_allCheck' }).appendTo(openWin.document.getElementById('jt_playBtnArea'))
+	                    	.click(function(e){
+	                    		let $this = $(this);
+	                    		if($this.is(':checked')){
+	                    			$(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox').prop('checked',true);
+	                    		}else{
+	                    			$(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox').prop('checked',false);
+	                    		}
+	                    	})
+	                    	;
+	                        $('<label for="play_allCheck">').appendTo(openWin.document.getElementById('jt_playBtnArea'));
+	                        $('<a/>').attr({id:'playbtn_del',href:'#'})
+	                    	.append(
+	                    			$('<button/>')
+	                    			.addClass('btn btn-light').html('삭제')
+	                    			.click(e=>{
+	                    				$(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox:checked').parents('.jt_mplay_li').remove();
+	                    				let num = $(openWin.document).find('#jt_playerdt .jt_rank');
+	                    				for(let i=0;i<num.length;i++){
+	                    					num[i].innerHTML = i+1;
+	                    				}
+	                    			})
+	                    	)
+	                    	
+	                    	.appendTo(openWin.document.getElementById('jt_playBtnArea'));
+	                    	  $(openWin.document.getElementById('play_allCheck')).click(e=>{
+	          					if($(openWin.document.getElementById('play_allCheck')).is(':checked')){
+	          						$('input[name=play_chk]:checkbox').prop('checked',true);
+	          					}else{
+	          						$('input[name=play_chk]:checkbox').prop('checked',false);
+	          					}
+	          				});
+
+
 	                },110);
 	            });
 	          
@@ -1014,6 +1018,10 @@ jt ={
                                     .addClass('btn btn-light').html('삭제')
                                     .click(e=>{
                                         $(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox:checked').parents('.jt_mplay_li').remove();
+                                        let num = $(openWin.document).find('#jt_playerdt .jt_rank');
+	                    				for(let i=0;i<num.length;i++){
+	                    					num[i].innerHTML = i+1;
+	                    				}
                                     })
                             )
                             

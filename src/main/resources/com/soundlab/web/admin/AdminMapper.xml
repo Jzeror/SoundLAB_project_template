@@ -9,6 +9,7 @@
 		<result property="genreSeq" column="genre_seq"/>
 		<result property="genreName" column="genre_name"/>				
 		<result property="artSeq" column="art_seq"/>
+		<result property="artistSeq" column="artist_seq"/>
 		<result property="artistName" column="artist_name"/>
 		<result property="albumSeq" column="album_seq"/>
 		<result property="albumTitle" column="album_title"/>
@@ -20,6 +21,7 @@
 		<result property="bad" column="bad"/>
 		<result property="sumStr" column="sum_str"/>
 		<result property="sumGood" column="sum_good"/>
+		<result property="sumBad" column="sum_bad"/>
 		<result property="date" column="date"/>
 		<result property="sumVisit" column="sum_visit"/>
 		<result property="mVisit" column="m_sum_visit"/>
@@ -38,6 +40,22 @@
 		<result property="countView" column="count_view"/>
 	</resultMap>
 	
+	
+	<!-- 방문자 -->
+	<select id="cntNew" resultType="int">
+	SELECT COUNT(*) FROM MEMBER
+	WHERE DATE(JOIN_DATE) = CURDATE()
+	</select>
+	<select id="countStrm" resultMap="admin">
+	SELECT * FROM NR_DAY_STR
+	WHERE DATE = CURDATE()
+	</select>
+	<select id="cntVisiter" resultMap="admin">
+	SELECT * FROM NR_VISITER 
+	WHERE DATE BETWEEN #{ago} AND #{now}
+	</select>
+	
+	
 	<!-- 아티스트 -->
 	<select id="artistStats" resultMap="admin">
 		SELECT * FROM nr_artist_stats
@@ -52,42 +70,47 @@
 	SELECT * FROM NR_ARTI_AGE
 	WHERE ARTIST_NAME LIKE #{artistName}
 	</select>
-	
+	<select id="listTopSong" parameterType="map" resultMap="admin" >
+	SELECT * FROM nr_artist_stats
+		WHERE ARTIST_NAME LIKE #{artistName}
+		<if test="order == 'sum_good' ">
+		order by sum_good desc LIMIT 5
+		</if>
+		<if test="order == 'sum_bad' ">
+		order by sum_bad desc LIMIT 5
+		</if>
+	</select>
 	
 	<!-- 선호도 -->
 	<select id="ageGenre" resultMap="admin">
 	SELECT * FROM NR_AGE_GENRE
 	</select>
 	<select id="ageArtist" resultMap="admin">
-	SELECT * FROM AGE_ARTIST
+	SELECT * FROM NR_AGE_ARTIST
 	</select> 
 	<select id="sexGenre" resultMap="admin">
 	SELECT * FROM NR_SEX_GENRE
 	</select>
 	<select id="sexArtist" resultMap="admin">
-	SELECT * FROM SEX_ARTIST
+	SELECT * FROM NR_SEX_ARTIST
+	WHERE ARTIST_NAME IN ("방탄소년단","레드벨벳","트와이스")
+	</select>
+	<select id="listTotalSong" parameterType="map" resultMap="admin" >
+	SELECT * FROM nr_artist_stats
+		<if test="order == 'sum_good' ">
+		order by sum_good desc LIMIT 5
+		</if>
+		<if test="order == 'sum_bad' ">
+		order by sum_bad desc LIMIT 5
+		</if>
 	</select>
 	
-	<!-- 방문자 -->
-	<select id="cntNew" resultMap="admin">
-	SELECT * FROM NR_NEW_USER 
-	WHERE DATE = '2018-10-25'
-	<!--  널값일때 처리해야돼 -->
-	<!-- WHERE DATE = CURDATE() -->
-	</select>
-	<select id="countStrm" resultMap="admin">
-	SELECT * FROM NR_DAY_STR
-	WHERE DATE = CURDATE()
-	</select>
-	<select id="cntVisiter" resultMap="admin">
-	SELECT * FROM VISITER 
-	WHERE DATE BETWEEN #{ago} AND #{now}
-	</select>
+	
+	<!-- 해시태그 -->
 	<select id="getHash" resultMap="admin">
 	SELECT * FROM NR_HASH 
 	<!-- <![CDATA[WHERE HASH_SEQ BETWEEN #{num}-4 AND #{num}]]> -->
 	</select>
-	
 </mapper>
 
 

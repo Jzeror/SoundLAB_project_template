@@ -3,7 +3,8 @@ var ls = ls || {};
 ls ={
 		chart :x=>{
 			var bool_sw = true;
-			$.getJSON(sh.ctx()+'/music/top50/'+x,d=>{
+			$.getJSON(sh.ctx()+'/music/top50/'+x+','+$.cookie("loginID"),d=>{
+				
 				
 				 if(!($("#chartSec").length >0)){ 
 						let $chartSec = $('<section/>').attr({id:'chartSec'});
@@ -192,8 +193,8 @@ ls ={
 		    		     		} 
 		    		     		function sendData(){ 
 		    		     		bool_sw = false;
-		    		     	
-		    		     			$.getJSON($.ctx()+'/music/infiSc/'+no,d=>{
+		    		     		
+		    		     			$.getJSON($.ctx()+'/music/infiSc/'+no+','+$.cookie("loginID"),d=>{
 		    		     				if(no <= 50){
 			        					ls.top50table(d);
 			        						no=no+5;
@@ -286,23 +287,17 @@ ls ={
 										$('<th/>').attr({style : 'width:5%'}).append(
 												$('<input/>').attr({type : 'checkbox', id :'allCheck' }).attr({style : 'width:15px'}),
 												$('<label for="allCheck">')
-												
-												
-										
 								),
-								$('<th/>').attr('width','3%').html('NO'),
+								$('<th/>').attr('width','5%').html('NO'),
 								$('<th/>').attr('width','10%').html('앨범사진'),
-								$('<th/>').attr('width','20%').html('제목'),
+								$('<th/>').attr('width','30%').html('제목'),
 								$('<th/>').attr('width','10%').html('아티스트'),
 								$('<th/>').attr('width','10%').html('앨범명'),
-								$('<th/>').attr('width','5%').html('듣기'),
-								$('<th/>').attr('width','5%').html('하트'),
-								$('<th/>').attr('width','5%').html('영상'),
-								$('<th/>').attr('width','8%').html('싫어요')
+								$('<th/>').attr('width','40%').html('')
+							
 						)
 				).appendTo($('#topHeader'));
 		 },
-		
 	
 		 top50table :d=>{
 			
@@ -331,36 +326,46 @@ ls ={
 								$('<td/>').attr({id : 'tableTd4'}).html(v.MUSIC_TITLE)
 								.attr({style : 'text-overflow: ellipsis'}),
 								$('<td/>').attr({id : 'tableTd5'}).html(v.ARTIST_NAME).click(()=>{
-									alert(v.ARTIST_SEQ);
-										jt.album_detail(v.ARTIST_SEQ);
+									alert(v.ARTIST_NAME);
+									
+										jt.search(v.ARTIST_NAME);
 								}),
 								$('<td/>').attr({id : 'tableTd6'}).html(v.ALBUM_TITLE).click(()=>{
 									alert(v.ALBUM_SEQ);
 										jt.album_detail(v.ALBUM_SEQ);
 								}),
 								$('<td/>').attr({id : 'tableTd7'}).append(
-										$('<i/>').addClass('ls_fa fa fa-play-circle-o')
+										$('<i/>').addClass('ls_fa fa fa-play')
 										.click(()=>{
 											alert(v.MUSIC_SEQ);
 												jt.music_player(v.MUSIC_SEQ);
-										})),
-								$('<td/>').attr({id : 'tableTd8'}).append(
-										$('<i/>').addClass('ls_fa fa fa-heart')
-										.click(()=>{
-											alert('하트 클릭');
-										})),
-								$('<td/>').attr({id : 'tableTd9'}).append(
+										}),
+										$('<i/>').addClass((v.TYPES == 'u')?'active':'').attr({id : 'ls_up'+v.NO }).addClass('ls_fa fa fa-heart')
+										.click(function(e){
+											if($.cookie("loginID")!= null){
+												sj.service.put_ud({thiz:$(this),btn:'like',mSeq:v.MUSIC_SEQ ,gSeq:v.GENRE_SEQ});
+											}else{
+												alert('로그인이 필요한 서비스입니다')
+											}
+										}),
 										$('<i/>').addClass('ls_fa glyphicon glyphicon-facetime-video')
 										.click(()=>{
 											alert(v.MUSIC_SEQ);
 												jt.album_detail(v.MUSIC_SEQ);
 										
-										})),
-								$('<td/>').attr({id : 'tableTd10'}).append(
-										$('<i/>').addClass('ls_fa fa fa-thumbs-down')
-										.click(()=>{
-											alert('싫어요 클릭');
-										}))
+										}),
+										$('<i/>').addClass((v.TYPES == 'd')?'active':'').attr({id : 'ls_down'+v.NO })
+										.addClass('ls_fa fa fa-thumbs-down')
+										.click(function(e){
+											if($.cookie("loginID")!= null){
+												sj.service.put_ud({thiz:$(this),btn:'hate',mSeq:v.MUSIC_SEQ ,gSeq:v.GENRE_SEQ});
+												
+											}else{
+												alert('로그인이 필요한 서비스입니다')
+											}
+										})
+								)
+								
 							
 				).appendTo($('#topTable'));
 				 
@@ -386,7 +391,7 @@ ls ={
 										),
 										$('<div/>').addClass('ls_card__content').append(
 												$('<div/>').addClass('ls_card__title')
-												.html(d[i].ARTIST_NAME+' / '+v.ALBUM_TITLE),
+												.html(v.ARTIST_NAME+' / '+v.ALBUM_TITLE),
 												$('<div/>').addClass('ls_card__div').append(
 														$('<div/>').addClass('ls_card__text').html(v.REGI_DATE),
 														$('<div/>').addClass('glyphicon glyphicon-thumbs-up')
@@ -395,6 +400,7 @@ ls ={
 												
 												$('<div/>').append(
 														$('<button/>').addClass('ls_btn btn--block card__btn').html('앨범듣기')
+
 														.click(()=>{ 
 														
 																console.log(v.ALBUM_SEQ);
@@ -572,6 +578,4 @@ ls ={
 		
 		
 }
-
-
 
