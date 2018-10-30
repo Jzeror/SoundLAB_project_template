@@ -17,7 +17,7 @@ sh = (()=>{
             $.getScript(sh.js()+'/jt.js'),
             $.getScript(sh.js()+'/nr.js')
          ).done(d=>{
-        	 //$.removeCookie("loginID");
+        	 $.removeCookie("loginID");
         	 
         	 home(); 
          });
