@@ -80,6 +80,7 @@ sj ={
 						
 						let fmsA = [], fmsB = [], fal = [], fat = [], ald = [];
 						let genreA = d.fy[0].msGenreA, genreB = d.fy[0].msGenreB;
+						alert(genreA + ' ::: '+ genreB);
 						$.each(d.fy,(i,v)=>{
 							if(v.msRankA <= 5){
 								let u = {
