@@ -9,8 +9,8 @@ import com.soundlab.web.bean.*;
 
 @Repository
 public interface ServiceMapper {
-	public Map<?,?> getArtist(String artist);
-	public List<?> getMusicList(String music);
+	public Map<?,?> getArtist(Map<?,?> map);
+	public List<?> getMusicList(Map<?,?> map);
 	public List<?> getAlbumList(String album);
 	public List<?> getMvList(String mv);
 	public List<?> getPlayer(Map<?, ?> map);

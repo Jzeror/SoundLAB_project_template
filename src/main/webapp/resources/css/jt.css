@@ -407,7 +407,7 @@
     text-align: center;
     border-bottom: 1px solid #f0f0f0;
     padding: 0;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 .itemcheck{
 	width: 13px;
@@ -450,6 +450,7 @@
 }
 .jt_titsong{
 	color: #333;
+	cursor: pointer;
 }
 .jt_itemem{
 	color: #dadada;
@@ -498,20 +499,30 @@
 	cursor: pointer;
 	background-color: #eee;
 }
-.jt_table-filter th tr td {
+#jt_music_tb  th{
+	text-align:center;
+	vertical-align: middle;
+	border-top-color: #eee;
+	
+}
+#jt_music_tb tr td {
 	padding: 20px;
 	vertical-align: middle;
 	border-top-color: #eee;
-	width: 10%;
+	text-align:center;
+	
+	
 }
-.jt_table>tbody>tr>td, 
-.jt_table>tbody>tr>th, 
-.jt_table>tfoot>tr>td, 
-.jt_table>tfoot>tr>th, 
-.jt_table>thead>tr>td, 
-.jt_table>thead>tr>th{
-	width: 11%;
-}
+
+.jt_td_table1 {width:5%;}
+.jt_td_table2 {width:3%;}
+.jt_td_table3 {width:15%;}
+.jt_td_table4 {width:15%;}
+.jt_td_table5 {width:30%;}
+
+
+
+
 .jt_table-filter tbody tr.selected td {
 	background-color: #eee;
 }
@@ -631,7 +642,7 @@
 	color: #ff3333;
 }
 #jt_btn_nactive{
-	background: #ccc;
+	background: #ffffff;;
     color: #333;
 }
 
@@ -658,6 +669,9 @@
 	background-color: #fff;
 	cursor: pointer;
 }
+#jt_playBtnArea label:before{
+	margin: 7px 0px 0px 3px;
+}
 .jt_playckbox input[type="checkbox"]:checked + label:before {
 	border-color: #333;
     background-color: #333;
@@ -674,9 +688,11 @@
 	cursor: pointer;
 	
 }
-.jt_playckbox {
-  position: relative;
+
+#jt_playBtnArea input[type="checkbox"]:checked + label:after{
+	margin: 7px 0px 0px 3px;
 }
+
 
 .jt_playckbox input[type="checkbox"] {
   opacity: 0;
@@ -684,4 +700,27 @@
 #jt_music_iframe{
 	width: 308px;
     height: 308px;
+}
+#jt_player_delete{
+	background: none;
+    color: #a14141;
+    border: 3px solid #6c2a2a;
+    border-radius: 5px;
+    margin-left: 120px;
+}
+
+.jt_td_table5 i.btn.active {
+	 color: #f68657;
+	 box-shadow:none;
+}
+.jt_td_table5 i.btn {
+	 margin: 0 2rem;
+	 outline:0;
+}
+.jt_td_table5 span {
+	 margin: 0 2.5rem;
+}
+.jt_active{
+	color: #f68657;
+	 box-shadow:none;
 }

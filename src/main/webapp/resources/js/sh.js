@@ -230,26 +230,21 @@ sh = (()=>{
          });
         
          $('#searchBtn').click(e=>{
-        	 $.getJSON(sh.ctx()+'/service/search/'+$('#searchInput').val(),d=>{
-				 jt.search(d);
+        		 let x = $('#searchInput').val();
+				 jt.search(x);
 				 setTimeout(()=>{
 					 fn.scroll({ id : $("#jt_search"), len : 400});
 		         },200);
-			 });
-    		 
-
     	 });
     	 $('#searchInput').keyup(e=>{
     		 if(e.keyCode == 13) { 
-    			
-    			 $.getJSON(sh.ctx()+'/service/search/'+$('#searchInput').val(),d=>{
-    				 alert('아티스트이름~~::'+d.artist.ARTIST_NAME);
-    				
-					 jt.search(d);
+    			 
+    			 	let x = $('#searchInput').val();
+					 jt.search(x);
 					 setTimeout(()=>{
 						 fn.scroll({ id : $("#jt_search"), len : 400});
 			         },200);
-    			 });
+    			 
     		 } 
     	 });
          
