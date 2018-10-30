@@ -38,9 +38,9 @@ public class MusicCtrl {
 		String chartType = x.split(",")[0];
 		String id = x.split(",")[1];
 		Util.log.accept("id :: "+ id );
-		
+		if(!id.equals("undefined")) map.put("id",id);
 		if(chartType.equals("realChart") ) {
-			if(!id.equals("undefined")) map.put("id",id);
+			
 			 Calendar cal = Calendar.getInstance();
 			 cal.add(Calendar.DATE, -1);
 		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
@@ -52,7 +52,6 @@ public class MusicCtrl {
 			 Util.log.accept("id:: " +map.get("id"));
 			 System.out.println("topList:::::"+topList);
 		}else if (chartType.equals("weekChart")){
-			if(!id.equals("undefined")) map.put("id",id);
 			Calendar cal = Calendar.getInstance();
 			 cal.add(Calendar.DATE, -7);
 		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
@@ -64,7 +63,6 @@ public class MusicCtrl {
 			 Util.log.accept("id:: " +map.get("id"));
 			 System.out.println("topList:::::"+topList);
 		}else if (chartType.equals("monthChart") ){
-			if(!id.equals("undefined")) map.put("id",id);
 			Calendar cal = Calendar.getInstance();
 			 cal.add(Calendar.DATE, -30);
 		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	

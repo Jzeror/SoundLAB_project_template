@@ -30,7 +30,7 @@ ls ={
 																 .click(()=>{ 
 																	 alert('liveChr click');
 																	 let realChart = 'realChart';
-																		$.getJSON(sh.ctx()+'/music/top50/'+realChart,d=>{
+																		$.getJSON(sh.ctx()+'/music/top50/'+realChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
 																			 ls.top50table(d);
 																	 })
@@ -41,7 +41,7 @@ ls ={
 																 .click(()=>{ 
 																	 alert('wklChr click'); 
 																	 	let weekChart = 'weekChart';
-																		$.getJSON(sh.ctx()+'/music/top50/'+weekChart,d=>{
+																		$.getJSON(sh.ctx()+'/music/top50/'+weekChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
 																			 ls.top50table(d);
 																	 })
@@ -51,7 +51,7 @@ ls ={
 																.click(()=>{ 
 																	alert('dayChr click'); 
 																	 let monthChart = 'monthChart';
-																		$.getJSON(sh.ctx()+'/music/top50/'+monthChart,d=>{
+																		$.getJSON(sh.ctx()+'/music/top50/'+monthChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
 																			 ls.top50table(d);
 																	 })
