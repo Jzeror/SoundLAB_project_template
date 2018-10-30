@@ -2,6 +2,7 @@
 var jt = jt || {};
 jt ={
 		search :z=>{ //앞에서 넘어온 map
+		
 			$.getJSON($.ctx()+'/service/search/'+z+'/'+$.cookie('loginID'),x=>{
   				alert('아티스트이름~~::'+x.artist.ARTIST_NAME);
   				let art = x.artist;
@@ -660,13 +661,13 @@ jt ={
 
 					
 				})
-
+				
 		},
-
-	
+		
+		
 		// 뮤직 플레이어
 		music_player : x=>{
-			console.log('player받은값::'+x);
+		
 			$.getJSON($.ctx()+'/service/player/music/'+x,d=>{
 
 				let openWin = window.open(sh.ctx()+'/#SoundLAB_Player',"soundlab","left="+(screen.availWidth-730)/2+",top="+(screen.availHeight-495)/2+","+"width=730,height=495, menubar=no");

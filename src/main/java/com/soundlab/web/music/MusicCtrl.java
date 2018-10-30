@@ -27,7 +27,9 @@ public class MusicCtrl {
 	static final Logger logger = LoggerFactory.getLogger(MusicCtrl.class);
 	@Autowired MusicMapper musMapper;
 	@Autowired HashMap<String, Object> map;
-
+	 
+	 String[] arr = new String[10];
+	 int no =0;
 	@GetMapping("/top50/{x}")
 	private List<Map<?,?>> top50(@PathVariable String x) {
 		map.clear();
@@ -80,6 +82,7 @@ public class MusicCtrl {
 	
 	@GetMapping("/top50lineChart")
 	public List<Map<?,?>> top50lineChart() {
+		
 		map.clear();
 		  List<Map<?,?>> chartData = null;
 		  Calendar cal = Calendar.getInstance();
