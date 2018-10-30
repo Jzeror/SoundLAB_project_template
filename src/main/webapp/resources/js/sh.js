@@ -17,7 +17,8 @@ sh = (()=>{
             $.getScript(sh.js()+'/jt.js'),
             $.getScript(sh.js()+'/nr.js')
          ).done(d=>{
-        	 $.removeCookie("loginID");
+        	 //$.removeCookie("loginID");
+        	 
         	 home(); 
          });
          
@@ -39,10 +40,10 @@ sh = (()=>{
 		     +'<img src="'+$.ctx()+'/resources/img/album/빈지노_24_26.jpg">'
 		  +'</div>'
 		   +'<div class="selected">'
-		     +'<img src="'+$.ctx()+'/resources/img/복면가왕.jpg">'
+		     +'<img src="'+$.ctx()+'/resources/img/album/방탄소년단_LY_Answer.jpg">'
 		   +'</div>'
 		   +'<div class="next">'
-		     +'<img src="'+$.ctx()+'/resources/img/쇼미더머니.jpg">'
+		     +'<img src="'+$.ctx()+'/resources/img/album/방탄소년단_WINGS.jpg">'
 		   +'</div>'
 		   +'<div class="nextRightSecond">'
 		     +'<img src="'+$.ctx()+'/resources/img/album/트와이스_Summer_Nights.jpg">'
@@ -103,10 +104,23 @@ sh = (()=>{
 		$('#next').click(function() {
 		moveToSelected('next');
 		});
-
-         
-	     $.getJSON($ctx+'/main/hash',d=>{
-	    	 /*let hashcnt = [389,344,284,244,218,178,172,140,139,139,127,125,118,111,110];*/
+		let loginID = 'none';
+		
+		if($.cookie('loginID') != null){
+            console.log('sh.home::priv::memberId = '+$.cookie("loginID"));
+            loginID = $.cookie('loginID');
+            $('#loginBtn').attr('id','logoutBtn').text('logout').click(()=>{
+                alert('로그아웃');
+                $.removeCookie("loginID");
+                home();
+            });
+            $('#joinBtn').attr('id','myPageBtn').text('My page').click(()=>{
+                alert('mypage::');
+                sh.service.mypage();
+            });
+       }
+		
+	    $.getJSON($ctx+'/main/mainContents/'+loginID,d=>{
 	    	 let hashcnt = d.cnt;
 	    	 let hashdata = {"count":{"신나는":hashcnt[0],"차분한":hashcnt[1],"어쿠스틱":hashcnt[2],"트로피칼":hashcnt[3],"부드러운":hashcnt[4],"드라이브":hashcnt[5],"휴식":hashcnt[6],"편집숍&카페":hashcnt[7],"헬스":hashcnt[8],"클럽":hashcnt[9],"스트레스":hashcnt[10],"이별":hashcnt[11],"사랑&고백":hashcnt[12],"새벽감성":hashcnt[13],"위로":hashcnt[14]},
 		    		 "sample_title":{"신나는":[hashcnt[0]],"차분한":[hashcnt[1]],"어쿠스틱":[hashcnt[2]],"트로피칼":[hashcnt[3]],"부드러운":[hashcnt[4]],"드라이브":[hashcnt[5]],"휴식":[hashcnt[6]],"편집숍&카페":[hashcnt[7]],"헬스":[hashcnt[8]],"클럽":[hashcnt[9]],"스트레스":[hashcnt[10]],"이별":[hashcnt[11]],"사랑&고백":[hashcnt[12]],"새벽감성":[hashcnt[13]],"위로":[hashcnt[14]]}
@@ -123,16 +137,12 @@ sh = (()=>{
 	    		 setTimeout(()=>{
 	    			 fn.scroll({ id : $("#djSec"), len : 200});
 	    			 let hashbtn = $('input:checkbox[value="'+$(this).text()+'"]');
-	    			 hashbtn.closest('label').addClass('active');
-	    			/* hashbtn.prop('checked',true).trigger('change');*/
+	    			 hashbtn.closest('button').addClass('active');
+	    			 //hashbtn.prop('checked',true).trigger('change');
 	    			 hashbtn.prop('checked',true).change();
 	          	 },300);
 	    	  });
-	    
-	     });
-	     
-	     
-	     $.getJSON($ctx+'/main/chart',d=>{
+	    	 
 	    	 
 	    	 let titles = [];
 	    	 let musicSeq = [];
@@ -142,6 +152,7 @@ sh = (()=>{
 	    	 let img = [];
 	    	 let artists = [];
 	    	 let artistSeq = [];
+	    	 let updown = [];
 	    	 $.each(d.top5,(i,v)=>{
 	    		 titles.push(v.타이틀);
 	    		 albums.push(v.앨범);
@@ -151,7 +162,9 @@ sh = (()=>{
 	    		 artists.push(v.가수);
 	    		 artistSeq.push(v.ARTIST_SEQ);
 	    		 musicSeq.push(v.MUSIC_SEQ);
+	    		 updown.push(v.업다운);
 	    	 });
+	    	 console.log('업다운 ::: '+updown);
 	    	 let tr,info,cover,title,artist,player,pa,up,ua,down,da;
 	    	 let tb = $('#sh-tbody');
 	    	 for(let i=0;i<5;i++){
@@ -171,13 +184,14 @@ sh = (()=>{
 	    		 });
 	    		 player = $('<td/>').addClass('sh-music-player').appendTo(tr);
 	    		 pa = $('<a/>').attr({href : '#'}).appendTo(player);
-	    		 $('<i/>').addClass('ls_fa fa fa-play-circle-o').appendTo(pa).click(e=>{
+	    		 $('<i/>').addClass('ls_fa fa fa-play').appendTo(pa).click(e=>{
 	    			 alert('웹플레이어 실행 :: '+ musicSeq[i]);
 	    		 });
 	    		 up = $('<td/>').addClass('sh-music-upbtn').appendTo(tr);
 	    		 ua = $('<a/>').attr({href : '#'}).appendTo(up);
-	    		 $('<i/>').attr({id : 'sh-up-'+i}).addClass('sh-up fa fa-heart').appendTo(ua).click(e=>{
+	    		 $('<i/>').attr({id : 'sh-up-'+i}).addClass((updown[i]==='u')?'sh-up fa fa-heart sh-updown':'sh-up fa fa-heart').appendTo(ua).click(e=>{
 	    			 e.preventDefault();
+	    			 sh.service.auth();
 	    			 alert('좋아요  :: '+ musicSeq[i]);
 	    			 $('#sh-up-'+i).addClass('sh-updown');
 	    			 $('#sh-down-'+i).removeClass('sh-updown');
@@ -185,8 +199,9 @@ sh = (()=>{
 	    		 });
 	    		 down = $('<td/>').addClass('sh-music-downbtn').appendTo(tr);
 	    		 da = $('<a/>').attr({href : '#'}).appendTo(down);
-	    		 $('<i/>').attr({id : 'sh-down-'+i}).addClass('sh-down fa fa-thumbs-down').appendTo(da).click(e=>{
+	    		 $('<i/>').attr({id : 'sh-down-'+i}).addClass((updown[i]==='d')?'sh-down fa fa-thumbs-down sh-updown':'sh-down fa fa-thumbs-down').appendTo(da).click(e=>{
 	    			 e.preventDefault();
+	    			 sh.service.auth();
 	    			 alert('싫어요  :: '+ musicSeq[i]);
 	    			 $('#sh-down-'+i).addClass('sh-updown');
 	    			 $('#sh-up-'+i).removeClass('sh-updown');
@@ -210,18 +225,7 @@ sh = (()=>{
 	     .click(e=>{
 	    	 nr.init();
 	     });
-         if($.cookie('loginID') != null){
-              console.log('sh.home::priv::memberId = '+$.cookie("loginID"));
-              $('#loginBtn').attr('id','logoutBtn').text('logout').click(()=>{
-                  alert('로그아웃');
-                  $.removeCookie("loginID");
-                  home();
-              });
-              $('#joinBtn').attr('id','myPageBtn').text('My page').click(()=>{
-                  alert('mypage::');
-                  sh.service.mypage();
-              });
-         }
+         
          $('#loginBtn').click(()=>{
               sh.service.login();
          });
@@ -230,26 +234,21 @@ sh = (()=>{
          });
         
          $('#searchBtn').click(e=>{
-        	 $.getJSON(sh.ctx()+'/service/search/'+$('#searchInput').val(),d=>{
-				 jt.search(d);
+        		 let x = $('#searchInput').val();
+				 jt.search(x);
 				 setTimeout(()=>{
 					 fn.scroll({ id : $("#jt_search"), len : 400});
 		         },200);
-			 });
-    		 
-
     	 });
     	 $('#searchInput').keyup(e=>{
     		 if(e.keyCode == 13) { 
-    			
-    			 $.getJSON(sh.ctx()+'/service/search/'+$('#searchInput').val(),d=>{
-    				 alert('아티스트이름~~::'+d.artist.ARTIST_NAME);
-    				
-					 jt.search(d);
+    			 
+    			 	let x = $('#searchInput').val();
+					 jt.search(x);
 					 setTimeout(()=>{
 						 fn.scroll({ id : $("#jt_search"), len : 400});
 			         },200);
-    			 });
+    			 
     		 } 
     	 });
          
@@ -258,6 +257,7 @@ sh = (()=>{
     		 if(!($("#banner").length >0)){   //not exist
     			 home(); 
         	 }
+    		 sh.service.removeSec();
     		 let x = 'realChart';
    	       	 ls.chart(x)
        		 setTimeout(()=>{
@@ -269,6 +269,7 @@ sh = (()=>{
         	 if(!($("#banner").length >0)){   //not exist
     			 home(); 
         	 }
+        	 sh.service.removeSec();
         	 let x = 'newAl_recent';
            	 ls.album(x);
            	 setTimeout(()=>{
@@ -283,6 +284,7 @@ sh = (()=>{
         	 if(!($("#banner").length >0)){   //not exist
     			 home(); 
         	 }
+        	 sh.service.removeSec();
        		 sj.dj();
     		 setTimeout(()=>{
     			 fn.scroll({ id : $("#djSec"), len : 200});
@@ -290,27 +292,17 @@ sh = (()=>{
          });
          $('#forBtn').click(e=>{
         	 e.preventDefault();
+        	 sh.service.auth();
         	 if(!($("#banner").length >0)){   //not exist
     			 home(); 
         	 }
-			 $.ajax({
-	    		 url : sh.ctx()+'/member/auth',
-		       	  method : 'get',
-		       	  success : d=>{
-            		sj.forYou();
-		       		setTimeout(()=>{
-						fn.scroll({ id : $("#foryouSec"), len : 200});
-		          	},400);
-		       	  },
-		       	  error : m=>{
-		       		alert('로그인이 필요한 서비스입니다.');
-		       		/*if(m.status == 401){
-		       			alert('m 401 :: '+m.status);
-		       			$('#wrapper').html('<img src="${context}/resources/img/Error-404.gif" alt="error404" style="width: 100%;height: 100%;"/>');
-		       		}*/
-	    			sh.service.login();
-		       	  }
-	    	 });
+        	 sh.service.removeSec();  
+     		 sj.forYou();
+     		 setTimeout(()=>{
+				 if($("#foryouSec").length > 0){
+					 fn.scroll({ id : $("#foryouSec"), len : 200});
+				 }
+         	 },400); 
          });
          
         $('#logoImg').click(e=>{
@@ -407,26 +399,26 @@ var banner =()=> '<section id="banner" class="banner">'
 		+'</ol>'
 		+'<div id="bannerImg" class="carousel-inner" role="listbox">'
 		  +'<div class="item active">'
-		    +'<img src="'+$img+'/gmf2018_poster.jpg" alt="First slide">'
+		    +'<img src="'+$img+'/메인캐러셀1.jpg" alt="First slide">'
 		    +'<div class="carousel-caption">'
-			+'<h4>2018 Grand Mint Festival</h2>'
-			+'<h5>일시 : 2018년 10월 20일(토요일)- 10월 21일(일요일)</h3>'
-			+'<h5>위치 : 올림픽 공원 (서울 송파구 올림픽로 424 올림픽공원)</h3>'
+			//+'<h4>2018 Grand Mint Festival</h2>'
+			//+'<h5>일시 : 2018년 10월 20일(토요일)- 10월 21일(일요일)</h3>'
+			//+'<h5>위치 : 올림픽 공원 (서울 송파구 올림픽로 424 올림픽공원)</h3>'
 		    +'</div>'
 		  +'</div>'
 		  +'<div class="item">'
-		    +'<img src="'+$img+'/seoulfashion2018_poster.jpg" alt="Second slide">'
+		    +'<img src="'+$img+'/메인캐러셀2.jpg" alt="Second slide">'
 		    +'<div class="carousel-caption">'
-		    +'<h4>2018 스타라이트 뮤지컬 페스티벌</h2>'
-			+'<h5>일시 : 2018년 10월 20일(토요일)-10월 21일(일요일)</h3>'
-			+'<h5>위치 : 인천 파라다이스 시티 호텔 (인천광역시 중구 영종해안남로321번길 186)</h3>'
+		    //+'<h4>2018 스타라이트 뮤지컬 페스티벌</h2>'
+			//+'<h5>일시 : 2018년 10월 20일(토요일)-10월 21일(일요일)</h3>'
+			//+'<h5>위치 : 인천 파라다이스 시티 호텔 (인천광역시 중구 영종해안남로321번길 186)</h3>'
 		    +'</div>'
 		  +'</div>'
 		  +'<div class="item">'
-		    +'<img src="'+$img+'/starlight2018_poster.jpg" alt="Third slide">'
+		    +'<img src="'+$img+'/메인캐러셀3.jpg" alt="Third slide">'
 		    +'<div class="carousel-caption">'
-		    +'<h4>할로윈 레드문 서울 패션 페스티벌 2018</h2>'
-			+'<h5>일시 : 2018년 10월 27일(토요일)</h3>'
+		    //+'<h4>할로윈 레드문 서울 패션 페스티벌 2018</h2>'
+			//+'<h5>일시 : 2018년 10월 27일(토요일)</h3>'
 		    +'</div>'  
 		  +'</div>'
 		+'</div>'
@@ -545,6 +537,27 @@ var login = ()=> '<section id="loginSec" class="loginSec" >'
 	 +'</div>'
 	 +'</div>'
      +'</section>';
+var login2 = ()=> '<section id="loginSec" class="loginSec" >'
++'<div class="container-fluid">'
++'<div class="col-md-4">'
++'</div>'
++'<div class="col-md-5">'
+/* loginBox */
++'<div id="loginBox" class="loginBox">'
++'<div id="logoForm" class="logoForm">'
++'<img src="'+$.img()+'/logo.png" id="logoImg" class="loginLogo2"><h2 class="loginInst">로그인 후 이용하실 수 있습니다.</h2>'
++'</div>'
++'<div id="loginForm" class="loginForm">'
++'<input id="memberId" class="loginInput" type="text" placeholder="아이디" required/></br>'
++'<input id="pass" class="loginInput" type="password" placeholder="비밀번호" required/></br>'
++'</div>'
++'</div>'
+/*--loginBox--*/
++'</div>'
++'<div class="col-md-3">'
++'</div>'
++'</div>'
++'</section>';
 var join = ()=> '<section id="joinSec" class="joinSec">'
 	 +'<div class="container-fluid">'
 	 +'<div class="col-md-4">'
@@ -684,6 +697,7 @@ var mypage =()=>'<section id="mypageSec" class="joinSec">'
          mainContents : mainContents,
          footer : footer,
          login : login,
+         login2 : login2,
          join : join,
          mypage : mypage
       };
@@ -717,9 +731,40 @@ sh.service ={
               });
           
           ui.br({len : 4, at : $loginForm});
+          ui.btn({ id : 'loginConf', clazz : 'loginConf', txt : '로그인', at : $loginForm})
+          .click(e=>{
+               if(fn.loginValidation({ id : $memberId.val(), pass : $pass.val()})){
+                   $.ajax({
+                       url : sh.ctx()+'/member/login',
+                       method : 'post',
+                       contentType : 'application/json',
+                       data : JSON.stringify({
+                           memberId : $memberId.val(),
+                           pass : $pass.val()
+                       }),
+                       success : d=>{
+                           console.log('login success in :::');
+                           if(d.valid === "admin"){
+                        	   sh.service.loginInfo(d);
+                        	   nr.init();
+                           }
+                           else if(d.valid === "user"){
+                               sh.service.loginInfo(d);
+                               sh.home();
+                           }else{
+                               alert(d.valid+'가 틀렸습니다.');
+                               sh.service.login();
+                           }
+                       }
+                     });
+                }
+      });
           $('<a/>').attr({id:'kakao-login-btn', href:'/oauth/authorize?client_id={15e9bb1b311247918da5a29ec083b4b1}&redirect_uri={http://localhost/oauth}&response_type=code'}).appendTo($loginForm);
           $('<a/>').attr({href:'http://developers.kakao.com/logout'}).appendTo($loginForm);
+   
+          Kakao.cleanup();
           Kakao.init('2cc6f2bb03b5c2f7532151a1692ca793');
+          
           Kakao.Auth.createLoginButton({
               container: '#kakao-login-btn',
               success: function(authObj) {
@@ -727,26 +772,60 @@ sh.service ={
             	  Kakao.API.request({
             		  url:'/v1/user/me',
                       success : d=>{
-                          console.log('login success in :::'+d.id +':: pass ::'+d.pass);
-                          $.each(d,(i,v)=>{
-                        	 alert('i ::' +i);
-                        	 alert('v :: '+ v);
-                        	 if(i==='properties'){
-                        		 $.each(v,(k,z)=>{
-                        			console.log('properties ::'+k);
-                        			console.log('value ::'+z);
-                        		 });
-                        	 }
-                          });
+                          console.log("id : "+d.id);
+                          console.log("email : "+d.kaccount_email);
+                          console.log("pw : "+d.uuid);
+                          console.log("age : "+d.properties.age_rang);
+                          console.log("birthday : "+d.properties.birthday);
+                          console.log("gender : "+d.properties.gender);
+                          console.log("profile image : "+d.properties.profile_image);
+                          console.log("nickname : "+d.properties.nickname);
                           $.ajax({
                               url : sh.ctx()+'/member/kakao',
                               method : 'post',
                               contentType : 'application/json',
                               data : JSON.stringify({
-                                  memberId : d.id,
+                                  KAKAO_ID : d.id,
+                                  KAKAO_PASS : d.uuid
                               }),
-                              success : d=>{
-                                  console.log('login success in :::' +d.memberId);
+                              success : x=>{
+                            	  if(x.valid === 'Y'){
+                            		  console.log('최초 아님 KAKAO login success in :::' +x.memberId);
+                            		  $.cookie("loginID",x.memberId);
+                            		  sh.home();
+                            	  }else{
+                            		  alert('카카오톡 최초 로그인시 기존 아이디 로그인이 필요합니다.');
+                            		  $(sh.w()).html(sh.login2());
+                            		  let $loginForm = $('#loginForm');
+                            		  ui.br({len : 4, at : $loginForm});
+                                      ui.btn({ id : 'loginConf', clazz : 'loginConf2', txt : '로그인', at : $loginForm})
+                                      .click(e=>{
+                                    	  e.preventDefault();
+                                           if(fn.loginValidation({ id : $('#memberId').val(), pass : $('#pass').val()})){
+                                               $.ajax({
+                                                   url : sh.ctx()+'/member/login',
+                                                   method : 'post',
+                                                   contentType : 'application/json',
+                                                   data : JSON.stringify({
+                                                       memberId : $('#memberId').val(),
+                                                       pass : $('#pass').val(),
+                                                       KAKAO_ID : x.kId,
+                                                       KAKAO_PASS : x.kPass
+                                                   }),
+                                                   success : f=>{
+                                                       console.log('최초 KAKAO login success in :::');
+                                                       if(f.valid === "user"){
+                                                    	   $.cookie("loginID",f.memberId);
+                                                 		   sh.home();
+                                                       }else{
+                                                           alert(f.valid+'가 틀렸습니다.');
+                                                       }
+                                                   }
+                                                 });
+                                            }
+                                  });
+                            	  }
+                                  
                                   
                               }
                             });
@@ -757,35 +836,8 @@ sh.service ={
                  alert(JSON.stringify(err));
               }
             });
-          ui.btn({ id : 'loginConf', clazz : 'success loginConf', txt : '로그인', at : $loginForm})
-              .click(e=>{
-                   if(fn.loginValidation({ id : $memberId.val(), pass : $pass.val()})){
-                       $.ajax({
-                           url : sh.ctx()+'/member/login',
-                           method : 'post',
-                           contentType : 'application/json',
-                           data : JSON.stringify({
-                               memberId : $memberId.val(),
-                               pass : $pass.val()
-                           }),
-                           success : d=>{
-                               console.log('login success in :::');
-                               if(d.valid === "admin"){
-                            	   sh.service.loginInfo(d);
-                            	   nr.init();
-                               }
-                               else if(d.valid === "user"){
-                                   sh.service.loginInfo(d);
-                                   sh.home();
-                               }else{
-                                   alert(d.valid+'가 틀렸습니다.');
-                                   sh.service.login();
-                               }
-                           }
-                         });
-                    }
-          });
-       
+          
+         fn.scroll({ id : $("#wrapper"), len : 0});
          $('#logoImg').click(e=>{
         	  e.preventDefault();
               sh.home();
@@ -799,7 +851,7 @@ sh.service ={
          
          let $joinForm = $('#joinForm');
          ui.btn({
-        	 clazz : 'success dupleCheck',
+        	 clazz : 'dupleCheck',
         	 txt : '중복확인',
              at : $('#idInput')
          })
@@ -811,7 +863,7 @@ sh.service ={
          });
          
          ui.btn({
-        	 clazz : 'success joinConf',
+        	 clazz : 'joinConf',
         	 txt : '회원가입',
              at : $joinForm
          })
@@ -901,7 +953,7 @@ sh.service ={
          $('#memberId').val($.cookie('loginID'));
          let $mypageForm = $('#joinForm');
          ui.btn({
-        	 clazz : 'success dupleCheck',
+        	 clazz : 'dupleCheck',
         	 txt : '정보수정',
              at : $('#idInput')
          }).click(e=>{
@@ -937,7 +989,7 @@ sh.service ={
          });
          
          ui.btn({
-        	 clazz : 'success joinConf',
+        	 clazz : 'joinConf',
         	 txt : '회원탈퇴',
              at : $mypageForm
          }).click(e=>{
@@ -960,7 +1012,15 @@ sh.service ={
          });
          
      },
-
+     removeSec : x=>{
+    	 let secs = ['#djSec','#albumSec','#foryouSec','#chartSec','#searchSec','#albumDetailSec'];
+    	 let len = secs.length;
+    	 for(let i=0;i<len;i++){
+    		 //if(secs[i] !== x){
+    			 $(secs[i]).remove();
+    		 //}
+    	 }
+     },
      loginInfo : x=>{
     	 $.cookie("loginID",x.memberId);
          if($('input:checkbox[class=saveID]:checked').length == 1){
@@ -972,6 +1032,20 @@ sh.service ={
       	   $.removeCookie("savedID");
       	   $.removeCookie("savedPASS");
          }
+     },
+     auth : x=>{
+		 let res = 0;
+    	 $.ajax({
+    		 url : sh.ctx()+'/member/auth',
+	       	  method : 'get',
+	       	  async: false,
+	       	  error : m=>{
+	       		alert('로그인이 필요한 서비스입니다.');
+	       		res=1;
+    			sh.service.login();
+	       	  }
+    	 });
+   		 return res;
      }
      
 };

@@ -61,7 +61,12 @@ public class DummyCtrl {
 		return rm;
 	}
 	
-	
+	/*<insert id="hashRecord">
+  	INSERT INTO VIEW_RECORD
+  	(MEMBER_ID, SEQ_GROUP, SG_ELEMENT)
+  	VALUES
+  	(#{memberId},#{seq},'hash')
+  </insert>*/
 	@GetMapping("/hash")
 	public Map<String,Object> hash(){
 		logger.info("DummyCtrl ::: hash ");

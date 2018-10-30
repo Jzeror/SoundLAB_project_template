@@ -343,7 +343,7 @@ ls ={
 										$('<i/>').addClass((v.TYPES == 'u')?'active':'').attr({id : 'ls_up'+v.NO }).addClass('ls_fa fa fa-heart')
 										.click(function(e){
 											if($.cookie("loginID")!= null){
-												sj.service.put_ud({thiz:$(this),btn:'like',mSeq:v.MUSIC_SEQ ,gSeq:'music'});
+												sj.service.put_ud({thiz:$(this),btn:'like',mSeq:v.MUSIC_SEQ ,gSeq:v.GENRE_SEQ});
 											}else{
 												alert('로그인이 필요한 서비스입니다')
 											}
@@ -358,7 +358,7 @@ ls ={
 										.addClass('ls_fa fa fa-thumbs-down')
 										.click(function(e){
 											if($.cookie("loginID")!= null){
-												sj.service.put_ud({thiz:$(this),btn:'hate',mSeq:v.MUSIC_SEQ ,gSeq:'music'});
+												sj.service.put_ud({thiz:$(this),btn:'hate',mSeq:v.MUSIC_SEQ ,gSeq:v.GENRE_SEQ});
 												
 											}else{
 												alert('로그인이 필요한 서비스입니다')

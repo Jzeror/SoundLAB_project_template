@@ -27,6 +27,24 @@ public class MemberCtrl {
 	@Autowired Map<String,Object> rm;
 	@Autowired MemberMapper mp;
 
+	@PostMapping("/kakao")
+	public Map<String,Object> kakao(@RequestBody Map<String,Object> pm) {
+		logger.info("MemberController ::: kakao id {} pass {}",pm.get("KAKAO_ID"),pm.get("KAKAO_PASS"));
+		rm.clear();
+		rm.put("kId", pm.get("KAKAO_ID"));
+		rm.put("kPass", pm.get("KAKAO_PASS"));
+		if(mp.kakao(pm)!=0) {
+			rm.put("memberId",mp.getKakao(pm));
+			System.out.println("kakao id::"+mp.getKakao(pm));
+			rm.put("valid", "Y");
+		}else {
+			rm.put("valid", "N");
+		}
+		
+		
+		return rm;
+	}
+	
 	@GetMapping("/auth")
 	public Map<String,Object> auth() {
 		logger.info("MemberController ::: auth ");
@@ -62,6 +80,10 @@ public class MemberCtrl {
 			if(rm != null) {
 				valid = (rm.get("memberId").equals("admin"))?"admin":"user";
 				mp.loginRecord(rm);
+				System.out.println("kakao 있니?? "+ pm.containsKey("KAKAO_ID"));
+				if(pm.containsKey("KAKAO_ID")) {
+					mp.postKakao(pm);
+				}
 			}else {
 				rm = new HashMap<>();
 			}
