@@ -70,7 +70,7 @@ sj ={
 					$('<div/>')
 					.attr({id:'sj-loading',style:'height:300px;text-align:center;'})
 					.append(
-							$('<img/>').attr({src:$.img()+'/loading.gif'})
+							$('<img/>').attr({src:$.img()+'/loading.gif', style:'width:15rem;'})
 					)
 					.appendTo($foryouSec);
 					
