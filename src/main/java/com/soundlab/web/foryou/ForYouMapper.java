@@ -10,10 +10,10 @@ import org.springframework.stereotype.Repository;
 public interface ForYouMapper {
 	public List<Object> getForYou();
 	public List<Object> getAlbumDetail(String p);
-	public void putMusicUp(String p);
-	public void putMusicDown(String p);
-	public void putGenreUp(String p);
-	public void delMusicDown(String p);
-	public void delMusicUp(String p);
-	public void delGenreUp(String p);
+	public boolean putMusicUp(String p);
+	public boolean putMusicDown(String p);
+	public boolean putGenreUp(String p);
+	public boolean delMusicDown(String p);
+	public boolean delMusicUp(String p);
+	public boolean delGenreUp(String p);
 }

@@ -15,32 +15,37 @@ import com.soundlab.web.foryou.ForYouMapper;
 public class TxService {
 	@Autowired ForYouMapper fm;
 	@Autowired ArticleMapper am;
-	public void putMusicUp(Map<String, String> p) {
+	public String putMusicUp(Map<String, String> p) {
 		// 음악 좋아요 쿼리, 장르 좋아요 쿼리 트랜잭션
-		String ms = p.get("mSeq");
-		fm.putMusicUp(ms);
-		fm.putGenreUp(p.get("gSeq"));
-		fm.delMusicDown(ms);
+		String ms = p.get("mSeq"), res = "";
+		res += (fm.putMusicUp(ms))?"m up":"";
+		res += (fm.putGenreUp(p.get("gSeq")))?"/g up":"";
+		res += (fm.delMusicDown(ms))?"/m down del":"";
+		return res;
 	}
-	public void delMusicUp(Map<String, String> p) {
-		fm.delMusicUp(p.get("mSeq"));
-		fm.delGenreUp(p.get("gSeq"));
+	public String delMusicUp(Map<String, String> p) {
+		String res = "";
+		res += (fm.delMusicUp(p.get("mSeq")))?"m up del":"";
+		res += (fm.delGenreUp(p.get("gSeq")))?"/g up del":"";
+		return res;
 	}
-	public void putMusicDown(Map<String, String> p) {
-		String ms = p.get("mSeq");
-		fm.putMusicDown(ms);
-		fm.delMusicUp(ms);
-		fm.delGenreUp(p.get("gSeq"));
+	public String putMusicDown(Map<String, String> p) {
+		String ms = p.get("mSeq"), res = "";
+		res += (fm.putMusicDown(ms))?"m down":"";
+		res += (fm.delMusicUp(ms))?"/m up del":"";
+		res += (fm.delGenreUp(p.get("gSeq")))?"/g up del":"";
+		return res;
 	}
-	public void putHashView(Map<String, String> p) {
+	public String putHashView(Map<String, String> p) {
 		Map<String, Object> map = new HashMap<>();
+		String t1 = p.get("t1"), t2 = p.get("t2"), t3 = p.get("t3"), res = "";
 		map.put("id", p.get("id"));
-		map.put("seq", p.get("t1"));
-		am.putHashView(map);
-		map.put("seq", p.get("t2"));
-		am.putHashView(map);
-		map.put("seq", p.get("t3"));
-		am.putHashView(map);
-		
+		map.put("seq", t1);
+		res += (am.putHashView(map))?t1+" view":"";
+		map.put("seq", t2);
+		res += (am.putHashView(map))?"/"+t2+" view":"";
+		map.put("seq", t3);
+		res += (am.putHashView(map))?"/"+t3+" view":"";
+		return res;
 	}
 }
