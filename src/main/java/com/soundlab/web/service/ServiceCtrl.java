@@ -26,21 +26,30 @@ public class ServiceCtrl {
 	
 	
 	@SuppressWarnings("unchecked")
-	@GetMapping("/search/{artist}")
-	public @ResponseBody Map<String,Object> search(@PathVariable String artist){
+	@GetMapping("/search/{artist}/{id}")
+	public @ResponseBody Map<String,Object> search(@PathVariable String artist,@PathVariable String id){
 		logger.info("ServiceCtrl ::: search");
+		System.out.println("cookieID :: "+id);
 		map.clear();
-		HashMap<String, Object> am = (HashMap<String, Object>) sm.getArtist(artist);
-		System.out.println("am에 담긴것::"+am);
+		if(!id.equals("undefined")) {
+			map.put("id", id);
+		}
+		map.put("artist", artist);
+		HashMap<String, Object> am = (HashMap<String, Object>) sm.getArtist(map);
+		map.put("artist", am);
 		String artistSeq = am.get("ARTIST_SEQ").toString();
 		
-		map.put("artist", am);
-		map.put("musics", sm.getMusicList(artistSeq));
+		map.put("artistSeq", artistSeq);
+		map.put("musics", sm.getMusicList(map));
+		System.out.println("musics:::"+map.get("musics"));
+		
+		
 		map.put("album", sm.getAlbumList(artistSeq));
 		map.put("mv", sm.getMvList(artistSeq));
+		
 		System.out.println("artist::"+am);
-		System.out.println("album:::"+map.get("album"));
 		System.out.println("musics:::"+map.get("musics"));
+		System.out.println("album:::"+map.get("album"));
 		System.out.println("mv:::"+map.get("mv"));
 		
 
