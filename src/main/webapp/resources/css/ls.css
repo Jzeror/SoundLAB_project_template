@@ -32,7 +32,7 @@
 	vertical-align: middle;
 	border-top-color: #eee;
 	width: 10%;
-		text-align: center;
+	text-align: center;
 		
 }
 .ls_table-filter th {
@@ -115,13 +115,14 @@
 #tableTd1 {width: 5%;}
 #tableTd2 {width: 3%;}
 #tableTd3 {width: 10%;}
-#tableTd4 {width: 20%;}
+#tableTd4 {width: 30%;}
 #tableTd5 {width: 10%;}
 #tableTd6 {width: 10%;}
-#tableTd7 {width: 5%;}
-#tableTd8 {width: 5%;}
-#tableTd9 {width: 5%;}
-#tableTd10 {width: 8%;}
+#tableTd7 {width: 40%;}
+#tableTd7 i{
+	margin-left: 30px;
+    margin-right: 30px;
+}
 
 .ckbox {
   position: relative;
@@ -746,4 +747,14 @@ a {
 .ls_chart_time{
 	font-size: 16px;
 	    color: #aaaaaa;
+}
+.ls-updown {
+	color: #f68657;
+}
+#tableTd7 i.active{
+	color: #f68657;
+}
+.ls_topTable{
+	cursor:pointer;
+	
 }

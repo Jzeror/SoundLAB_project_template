@@ -357,6 +357,7 @@
 
 
 .jt_playerOption{
+	overflow-y:auto;
 	position: relative;
     float: right;
     width: 56%;
