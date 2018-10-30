@@ -779,12 +779,24 @@ jt ={//
 	                    	
 	                    	$('<div/>')
 	                    	.attr({id:'jt_playBtnArea'}).addClass('playBtnArea jt_playckbox').appendTo(openWin.document.getElementById('jt_tab_area'));
-	                    	$('<input/>').attr({type : 'checkbox', id :'play_allCheck' }).appendTo(openWin.document.getElementById('jt_playBtnArea'));
+	                    	$('<input/>').attr({type : 'checkbox', id :'play_allCheck' }).appendTo(openWin.document.getElementById('jt_playBtnArea'))
+	                    	.click(function(e){
+	                    		let $this = $(this);
+	                    		if($this.is(':checked')){
+	                    			$(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox').prop('checked',true);
+	                    		}else{
+	                    			$(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox').prop('checked',false);
+	                    		}
+	                    	})
+	                    	;
 	                        $('<label for="play_allCheck">').appendTo(openWin.document.getElementById('jt_playBtnArea'));
 	                        $('<a/>').attr({id:'playbtn_del',href:'#'})
 	                    	.append(
 	                    			$('<button/>')
-	                    			.addClass('btn btn-light').html('삭제')	
+	                    			.addClass('btn btn-light').html('삭제')
+	                    			.click(e=>{
+	                    				$(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox:checked').parents('.jt_mplay_li').remove();
+	                    			})
 	                    	)
 	                    	
 	                    	.appendTo(openWin.document.getElementById('jt_playBtnArea'));

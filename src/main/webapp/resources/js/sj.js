@@ -65,11 +65,18 @@ sj ={
 		
 		forYou : ()=>{
 			if(!($("#foryouSec").length >0)){   //exist
-					let $foryouSec = $('<section/>').attr({id:'foryouSec'});
-					$foryouSec.appendTo($('#contents'));
+					let $foryouSec = $('<section/>').attr({id:'foryouSec'}).appendTo($('#contents'));
+					
+					$('<div/>')
+					.attr({id:'sj-loading',style:'height:300px;text-align:center;'})
+					.append(
+							$('<img/>').attr({src:$.img()+'/loading.gif'})
+					)
+					.appendTo($foryouSec);
 					
 					$.getJSON($.ctx()+'/foryou/'+$.cookie("loginID"),d=>{
 						
+						$('#sj-loading').remove();
 						
 						let fmsA = [], fmsB = [], fal = [], fat = [], ald = [];
 						let genreA = d.fy[0].msGenreA, genreB = d.fy[0].msGenreB;
@@ -78,6 +85,7 @@ sj ={
 								let u = {
 										musicSeq : v.msSeqA,
 										musicTitle : v.msTitleA,
+										genreSeq : v.msGenreSeqA,
 										artistSeq : v.msArtistA,
 										artistName : v.msArtistNameA,
 										albumSeq : v.msAlbumA,
@@ -85,6 +93,7 @@ sj ={
 								}, w = {
 										musicSeq : v.msSeqB,
 										musicTitle : v.msTitleB,
+										genreSeq : v.msGenreSeqB,
 										artistSeq : v.msArtistB,
 										artistName : v.msArtistNameB,
 										albumSeq : v.msAlbumB,
@@ -111,8 +120,11 @@ sj ={
 								let z = {
 										musicSeq : v.musicSeq,
 										musicTitle : v.musicTitle,
+										genreSeq : v.genreSeq,
 										artistName : v.artistName,
-										albumTitle : v.albumTitle
+										albumSeq : v.albumSeq,
+										albumTitle : v.albumTitle,
+										type : v.type
 								};
 								ald.push(z);		
 							}
@@ -127,7 +139,7 @@ sj ={
 									$('<div/>').addClass('row').append(
 											$('<div/>').addClass('col-xs-12').append(
 													$('<div/>').addClass('sj-music-content sj-d-flex sj-flex-wrap').attr({'style':'height:400px'}).append(
-															$('<div/>').addClass('sj-music-content-songs sj-h-100').attr({'style':'flex:none; width:100%; max-width:100%;padding-top:8rem;'}).append(
+															$('<div/>').addClass('sj-music-content-songs sj-h-100').attr({'style':'flex:none; width:100%; max-width:100%;padding-top:7.5rem;'}).append(
 																	$('<p/>')
 																	.attr({'style':'top:5%;'})
 																	.addClass('sj-foryou-theme').html('Music <span style="color:#F6B352;">For</span> You'),
@@ -267,7 +279,6 @@ sj ={
 							)
 					).appendTo($foryouSec);
 											
-					
 					let $accUl = $('<ul/>').appendTo($('#for-artist'));
 					$.each(fat,(i,v)=>{
 						$('<li/>').append(
@@ -278,7 +289,12 @@ sj ={
 								.append(
 									$('<p/>').html(v.artistName)
 								)
-						).appendTo($accUl);
+						)
+						.hover(function(){$(this).css("cursor","pointer")})
+						.click(e=>{
+							jt.search(v.artistName);
+						})
+						.appendTo($accUl);
 					});
 					
 				});
@@ -300,18 +316,30 @@ sj.service = {
 										$('<h2/>').attr('style','margin-left: 1.2rem;').addClass('my-4').html('DJ PLAYLIST'),
 										$('<div/>').attr({id : 'djCarousel'}).addClass('carousel slide')
 								).on('click','.sj-dj-item',function(e){
+									$.ajax({
+							    		 url : sh.ctx()+'/member/auth',
+								       	  method : 'get',
+								       	  success : d=>{
+								       		$('#djCarousel').carousel('pause');
+											
+											let $this = $(this);
+											
+											if($this.find('h4').text() != $('#sj-dt-container .sj-songs-info-title>h4').text()){
+												$('#sj-dj-detail').empty();
+												sj.service.dj_pld($this.attr('id'));
+												$.getJSON($.ctx()+'/dj/hashs/'+$.cookie('loginID')+'/'+$this.children('label').html(),d=>{
+													console.log(d.res);
+												});
+											}else{
+												$('#sj-dj-detail').remove();
+											}  
+								       	  },
+								       	  error : m=>{
+								       		alert('로그인이 필요한 서비스입니다.');
+							    			sh.service.login();
+								       	  }
+							    	 });
 									
-									$('#djCarousel').carousel('pause');
-									
-									let $this = $(this);
-									
-									if($this.find('h4').text() != $('#sj-dt-container .sj-songs-info-title>h4').text()){
-										$('#sj-dj-detail').empty();
-										sj.service.dj_pld($this.attr('id'));
-										$.getJSON($.ctx()+'/dj/hashs/'+$.cookie('loginID')+'/'+$this.children('label').html());
-									}else{
-										$('#sj-dj-detail').remove();
-									}
 									
 								})
 						)
@@ -370,6 +398,7 @@ sj.service = {
 								$('<div/>')
 								.attr({id:v.articleSeq})
 								.addClass('col-md-4 col-sm-6 col-xs-12 sj-dj-item').append(
+										$('<label/>').attr({'style':'display:none;'}).html(v.hash),
 										$('<div/>')
 										.addClass('sj-bg-img img-responsive')
 										.attr({
@@ -493,7 +522,13 @@ sj.service = {
 											$('<span/>').addClass('sj-checkmark')
 									),
 									$('<div/>').addClass('sj-dj-title sj-text-crop').append($('<span/>').html(v.musicTitle)),
-									$('<div/>').addClass('sj-dj-artist sj-text-crop').append($('<span/>').html(v.artistName)),
+									$('<div/>').addClass('sj-dj-artist sj-text-crop').append(
+											$('<span/>').html(v.artistName)
+											.hover(function(){$(this).css("cursor","pointer");})
+											.click(e=>{
+												jt.search(v.artistName);
+											})
+									),
 									$('<div/>').addClass('btn-group').append(
 											$('<button/>').addClass('btn ').append(
 													$('<span/>').addClass('fa fa-play')
@@ -503,32 +538,12 @@ sj.service = {
 											$('<button/>').addClass('btn '+((v.type == 'u')?'active':'')).append(
 													$('<span/>').addClass('fa fa-heart')
 											).click(function(e){
-												let $this = $(this);
-												if($this.hasClass('active')){
-													$this.removeClass('active');
-													if($.cookie("loginID")=='sound') $.getJSON($.ctx()+'/foryou/delML/'+v.musicSeq+'/'+v.genreSeq);
-												}else{
-													$this.addClass('active');
-													if($this.siblings().hasClass('active')) $this.siblings().removeClass('active');
-													if($.cookie("loginID")=='sound') $.getJSON($.ctx()+'/foryou/putML/'+v.musicSeq+'/'+v.genreSeq);
-												} 
+												sj.service.put_ud({thiz:$(this), btn:'like', mSeq:v.musicSeq, gSeq:v.genreSeq});
 											}),
 											$('<button/>').addClass('btn '+((v.type == 'd')?'active':'')).append(
 													$('<span/>').addClass('fa fa-thumbs-down')
 											).click(function(e){
-												let $this = $(this);
-												if($this.hasClass('active')){
-													$this.removeClass('active');
-													if($.cookie("loginID")=='sound') $.getJSON($.ctx()+'/foryou/delMH/'+v.musicSeq);
-												}else{
-													$this.addClass('active');
-													if($this.siblings().hasClass('active')){
-														if($.cookie("loginID")=='sound') $.getJSON($.ctx()+'/foryou/putMH/'+v.musicSeq+'/'+v.genreSeq);
-														$this.siblings().removeClass('active');
-													}else{
-														if($.cookie("loginID")=='sound') $.getJSON($.ctx()+'/foryou/putMH/'+v.musicSeq);
-													}
-												} 
+												sj.service.put_ud({thiz:$(this), btn:'hate', mSeq:v.musicSeq, gSeq:v.genreSeq});
 											})
 									)
 							)
@@ -541,8 +556,16 @@ sj.service = {
 			
 			$('<div/>').addClass('sj-music-songs-info sj-mb-10 sj-d-flex sj-flex-wrap sj-align-items-center sj-justify-content-between').append(
 					$('<div/>').addClass('sj-songs-info-title').append(
-							$('<h4/>').html(x[0].albumTitle),
+							$('<h4/>').html(x[0].albumTitle)
+							.hover(function(){$(this).css("cursor","pointer")})
+							.click(e=>{
+								jt.album_detail(x[0].albumSeq);
+							}),
 							$('<h6/>').html(x[0].artistName)
+							.hover(function(){$(this).css("cursor","pointer")})
+							.click(e=>{
+								jt.search(x[0].artistName);
+							})
 					)
 			).appendTo($('#for-album-dt'));
 			$('<div/>').addClass('sj-songs-meta').append(
@@ -587,6 +610,10 @@ sj.service = {
 								$('<div/>').addClass('sj-fya-title sj-text-crop').append($('<p/>').html(v.musicTitle)),
 								$('<div/>').addClass('sj-fya-artist sj-text-crop').append(
 										$('<p/>').html(v.artistName)
+										.hover(function(){$(this).css("cursor","pointer")})
+										.click(e=>{
+											jt.search(v.artistName);
+										})
 								),
 								$('<div/>').addClass('btn-group').append(
 										$('<button/>').addClass('btn').append(
@@ -594,29 +621,15 @@ sj.service = {
 										).click(e=>{
 											jt.music_player(v.musicSeq);
 										}),
-										$('<button/>').addClass('btn').append(
+										$('<button/>').addClass('btn '+((v.type == 'u')?'active':'')).append(
 												$('<span/>').addClass('fa fa-heart')
 										).click(function(e){
-											console.log('sibal');
-											let $this = $(this);
-											if($this.hasClass('active')){
-												$this.removeClass('active');
-											}else{
-												$this.addClass('active');
-												if($this.siblings().hasClass('active')) $this.siblings().removeClass('active');
-											} 
+											sj.service.put_ud({thiz:$(this), btn:'like', mSeq:v.musicSeq, gSeq:v.genreSeq});
 										}),
-										$('<button/>').addClass('btn').append(
+										$('<button/>').addClass('btn '+((v.type == 'd')?'active':'')).append(
 												$('<span/>').addClass('fa fa-thumbs-down')
 										).click(function(e){
-											console.log('Click');
-											let $this = $(this);
-											if($this.hasClass('active')){
-												$this.removeClass('active');
-											}else{
-												$this.addClass('active');
-												if($this.siblings().hasClass('active')) $this.siblings().removeClass('active');
-											} 
+											sj.service.put_ud({thiz:$(this), btn:'hate', mSeq:v.musicSeq, gSeq:v.genreSeq});
 										})
 								)
 						)
@@ -644,8 +657,18 @@ sj.service = {
 								$('<div/>').addClass('sj-fym-title sj-text-crop').append($('<p/>').html(v.musicTitle)),
 								$('<div/>').addClass('sj-fym-artist sj-text-crop').append(
 										$('<p/>').html(v.artistName)
+										.hover(function(){$(this).css("cursor","pointer")})
+										.click(e=>{
+											jt.search(v.artistName);
+										})
 								),
-								$('<div/>').addClass('sj-fym-album sj-text-crop').append($('<p/>').html(v.albumTitle)),
+								$('<div/>').addClass('sj-fym-album sj-text-crop').append(
+										$('<p/>').html(v.albumTitle)
+										.hover(function(){$(this).css("cursor","pointer")})
+										.click(e=>{
+											jt.album_detail(v.albumSeq);
+										})
+								),
 								$('<div/>').addClass('btn-group').append(
 										$('<button/>').addClass('btn').append(
 												$('<span/>').addClass('fa fa-play')
@@ -655,15 +678,13 @@ sj.service = {
 										$('<button/>').addClass('btn').append(
 												$('<span/>').addClass('fa fa-heart')
 										).click(function(e){
-											if($(this).hasClass('active')){
-												$(this).removeClass('active');
-											}else{
-												$(this).addClass('active');
-											} 
+											sj.service.put_ud({thiz:$(this), btn:'like', mSeq:v.musicSeq, gSeq:v.genreSeq});
 										}),
 										$('<button/>').addClass('btn').append(
 												$('<span/>').addClass('fa fa-thumbs-down')
-										)
+										).click(function(e){
+											sj.service.put_ud({thiz:$(this), btn:'hate', mSeq:v.musicSeq, gSeq:v.genreSeq});
+										})
 								)
 						)
 				).appendTo($pl)
@@ -678,6 +699,24 @@ sj.service = {
 			});
 			console.log(seqs);
 			jt.music_player(seqs);
+		},
+		l_or_h:x=>{
+			if(x.hasClass('active')){
+				x.removeClass('active');
+			}else{
+				x.addClass('active');
+				if(x.siblings().hasClass('active')) x.siblings().removeClass('active'); 
+			}
+		},
+		put_ud:x=>{
+			//x = {thiz:$(this), btn : like || hate, mSeq:v.musicSeq, gSeq:v.genreSeq}
+			let $this = x.thiz;
+			let ms = x.mSeq, gs = x.gSeq;
+			let url = (x.btn == 'like')
+				? (($this.hasClass('active'))?'del':'put')+'ML/'+ms+'/'+gs
+						:(($this.hasClass('active'))?'del':'put')+'MH/'+ms+(($this.siblings().hasClass('active'))?'/'+gs:'');
+			if($.cookie("loginID")=='sound') $.getJSON($.ctx()+'/foryou/'+url,d=>{console.log(d.res);});
+			sj.service.l_or_h($this);
 		}
 };
 

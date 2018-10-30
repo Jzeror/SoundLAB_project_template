@@ -20,7 +20,6 @@ public class ForYouCtrl {
 		System.out.println("cookieID :: "+id);
 		Map<String, Object> res = new HashMap<>();
 		res.put("fy", fm.getForYou());
-		System.out.println(res.get("fy"));
 		return res;
 	}
 	@RequestMapping("/foryou/albums/{seq}")
@@ -32,33 +31,43 @@ public class ForYouCtrl {
 		return res;
 	}
 	@RequestMapping("/foryou/putML/{mSeq}/{gSeq}")
-	public void putMusicUp(@PathVariable String mSeq, @PathVariable String gSeq){
+	public @ResponseBody Map<String, Object> putMusicUp(@PathVariable String mSeq, @PathVariable String gSeq){
+		Map<String, Object> res = new HashMap<>();
 		Map<String, String> p = new HashMap<>();
 		p.put("mSeq", mSeq);
 		p.put("gSeq", gSeq);
-		ts.putMusicUp(p);
+		res.put("res", ts.putMusicUp(p));
+		return res;
 	}
 	@RequestMapping("/foryou/delML/{mSeq}/{gSeq}")
-	public void delMusicUp(@PathVariable String mSeq, @PathVariable String gSeq){
+	public @ResponseBody Map<String, Object> delMusicUp(@PathVariable String mSeq, @PathVariable String gSeq){
+		Map<String, Object> res = new HashMap<>();
 		Map<String, String> p = new HashMap<>();
 		p.put("mSeq", mSeq);
 		p.put("gSeq", gSeq);
-		ts.delMusicUp(p);
+		res.put("res", ts.delMusicUp(p));
+		return res;
 	}
 	@RequestMapping("/foryou/putMH/{mSeq}")
-	public void putMusicDown(@PathVariable String mSeq){
-		fm.putMusicDown(mSeq);
+	public @ResponseBody  Map<String, Object> putMusicDown(@PathVariable String mSeq){
+		Map<String, Object> res = new HashMap<>();
+		res.put("res", (fm.putMusicDown(mSeq))?"m down":"");
+		return res;
 	}
 	@RequestMapping("/foryou/putMH/{mSeq}/{gSeq}")
-	public void putMusicDown(@PathVariable String mSeq, @PathVariable String gSeq){
+	public @ResponseBody Map<String, Object> putMusicDown(@PathVariable String mSeq, @PathVariable String gSeq){
+		Map<String, Object> res = new HashMap<>();
 		Map<String, String> p = new HashMap<>();
 		p.put("mSeq", mSeq);
 		p.put("gSeq", gSeq);
-		ts.putMusicDown(p);
+		res.put("res", ts.putMusicDown(p));
+		return res;
 	}
 	@RequestMapping("/foryou/delMH/{mSeq}")
-	public void delMusicDown(@PathVariable String mSeq){
-		fm.delMusicDown(mSeq);
+	public @ResponseBody Map<String, Object> delMusicDown(@PathVariable String mSeq){
+		Map<String, Object> res = new HashMap<>();
+		res.put("res", (fm.delMusicDown(mSeq))?"m down del":"");
+		return res;
 	}
 	
 }

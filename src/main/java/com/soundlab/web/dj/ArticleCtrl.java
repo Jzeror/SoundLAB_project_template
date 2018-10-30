@@ -51,7 +51,7 @@ public class ArticleCtrl {
 			p.put("t"+(count++), s);
 		}
 		p.put("id", id);
-		ts.putHashView(p);
+		res.put("res", ts.putHashView(p));
 		return res;
 	}
 	
