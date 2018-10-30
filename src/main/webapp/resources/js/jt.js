@@ -536,14 +536,7 @@ jt ={//
 					.addClass('msg')
 					.appendTo($('#jt_cmt_body'))
 					.click(e=>{
-						$.ajax({
-				    		 url : sh.ctx()+'/member/auth',
-					       	  method : 'get',
-					       	  error : m=>{
-					       		alert('로그인이 필요한 서비스입니다.');
-				    			sh.service.login();
-					       	  }
-				    	 });
+						sh.service.auth();
 					});
 					$('<div/>').attr({id:'jt_cmt_btn_div'}).addClass('col-md-2').appendTo($('#jt_cmt'));
 					$('<button/>')

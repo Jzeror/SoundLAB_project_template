@@ -25,7 +25,6 @@ sh = (()=>{
      };
      var home =()=>{
          console.log('sh.home ::');
-         $.removeCookie("kakao");
          w.html(nav()+banner()+slider()+mainContents()+footer());
 		 $('<main id="id_main">')
 		 .html(
@@ -44,7 +43,7 @@ sh = (()=>{
 		     +'<img src="'+$.ctx()+'/resources/img/album/방탄소년단_LY_Answer.jpg">'
 		   +'</div>'
 		   +'<div class="next">'
-		     +'<img src="'+$.ctx()+'/resources/img/album/방탄소년단_WINGS.JPG">'
+		     +'<img src="'+$.ctx()+'/resources/img/album/방탄소년단_WINGS.jpg">'
 		   +'</div>'
 		   +'<div class="nextRightSecond">'
 		     +'<img src="'+$.ctx()+'/resources/img/album/트와이스_Summer_Nights.jpg">'
@@ -105,10 +104,23 @@ sh = (()=>{
 		$('#next').click(function() {
 		moveToSelected('next');
 		});
-
-         
-	  /*   $.getJSON($ctx+'/main/hash',d=>{
-	    	 let hashcnt = [389,344,284,244,218,178,172,140,139,139,127,125,118,111,110];
+		let loginID = 'none';
+		
+		if($.cookie('loginID') != null){
+            console.log('sh.home::priv::memberId = '+$.cookie("loginID"));
+            loginID = $.cookie('loginID');
+            $('#loginBtn').attr('id','logoutBtn').text('logout').click(()=>{
+                alert('로그아웃');
+                $.removeCookie("loginID");
+                home();
+            });
+            $('#joinBtn').attr('id','myPageBtn').text('My page').click(()=>{
+                alert('mypage::');
+                sh.service.mypage();
+            });
+       }
+		
+	    $.getJSON($ctx+'/main/mainContents/'+loginID,d=>{
 	    	 let hashcnt = d.cnt;
 	    	 let hashdata = {"count":{"신나는":hashcnt[0],"차분한":hashcnt[1],"어쿠스틱":hashcnt[2],"트로피칼":hashcnt[3],"부드러운":hashcnt[4],"드라이브":hashcnt[5],"휴식":hashcnt[6],"편집숍&카페":hashcnt[7],"헬스":hashcnt[8],"클럽":hashcnt[9],"스트레스":hashcnt[10],"이별":hashcnt[11],"사랑&고백":hashcnt[12],"새벽감성":hashcnt[13],"위로":hashcnt[14]},
 		    		 "sample_title":{"신나는":[hashcnt[0]],"차분한":[hashcnt[1]],"어쿠스틱":[hashcnt[2]],"트로피칼":[hashcnt[3]],"부드러운":[hashcnt[4]],"드라이브":[hashcnt[5]],"휴식":[hashcnt[6]],"편집숍&카페":[hashcnt[7]],"헬스":[hashcnt[8]],"클럽":[hashcnt[9]],"스트레스":[hashcnt[10]],"이별":[hashcnt[11]],"사랑&고백":[hashcnt[12]],"새벽감성":[hashcnt[13]],"위로":[hashcnt[14]]}
@@ -125,33 +137,7 @@ sh = (()=>{
 	    		 setTimeout(()=>{
 	    			 fn.scroll({ id : $("#djSec"), len : 200});
 	    			 let hashbtn = $('input:checkbox[value="'+$(this).text()+'"]');
-	    			 hashbtn.closest('label').addClass('active');
-	    			 hashbtn.prop('checked',true).trigger('change');
-	    			 hashbtn.prop('checked',true).change();
-	          	 },300);
-	    	  });
-	    
-	     });*/
-	     
-	     
-	     $.getJSON($ctx+'/main/mainContents',d=>{
-	    	 let hashcnt = d.cnt;
-	    	 let hashdata = {"count":{"신나는":hashcnt[0],"차분한":hashcnt[1],"어쿠스틱":hashcnt[2],"트로피칼":hashcnt[3],"부드러운":hashcnt[4],"드라이브":hashcnt[5],"휴식":hashcnt[6],"편집숍&카페":hashcnt[7],"헬스":hashcnt[8],"클럽":hashcnt[9],"스트레스":hashcnt[10],"이별":hashcnt[11],"사랑&고백":hashcnt[12],"새벽감성":hashcnt[13],"위로":hashcnt[14]},
-		    		 "sample_title":{"신나는":[hashcnt[0]],"차분한":[hashcnt[1]],"어쿠스틱":[hashcnt[2]],"트로피칼":[hashcnt[3]],"부드러운":[hashcnt[4]],"드라이브":[hashcnt[5]],"휴식":[hashcnt[6]],"편집숍&카페":[hashcnt[7]],"헬스":[hashcnt[8]],"클럽":[hashcnt[9]],"스트레스":[hashcnt[10]],"이별":[hashcnt[11]],"사랑&고백":[hashcnt[12]],"새벽감성":[hashcnt[13]],"위로":[hashcnt[14]]}
-		     };
-	    	 WordCloud({
-		    		container : '#cloud-container',
-		    		data : hashdata
-		     });
-	    	
-	    	$('#cloud-container').on("click",'text',function(event){
-	    		 $("#djSec").remove();
-	    		 //sh.service.removeSec();
-	    		 sj.dj();
-	    		 setTimeout(()=>{
-	    			 fn.scroll({ id : $("#djSec"), len : 200});
-	    			 let hashbtn = $('input:checkbox[value="'+$(this).text()+'"]');
-	    			 hashbtn.closest('label').addClass('active');
+	    			 hashbtn.closest('button').addClass('active');
 	    			 //hashbtn.prop('checked',true).trigger('change');
 	    			 hashbtn.prop('checked',true).change();
 	          	 },300);
@@ -166,6 +152,7 @@ sh = (()=>{
 	    	 let img = [];
 	    	 let artists = [];
 	    	 let artistSeq = [];
+	    	 let updown = [];
 	    	 $.each(d.top5,(i,v)=>{
 	    		 titles.push(v.타이틀);
 	    		 albums.push(v.앨범);
@@ -175,7 +162,9 @@ sh = (()=>{
 	    		 artists.push(v.가수);
 	    		 artistSeq.push(v.ARTIST_SEQ);
 	    		 musicSeq.push(v.MUSIC_SEQ);
+	    		 updown.push(v.업다운);
 	    	 });
+	    	 console.log('업다운 ::: '+updown);
 	    	 let tr,info,cover,title,artist,player,pa,up,ua,down,da;
 	    	 let tb = $('#sh-tbody');
 	    	 for(let i=0;i<5;i++){
@@ -200,8 +189,9 @@ sh = (()=>{
 	    		 });
 	    		 up = $('<td/>').addClass('sh-music-upbtn').appendTo(tr);
 	    		 ua = $('<a/>').attr({href : '#'}).appendTo(up);
-	    		 $('<i/>').attr({id : 'sh-up-'+i}).addClass('sh-up fa fa-heart').appendTo(ua).click(e=>{
+	    		 $('<i/>').attr({id : 'sh-up-'+i}).addClass((updown[i]==='u')?'sh-up fa fa-heart sh-updown':'sh-up fa fa-heart').appendTo(ua).click(e=>{
 	    			 e.preventDefault();
+	    			 sh.service.auth();
 	    			 alert('좋아요  :: '+ musicSeq[i]);
 	    			 $('#sh-up-'+i).addClass('sh-updown');
 	    			 $('#sh-down-'+i).removeClass('sh-updown');
@@ -209,8 +199,9 @@ sh = (()=>{
 	    		 });
 	    		 down = $('<td/>').addClass('sh-music-downbtn').appendTo(tr);
 	    		 da = $('<a/>').attr({href : '#'}).appendTo(down);
-	    		 $('<i/>').attr({id : 'sh-down-'+i}).addClass('sh-down fa fa-thumbs-down').appendTo(da).click(e=>{
+	    		 $('<i/>').attr({id : 'sh-down-'+i}).addClass((updown[i]==='d')?'sh-down fa fa-thumbs-down sh-updown':'sh-down fa fa-thumbs-down').appendTo(da).click(e=>{
 	    			 e.preventDefault();
+	    			 sh.service.auth();
 	    			 alert('싫어요  :: '+ musicSeq[i]);
 	    			 $('#sh-down-'+i).addClass('sh-updown');
 	    			 $('#sh-up-'+i).removeClass('sh-updown');
@@ -234,19 +225,7 @@ sh = (()=>{
 	     .click(e=>{
 	    	 nr.init();
 	     });
-         if($.cookie('loginID') != null){
-              console.log('sh.home::priv::memberId = '+$.cookie("loginID"));
-              $('#loginBtn').attr('id','logoutBtn').text('logout').click(()=>{
-                  alert('로그아웃');
-                  $.removeCookie("loginID");
-                  $.removeCookie("kakao");
-                  home();
-              });
-              $('#joinBtn').attr('id','myPageBtn').text('My page').click(()=>{
-                  alert('mypage::');
-                  sh.service.mypage();
-              });
-         }
+         
          $('#loginBtn').click(()=>{
               sh.service.login();
          });
@@ -318,28 +297,17 @@ sh = (()=>{
          });
          $('#forBtn').click(e=>{
         	 e.preventDefault();
+        	 sh.service.auth();
         	 if(!($("#banner").length >0)){   //not exist
     			 home(); 
         	 }
-			 $.ajax({
-	    		 url : sh.ctx()+'/member/auth',
-		       	  method : 'get',
-		       	  success : d=>{
-		       		sh.service.removeSec();  
-            		sj.forYou();
-		       		setTimeout(()=>{
-						fn.scroll({ id : $("#foryouSec"), len : 200});
-		          	},400);
-		       	  },
-		       	  error : m=>{
-		       		alert('로그인이 필요한 서비스입니다.');
-		       		/*if(m.status == 401){
-		       			alert('m 401 :: '+m.status);
-		       			$('#wrapper').html('<img src="${context}/resources/img/Error-404.gif" alt="error404" style="width: 100%;height: 100%;"/>');
-		       		}*/
-	    			sh.service.login();
-		       	  }
-	    	 });
+        	 sh.service.removeSec();  
+     		 sj.forYou();
+     		 setTimeout(()=>{
+				 if($("#foryouSec").length > 0){
+					 fn.scroll({ id : $("#foryouSec"), len : 200});
+				 }
+         	 },400); 
          });
          
         $('#logoImg').click(e=>{
@@ -582,7 +550,7 @@ var login2 = ()=> '<section id="loginSec" class="loginSec" >'
 /* loginBox */
 +'<div id="loginBox" class="loginBox">'
 +'<div id="logoForm" class="logoForm">'
-+'<img src="'+$.img()+'/logo.png" id="logoImg" class="loginLogo"><h2 class="loginInst">로그인 후 이용하실 수 있습니다.</h2>'
++'<img src="'+$.img()+'/logo.png" id="logoImg" class="loginLogo2"><h2 class="loginInst">로그인 후 이용하실 수 있습니다.</h2>'
 +'</div>'
 +'<div id="loginForm" class="loginForm">'
 +'<input id="memberId" class="loginInput" type="text" placeholder="아이디" required/></br>'
@@ -768,7 +736,7 @@ sh.service ={
               });
           
           ui.br({len : 4, at : $loginForm});
-          ui.btn({ id : 'loginConf', clazz : 'success loginConf', txt : '로그인', at : $loginForm})
+          ui.btn({ id : 'loginConf', clazz : 'loginConf', txt : '로그인', at : $loginForm})
           .click(e=>{
                if(fn.loginValidation({ id : $memberId.val(), pass : $pass.val()})){
                    $.ajax({
@@ -798,10 +766,9 @@ sh.service ={
       });
           $('<a/>').attr({id:'kakao-login-btn', href:'/oauth/authorize?client_id={15e9bb1b311247918da5a29ec083b4b1}&redirect_uri={http://localhost/oauth}&response_type=code'}).appendTo($loginForm);
           $('<a/>').attr({href:'http://developers.kakao.com/logout'}).appendTo($loginForm);
-          if($.cookie("kakao")==null){
-        	  Kakao.init('2cc6f2bb03b5c2f7532151a1692ca793');
-              $.cookie("kakao","t");
-          }
+   
+          Kakao.cleanup();
+          Kakao.init('2cc6f2bb03b5c2f7532151a1692ca793');
           
           Kakao.Auth.createLoginButton({
               container: '#kakao-login-btn',
@@ -836,9 +803,9 @@ sh.service ={
                             		  $(sh.w()).html(sh.login2());
                             		  let $loginForm = $('#loginForm');
                             		  ui.br({len : 4, at : $loginForm});
-                                      ui.btn({ id : 'loginConf', clazz : 'success loginConf2', txt : '로그인', at : $loginForm})
+                                      ui.btn({ id : 'loginConf', clazz : 'loginConf2', txt : '로그인', at : $loginForm})
                                       .click(e=>{
-                                    	  
+                                    	  e.preventDefault();
                                            if(fn.loginValidation({ id : $('#memberId').val(), pass : $('#pass').val()})){
                                                $.ajax({
                                                    url : sh.ctx()+'/member/login',
@@ -857,7 +824,6 @@ sh.service ={
                                                  		   sh.home();
                                                        }else{
                                                            alert(f.valid+'가 틀렸습니다.');
-                                                           sh.service.login();
                                                        }
                                                    }
                                                  });
@@ -876,7 +842,7 @@ sh.service ={
               }
             });
           
-       
+         fn.scroll({ id : $("#wrapper"), len : 0});
          $('#logoImg').click(e=>{
         	  e.preventDefault();
               sh.home();
@@ -890,7 +856,7 @@ sh.service ={
          
          let $joinForm = $('#joinForm');
          ui.btn({
-        	 clazz : 'success dupleCheck',
+        	 clazz : 'dupleCheck',
         	 txt : '중복확인',
              at : $('#idInput')
          })
@@ -902,7 +868,7 @@ sh.service ={
          });
          
          ui.btn({
-        	 clazz : 'success joinConf',
+        	 clazz : 'joinConf',
         	 txt : '회원가입',
              at : $joinForm
          })
@@ -992,7 +958,7 @@ sh.service ={
          $('#memberId').val($.cookie('loginID'));
          let $mypageForm = $('#joinForm');
          ui.btn({
-        	 clazz : 'success dupleCheck',
+        	 clazz : 'dupleCheck',
         	 txt : '정보수정',
              at : $('#idInput')
          }).click(e=>{
@@ -1028,7 +994,7 @@ sh.service ={
          });
          
          ui.btn({
-        	 clazz : 'success joinConf',
+        	 clazz : 'joinConf',
         	 txt : '회원탈퇴',
              at : $mypageForm
          }).click(e=>{
@@ -1071,6 +1037,20 @@ sh.service ={
       	   $.removeCookie("savedID");
       	   $.removeCookie("savedPASS");
          }
+     },
+     auth : x=>{
+		 let res = 0;
+    	 $.ajax({
+    		 url : sh.ctx()+'/member/auth',
+	       	  method : 'get',
+	       	  async: false,
+	       	  error : m=>{
+	       		alert('로그인이 필요한 서비스입니다.');
+	       		res=1;
+    			sh.service.login();
+	       	  }
+    	 });
+   		 return res;
      }
      
 };

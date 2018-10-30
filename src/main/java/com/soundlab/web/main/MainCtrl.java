@@ -4,12 +4,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.WebUtils;
 
 import com.soundlab.web.cmm.Util;
 
@@ -23,8 +27,8 @@ public class MainCtrl {
 	@Autowired Map<String,Object> rm;
 	@Autowired MainMapper mp;
 	
-	@GetMapping("/mainContents")
-	public Map<String,Object> mainContents() {
+	@GetMapping("/mainContents/{memberId}")
+	public Map<String,Object> mainContents(@PathVariable String memberId) {
 		logger.info("MainCtrl ::: mainContents ");
 		rm.clear();
 		System.out.println("hash ::: "+mp.getHash());
@@ -37,7 +41,7 @@ public class MainCtrl {
 	     rm.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));		    
 		 Util.log.accept("date1:: " +rm.get("date1"));
 		 Util.log.accept("date2:: " +rm.get("date2"));
-		
+		 rm.put("memberId", memberId);
 		System.out.println("chart ::: "+mp.getChart(rm));
 		rm.put("top5", mp.getChart(rm));
 		

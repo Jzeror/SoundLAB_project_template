@@ -7,20 +7,201 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class CreateDummy {
 
 	public static void main(String[] args) {
-		chartview();
+		artistUpDown사운드제외();
 
 	}
+	static void artistUpDown사운드제외() {
+		String[] mems = {
+				"libero","varius",
+				"libero","varius",
+				"ornare","justo",
+				"ornare","justo",
+				"ornare","justo",
+				"velit","massa",
+				"velit","massa",
+				"nulla","lorem"
+		};
+		int[] artists = {
+				 7,
+				 8,
+				 9,
+				10,
+				11,
+				12,
+				13,
+				14,
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22,
+				23,
+				24,
+				25,
+				26,
+				27,
+				28,
+				60,
+				61
+		};
+		
+		for(int i=0;i<100;i++) {
+			int memIndex = (int)(Math.random()*16);
+			int	musicIndex = (int)(Math.random()*10);
+			System.out.println("INSERT INTO UPDOWN (MEMBER_ID, SEQ_GROUP, SG_ELEMENT, TYPES)\n" 
+					+"VALUES\n" 
+					+"('"+mems[memIndex]+"',"+artists[musicIndex]+",'artist','d');");
+		}
+		
+		
+	}
+	static void redmusicUpDown() {
+		String[] mems = {
+				"libero","varius",
+				"libero","varius",
+				"ornare","justo",
+				"ornare","justo",
+				"ornare","justo",
+				"velit","massa",
+				"velit","massa",
+				"nulla","lorem"
+		};
+		int[] revelmusics = {
+				 105,
+				 106,
+				 107,
+				 108,
+				 109,
+				 182,
+				 183,
+				 184,
+				 185,
+				 186	
+		};
+		for(int i=0;i<100;i++) {
+			int memIndex = (int)(Math.random()*16);
+			int	musicIndex = (int)(Math.random()*10);
+			System.out.println("INSERT INTO UPDOWN (MEMBER_ID, SEQ_GROUP, SG_ELEMENT, TYPES)\n" 
+					+"VALUES\n" 
+					+"('"+mems[memIndex]+"',"+revelmusics[musicIndex]+",'music','d');");
+		}
+		
+		
+	}
 	
+	static void twicemusicUpDown() {
+		String[] mems = {
+				"libero","varius",
+				"libero","varius",
+				"ornare","justo",
+				"ornare","justo",
+				"ornare","justo",
+				"velit","massa",
+				"velit","massa",
+				"nulla","lorem"
+		};
+		int[] twicemusics = {   116,
+				   117,
+				   118,
+				   119,
+				   120,
+				   121,
+				   177,
+				   178,
+				   179,
+				   180,
+				   181 };
+		for(int i=0;i<100;i++) {
+			int memIndex = (int)(Math.random()*16);
+			int	musicIndex = (int)(Math.random()*11);
+			System.out.println("INSERT INTO UPDOWN (MEMBER_ID, SEQ_GROUP, SG_ELEMENT, TYPES)\n" 
+					+"VALUES\n" 
+					+"('"+mems[memIndex]+"',"+twicemusics[musicIndex]+",'music','d');");
+		}
+		
+		
+	}
 	
+	static void bangmusicUpDown() {
+		String[] mems = {
+				"libero","varius",
+				"libero","varius",
+				"ornare","justo",
+				"ornare","justo",
+				"ornare","justo",
+				"velit","massa",
+				"velit","massa",
+				"nulla","lorem"
+		};
+		int[] bangmusics = { 74,
+				75,
+			    76,
+			   133,
+			   134,
+			   135,
+			   136,
+			   137,
+			   138,
+			   139,
+			   140,
+			   141,
+			   142,
+			   143,
+			   144,
+			   145,
+			   146,
+			   147,
+			   148,
+			   149,
+			   150,
+			   151,
+			   152,
+			   153,
+			   154,
+			   155,
+			   156,
+			   157,
+			   158,
+			   159};
+		for(int i=0;i<150;i++) {
+			int memIndex = (int)(Math.random()*16);
+			int	bangmusicIndex = (int)(Math.random()*30);
+			System.out.println("INSERT INTO UPDOWN (MEMBER_ID, SEQ_GROUP, SG_ELEMENT, TYPES)\n" 
+					+"VALUES\n" 
+					+"('"+mems[memIndex]+"',"+bangmusics[bangmusicIndex]+",'music','d');");
+		}
+		
+		
+	}
 	
+	 static void 장르UPsound제외() {
+			int[] genre = { 1,2,3,4,5,6,32 };
+			String[] mems = {
+					"libero","varius",
+					"libero","varius",
+					"ornare","justo",
+					"ornare","justo",
+					"ornare","justo",
+					"velit","massa",
+					"velit","massa",
+					"nulla","lorem"
+			};
+			for(int i=0;i<300;i++) {
+				int memIndex = (int)(Math.random()*16);
+				int	musicIndex = (int)(Math.random()*7);
+				System.out.println("INSERT INTO UPDOWN (MEMBER_ID, SEQ_GROUP, SG_ELEMENT, TYPES)\n" 
+						+"VALUES\n" 
+						+"('"+mems[memIndex]+"',"+genre[musicIndex]+",'genre','u');");
+			}
+			
+	 }
 	 static void chartview() {
-				int[] lst = {  
-							
-									  
-														  104	
-														  
-														  ,87
-														 ,119
+				int[] lst = {   104	
+							  ,87
+								 ,119
 										,62
 												  
 											 ,101
@@ -36,10 +217,7 @@ public class CreateDummy {
 										  ,92
 										  ,78
 										  ,120
-
 										  ,117
-
-
 										  ,58
 										   ,94
 										   ,95
@@ -55,19 +233,14 @@ public class CreateDummy {
 												  ,68
 												  ,122
 													 ,125
-
 														 ,114
 														 ,116
-
-															
 														  ,97
 														  ,115
 															 ,99
 															 ,100
 															 ,69
-
 														  ,81
-											
 												  					  ,84
 												  					  ,90
 												  						 ,108	
@@ -76,9 +249,6 @@ public class CreateDummy {
 																  ,103
 																  ,86
 																  ,89  // 박효신 기프트		
-																  						 
-																				
-																				  	
 																					 ,74  // 방탄 아이돌
 																  ,91
 																		  ,67
@@ -203,6 +373,29 @@ public class CreateDummy {
 			   157,
 			   158,
 			   159};
+		int[] revelmusics = {
+				 105,
+				 106,
+				 107,
+				 108,
+				 109,
+				 182,
+				 183,
+				 184,
+				 185,
+				 186	
+		};
+		int[] twicemusics = {   116,
+				   117,
+				   118,
+				   119,
+				   120,
+				   121,
+				   177,
+				   178,
+				   179,
+				   180,
+				   181 };
 		/*<insert id="bangRecord">
 	  	INSERT INTO VIEW_RECORD
 	  	(MEMBER_ID, SEQ_GROUP, SG_ELEMENT, VIEW_DATE)
@@ -211,10 +404,10 @@ public class CreateDummy {
 	  </insert>*/
 		for(int i=0;i<500;i++) {
 			int memIndex = (int)(Math.random()*16);
-			int	bangmusicIndex = (int)(Math.random()*30);
+			int	bangmusicIndex = (int)(Math.random()*10);
 			System.out.println("INSERT INTO VIEW_RECORD (MEMBER_ID, SEQ_GROUP, SG_ELEMENT, VIEW_DATE)\n" 
 					+"VALUES\n" 
-					+"('"+mems[memIndex]+"',"+bangmusics[bangmusicIndex]+",'music','2019-01-01 20:20:34');");
+					+"('"+mems[memIndex]+"',"+revelmusics[bangmusicIndex]+",'music','2019-01-01 20:20:34');");
 		}
 		
 		

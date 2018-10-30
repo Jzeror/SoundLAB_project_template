@@ -53,6 +53,7 @@ font-family: 'Do Hyeon', sans-serif;
 	margin: 2rem 0rem 0rem 2rem;
 	width: 8rem;
 	height: 8rem;
+	cursor: pointer;
 }
 
 
@@ -153,7 +154,7 @@ font-family: 'Do Hyeon', sans-serif;
 .header_menu ul.main_menu li:hover:after,
 .header_menu ul.main_menu li.active:after {
     width: 12.2rem;
-    background: #4DA91C;
+    background: #f6b352;
 }
 /*-- 네비밑줄 --*/
 /*Back to Top*/
@@ -174,7 +175,7 @@ font-family: 'Do Hyeon', sans-serif;
     transition: all 0.5s ease;
     opacity: 0;
     display: none;
-    background: #43a906;
+    background: #f6b352;
 }
 #back-to-top:hover {
     color: #fff;
@@ -194,7 +195,7 @@ font-family: 'Do Hyeon', sans-serif;
 /* 로그인화면 */
 .loginSec {
 	border: 1px solid #ccc;
-	border-top: 3px solid #00cd3c;
+	border-top: 3px solid #f6b352;
 	height: 91rem;
 	width: 100%;
 	font-family: 'Do Hyeon', sans-serif;
@@ -203,7 +204,14 @@ font-family: 'Do Hyeon', sans-serif;
 .loginLogo {
 	height: 16rem;
 	margin: 0rem 3rem 3rem 11rem;
+	cursor: pointer;
 }
+.loginLogo2 {
+	height: 16rem;
+	margin: 0rem 3rem 3rem 11rem;
+}
+
+
 .loginBox {
 	margin: 4rem 0 20rem 0;
 	padding: 0rem 2rem 0rem 2rem;
@@ -222,17 +230,39 @@ font-family: 'Do Hyeon', sans-serif;
 	width: 40rem;
 	font-size: 2.1rem;
 }
-.loginConf {
+.btn-loginConf {
 	margin: 0rem 0rem 4rem 1.5rem;
 	height: 5rem;
 	width: 16rem;
 	font-size: 2.5rem;
+	background-color: #f68657;
+    background-position: 0 -15px;
 }
-.loginConf2 {
+
+.btn-loginConf:hover {
+	margin: 0rem 0rem 4rem 1.5rem;
+	height: 5rem;
+	width: 16rem;
+	font-size: 2.5rem;
+	background-color: #f6b352;
+    background-position: 0 -15px;
+}
+
+.btn-loginConf2 {
 	margin: 0rem 0rem 4rem 1.5rem;
 	height: 5rem;
 	width: 35rem;
 	font-size: 2.5rem;
+	background-color: #f68657;
+    background-position: 0 -15px;
+}
+.btn-loginConf2:hover {
+	margin: 0rem 0rem 4rem 1.5rem;
+	height: 5rem;
+	width: 35rem;
+	font-size: 2.5rem;
+	background-color: #f6b352;
+    background-position: 0 -15px;
 }
 
 .kakaoBtn {
@@ -242,16 +272,25 @@ font-family: 'Do Hyeon', sans-serif;
 	font-size: 2.5rem;
 }
 .saveID { font-size : 2rem; }
-.findJoin {	margin-left: 12rem; }
+.findJoin {	margin-left: 12rem; color: #f68657;}
 .findJoinBtn {
 	margin-left: 2.5rem; 
 	height: 5rem;
 	width: 20rem;
 	font-size: 2.1rem;
+	color: #f68657;
+}
+
+.findJoinBtn:hover {
+	margin-left: 2.5rem; 
+	height: 5rem;
+	width: 20rem;
+	font-size: 2.1rem;
+	color: #f6b352;
 }
 .loginInst {
 	font-size: 2.8rem;
-    margin: 0rem 2rem 3rem 2rem;
+    margin: 0rem 2rem 3rem 4rem;
 }
 
 
@@ -262,7 +301,7 @@ font-family: 'Do Hyeon', sans-serif;
 .joinSec {
 	min-width: 640px;
 	border: 1px solid #ccc;
-	border-top: 3px solid #00cd3c;
+	border-top: 3px solid #f6b352;
 	width: 100%;
 	font-family: 'Do Hyeon', sans-serif;
 }
@@ -280,6 +319,7 @@ font-family: 'Do Hyeon', sans-serif;
 .joinLogo {
 	height: 16rem;
 	margin: 0rem 3rem 3rem 16rem;
+	cursor: pointer;
 }
 
 .joinInput {
@@ -294,12 +334,25 @@ font-family: 'Do Hyeon', sans-serif;
 	margin-left: 3.5rem;
 	width: 25rem;
 }
-.dupleCheck {
+.btn-dupleCheck {
 	height: 5rem;
 	width: 14rem;
 	font-size: 2.5rem;
 	margin-left: 1rem;
+	background-color: #f68657;
+    background-position: 0 -15px;
 }
+
+.btn-dupleCheck:hover {
+	height: 5rem;
+	width: 14rem;
+	font-size: 2.5rem;
+	margin-left: 1rem;
+	background-color: #f6b352;
+    background-position: 0 -15px;
+}
+
+
 .joinPass {	margin-left: 1.7rem; }
 .joinPass2 { margin-left: 8.7rem; }
 .joinName {	margin-left: 5.2rem; }
@@ -323,11 +376,21 @@ font-family: 'Do Hyeon', sans-serif;
 .selectArtist{ margin-left: 10rem; }
 .genre { margin-right: 3rem; }
 .artist { margin-right: 3rem; }
-.joinConf {
+.btn-joinConf {
 	margin: 4rem 1rem 0rem 15rem;
 	height: 5rem;
 	width: 20rem;
 	font-size: 2.7rem;
+	background-color: #f68657;
+    background-position: 0 -15px;
+}
+.btn-joinConf:hover {
+	margin: 4rem 1rem 0rem 15rem;
+	height: 5rem;
+	width: 20rem;
+	font-size: 2.7rem;
+	background-color: #f6b352;
+    background-position: 0 -15px;
 }
 .inst1 { margin-right: 38rem; }
 .inst2 { margin-right: 32rem; }
@@ -431,7 +494,7 @@ html, body, main {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: -400px;
+  bottom: -440px;
   font-size: 20px;
   color: #F68657;
   

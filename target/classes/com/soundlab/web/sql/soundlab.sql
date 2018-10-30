@@ -1,64 +1,3 @@
-create table BOARD(
-    bno INT NOT NULL AUTO_INCREMENT,
-    title VARCHAR(200) NOT NULL,
-    content TEXT NULL,
-    writer VARCHAR(50) NOT NULL,
-    regdate TIMESTAMP NOT NULL DEFAULT now(),
-    viewcnt INT DEFAULT 0,
-    PRIMARY KEY (bno)
-);
-
-CREATE SEQUENCE mseq START WITH 1 INCREMENT BY 1;
-
- 
-CREATE TABLE MASTER_SEQ(
-	seq INT AUTO_INCREMENT PRIMARY KEY,
-	seq_name VARCHAR(20) 
-);
-
-
-
-
-
-INSERT INTO BOARD
-( title, content, writer, regdate, viewcnt)
-VALUES
-('라이언조스','바다의 왕 상어무리 아기상어','Abhaig','2017-08-02',
-	(SELECT seq
-	FROM MASTER_SEQ)
-);
-UPDATE MASTER_SEQ
-SET seq = seq + 1;
-
-
-
-
-
-INSERT INTO MASTER_SEQ(
-	seq_name
-)
-VALUES(
-	'seq'
-);
-SELECT seq
-FROM MASTER_SEQ;
-
-
-
-CREATE SEQUENCE ISEQ
-        START WITH 1000
-        INCREMENT BY 1;
-
-CREATE TABLE IMAGE(
-    IMG_SEQ DECIMAL PRIMARY KEY,
-    IMGNAME VARCHAR(20),
-    EXTENSION VARCHAR(10),
-    USERID VARCHAR(20)
-);
-INSERT INTO IMAGE(IMG_SEQ,IMGNAME,EXTENSION,USERID)
-VALUES(ISEQ.NEXTVAL,'','','');
-
-
 <!-- ERD -- 테이블 --> 
 create table ALBUM(
     ALBUM_SEQ INT PRIMARY KEY,
@@ -205,8 +144,6 @@ CREATE TABLE HASHTAG(
 );
 
 
-<!-- 댓글 테이블 생성 -->
-
 create table COMMENT(
     COMMENT_SEQ INT AUTO_INCREMENT PRIMARY KEY,
     MEMBER_ID VARCHAR(20),
@@ -222,11 +159,8 @@ INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('zuzu',30,'진짜 인생 떙
 
 
 
-SELECT constraint_name, constraint_type
-FROM information_schema.table_constraints
-WHERE table_name = 'UPDOWN';
 
-<!-- 신나는,차분한,어쿠스틱,트로피칼,부드러운,드라이브,휴식,편집숍/카페,헬스,클럽,스트레스,이별,사랑/고백,새벽감성,위로, -->
+
 INSERT INTO HASHTAG(HASH) VALUES('신나는'),('차분한'),('어쿠스틱'),('트로피칼'),('부드러운'),('드라이브'),('휴식'),('편집숍/카페'),('헬스'),('클럽'),('스트레스'),('이별'),('사랑/고백'),('새벽감성'),('위로');
 
 
@@ -1453,7 +1387,12 @@ VALUES
 
 INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_아이유','jpg',9);
 INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_빈지노','jpg',8);
- 
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_선미','jpg',7);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_방탄소년단','jpg',11);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_트와이스','jpg',19);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_레드벨벳','jpg',20);
+
+
 UPDATE artist
 SET intro1 = 
 '장범준은 대한민국의 싱어송라이터이다. 2011년 Mnet "슈퍼스타 K3"에서 준우승 하며 이름을 알린 밴드 버스커버스커의 리더이며, 그룹의 작사, 작곡 편곡을 담당하고 있다. 프로그램 방
@@ -1517,6 +1456,71 @@ VALUES(
    132,'화양연화 pt.1', '방탄소년단', '힙합'
 );
  
+
+UPDATE album SET 
+    agency_name = "빅히트엔터테인먼트",
+    release_date =  "2018.05.18",
+    album_type = "정규",
+    intro = "방탄소년단, 정규 3집 LOVE YOURSELF 轉 ‘Tear’ 발매!
+사랑을 얻기 위한 거짓은 결국 이별을 만난다!
+나 자신을 사랑하는 것이 진정한 사랑의 시작
+방탄소년단이 5월 18일 정규 3집 LOVE YOURSELF 轉 ‘Tear’를 발매한다.
+방탄소년단의 LOVE YOURSELF 시리즈는 나 자신을 사랑하는 것이 진정한 사랑의 시작이라는 메시지를 담고 있다. 앞서 공개된 LOVE YOURSELF 起 ‘Wonder’ 영상과 LOVE YOURSELF 承 ‘Her’ 앨범이 사랑의 설렘과 두근거림을 표현했다면, 轉 ‘Tear’ 앨범은 이별을 마주한 소년들의 아픔을 담았다."
+WHERE album_seq= 126;
+UPDATE album SET 
+    agency_name = "빅히트엔터테인먼트",
+    release_date =  "2017.09.18",
+    album_type = "EP",
+    intro = "
+'방탄소년단'이 9월 18일 새로운 시리즈 LOVE YOURSELF의 첫 앨범 [承 `Her`] 를 발매한다.
+ 
+[LOVE YOURSELF 承 `Her`는 사랑의 설렘과 두근거림을 '방탄소년단'의 스타일로 해석한 앨범이다. LOVE YOURSELF 시리즈에서 '방탄소년단'이 전달하고자 하는 사랑은 성장하는 소년의 개인적 경험이기도 하지만 방탄소년단이 현재의 우리 사회에 보내는 화해와 통합의 메시지이기도 하다. 그리고 그 첫 시작인 미니앨범 承 [`Her`]에서는 첫사랑에 빠진 소년들의 모습을 청량하고 유쾌하게 담아냄으로써 사랑이라는 주제를 청춘물의 틀 안에서 풀어낸다."
+WHERE album_seq= 127;
+UPDATE album SET 
+    agency_name = "빅히트엔터테인먼트",
+    release_date =  "2017.02.13",
+    album_type = "정규",
+    intro = "방탄소년단, 'YOU NEVER WALK ALONE' 발매! 외전으로 완성된 'WINGS'
+'함께라면 웃을 수 있어' 이 시대의 청춘에게 건네는 '위로'와 '희망'의 메시지!
+ 
+2016년 10월 정규 2집 'WINGS'로 전 세계적인 반향을 일으킨 방탄소년단이 2월 13일 'WINGS 외전: YOU NEVER WALK ALONE'을 발매한다. 
+ 
+'WINGS 외전'은 방탄소년단이 'WINGS'에 미처 담지 못했던 청춘과 성장의 이야기를 완성한 앨범이다. '화양연화' 시리즈와 'WINGS'가 청춘과 성장에 대한 서사였다면 'WINGS외전'은 이 시대 아픈 청춘들에게 건네는 따뜻한 위로와 희망의 메시지다."
+WHERE album_seq= 128;
+UPDATE album SET 
+    agency_name = "빅히트엔터테인먼트",
+    release_date =  "2016.10.10",
+    album_type = "정규",
+    intro = "소년, 유혹을 만나다! 방탄소년단, 정규 2집 [WINGS] 발매!
+타이틀곡 '피 땀 눈물'로 유혹에 빠진 청춘의 갈등과 성장을 담다!
+방탄소년단 최초 멤버 전원 솔로곡 수록! 멤버들의 자전적 이야기 담겨!"
+WHERE album_seq= 129;
+UPDATE album SET 
+    agency_name = "빅히트엔터테인먼트",
+    release_date =  "2016.05.02",
+    album_type = "정규",
+    intro = "방탄소년단, 스페셜 앨범 [화양연화 Young Forever] 발매!
+인생의 가장 아름다운 순간, '화양연화' 그 마지막 이야기!"
+WHERE album_seq= 130;
+UPDATE album SET 
+    agency_name = "빅히트엔터테인먼트",
+    release_date =  "2015.11.30",
+    album_type = "EP",
+    intro = "방탄소년단, 청춘 2부작의 마침표를 찍다! 미니앨범 [화양연화 pt.2]
+뜨겁게 타오르는, 그러나 지나고 나면 한낱 꿈에 불과한 청춘의 순간
+그래도 멈출 수 없는 한 줄기 빛을 향한 질주 'RUN'"
+WHERE album_seq= 131;
+UPDATE album SET 
+    agency_name = "빅히트엔터테인먼트",
+    release_date =  "2015.04.29",
+    album_type = "EP",
+    intro = "방탄소년단, 찬란함과 불안이 공존하는 시간! 미니앨범 [화양연화 pt.1]!
+방탄소년단, 일렉트로 힙합곡 'I NEED U' 발표! 동양적 멜로디와 힙합의 결합!
+'학교 3부작' 마무리한 방탄소년단! 이번엔 '청춘'을 노래! '청춘2부작'의 시작!"
+WHERE album_seq= 132;
+
+
+
 INSERT INTO IMG( IMG_NAME, EXT, SEQ 
 )VALUES(
 '방탄소년단_LY_tear','jpg',126
@@ -1684,18 +1688,6 @@ INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('semper','1111','660712','�
 INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('felis','1111','690101','여');
 INSERT INTO MEMBER (MEMBER_ID,PASS,BIRTH,SEX) VALUES('vitae','1111','660808','여');
 
-
-
-SELECT seq_group, count(*) FROM UPDOWN WHERE SG_ELEMENT LIKE 'genre' GROUP BY seq_group;
-
-
-
-SELECT ud.seq_group, ud.member_id, m.sex, m.birth  FROM UPDOWN ud join member m on ud.member_id = m.member_id WHERE SG_ELEMENT LIKE 'genre' and seq_group like 1;
-
-
-
-	
-INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_선미','jpg',7);
 			
 <!-- DJ게시판 이미지 -->			
 INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_1', 'jpg', 160 );
@@ -1738,7 +1730,7 @@ UPDATE article SET TITLE = '하나에 무덤 덮어 풀이 써 봅니다',  CONT
 UPDATE article SET TITLE = '책상을 하나에 마리아 릴케 까닭입니다',  CONTENTS = '135,138,141,134,102,71,107,133' WHERE ARTICLE_SEQ LIKE 176 ;
 
 
-<!-- 187번부터 -->
+
 insert into mv ( MV_SEQ,
  MV_TITLE,
  MUSIC_SEQ,
@@ -1789,7 +1781,7 @@ values(
    'https://www.youtube.com/embed/nM0xDI5R50E'
 );
  
-<!-- 3번 댄스에대한 up -->
+<!--아이디 sound에 대한 up 3번 댄스에대한 up 1번 발라드에대한 up 2번 힙합에대한 up 6번 알앤비소울에대한 up 11번 방탄에대한 up 19번 트와이스에대한 up 20번 레벨에대한 up-->
 insert into updown(member_id,seq_group,sg_element,types) 
 values
 ('sound',108,'music','u'),
@@ -1812,7 +1804,6 @@ values
 ('sound',3,'genre','u'),
 ('sound',3,'genre','u');
 
-<!-- 1번 발라드에대한 up -->
 insert into updown(member_id,seq_group,sg_element,types) 
 values
 ('sound',66,'music','u'),
@@ -1829,7 +1820,6 @@ values
 ('sound',1,'genre','u'),
 ('sound',1,'genre','u');
 
-<!-- 2번 힙합에대한 up -->
 insert into updown(member_id,seq_group,sg_element,types) 
 values
 ('sound',79 ,'music','u'),
@@ -1845,8 +1835,6 @@ values
 ('sound',2 ,'genre','u');
 
 
-
-<!-- 6번 알앤비소울에대한 up -->
 insert into updown(member_id,seq_group,sg_element,types) 
 values
 ('sound',124  ,'music','u'),
@@ -1858,17 +1846,12 @@ values
 ('sound',6  ,'genre','u'),
 ('sound',6  ,'genre','u'),
 ('sound',6  ,'genre','u');
-
-
-<!-- 11번 방탄에대한 up -->
 insert into updown(member_id,seq_group,sg_element,types) 
 values
 ('sound',11  ,'artist','u');
-<!-- 19번 트와이스에대한 up -->
 insert into updown(member_id,seq_group,sg_element,types) 
 values
 ('sound',19  ,'artist','u');
-<!-- 20번 레벨에대한 up -->
 insert into updown(member_id,seq_group,sg_element,types) 
 values
 ('sound',20 ,'artist','u');
@@ -1953,7 +1936,7 @@ SELECT A1.곡번호 song_seq,
              AND A1.나이 = A2.나이
              AND A1.성별 = A2.성별;
 /* 7. 아티스트 분석  :: nr_artist_stats ========================================================*/
-CREATE VIEW NR_ARTIST_STATS AS
+CREATE OR REPLACE VIEW NR_ARTIST_STATS AS
   SELECT a.artist_seq,
          a.artist_name,
          m.album_seq,
@@ -1961,7 +1944,8 @@ CREATE VIEW NR_ARTIST_STATS AS
          song_seq,
          music_title,
          sum(str) sum_str,
-         sum(good) sum_good
+         sum(good) sum_good,
+         sum(bad) sum_bad
     FROM nr_art n,
          album b,
          music m,
@@ -2227,6 +2211,7 @@ A.RANKING MS_RANK_A,
 A.MUSIC_SEQ MS_SEQ_A,
 A.MUSIC_TITLE MS_TITLE_A,
 A.GENRE MS_GENRE_A,
+A.GENRE_SEQ MS_GENRE_SEQ_A,
 A.ARTIST_SEQ MS_ARTIST_A,
 A.ARTIST_NAME MS_ARTIST_NAME_A,
 A.ALBUM_SEQ MS_ALBUM_A,
@@ -2235,6 +2220,7 @@ B.RANKING MS_RANK_B,
 B.MUSIC_SEQ MS_SEQ_B,
 B.MUSIC_TITLE MS_TITLE_B,
 B.GENRE MS_GENRE_B,
+B.GENRE_SEQ MS_GENRE_SEQ_B,
 B.ARTIST_SEQ MS_ARTIST_B,
 B.ARTIST_NAME MS_ARTIST_NAME_B,
 B.ALBUM_SEQ MS_ALBUM_B,
@@ -2476,6 +2462,9 @@ FROM MUSIC AS M
 
 <!----------------------------기타 ------------------------------>
 
+SELECT constraint_name, constraint_type
+FROM information_schema.table_constraints
+WHERE table_name = 'UPDOWN';
 
 
 SELECT
@@ -2519,17 +2508,39 @@ DELIMITER $$
 	  	WHERE MEMBER_ID LIKE #{memberId};
 	  END $$
 DELIMITER ;
-
-
-
-
-
-
-
-
---------------------------------------- 더미 ------------------------------------------------------------------------
------------------- view record ------------------------------------------------------------------------------------
-
-
-
+-- 기존 메인5차트 쿼리
+select 
+			RANK() OVER (PARTITION BY v.sg_element ORDER BY count(*) desc) RANK,
+			v.seq_group MUSIC_SEQ ,count(*) 스트리밍, m.MUSIC_TITLE 타이틀,m.ARTIST_SEQ ARTIST_SEQ,
+			(select artist_name from artist where artist_seq like m.artist_seq) 가수,
+			 m.ALBUM_SEQ ALBUM_SEQ, (select album_title from album where album_seq like m.album_seq) 앨범,
+			 (select CONCAT(img_name,'.',EXT) from img where seq like ALBUM_SEQ) IMG_NAME
+		from view_record v
+			left join music m on v.SEQ_GROUP = m.MUSIC_SEQ
+		where 
+			v.sg_element like 'music' 
+			and v.view_date between  CONCAT(#{date1},'%') AND CONCAT(#{date2},'%')
+		group by v.seq_group
+		order by count(*) desc limit 5;
+		
+-- 기존메인5차트쿼리에서 좋아요 싫어요 반영		
+ select 
+			RANK() OVER (PARTITION BY v.sg_element ORDER BY count(*) desc) RANK,
+			v.seq_group MUSIC_SEQ ,count(*) 스트리밍, m.MUSIC_TITLE 타이틀,m.ARTIST_SEQ ARTIST_SEQ,
+			(select artist_name from artist where artist_seq like m.artist_seq) 가수,
+			 m.ALBUM_SEQ ALBUM_SEQ, (select album_title from album where album_seq like m.album_seq) 앨범,
+			 (select CONCAT(img_name,'.',EXT) from img where seq like ALBUM_SEQ) IMG_NAME,
+			 CASE WHEN v.seq_group like (select seq_group from updown where member_id like 'sound' and seq_group like v.seq_group and types like 'u' group by ud_seq desc LIMIT 1)
+			       THEN 'u'
+			       WHEN v.seq_group like (select seq_group from updown where member_id like 'sound' and seq_group like v.seq_group and types like 'd' group by ud_seq desc LIMIT 1)
+			       THEN 'd'
+			       ELSE 'n'
+			 END AS 업다운
+		from view_record v
+			left join music m on v.SEQ_GROUP = m.MUSIC_SEQ
+		where 
+			v.sg_element like 'music' 
+			and v.view_date between  '2018-10-29%' AND '2018-10-31%'
+		group by v.seq_group
+		order by count(*) desc limit 5;
 
