@@ -10,5 +10,19 @@
 	    GROUP BY seq_group 
 	    ORDER BY seq_group;
 	  </select>
-	
+	  <select id="getChart" resultType="map">
+	    select 
+			RANK() OVER (PARTITION BY v.sg_element ORDER BY count(*) desc) RANK,
+			v.seq_group MUSIC_SEQ ,count(*) 스트리밍, m.MUSIC_TITLE 타이틀,m.ARTIST_SEQ ARTIST_SEQ,
+			(select artist_name from artist where artist_seq like m.artist_seq) 가수,
+			 m.ALBUM_SEQ ALBUM_SEQ, (select album_title from album where album_seq like m.album_seq) 앨범,
+			 (select CONCAT(img_name,'.',EXT) from img where seq like ALBUM_SEQ) IMG_NAME
+		from view_record v
+			left join music m on v.SEQ_GROUP = m.MUSIC_SEQ
+		where 
+			v.sg_element like 'music' 
+			and v.view_date between '2018-10-27%' and '2018-10-29%'
+		group by v.seq_group
+		order by count(*) desc limit 5;
+	  </select>
 </mapper>

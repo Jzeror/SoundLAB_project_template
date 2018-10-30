@@ -24,90 +24,12 @@ sh = (()=>{
      };
      var home =()=>{
          console.log('sh.home ::');
-         w.html(nav()+banner()+slider()+mainContents()+footer());
-		 $('<main id="id_main">')
-		 .html(
-		
-		'<div id="main_carousel">'
-		    +'<div class="hideLeft">'
-		     +'<img src="'+$.ctx()+'/resources/img/album/에이핑크_ONE_SIX.jpg">'
-		   +'</div>'
-		   +'<div class="prevLeftSecond">'
-		     +'<img src="'+$.ctx()+'/resources/img/album/IU_꽃갈피_둘.jpg">'
-		   +'</div>'
-		   +'<div class="prev">'
-		     +'<img src="'+$.ctx()+'/resources/img/album/빈지노_24_26.jpg">'
-		  +'</div>'
-		   +'<div class="selected">'
-		     +'<img src="'+$.ctx()+'/resources/img/복면가왕.jpg">'
-		   +'</div>'
-		   +'<div class="next">'
-		     +'<img src="'+$.ctx()+'/resources/img/쇼미더머니.jpg">'
-		   +'</div>'
-		   +'<div class="nextRightSecond">'
-		     +'<img src="'+$.ctx()+'/resources/img/album/트와이스_Summer_Nights.jpg">'
-		   +'</div>'
-		   +'<div class="hideRight">'
-		     +'<img src="'+$.ctx()+'/resources/img/album/마마무_RED_MOON.jpg">'
-		   +'</div>'
-		 +'</div>'
-		 +'<div class="buttons">'
-		 +'<button id="prev">'
-		 +'<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>'
-		 +'</button>'
-		   +'<button id="next">'
-		   +'<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>'
-		   +'</button>'
-		 +'</div>'
-		).appendTo($('#slider'));
-		     
-		function moveToSelected(element) {
-		if (element == "next") {
-		 var selected = $(".selected").next();
-		} else if (element == "prev") {
-		 var selected = $(".selected").prev();
-		} else {
-		 var selected = element;
-		}
-		var next = $(selected).next();
-		var prev = $(selected).prev();
-		var prevSecond = $(prev).prev();
-		var nextSecond = $(next).next();
-		$(selected).removeClass().addClass("selected");
-		$(prev).removeClass().addClass("prev");
-		$(next).removeClass().addClass("next");
-		$(nextSecond).removeClass().addClass("nextRightSecond");
-		$(prevSecond).removeClass().addClass("prevLeftSecond");
-		$(nextSecond).nextAll().removeClass().addClass('hideRight');
-		$(prevSecond).prevAll().removeClass().addClass('hideLeft');
-		}
-		// Eventos teclado
-		$(document).keydown(function(e) {
-		 switch(e.which) {
-		     case 37: // left
-		     moveToSelected('prev');
-		     break;
-		     case 39: // right
-		     moveToSelected('next');
-		     break;
-		     default: return;
-		 }
-		 e.preventDefault();
-		});
-		$('#carousel div').click(function() {
-		moveToSelected($(this));
-		});
-		$('#prev').click(function() {
-		moveToSelected('prev');
-		});
-		$('#next').click(function() {
-		moveToSelected('next');
-		});
-
-         
+	     w.html(nav()+banner()+cloud()+topFive()+footer());
+	     
 	     $.getJSON($ctx+'/main/hash',d=>{
-	    	 /*let hashcnt = [389,344,284,244,218,178,172,140,139,139,127,125,118,111,110];*/
-	    	 let hashcnt = d.cnt;
+	    	 let hashcnt = [389,344,284,244,218,178,172,140,139,139,127,125,118,111,110];
+	    	 //let hashcnt = [289,244,184,144,118,78,72,40,39,39,27,25,18,11,10];
+	    	 //let hashcnt = d.cnt;
 	    	 let hashdata = {"count":{"신나는":hashcnt[0],"차분한":hashcnt[1],"어쿠스틱":hashcnt[2],"트로피칼":hashcnt[3],"부드러운":hashcnt[4],"드라이브":hashcnt[5],"휴식":hashcnt[6],"편집숍&카페":hashcnt[7],"헬스":hashcnt[8],"클럽":hashcnt[9],"스트레스":hashcnt[10],"이별":hashcnt[11],"사랑&고백":hashcnt[12],"새벽감성":hashcnt[13],"위로":hashcnt[14]},
 		    		 "sample_title":{"신나는":[hashcnt[0]],"차분한":[hashcnt[1]],"어쿠스틱":[hashcnt[2]],"트로피칼":[hashcnt[3]],"부드러운":[hashcnt[4]],"드라이브":[hashcnt[5]],"휴식":[hashcnt[6]],"편집숍&카페":[hashcnt[7]],"헬스":[hashcnt[8]],"클럽":[hashcnt[9]],"스트레스":[hashcnt[10]],"이별":[hashcnt[11]],"사랑&고백":[hashcnt[12]],"새벽감성":[hashcnt[13]],"위로":[hashcnt[14]]}
 		     };
@@ -115,94 +37,70 @@ sh = (()=>{
 		    		container : '#cloud-container',
 		    		data : hashdata
 		     });
-	    	
-	    	$('#cloud-container').on("click",'text',function(event){
-	    		 $("#djSec").remove();
-	    		 //sh.service.removeSec();
-	    		 sj.dj();
-	    		 setTimeout(()=>{
-	    			 fn.scroll({ id : $("#djSec"), len : 200});
-	    			 let hashbtn = $('input:checkbox[value="'+$(this).text()+'"]');
-	    			 hashbtn.closest('label').addClass('active');
-	    			/* hashbtn.prop('checked',true).trigger('change');*/
-	    			 hashbtn.prop('checked',true).change();
-	          	 },300);
-	    	  });
-	    
-	     });
-	     
-	     
-	     $.getJSON($ctx+'/main/chart',d=>{
+	    	/*  setInterval(function(){
+	    		  $('#cloud-container').empty();
+	    		  WordCloud({
+			    		container : '#cloud-container',
+			    		data : hashdata
+			     });
+	    	 },10000)*/
+		     
 	    	 
-	    	 let titles = [];
-	    	 let musicSeq = [];
-	    	 let albums = [];
-	    	 let albumSeq = [];
-	    	 let rank = [];
-	    	 let img = [];
-	    	 let artists = [];
-	    	 let artistSeq = [];
-	    	 $.each(d.top5,(i,v)=>{
-	    		 titles.push(v.타이틀);
-	    		 albums.push(v.앨범);
-	    		 albumSeq.push(v.ALBUM_SEQ);
-	    		 rank.push(v.RANK);
-	    		 img.push(v.IMG_NAME);
-	    		 artists.push(v.가수);
-	    		 artistSeq.push(v.ARTIST_SEQ);
-	    		 musicSeq.push(v.MUSIC_SEQ);
-	    	 });
-	    	 let tr,info,cover,title,artist,player,pa,up,ua,down,da;
-	    	 let tb = $('#sh-tbody');
-	    	 for(let i=0;i<5;i++){
-	    		 tr = $('<tr/>').addClass('sh-list').appendTo(tb);
-	    		 $('<td/>').addClass('sh-chart-rank').html(rank[i]).appendTo(tr);
-	    		 info = $('<td/>').addClass('sh-music-info').appendTo(tr);
-	    		 cover = $('<a/>').attr({href : '#'}).addClass('sh-cover').appendTo(info);
-	    		 $('<span/>').addClass('mask').appendTo(cover);
-	    		 $('<img/>').addClass('sh-album-img').attr({src : $img+'/album/'+img[i]}).appendTo(cover).click(e=>{
-	    			 alert('앨범디테일 실행 :: '+ albumSeq[i]);
-	    		 });
-	    		 title = $('<a/>').attr({href : '#'}).addClass('sh-title').html(titles[i]).appendTo(info).click(e=>{
-	    			 alert('웹플레이어 실행 :: '+ musicSeq[i]);
-	    		 });
-	    		 artist = $('<a/>').attr({href : '#'}).addClass('sh-artist').html(artists[i]).appendTo(info).click(e=>{
-	    			 alert('아티스트 서치 실행 :: '+ artists[i]);
-	    		 });
-	    		 player = $('<td/>').addClass('sh-music-player').appendTo(tr);
-	    		 pa = $('<a/>').attr({href : '#'}).appendTo(player);
-	    		 $('<i/>').addClass('ls_fa fa fa-play-circle-o').appendTo(pa).click(e=>{
-	    			 alert('웹플레이어 실행 :: '+ musicSeq[i]);
-	    		 });
-	    		 up = $('<td/>').addClass('sh-music-upbtn').appendTo(tr);
-	    		 ua = $('<a/>').attr({href : '#'}).appendTo(up);
-	    		 $('<i/>').attr({id : 'sh-up-'+i}).addClass('sh-up fa fa-heart').appendTo(ua).click(e=>{
-	    			 e.preventDefault();
-	    			 alert('좋아요  :: '+ musicSeq[i]);
-	    			 $('#sh-up-'+i).addClass('sh-updown');
-	    			 $('#sh-down-'+i).removeClass('sh-updown');
-	    			 
-	    		 });
-	    		 down = $('<td/>').addClass('sh-music-downbtn').appendTo(tr);
-	    		 da = $('<a/>').attr({href : '#'}).appendTo(down);
-	    		 $('<i/>').attr({id : 'sh-down-'+i}).addClass('sh-down fa fa-thumbs-down').appendTo(da).click(e=>{
-	    			 e.preventDefault();
-	    			 alert('싫어요  :: '+ musicSeq[i]);
-	    			 $('#sh-down-'+i).addClass('sh-updown');
-	    			 $('#sh-up-'+i).removeClass('sh-updown');
-	    		 });
-	    	 }
-	    	 $('.sh-music-info').hover(
-		    		 function () {
-		    			 $(this).children('a').children('img').addClass('sh-img-hover');
-		    		 },
-		    		 function () {
-		    			 $(this).children('a').children('img').removeClass('sh-img-hover');
-		    		 }
-		      );
-
 	     });
-
+	     
+	     
+	     
+         /*w.html(nav()+footer());*/
+         /*-------------------banner--------------------*/
+ 		/*$('<div/>').addClass('section_banner').attr({id:"section_banner"}).appendTo($('#contents'));
+ 		$('<div/>').addClass('carousel slide').attr({id:'carousel-example-generic','data-ride':'carousel'}).appendTo($('#section_banner'));
+ 		
+ 		($('<ol/>').addClass('carousel-indicators').append(
+ 					$('<li/>').attr({'data-target':'#carousel-example-generic', 'data-slide-to':'0'}).addClass('active'),
+ 					$('<li/>').attr({'data-target':'#carousel-example-generic', 'data-slide-to':'1'}),
+ 					$('<li/>').attr({'data-target':'#carousel-example-generic', 'data-slide-to':'2'}),
+ 					$('<li/>').attr({'data-target':'#carousel-example-generic', 'data-slide-to':'3'}),
+ 					$('<li/>').attr({'data-target':'#carousel-example-generic', 'data-slide-to':'4'})
+ 		)).appendTo($('#carousel-example-generic'));
+ 		
+ 		($('<div/>').addClass('carousel-inner').attr({role:'listbox'}).append(
+ 				$('<div/>').addClass('item active').append(
+ 						$('<img/>').attr({src : $img+'/banner1.jpg'})),
+ 				$('<div/>').addClass('item').append(
+ 						$('<img/>').attr({src: $img+'/banner1.jpg'})),
+ 				$('<div/>').addClass('item').append(
+ 						$('<img/>').attr({src: $img+'/banner1.jpg'})),
+ 				$('<div/>').addClass('item').append(
+ 						$('<img/>').attr({src: $img+'/banner1.jpg'})),
+ 				$('<div/>').addClass('item').append(
+ 						$('<img/>').attr({src: $img+'/banner1.jpg'}))
+ 		)).appendTo($('#carousel-example-generic'));
+ 		
+ 		($('<a/>').addClass('left carousel-control')
+ 		.attr({href:'#carousel-example-generic', role:'button','data-slide':'prev'}).append(
+ 				$('<span/>').addClass('glyphicon glyphicon-chevron-left').attr({'aria-hidden':'true'}),
+ 				$('<span/>').addClass('sr-only').text('Previous')
+ 		)).appendTo($('#carousel-example-generic'));
+ 		
+ 		($('<a/>').addClass('right carousel-control')
+ 		.attr({href:'#carousel-example-generic', role:'button','data-slide':'next'}).append(
+ 				$('<span/>').addClass('glyphicon glyphicon-chevron-right').attr({'aria-hidden':'true'}),
+ 				$('<span/>').addClass('sr-only').text('Next')
+ 		)).appendTo($('#carousel-example-generic'));
+ 	
+ 		$('.carousel').carousel({
+ 			  interval: 2000,
+ 			  pause:'hover'
+ 		});
+ 		*/
+ 	
+         
+         
+         
+         
+         
+         
+	     fn.scroll({ id : $("#banner"), len : 150});
 	     $('#bannerItem').carousel({
 	    	 interval: 2600
 	     });
@@ -241,10 +139,10 @@ sh = (()=>{
     	 });
     	 $('#searchInput').keyup(e=>{
     		 if(e.keyCode == 13) { 
-    			
+    			 alert('서치검색:::'+$('#searchInput').val());
     			 $.getJSON(sh.ctx()+'/service/search/'+$('#searchInput').val(),d=>{
     				 alert('아티스트이름~~::'+d.artist.ARTIST_NAME);
-    				
+    				 alert('뮤직타이틀::'+d.musics[0].musicTitle);
 					 jt.search(d);
 					 setTimeout(()=>{
 						 fn.scroll({ id : $("#jt_search"), len : 400});
@@ -253,54 +151,43 @@ sh = (()=>{
     		 } 
     	 });
          
-    	 $('.chartBtn').click(e=>{
-    		 e.preventDefault();
-    		 if(!($("#banner").length >0)){   //not exist
-    			 home(); 
-        	 }
-    		 let x = 'realChart';
-   	       	 ls.chart(x)
-       		 setTimeout(()=>{
-       			fn.scroll({ id : $("#chartSec"), len : 200});
-       		 },400);
+    	 $('#chartBtn').click(e=>{
+ 			$('#contents').html(banner()+cloud()+topFive());
+ 			let x = 'realChart';
+       		ls.chart(x)
+       		setTimeout(()=>{
+       			sh.service.removeSec('#chartSec');
+		       	fn.scroll({ id : $("#chartSec"), len : 200});
+       		},300);
          });
          $('#albumBtn').click(e=>{
-        	 e.preventDefault();
-        	 if(!($("#banner").length >0)){   //not exist
-    			 home(); 
-        	 }
+        	 $('#contents').html(banner()+cloud()+topFive());
         	 let x = 'newAl_recent';
-           	 ls.album(x);
-           	 setTimeout(()=>{
-     			  fn.scroll({ id : $("#albumSec"), len : 150});
-         	 },400);
-        		 
-    	    
-      		
+      		 ls.album(x);
+      		setTimeout(()=>{
+      		  sh.service.removeSec('#albumSec');
+   			  fn.scroll({ id : $("#albumSec"), len : 150});
+       		},300);
          });
          $('#djBtn').click(e=>{
-        	 e.preventDefault();
-        	 if(!($("#banner").length >0)){   //not exist
-    			 home(); 
-        	 }
-       		 sj.dj();
+        	 $('#contents').html(banner()+cloud()+topFive());
+    		 sj.dj();
     		 setTimeout(()=>{
+    			 sh.service.removeSec('#djSec');
     			 fn.scroll({ id : $("#djSec"), len : 200});
-          	 },400);
+          	 },200);
          });
          $('#forBtn').click(e=>{
-        	 e.preventDefault();
-        	 if(!($("#banner").length >0)){   //not exist
-    			 home(); 
-        	 }
 			 $.ajax({
 	    		 url : sh.ctx()+'/member/auth',
 		       	  method : 'get',
 		       	  success : d=>{
-            		sj.forYou();
+		       		$('#contents').html(banner()+cloud()+topFive());
+		       		sj.forYou();
 		       		setTimeout(()=>{
+		       			sh.service.removeSec('#foryouSec');
 						fn.scroll({ id : $("#foryouSec"), len : 200});
-		          	},400);
+		          	},200);
 		       	  },
 		       	  error : m=>{
 		       		alert('로그인이 필요한 서비스입니다.');
@@ -313,13 +200,11 @@ sh = (()=>{
 	    	 });
          });
          
-        $('#logoImg').click(e=>{
-        	e.preventDefault();
+        $('#logoImg').click(()=>{
         	/*$.getJSON(sh.ctx()+'/dummy/loginRecord',d=>{
         		alert('seq ::' + d.seq);
         	});*/
             home();
-            fn.scroll({ id : $("#banner"), len : 150});
         });
 
      };
@@ -445,65 +330,28 @@ var banner =()=> '<section id="banner" class="banner">'
 	     +'</div>'
 		+'</div>'
      +'</section>';
-var slider =()=> '<section id="slider">'
-		+'</br>'
-		+'</br>'
-		+'</br>'
-		+'</br>'
-		+'</br>'
-		+'</br>'
-		+'</br>'
-		+'</br>'
-		+'</br>'
-		+'</br>'
-		+'</br>'
-		+'</br>'
-		+'</br>'
-		+'</br>'
-		+'</br>'
-		+'</br>'
-		+'</section>';	
-var mainContents =()=> '<section id="mainContents">'
-     +'<div class="container-fluid">'
-     +'<div class="col-md-1">'
-     +'</div>'
-	 /* cloud */
-	 +'<div id="cloud"  class="col-md-5">'
+		
+var cloud =()=> '<section id="cloud" class="cloud">'
      +'</br>'
-     +'</br>'
-     +'</br>'
-     +'<div id="cloud-container"></div>'
-     +'</div>'
-     /* top five */
-     +'<div id="topFive" class="topFive col-md-3">'
-     +'</br>'
-     +'</br>'
-     +'</br>'
-	     +'<table class="sh-listbox">'
-	     +'<a id="main-chart" class="chartBtn">실시간 차트</a>'
-	    +'<thead>'
-	        +'<tr class="sh-list sh-hover">'
-	            +'<th scope="col" class="col-md-1">순위</th>'
-	            +'<th scope="col" class="col-md-8">곡정보</th>'
-	            +'<th scope="col" class="col-md-1">듣기</th>'
-	            +'<th scope="col" class="col-md-1">좋아요</th>'
-	            +'<th scope="col" class="col-md-1">싫어요</th>'
-	        +'</tr>'
-	    +'</thead>'
-	    +'<tbody id="sh-tbody">'
-	    +'</tbody>'
-	+'</table>'
      +'</br>'
      +'</br>'
      +'</br>'
      +'</br>'
      +'</br>'
-     +'</div>'
-     +'<div class="col-md-1">'
-     +'</div>'
-     +'</div>'
+     +'<div id="cloud-container"></div>'
      +'</section>';
      
+var topFive =()=>'<section id="topFive" class="topFive" style="text-align:center">'
+     +'</br>'
+     +'</br>'
+     +'</br>'
+     +'<h1>topFive</h1>'
+     +'</br>'
+     +'</br>'
+     +'</br>'
+     +'</br>'
+     +'</br>'
+     +'</section>';
 var footer =()=> '</div>'
      +'<section id="footer"  style="text-align:center">'
      +'</br>'
@@ -681,7 +529,8 @@ var mypage =()=>'<section id="mypageSec" class="joinSec">'
          home : home,
          nav : nav,
          banner : banner,
-         mainContents : mainContents,
+         cloud : cloud,
+         topFive : topFive,
          footer : footer,
          login : login,
          join : join,
@@ -715,48 +564,7 @@ sh.service ={
           .click(e=>{
                    sh.service.join();
               });
-          
-          ui.br({len : 4, at : $loginForm});
-          $('<a/>').attr({id:'kakao-login-btn', href:'/oauth/authorize?client_id={15e9bb1b311247918da5a29ec083b4b1}&redirect_uri={http://localhost/oauth}&response_type=code'}).appendTo($loginForm);
-          $('<a/>').attr({href:'http://developers.kakao.com/logout'}).appendTo($loginForm);
-          Kakao.init('2cc6f2bb03b5c2f7532151a1692ca793');
-          Kakao.Auth.createLoginButton({
-              container: '#kakao-login-btn',
-              success: function(authObj) {
-            	  alert(JSON.stringify(authObj));
-            	  Kakao.API.request({
-            		  url:'/v1/user/me',
-                      success : d=>{
-                          console.log('login success in :::'+d.id +':: pass ::'+d.pass);
-                          $.each(d,(i,v)=>{
-                        	 alert('i ::' +i);
-                        	 alert('v :: '+ v);
-                        	 if(i==='properties'){
-                        		 $.each(v,(k,z)=>{
-                        			console.log('properties ::'+k);
-                        			console.log('value ::'+z);
-                        		 });
-                        	 }
-                          });
-                          $.ajax({
-                              url : sh.ctx()+'/member/kakao',
-                              method : 'post',
-                              contentType : 'application/json',
-                              data : JSON.stringify({
-                                  memberId : d.id,
-                              }),
-                              success : d=>{
-                                  console.log('login success in :::' +d.memberId);
-                                  
-                              }
-                            });
-                      }	  
-            	  });
-              },
-              fail: function(err) {
-                 alert(JSON.stringify(err));
-              }
-            });
+          ui.br({len : 2, at : $loginForm});
           ui.btn({ id : 'loginConf', clazz : 'success loginConf', txt : '로그인', at : $loginForm})
               .click(e=>{
                    if(fn.loginValidation({ id : $memberId.val(), pass : $pass.val()})){
@@ -785,11 +593,17 @@ sh.service ={
                          });
                     }
           });
-       
+          ui.br({len : 1, at : $loginForm});
+          ui.btn({ 'id' : 'kakaoBtn', clazz : 'warning kakaoBtn', txt : '카카오계정 로그인', at : $loginForm})
+          .click(e=>{
+               alert('id : '+$('#userId').val());
+               alert('pass : '+$('#password').val());
+               sh.home();
+          });
+
+        /*d*/
          $('#logoImg').click(e=>{
-        	  e.preventDefault();
               sh.home();
-              fn.scroll({ id : $("#banner"), len : 150});
          });
          
      },
@@ -874,9 +688,7 @@ sh.service ={
             }
          });
          $('#logoImg').click(e=>{
-        	  e.preventDefault();
               sh.home();
-              fn.scroll({ id : $("#banner"), len : 150});
          });
           $('input:checkbox[class=genre]').click(function() { 
                 let genreCnt = $('input:checkbox[class=genre]:checked').length;
@@ -954,13 +766,19 @@ sh.service ={
          });
          
          $('#logoImg').click(e=>{
-        	  e.preventDefault();
               sh.home();
-              fn.scroll({ id : $("#banner"), len : 150});
          });
          
      },
-
+     removeSec : x=>{
+    	 let secs = ['#djSec','#albumSec','#foryouSec','#chartSec','#searchSec','#albumDetailSec'];
+    	 let len = secs.length;
+    	 for(let i=0;i<len;i++){
+    		 if(secs[i] !== x){
+    			 $(secs[i]).remove();
+    		 }
+    	 }
+     },
      loginInfo : x=>{
     	 $.cookie("loginID",x.memberId);
          if($('input:checkbox[class=saveID]:checked').length == 1){

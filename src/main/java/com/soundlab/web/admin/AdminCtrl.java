@@ -1,6 +1,8 @@
 package com.soundlab.web.admin;
 
+import java.util.List;
 import java.util.Map;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,36 +18,65 @@ public class AdminCtrl {
 	static final Logger logger = LoggerFactory.getLogger(AdminCtrl.class);
 	@Autowired Map<String, Object> m;
 	@Autowired AdminMapper mpr;
+	@Autowired List<Map<?, ?>> rs;
 	
-	@GetMapping("/artist/{artist_name}")
-	public Map<String, Object> goodStr(@PathVariable String artist_name){
-		logger.info("AdminController :: artist");
-		System.out.println(artist_name);
-		
-		m.clear();
-		m.put("GS", mpr.artiGS(artist_name));
-		System.out.println("GS에 담긴 값"+m.get("GS"));
+	@GetMapping("/visit")
+	public Map<String,Object> getVisitInfo() {
+		m.put("nu", mpr.cntNew());
+		m.put("st", mpr.countStrm());
+		logger.info("nu에 담긴 값 :"+m.get("nu"));
+		logger.info("st에 담긴 값 :"+m.get("st"));
 		return m;
 	}
 	
-	@GetMapping("/pref/ageGenre")
-	public Map<String,Object> ageGenre(){
+	@SuppressWarnings("unchecked")
+	@GetMapping("/visit/cntVisiter")
+	public List<Map<?,?>> cntVisiter(){
+		logger.info("일주일간 방문자 통계");
+		m.clear();
+		m.put("now", "2018-10-25");
+		m.put("ago", "2018-10-19");
+		rs = (List<Map<?, ?>>) mpr.cntVisiter(m);
+		logger.info("cntVisiter::rs에 담긴 값:"+rs);
+		return rs;
+	}
+	
+	@GetMapping("/pref")
+	public Map<String,Object> getPref(){
 		logger.info("AdminController :: pref : 나이 장르");
 		m.clear();
-		m.put("AnG",mpr.ageGenre());
-		System.out.println("ageGenre에 담긴 값"+m.get("AnG"));
+		m.put("AG",mpr.ageGenre());
+		m.put("AA", mpr.ageArtist());
+		m.put("SG", mpr.sexGenre());
+		m.put("SA", mpr.sexArtist());
+		logger.info("AG에 담긴 값"+m.get("AG"));
+		logger.info("AA에 담긴 값 ::"+m.get("AA"));
+		logger.info("SG에 담긴 값: "+m.get("SG"));
+		logger.info("SA에 담긴 값: "+m.get("SA"));
 		return m;
 	}
-	
-	@GetMapping("/pref/ageArtist")
-	public Map<String, Object> ageArtist(){
-		logger.info("AdminController :: pref-나이 아티스트");
+
+	@GetMapping("/artist/{artistName}")
+	public Map<String, Object> retrieveArtist(@PathVariable String artistName){
+		logger.info("AdminController :: artist");
+		logger.info(artistName);
 		m.clear();
-		m.put("AnAKey", mpr.ageArtistK());
-		m.put("AnAPivot", mpr.ageArtistPivot());
-		logger.info("ageArtist에 담긴 값 ::AnAKey"+m.get("AnAKey"));
-		logger.info("ageArtist에 담긴 값 :: AnAPivot"+m.get("AnAPivot"));
+		m.put("GS", mpr.artistStats(artistName));
+		m.put("mf", mpr.getPerSex(artistName));
+		m.put("artiAG", mpr.getCntAge(artistName));
+		logger.info("GS에 담긴 값"+m.get("GS"));
+		logger.info("mf에 담긴 값"+m.get("mf"));
+		logger.info("artiAG에 담긴 값"+m.get("artiAG"));
 		return m;
 	}
 	
+	@GetMapping("/hash")
+	public Map<String,Object> readHash(){
+		logger.info("해시태그 진입");
+		m.clear();
+		m.put("hs", mpr.getHash());
+		logger.info("해시 m : "+m.get("hs"));
+		return m;
+	}
 }
+

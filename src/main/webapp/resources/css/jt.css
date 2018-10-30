@@ -247,7 +247,7 @@
 	position: absolute;
     display: block;
     height: 2px;
-    background: #f06;
+    background: #f0ad4e;
 }
 #jt_timeSwitch{
 	position: absolute;
@@ -382,8 +382,8 @@
 .jt_play_list{
 	font-weight: 700;
     color: #fff;
-    border: 1px solid #c9005f;
-    background: #dd0068;
+    border: 1px solid #F6B352;
+    background: #F6B352;
     display: block;
 }
 .jt_mplay_list{
@@ -620,6 +620,68 @@
     height: 125px;
 }
 #jt_pagination{
-	margin-left: 50px;
+	margin: 30px 0px 0px 450px;
 }
 
+.jt_cmt_count {
+	margin: 0px 0px 15px 0px;
+}
+#jt_btn_active{
+	background: #f0ad4e;
+	color: #ff3333;
+}
+#jt_btn_nactive{
+	background: #ccc;
+    color: #333;
+}
+
+.jt_playckbox input[type="checkbox"] {
+	opacity: 0;
+	
+}
+.jt_playckbox label {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+.jt_playckbox label:before {
+	content: '';
+	top: 1px;
+	left: 0;
+	width: 18px;
+	height: 18px;
+	display: block;
+	position: absolute;
+	border-radius: 2px;
+	border: 1px solid #bbb;
+	background-color: #fff;
+	cursor: pointer;
+}
+.jt_playckbox input[type="checkbox"]:checked + label:before {
+	border-color: #333;
+    background-color: #333;
+}
+.jt_playckbox input[type="checkbox"]:checked + label:after {
+	top: 3px;
+	left: 3.5px;
+	content: '\e013';
+	color: #fff;
+	font-size: 11px;
+	font-family: 'Glyphicons Halflings';
+	position: absolute;
+	margin: auto;
+	cursor: pointer;
+	
+}
+.jt_playckbox {
+  position: relative;
+}
+
+.jt_playckbox input[type="checkbox"] {
+  opacity: 0;
+}
+#jt_music_iframe{
+	width: 308px;
+    height: 308px;
+}
