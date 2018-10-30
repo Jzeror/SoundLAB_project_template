@@ -69,19 +69,20 @@ nr = (()=>{
     		span:"오늘의 새로운 고객 수",
     		id:"new_user"
     		}).appendTo($("#row"));
-    	nr.stats.new_user();
+    	
     	
     	cnt({src:"https://static.thenounproject.com/png/738103-200.png",
     		strong:"Streaming count",
     		span:"스트리밍 수 ",
     		id:"streaming"
     		}).appendTo($("#row"));
-    	nr.stats.streaming();
+    	
     	
     	//메인 - 방문자 차트 섹션
     	section2().addClass("d-flex align-items-md-stretch").appendTo($cnts);
     	card({size:"12", title:"일주일 간의 방문통계", id:"visiterChart",style:"height:500px"}).appendTo($("#row2"));
-    	
+    	nr.stats.new_user();
+    	nr.stats.streaming();
     	nr.stats.cnt_visiter();
     	
     };
@@ -283,6 +284,8 @@ nr = (()=>{
 										src:$.img()+"/logo_admin.png",
 										alt:"SoundLAB 로고",
 										style:"resize: both"
+									}).click(e=>{
+										nr.init();
 									})
 								),
 								$('<div/>').addClass("sidenav-header-logo").append(
