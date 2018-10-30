@@ -86,7 +86,7 @@ public class AdminCtrl {
 	
 	@GetMapping("/hash")
 	public Map<String,Object> readHash(){
-		logger.info("해시태그 진입");
+		logger.info("해시태그 진입 아오 ");
 		m.clear();
 		m.put("hs", mpr.getHash());
 		logger.info("해시 m : "+m.get("hs"));
