@@ -212,8 +212,14 @@ nr = (()=>{
 								$('<div/>').attr({id:"tblRes"}).addClass("table-responsive").append(tbl))
 					)
 				);
-    	tdiv.appendTo($("#arti_area"));
-    	tdiv.appendTo($("#row"));
+    	if($("#arti_area").length==1){
+    		tdiv.appendTo($("#arti_area"));
+    	}else {
+    		tdiv.appendTo($("#row"));
+    	}
+    	
+    	
+    	
     	return tdiv;
     };
     var section=()=>{
@@ -612,7 +618,6 @@ nr.arti={
 				        bubble: {
 				          textStyle: {
 				            fontSize: 12,
-				            fontName: 'Times-Roman',
 				            color: 'green',
 				            bold: true,
 				            italic: true
@@ -701,6 +706,7 @@ nr.arti={
 					ban.push(v.artistName);
 					bcount.push(v.sumBad);
 				});
+				
 		    	nr.table({title:$('#artist_name').val()+"의  좋아요 TOP 5",thead:["순위","곡명","가수","좋아요수"],row, ms, an, count});
 				nr.table({title:$('#artist_name').val()+"의  싫어요 TOP 5",thead:["순위","곡명","가수","싫어요수"],row, ms:bms, an:ban, count:bcount});
 			}); 
