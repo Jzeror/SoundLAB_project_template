@@ -796,6 +796,10 @@ jt ={//
 	                    			.addClass('btn btn-light').html('삭제')
 	                    			.click(e=>{
 	                    				$(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox:checked').parents('.jt_mplay_li').remove();
+	                    				let num = $(openWin.document).find('#jt_playerdt .jt_rank');
+	                    				for(let i=0;i<num.length;i++){
+	                    					num[i].innerHTML = i+1;
+	                    				}
 	                    			})
 	                    	)
 	                    	
