@@ -42,11 +42,9 @@
 	
 	
 	<!-- 방문자 -->
-	<select id="cntNew" resultMap="admin">
-	SELECT * FROM NR_NEW_USER 
-	WHERE DATE = '2018-10-25'
-	<!--  널값일때 처리해야돼 -->
-	<!-- WHERE DATE = CURDATE() -->
+	<select id="cntNew" resultType="int">
+	SELECT COUNT(*) FROM MEMBER
+	WHERE DATE(JOIN_DATE) = CURDATE()
 	</select>
 	<select id="countStrm" resultMap="admin">
 	SELECT * FROM NR_DAY_STR

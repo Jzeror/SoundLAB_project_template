@@ -69,19 +69,18 @@ nr = (()=>{
     		span:"오늘의 새로운 고객 수",
     		id:"new_user"
     		}).appendTo($("#row"));
-    	nr.stats.new_user();
     	
     	cnt({src:"https://static.thenounproject.com/png/738103-200.png",
     		strong:"Streaming count",
     		span:"스트리밍 수 ",
     		id:"streaming"
     		}).appendTo($("#row"));
-    	nr.stats.streaming();
     	
     	//메인 - 방문자 차트 섹션
     	section2().addClass("d-flex align-items-md-stretch").appendTo($cnts);
     	card({size:"12", title:"일주일 간의 방문통계", id:"visiterChart",style:"height:500px"}).appendTo($("#row2"));
     	
+    	nr.stats.new_and_strm();
     	nr.stats.cnt_visiter();
     	
     };
@@ -367,23 +366,17 @@ nr = (()=>{
 })();
 
 nr.stats={
-		new_user:()=>{
+		new_and_strm:()=>{
 			console.log("메인1 nr.stats.new_user: 오늘 가입자 수 진입");
 			$.getJSON($.ctx()+'/admin/visit',d=>{
-				console.log("d.nu.newUser"+d.nu.newUser);
-				return $('<p/>').html(d.nu.newUser).appendTo($("#new_user"));
-			});
-		},
-		streaming:()=>{
-			console.log("메인2 nr.stats.streaming: 오늘 스트리밍 진입");
-			$.getJSON($.ctx()+'/admin/visit',d=>{
-				console.log("streaming d.st.strm: "+d.st.strm);
-				return $('<p/>').html(d.st.strm).appendTo($("#streaming"));
+				console.log("d.nu.newUser"+d.nu);
+				$('<p/>').html(d.nu).appendTo($("#new_user"));
+				$('<p/>').html(d.st.strm).appendTo($("#streaming"));
 			});
 		},
 		cnt_visiter:()=>{
 			console.log("메인3 nr.stats.cnt_visiter: 방문자 통계 ");
-			$.getJSON($.ctx()+'/admin/visit/cntVisiter',d=>{
+			$.getJSON($.ctx()+'/admin/visiter/cntVisiter',d=>{
 				let data=[["date","남","여","합계"]];
 				$.each(d, (k,v)=>{
 					let trans=x=>{

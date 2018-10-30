@@ -30,7 +30,7 @@ public class AdminCtrl {
 	}
 	
 	@SuppressWarnings("unchecked")
-	@GetMapping("/visit/cntVisiter")
+	@GetMapping("/visiter/cntVisiter")
 	public List<Map<?,?>> cntVisiter(){
 		logger.info("일주일간 방문자 통계");
 		m.clear();
