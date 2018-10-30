@@ -17,11 +17,13 @@ public interface AdminMapper {
 	public List<?> ageArtist();
 	public List<?> sexGenre();
 	public List<?> sexArtist();	
-		
+	public List<?> listTotalSong(Map<?, ?> p);
+	
 	//아티스트
 	public List<?> artistStats(String artistName);
 	public Map<?,?> getPerSex(String artistName);
 	public List<?> getCntAge(String artistName);
+	public List<?> listTopSong(Map<?,?> p);
 	
 	//해시태그
 	public List<?> getHash();
