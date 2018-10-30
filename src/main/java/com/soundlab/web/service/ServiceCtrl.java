@@ -1,6 +1,7 @@
 package com.soundlab.web.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,8 @@ public class ServiceCtrl {
 	@Autowired ServiceMapper sm;
 	@Autowired artist at;
 	
-	
+	String pl;
+	public ServiceCtrl() { pl = ""; }
 	@SuppressWarnings("unchecked")
 	@GetMapping("/search/{artist}/{id}")
 	public @ResponseBody Map<String,Object> search(@PathVariable String artist,@PathVariable String id){
@@ -61,6 +63,14 @@ public class ServiceCtrl {
 	public Map<String,Object> playerMusic(@PathVariable String musicSeq){
 		logger.info("ServiceCtrl ::: MusicPlayer");
 		System.out.println("넘어온 musicSeq::"+musicSeq);
+		/*pl += musicSeq + ",";
+		System.out.println(pl);
+		System.out.println(pl.length());
+		System.out.println(pl.substring(0,pl.length()-1));
+		map.put("musicSeq", pl.substring(0,pl.length()-1));
+		*/
+		
+		
 		map.clear();
 		map.put("musicSeq", musicSeq);
 		

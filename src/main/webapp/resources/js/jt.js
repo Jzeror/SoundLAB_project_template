@@ -248,10 +248,7 @@ jt ={
 					music += v.value + ((i < ckMusic.length-1)?',':'');
 				});
 				console.log("선택한시퀀스::"+music);
-				$.getJSON($.ctx()+'/service/player/music/'+music,d=>{
-					console.log("넘어온값::"+d.musicSeq);
-					jt.music_player(d.musicSeq);
-				})
+				jt.music_player(music);
 				
 				
 			}).appendTo($('#jt_music_btn_bar1'));
@@ -265,17 +262,16 @@ jt ={
 			.append(
 					$('<span/>').addClass('glyphicon glyphicon-play').html('선택듣기')
 			).click(e=>{
+				
+				/*window.open(sh.ctx()+'/#SoundLAB_Player',"soundlab","left="+(screen.availWidth-730)/2+",top="+(screen.availHeight-495)/2+","+"width=730,height=495, menubar=no").location.reload(1);*/
+				
 				let music = '';
 				let ckMusic = $('input:checkbox[name=chk]:checked');
 				$.each(ckMusic,(i,v)=>{
 					music += v.value + ((i < ckMusic.length-1)?',':'');
 				});
 				console.log("선택한시퀀스::"+music);
-				$.getJSON($.ctx()+'/service/player/music/'+music,d=>{
-					console.log("넘어온값::"+d.musicSeq);
-					jt.music_player(d.musicSeq);
-				})
-				
+				jt.music_player(music);
 				
 			
 			}).appendTo($('#jt_music_btn_bar2'));			
@@ -707,13 +703,13 @@ jt ={
 				})
 
 		},
-
+		
 	
 		// 뮤직 플레이어
 		music_player : x=>{
 			console.log('player받은값::'+x);
 			$.getJSON($.ctx()+'/service/player/music/'+x,d=>{
-
+				console.log(d.musics.length);
 				let openWin = window.open(sh.ctx()+'/#SoundLAB_Player',"soundlab","left="+(screen.availWidth-730)/2+",top="+(screen.availHeight-495)/2+","+"width=730,height=495, menubar=no");
 	            openWin.onload =(()=>{
 	            	setTimeout(x=>{
@@ -878,7 +874,6 @@ jt ={
 		album_player : x=>{
 			console.log('player받은값::'+x);
 			$.getJSON($.ctx()+'/service/player/album/'+x,d=>{
-
 				let openWin = window.open(sh.ctx()+'/#SoundLAB_Player',"","left="+(screen.availWidth-730)/2+",top="+(screen.availHeight-495)/2+","+"width=730,height=495, menubar=no");
 	            openWin.onload =(()=>{
 	            	setTimeout(x=>{
