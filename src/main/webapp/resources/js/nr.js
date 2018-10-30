@@ -6,17 +6,11 @@ nr = (()=>{
 	var init =()=>{
         console.log('nr.init ::');
         
-        let pink = document.createElement('link');
-			pink.rel = 'stylesheet';
-			pink.href = $.ctx()+'/resources/css/cssnr/style.pink.css';
-			pink.id = 'pinkcss';
-			document.head.appendChild(pink);
-		
-		let nrstyle = document.createElement('link');
-			nrstyle.rel = 'stylesheet';
-			nrstyle.href = $.ctx()+'/resources/css/cssnr/nr.css';
-			nrstyle.id = 'nrcss';
-			document.head.appendChild(nrstyle);
+        let nr = document.createElement('link');
+        	nr.rel = 'stylesheet';
+        	nr.href = $.ctx()+'/resources/css/nr.css';
+        	nr.id = 'nrcss';
+			document.head.appendChild(nr);
 		
         $ctx = $.ctx();
         $js = $.js();
@@ -28,8 +22,8 @@ nr = (()=>{
         w.append(nav(),
         		$page.append(
         				hdr(),
-        				$('<div/>').attr({id : 'cnts'})
-
+        				$('<div/>').attr({id : 'cnts'}),
+						ftr()
         		)
     	);
         $cnts = $('#cnts');
@@ -61,15 +55,15 @@ nr = (()=>{
     	$('#hashBtn').click(()=>{
             hash();
        });
-    }; /* init 끝 */
+    }; 
 
     // ============================= 페이지 ============================
     var home =()=>{
     	console.log('nr.home ::');
     	$cnts.empty();
-
-    	//메인 - 바탕 섹션
     	section().addClass("dashboard-counts section-padding").appendTo($cnts);
+    	
+    	//메인 - 바탕 섹션
     	cnt({src:"https://static.thenounproject.com/png/1892501-200.png",
     		strong:"New Clients",
     		span:"오늘의 새로운 고객 수",
@@ -86,17 +80,9 @@ nr = (()=>{
     	
     	//메인 - 방문자 차트 섹션
     	section2().addClass("d-flex align-items-md-stretch").appendTo($cnts);
-    	card({size:"12", title:"", id:"visiterChart",style:"height:500px"}).appendTo($("#row2"));
+    	card({size:"12", title:"일주일 간의 방문통계", id:"visiterChart",style:"height:500px"}).appendTo($("#row2"));
     	
-    	/*$('<div/>').addClass("col-lg-12 flex-lg-last flex-md-first align-self-baseline").append(
-				$('<div/>').addClass("card").attr({height:"500px"}).append(
-					$('<h2/>').addClass("display h4").html("방문자 통계"),
-					$('<p/>').html("차트를 입력해주세요"),
-					$('<div/>').attr({id:"visiterChart"})
-				)
-		).appendTo($("#row2"));*/
     	nr.stats.cnt_visiter();
-    	//nr.visit.time();
     	
     };
     
@@ -107,7 +93,6 @@ nr = (()=>{
     	
         $cnts.empty();
         section().addClass("forms").appendTo($cnts);
-    	//period().appendTo($("#row"));
     	card({size:"3", title:"10대 장르 선호도", id:"donutchart1",style:""}).appendTo($("#row"));
     	card({size:"3", title:"20대 장르 선호도", id:"donutchart2",style:""}).appendTo($("#row"));
     	card({size:"3", title:"30대 장르 선호도", id:"donutchart3",style:""}).appendTo($("#row"));
@@ -115,6 +100,7 @@ nr = (()=>{
     	card({size:"12", title:"연령별 아티스트 선호도 TOP3", id:"columnchartAA",style:"height:400px"}).appendTo($("#row"));
     	card({size:"6", title:"성별 장르 선호도", id:"barChartSG",style:""}).appendTo($("#row"));
     	card({size:"6", title:"성별 아티스트 선호도", id:"barChartSA",style:""}).appendTo($("#row"));
+    	
     	nr.chart.age_genre(1);
     	nr.chart.age_genre(2);
     	nr.chart.age_genre(3);
@@ -122,39 +108,29 @@ nr = (()=>{
     	nr.chart.age_artist();
     	nr.chart.sex_artist();
     	nr.chart.sex_genre();
-    	/*setTimeout(()=>{
-    		nr.chart.age_artist();
-    	},1000);
-    	setTimeout(()=>{
-    		nr.chart.sex_artist();
-    	},2000);
-    	setTimeout(()=>{
-    		nr.chart.sex_genre();
-    	},3000);*/
-	
+    	nr.chart.toplist();
     };
     var artist=()=>{
     	console.log('nr.artist ::');
     	$cnts.empty();
     	section().addClass("forms").appendTo($cnts);
-    	//period().appendTo($("#row"));
     	$('<div/>').addClass("form-group row").append(
     			$('<label/>').addClass("col-sm-2 form-control-label").html("아티스트 선택"),
 				$('<form/>').append(
 					$('<div/>').addClass("col-sm-3 mb-3").append(
     					$('<select/>').addClass("form-control").attr({id:"artist_name" ,name:"account"}).append(
 	    					$('<option/>').html("방탄소년단"),
-	    					$('<option/>').html("아이유"),
-	    					$('<option/>').html("블랙핑크")
+	    					$('<option/>').html("트와이스"),
+	    					$('<option/>').html("레드벨벳")
 	    					)
     					),
     				$('<button/>').addClass("nr-btn nr-btn-primary").html("선택").attr({id:"artiBtn", style:"font-size:1.4rem"})
     					.click(e=>{
+    						e.preventDefault();
     						$('#arti_area').empty();
-    						card({size:"12", title:"아티스트분석", id:"artiCha", style:"height:500px"}).appendTo($("#arti_area"));
+    						card({size:"12", title:$('#artist_name').val()+" 분석", id:"artiCha", style:"height:500px"}).appendTo($("#arti_area"));
     						card({size:"6", title:$('#artist_name').val()+"의 성별 선호도", id:"arti_mf",style:""}).appendTo($("#arti_area"));
     						card({size:"6", title:$('#artist_name').val()+"의 연령 선호도", id:"arti_age",style:""}).appendTo($("#arti_area"));
-    						//table().appendTo($("#arti_area"));
     						nr.arti.stats();
     					})
 				)
@@ -176,11 +152,11 @@ nr = (()=>{
        	     	data.addColumn('number', '스트리밍 수');
        	     	data.addRow(['해시태그', null, 0]);
        	     	let hash_theme=['뮤직스타일','상황&장소','감정&기분'];
-	       		for(var i=0;i<hash_theme.length;i++){
+	       		for(let i=0;i<hash_theme.length;i++){
 	       			data.addRow([hash_theme[i],'해시태그',null]);
 	       			console.log(data);
 	       		}
-	       		for(var i=0;i<hash_theme.length;i++){
+	       		for(let i=0;i<hash_theme.length;i++){
 	       			$.each(d.hs, (k,v)=>{
 	   	    			if(v.hashSeq>=(i+1)*5-4 && v.hashSeq<=(i+1)*5){
 	   	    				data.addRow([v.hash, hash_theme[i], v.countView]);
@@ -208,49 +184,38 @@ nr = (()=>{
     
     
  // ============================= 구성 ============================
-   /*
-    var table=()=>{
-    	let tbl=$('<table/>').addClass("table table-striped").append(
-    			$('<thead/>').append(
-    					$('<tr/>').append(
-	    					$('<th/>').html("#"),
-	    					$('<th/>').html("검색어"),
-	    					$('<th/>').html("검색횟수"),
-	    					$('<th/>').html("구분")
-	    					)),
-				$('<tbody/>').append(
-						//반복
-						$('<tr/>').append(
-							$('<th scope="row"/>').html("x.1"),
-	    					$('<td/>').html("x.방탄소년단"),
-	    					$('<td/>').html("x.123건"),
-	    					$('<td/>').html("x.아티스트")
-    					),
-    					$('<tr/>').append(
-    							$('<th scope="row"/>').html("x.2"),
-    	    					$('<td/>').html("x.BTS"),
-    	    					$('<td/>').html("x.765건"),
-    	    					$('<td/>').html("x.아티스트")
-        					),
-    					$('<tr/>').append(
-    							$('<th scope="row"/>').html("x.3"),
-    	    					$('<td/>').html("x.IDOL"),
-    	    					$('<td/>').html("x.555건"),
-    	    					$('<td/>').html("x.노래")
-        					)
-					)
-    	);
+    var table=x=>{
+    	//nr.table({thead:["순위","곡명","가수","좋아요수"],row, ms, an, count});
+
+    	let tbl = $('<table/>').addClass("table table-striped table-hover");
+    	let thead = $('<thead/>').appendTo(tbl);
+    	let tr1 = $('<tr/>').appendTo(thead);
+    	let tbody = $('<tbody/>').appendTo(tbl);
+    	
+    	for(let i=0;i<x.thead.length;i++){
+    		let th= $('<th/>').html(x.thead[i]).appendTo(tr1);
+    	};
+    	for(let i=0;i<x.count.length;i++){
+    		console.log("x.row[i]: "+x.row[i]);
+    		let tr2 = $('<tr/>').appendTo(tbody);
+    		let row =$('<th scope="row"/>').html(x.row[i]).appendTo(tr2);
+    		let td1 = $('<td/>').html(x.ms[i]).appendTo(tr2);
+    		let td2 = $('<td/>').html(x.an[i]).appendTo(tr2);
+    		let td3 = $('<td/>').html(x.count[i]).appendTo(tr2);
+    	};
+    	
     	let tdiv=$('<div/>').addClass("col-lg-6").append(
     			$('<div/>').addClass("card").append(
     					$('<div/>').addClass("card-header").append(
-    							$('<h4/>').html("x.테이블이름")),
+    							$('<h4/>').html(x.title)),
 						$('<div/>').addClass("card-body").append(
 								$('<div/>').attr({id:"tblRes"}).addClass("table-responsive").append(tbl))
 					)
 				);
+    	tdiv.appendTo($("#arti_area"));
+    	tdiv.appendTo($("#row"));
     	return tdiv;
     };
-    */
     var section=()=>{
 		return $('<section/>').append(
 					$('<div/>').addClass("container-fluid").append(
@@ -262,25 +227,6 @@ nr = (()=>{
 						$('<div/>').attr({id:"row2"}).addClass("row")));
 	};
 
-    var period=()=>{
-    	let period = 
-    		$('<div/>').attr({id:'periodcard'}).addClass("card").appendTo($cnts);
-    	$('<div/>').attr({id:'period'}).addClass("card-body").appendTo($('#periodcard'));
-				$('<form/>').addClass("form-inline").attr({id:'periodForm'}).appendTo($('#period'));
-					$('<div/>').addClass("form-group").attr({id:'startDiv'}).appendTo($('#periodForm'));
-						$('<input/>').attr({type:'date', name:'startDate', id:'startDate'}).addClass("mr-3 form-control").appendTo($('#startDiv'));
-					$('<div/>').addClass("form-group").attr({id:'endDiv'}).appendTo($('#periodForm'));
-						$('<input/>').attr({type:'date', name:'endDate', id:'endDate'}).addClass("mr-3 form-control").appendTo($('#endDiv'));
-					$('<div/>').addClass("form-group").attr({id:'submitDiv'}).appendTo($('#periodForm'));
-						$('<div/>').addClass("form-group").attr({id:'submitDiv'}).appendTo($('#periodForm'));
-						$('<a/>').addClass("mr-3 nr-btn nr-btn-primary ")
-						.html('조회').appendTo($('#submitDiv'));
-						/*$('<btn/>').addClass("mr-3 nr-btn nr-btn-primary")
-						.attr({id:"submitBtn", type:"btn"})
-						.html('조회').appendTo($('#submitDiv'));*/
-        return period;
-    }
-    
     var cnt=x=>$('<div/>').addClass("col-md-6").append(
 			$('<div/>').addClass("wrapper count-title d-flex").append(
 					$('<div/>').addClass("col-md-3").append(
@@ -290,18 +236,9 @@ nr = (()=>{
 						$('<strong/>').addClass("text-uppercase").html(x.strong),
 						$('<br/>'),
 						$('<span/>').attr({id:"cnt_date"}).html(x.span),
-						/*$('<div/>').append(
-								$('<input/>').attr({
-							type:"text",
-							id:"smm_nj_date",
-					    	style:"width:160px; font-size:20px; margin-right:6px"})),*/
 						$('<div/>').addClass("count-number").attr({id:x.id})
 					)
 			));
-    
-  /*  $('input />').attr({type:"text",id:"smm_nj_date",
-    	style:"width:160px; font-size:20px; margin-right:6px"})
-    	.appendTo($('#smm_nj_h_tr_td'));*/
     
 	var visit=()=>{
 		let visit=
@@ -336,18 +273,15 @@ nr = (()=>{
 							$('<div/>').addClass("sidenav-header d-flex align-items-center justify-content-center").append(
 								$('<div/>').addClass("sidenav-header-inner text-center").append(
 									$('<img/>')
-									/*.addClass("img-fluid ")*/
 									.attr({
 										src:$.img()+"/logo_admin.png",
 										alt:"SoundLAB 로고",
-										style:"resize: both;"
-										,
+										style:"resize: both"
 									})
 								),
 								$('<div/>').addClass("sidenav-header-logo").append(
 									$('<a/>').addClass("brand-small text-center").attr({href:"#"})
 								)
-										
 							),
 							$('<div/>').addClass("main-menu").append(
 									$('<h5/>').addClass("sidenav-heading").html("MAIN"),
@@ -393,7 +327,8 @@ nr = (()=>{
 								.click(e=>{
 									$('#pinkcss').remove();
 									$('#nrcss').remove();
-									sh.service.login();
+									$.removeCookie("loginID");
+									sh.service.login(); 
 								}),
 								$('<i/>').addClass("fa fa-sign-out")
 							)))
@@ -402,9 +337,26 @@ nr = (()=>{
 		);
 		return $header;
 	};
+	
+	var ftr=()=>{
+		let $footer = $('<footer/>').addClass("nr-footer").append(
+				$('<div/>').addClass("container-fluid").append(
+						$('<div/>').addClass("row").append(
+								$('<div/>').addClass("col-sm-6").append(
+										$('<p/>').html("2018")
+								),
+								$('<div/>').addClass("col-sm-6 text-right").append(
+										$('<p/>').html("SoundLAB")
+								)
+						)
+				)
+			);
+		 
+		return $footer;
+	}
 	return {
-		init : init
-		
+		init : init,
+		table : table
 	};
 })();
 
@@ -438,10 +390,8 @@ nr.stats={
 				
 				google.charts.load('current', {'packages':['corechart']});
 			    google.charts.setOnLoadCallback(()=>{
-
 			    	let dataTbl = google.visualization.arrayToDataTable(data);
 			    	let options = {
-					          title: '일주일 간의 방문통계',
 					          hAxis: {title: '방문 일자',  titleTextStyle: {color: '#333'}},
 					          vAxis: {minValue: 0}
 					        };
@@ -463,20 +413,18 @@ nr.chart={
 	    	    		}
 	    	    	});
 					google.charts.load("current", {packages:["corechart"]});
-		    	    google.charts.setOnLoadCallback(drawAnG);
-		    	    
-		    	    function drawAnG(){
+		    	    google.charts.setOnLoadCallback(()=>{
+
 		    	    	var datas = google.visualization.arrayToDataTable(data);
 		    	    	var options =  {
-		    			          //title: x+'0대 장르 선호도',
-		    			          pieHole: 0.4,
+		    	    			chartArea:{left:10,top:20,width:"85%",height:"85%"},
+		    	    		    pieHole: 0.3,
 		    			        };
 		    	    	var chart = new google.visualization.PieChart(document.getElementById('donutchart'+x));
 				        chart.draw(datas, options); 
-		    	    }
+		    	    
+		    	    });
 				});
-			
-			
     	},
 		age_artist:()=>{
 			$.getJSON($.ctx()+'/admin/pref',d=>{
@@ -517,14 +465,10 @@ nr.chart={
 					console.log("g30 : "+g30);
 					console.log("g40 : "+g40);
 					console.log("age_artist :data : "+data);
-					//차트 시작
 					google.charts.load('current', {'packages':['bar']});
 					google.charts.setOnLoadCallback(()=>{
 		    	    	let dataTbl = google.visualization.arrayToDataTable(data);
 		    	    	let options = {
-		    	  	          chart: {
-		    	  	            //subtitle: '방탄소년단, 트와이스, 레드벨벳',
-		    	  	          }
 		    	  	        };
 		    	    	let chart = new google.charts.Bar(document.getElementById('columnchartAA'));
 			  	        chart.draw(dataTbl, google.charts.Bar.convertOptions(options));
@@ -616,13 +560,40 @@ nr.chart={
 			        chart.draw(dataTbl, options);
 			    });
 			});
+		},
+		toplist:()=>{
+			$.getJSON($.ctx()+'/admin/pref',d=>{
+				let row = [];
+				let ms=[];
+				let an=[];
+				let count=[];
+				
+				let bms=[];
+				let ban=[];
+				let bcount=[];
+				
+				for(let i=1;i<=5;i++){
+					row.push(i);
+				};
+				$.each(d.goodlist, (k,v)=>{
+					ms.push(v.musicTitle);
+					an.push(v.artistName);
+					count.push(v.sumGood);
+				});
+				$.each(d.badlist, (k,v)=>{
+					bms.push(v.musicTitle);
+					ban.push(v.artistName);
+					bcount.push(v.sumBad);
+				});
+		    	nr.table({title:"전체 사용자의  좋아요 TOP 5",thead:["순위","곡명","가수","좋아요수"],row, ms, an, count});
+				nr.table({title:"전체 사용자의  싫어요 TOP 5",thead:["순위","곡명","가수","싫어요수"],row, ms:bms, an:ban, count:bcount});
+			});
 		}
 },
 nr.arti={
 		stats:()=>{
 			$.getJSON($.ctx()+'/admin/artist/'+$('#artist_name').val(),d=>{
 				console.log('제이슨 들어옴 : '+$('#artist_name').val());
-				console.log("d.GS값: "+d.GS);
 		//아티스트 관계 차트			
 				let artiGS = [['곡 명','스트리밍 수','좋아요 수','앨범 명','스트리밍*좋아요']];
 				let tempS=30000;
@@ -676,7 +647,6 @@ nr.arti={
 				                         sourceColumn: 2,
 				                         type: "string",
 				                         role: "annotation"}]);
-					
 					let options = {
 							 annotations: {
 								    textStyle: {
@@ -704,27 +674,35 @@ nr.arti={
 				google.charts.setOnLoadCallback(()=>{
 					let data =google.visualization.arrayToDataTable(data_age);
 					let options = {
-							chart: {
-					            /*title: 'Company Performance',
-					            subtitle: 'Sales, Expenses, and Profit: 2014-2017',*/
-					          }
 						};
 					let chart = new google.charts.Bar(document.getElementById('arti_age'));
 			  	        chart.draw(data, google.charts.Bar.convertOptions(options));
 				});
-			});
+				
+				//테이블
+				let row = [];
+				let ms=[];
+				let an=[];
+				let count=[];
+				let bms=[];
+				let ban=[];
+				let bcount=[];
+				
+				for(let i=1;i<=5;i++){
+					row.push(i);
+				};
+				$.each(d.goodlist, (k,v)=>{
+					ms.push(v.musicTitle);
+					an.push(v.artistName);
+					count.push(v.sumGood);
+				});
+				$.each(d.badlist, (k,v)=>{
+					bms.push(v.musicTitle);
+					ban.push(v.artistName);
+					bcount.push(v.sumBad);
+				});
+		    	nr.table({title:$('#artist_name').val()+"의  좋아요 TOP 5",thead:["순위","곡명","가수","좋아요수"],row, ms, an, count});
+				nr.table({title:$('#artist_name').val()+"의  싫어요 TOP 5",thead:["순위","곡명","가수","싫어요수"],row, ms:bms, an:ban, count:bcount});
+			}); 
 		}
 }
-/*nr.visit={
-		time:()=>{
-			  $(function() {
-	                $.datepicker.setDefaults($.datepicker.regional['ko']);
-	                $('#smm_nj_date').datepicker({
-	                    dateFormat: 'yy년 mm월 dd일',
-	                    minDate: new Date('2018-11-01'),
-	                    maxDate: new Date('2018-11-15')
-	                });
-	                $('#smm_nj_date').datepicker('setDate', '+10');
-	            });
-		}
-}   */
