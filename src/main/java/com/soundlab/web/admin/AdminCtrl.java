@@ -22,15 +22,19 @@ public class AdminCtrl {
 	
 	@GetMapping("/visit")
 	public Map<String,Object> getVisitInfo() {
-		m.put("nu", mpr.cntNew());
+		logger.info("가입수 스트리밍수");
+		//int nu = 0;
+		//nu = mpr.cntNew();
+		m.clear();
 		m.put("st", mpr.countStrm());
+		m.put("nu", mpr.cntNew());
 		logger.info("nu에 담긴 값 :"+m.get("nu"));
 		logger.info("st에 담긴 값 :"+m.get("st"));
 		return m;
 	}
 	
 	@SuppressWarnings("unchecked")
-	@GetMapping("/visit/cntVisiter")
+	@GetMapping("/visiter/cntVisiter")
 	public List<Map<?,?>> cntVisiter(){
 		logger.info("일주일간 방문자 통계");
 		m.clear();
