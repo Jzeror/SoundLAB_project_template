@@ -52,8 +52,7 @@
 	</select>
 	<select id="cntVisiter" resultMap="admin">
 	SELECT * FROM NR_VISITER 
-	WHERE DATE BETWEEN "2018-10-19" AND "2018-10-25"
-	<!-- 날짜 고정시켜 놓음 -->
+	WHERE DATE BETWEEN DATE_ADD(CURDATE(), INTERVAL -6 DAY ) AND CURDATE()
 	</select>
 	
 	
