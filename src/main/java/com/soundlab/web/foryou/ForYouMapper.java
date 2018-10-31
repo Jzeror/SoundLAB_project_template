@@ -13,7 +13,9 @@ public interface ForYouMapper {
 	public boolean putMusicUp(String p);
 	public boolean putMusicDown(String p);
 	public boolean putGenreUp(String p);
-	public boolean delMusicDown(String p);
-	public boolean delMusicUp(String p);
+	public boolean putArtistUp(String p);
+	public boolean putArtistDown(String p);
+	public boolean delDown(String p);
+	public boolean delUp(String p);
 	public boolean delGenreUp(String p);
 }

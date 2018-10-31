@@ -323,7 +323,7 @@ sj.service = {
 										if($this.find('h4').text() != $('#sj-dt-container .sj-songs-info-title>h4').text()){
 											$('#sj-dj-detail').empty();
 											sj.service.dj_pld($this.attr('id'));
-											$.getJSON($.ctx()+'/dj/hashs/'+$.cookie('loginID')+'/'+$this.children('label').html());
+											$.getJSON($.ctx()+'/dj/hashs/'+$.cookie('loginID')+'/'+$this.children('label').html(),d=>{console.log(d.res);});
 										}else{
 											$('#sj-dj-detail').remove();
 										}  
