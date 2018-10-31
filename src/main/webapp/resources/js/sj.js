@@ -183,7 +183,9 @@ sj ={
 																			}),
 																			$('<button/>').addClass('btn').html('선택듣기')
 																			.click(e=>{
-																				sj.service.music_player($('.sj-music-item .check-con input[name=musicCk]:checkbox:checked'));
+																				let chkBox = $('.sj-music-item .check-con input[name=musicCk]:checkbox:checked');
+																				sj.service.music_player(chkBox);
+																				chkBox.prop('checked',false);
 																			})
 																	),
 																	$('<div/>').addClass('sj-music-list-area sj-pl-scroll').attr({id:'fy-music-list','style':'height:60%;'})
@@ -484,7 +486,9 @@ sj.service = {
 																		}),
 																		$('<button/>').addClass('btn').html('선택듣기')
 																		.click(e=>{
-																			sj.service.music_player($('.sj-music-item .check-con input:checkbox:checked'));
+																			let chkBox = $('.sj-music-item .check-con input:checkbox:checked');
+																			sj.service.music_player(chkBox);
+																			chkBox.prop('checked', false);
 																		})
 																),
 																$('<div/>').addClass('sj-music-list-area sj-pl-scroll').attr({id:'dj-playlist-d'})
@@ -576,7 +580,9 @@ sj.service = {
 					}),
 					$('<button/>').addClass('btn').html('선택듣기')
 					.click(e=>{
-						sj.service.music_player($('.sj-music-item .check-con input[name=albumCk]:checkbox:checked'));
+						let chkBox = $('.sj-music-item .check-con input[name=albumCk]:checkbox:checked');
+						sj.service.music_player(chkBox);
+						chkBox.prop('checked',false);
 					})
 			).appendTo($('#for-album-dt'));
 			
