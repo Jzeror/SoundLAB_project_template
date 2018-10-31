@@ -80,7 +80,6 @@ sj ={
 						
 						let fmsA = [], fmsB = [], fal = [], fat = [], ald = [];
 						let genreA = d.fy[0].msGenreA, genreB = d.fy[0].msGenreB;
-						alert(genreA + ' ::: '+ genreB);
 						$.each(d.fy,(i,v)=>{
 							if(v.msRankA <= 5){
 								let u = {
@@ -186,6 +185,7 @@ sj ={
 																				let chkBox = $('.sj-music-item .check-con input[name=musicCk]:checkbox:checked');
 																				sj.service.music_player(chkBox);
 																				chkBox.prop('checked',false);
+																				$('input[name=allCheckMusic]').prop('checked',false);
 																			})
 																	),
 																	$('<div/>').addClass('sj-music-list-area sj-pl-scroll').attr({id:'fy-music-list','style':'height:60%;'})
@@ -489,6 +489,7 @@ sj.service = {
 																			let chkBox = $('.sj-music-item .check-con input:checkbox:checked');
 																			sj.service.music_player(chkBox);
 																			chkBox.prop('checked', false);
+																			$('input[name=allCheck]').prop('checked',false);
 																		})
 																),
 																$('<div/>').addClass('sj-music-list-area sj-pl-scroll').attr({id:'dj-playlist-d'})
@@ -583,6 +584,7 @@ sj.service = {
 						let chkBox = $('.sj-music-item .check-con input[name=albumCk]:checkbox:checked');
 						sj.service.music_player(chkBox);
 						chkBox.prop('checked',false);
+						$('input[name=allCheckAlbumDt]').prop('checked',false);
 					})
 			).appendTo($('#for-album-dt'));
 			$('<div/>').addClass('sj-music-list-area sj-pl-scroll').attr({id:'fy-al-dtmusic'}).appendTo($('#for-album-dt'));
