@@ -585,11 +585,8 @@ sj.service = {
 						chkBox.prop('checked',false);
 					})
 			).appendTo($('#for-album-dt'));
-			
 			$('<div/>').addClass('sj-music-list-area sj-pl-scroll').attr({id:'fy-al-dtmusic'}).appendTo($('#for-album-dt'));
-			
 			let $pl = $('<div/>').addClass('sj-music-playlist').appendTo($('#fy-al-dtmusic'));
-			
 			$.each(x,(i,v)=>{
 				
 				$('<div/>').addClass('single-music').append(
