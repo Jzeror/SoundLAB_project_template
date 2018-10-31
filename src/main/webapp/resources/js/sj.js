@@ -335,8 +335,12 @@ sj.service = {
 				let djArr = d.djlist; 
 				console.log('carousel length :: '+djArr.length);
 				
-				if(djArr.length >= 3){
-					let $item = $('<div/>').addClass('carousel-inner').appendTo($('#djCarousel'))
+				if(djArr.length === 0){
+				
+					$('<div/>').attr({'style':'margin-left:1.2rem;'}).addClass().html('검색된 플레이리스트가 없습니다.').appendTo($('#djCarousel'));
+					
+				}else if(djArr.length >= 3){
+					let $item = $('<div/>').addClass('carousel-inner').appendTo($('#djCarousel'));
 					
 					$.each(djArr,(i,v)=>{
 						$('<div/>')
