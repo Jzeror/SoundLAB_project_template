@@ -20,19 +20,19 @@ public class TxService {
 		String ms = p.get("mSeq"), res = "";
 		res += (fm.putMusicUp(ms))?"m up":"";
 		res += (fm.putGenreUp(p.get("gSeq")))?"/g up":"";
-		res += (fm.delMusicDown(ms))?"/m down del":"";
+		res += (fm.delDown(ms))?"/m down del":"";
 		return res;
 	}
 	public String delMusicUp(Map<String, String> p) {
 		String res = "";
-		res += (fm.delMusicUp(p.get("mSeq")))?"m up del":"";
+		res += (fm.delUp(p.get("mSeq")))?"m up del":"";
 		res += (fm.delGenreUp(p.get("gSeq")))?"/g up del":"";
 		return res;
 	}
 	public String putMusicDown(Map<String, String> p) {
 		String ms = p.get("mSeq"), res = "";
 		res += (fm.putMusicDown(ms))?"m down":"";
-		res += (fm.delMusicUp(ms))?"/m up del":"";
+		res += (fm.delUp(ms))?"/m up del":"";
 		res += (fm.delGenreUp(p.get("gSeq")))?"/g up del":"";
 		return res;
 	}
@@ -46,6 +46,18 @@ public class TxService {
 		res += (am.putHashView(map))?"/"+t2+" view":"";
 		map.put("seq", t3);
 		res += (am.putHashView(map))?"/"+t3+" view":"";
+		return res;
+	}
+	public String putArtistUp(String p) {
+		String res = "";
+		res += (fm.putArtistUp(p))?"a up":"";
+		res += (fm.delDown(p))?"/a down del":"";
+		return res;
+	}
+	public String putArtistDown(String p) {
+		String res = "";
+		res += (fm.putArtistDown(p))?"a down":"";
+		res += (fm.delUp(p))?"a up del":"";
 		return res;
 	}
 }

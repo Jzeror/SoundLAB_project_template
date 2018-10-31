@@ -183,7 +183,9 @@ sj ={
 																			}),
 																			$('<button/>').addClass('btn').html('선택듣기')
 																			.click(e=>{
-																				sj.service.music_player($('.sj-music-item .check-con input[name=musicCk]:checkbox:checked'));
+																				let chkBox = $('.sj-music-item .check-con input[name=musicCk]:checkbox:checked');
+																				sj.service.music_player(chkBox);
+																				chkBox.prop('checked',false);
 																			})
 																	),
 																	$('<div/>').addClass('sj-music-list-area sj-pl-scroll').attr({id:'fy-music-list','style':'height:60%;'})
@@ -323,7 +325,7 @@ sj.service = {
 										if($this.find('h4').text() != $('#sj-dt-container .sj-songs-info-title>h4').text()){
 											$('#sj-dj-detail').empty();
 											sj.service.dj_pld($this.attr('id'));
-											$.getJSON($.ctx()+'/dj/hashs/'+$.cookie('loginID')+'/'+$this.children('label').html());
+											$.getJSON($.ctx()+'/dj/hashs/'+$.cookie('loginID')+'/'+$this.children('label').html(),d=>{console.log(d.res);});
 										}else{
 											$('#sj-dj-detail').remove();
 										}  
@@ -335,8 +337,12 @@ sj.service = {
 				let djArr = d.djlist; 
 				console.log('carousel length :: '+djArr.length);
 				
-				if(djArr.length >= 3){
-					let $item = $('<div/>').addClass('carousel-inner').appendTo($('#djCarousel'))
+				if(djArr.length === 0){
+				
+					$('<div/>').attr({'style':'margin-left:1.2rem;'}).addClass().html('검색된 플레이리스트가 없습니다.').appendTo($('#djCarousel'));
+					
+				}else if(djArr.length >= 3){
+					let $item = $('<div/>').addClass('carousel-inner').appendTo($('#djCarousel'));
 					
 					$.each(djArr,(i,v)=>{
 						$('<div/>')
@@ -480,7 +486,9 @@ sj.service = {
 																		}),
 																		$('<button/>').addClass('btn').html('선택듣기')
 																		.click(e=>{
-																			sj.service.music_player($('.sj-music-item .check-con input:checkbox:checked'));
+																			let chkBox = $('.sj-music-item .check-con input:checkbox:checked');
+																			sj.service.music_player(chkBox);
+																			chkBox.prop('checked', false);
 																		})
 																),
 																$('<div/>').addClass('sj-music-list-area sj-pl-scroll').attr({id:'dj-playlist-d'})
@@ -572,14 +580,13 @@ sj.service = {
 					}),
 					$('<button/>').addClass('btn').html('선택듣기')
 					.click(e=>{
-						sj.service.music_player($('.sj-music-item .check-con input[name=albumCk]:checkbox:checked'));
+						let chkBox = $('.sj-music-item .check-con input[name=albumCk]:checkbox:checked');
+						sj.service.music_player(chkBox);
+						chkBox.prop('checked',false);
 					})
 			).appendTo($('#for-album-dt'));
-			
 			$('<div/>').addClass('sj-music-list-area sj-pl-scroll').attr({id:'fy-al-dtmusic'}).appendTo($('#for-album-dt'));
-			
 			let $pl = $('<div/>').addClass('sj-music-playlist').appendTo($('#fy-al-dtmusic'));
-			
 			$.each(x,(i,v)=>{
 				
 				$('<div/>').addClass('single-music').append(
