@@ -348,10 +348,11 @@ nr = (()=>{
 							$('<a/>').addClass("nav-link logout").attr({id:"logoutBtn",href:"#",style:"float:right"}).append(
 								$('<span/>').addClass("d-none d-sm-inline-block").html("Logout")
 								.click(e=>{
-									$('#pinkcss').remove();
 									$('#nrcss').remove();
 									$.removeCookie("loginID");
-									sh.service.login(); 
+								   setTimeout(()=>{
+									   sh.service.login(); 
+									},1);
 								}),
 								$('<i/>').addClass("fa fa-sign-out")
 							)))
@@ -408,12 +409,7 @@ nr.chart={
 		age_artist:()=>{
 			$.getJSON($.ctx()+'/admin/pref',d=>{
 				
-				let data =[];
-				let key=["연령"];
-				let g10=["10대"];
-				let g20=["20대"];
-				let g30=["30대"];
-				let g40=["40대"];
+				let data =[],key=["연령"],g10=["10대"],g20=["20대"],g30=["30대"],g40=["40대"];
 				$.each(d.AA,(k,v)=>{
 					key.push(v.artistName);
 				});

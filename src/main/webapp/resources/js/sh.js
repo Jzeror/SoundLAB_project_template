@@ -24,6 +24,7 @@ sh = (()=>{
          
      };
      var home =()=>{
+    	 $('#nrcss').remove();
          console.log('sh.home ::');
          w.html(nav()+banner()+slider()+mainContents()+footer());
 		 $('<main id="id_main">')
@@ -711,6 +712,7 @@ var mypage =()=>'<section id="mypageSec" class="joinSec">'
 
 sh.service ={
      login : ()=>{
+    	 $('#nrcss').remove();
          console.log('sh.service.login::');
          $(sh.w()).html(sh.login());
           let $memberId =  $('#memberId');
