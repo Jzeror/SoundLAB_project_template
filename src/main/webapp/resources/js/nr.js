@@ -62,34 +62,46 @@ nr = (()=>{
     	console.log('nr.home ::');
     	$cnts.empty();
     	section().addClass("dashboard-counts section-padding").appendTo($cnts);
-    	
-    	//메인 - 바탕 섹션
     	cnt({src:"https://static.thenounproject.com/png/1892501-200.png",
     		strong:"New Clients",
     		span:"오늘의 새로운 고객 수",
     		id:"new_user"
     		}).appendTo($("#row"));
-
-    	
     	cnt({src:"https://static.thenounproject.com/png/738103-200.png",
     		strong:"Streaming count",
     		span:"스트리밍 수 ",
     		id:"streaming"
     		}).appendTo($("#row"));
-
     	
-    	//메인 - 방문자 차트 섹션
     	section2().addClass("d-flex align-items-md-stretch").appendTo($cnts);
     	card({size:"12", title:"일주일 간의 방문통계", id:"visiterChart",style:"height:500px"}).appendTo($("#row2"));
-
     	
-    	nr.stats.new_and_strm();
-    	
-    	setTimeout(()=>{
-    		nr.stats.cnt_visiter();
-    	},100);
-    	
-    	
+    	$.getJSON($.ctx()+'/admin/visit',d=>{
+			console.log("d.nu.newUser"+d.nu);
+			$('<p/>').html(d.nu).appendTo($("#new_user"));
+			$('<p/>').html(d.st.strm).appendTo($("#streaming"));
+			
+			let data=[["date","남","여","합계"]];
+			$.each(d.vcha, (k,v)=>{
+				let trans=x=>{
+					let month=new Date(x).getMonth()+1;
+					let day=new Date(x).getDate();
+					return month+"월 "+day+"일";
+				};
+				data.push([trans(new Date(v.date)), v.mVisit*1, v.fVisit*1, v.mVisit+v.fVisit]);
+			});
+			
+			google.charts.load('current', {'packages':['corechart']});
+		    google.charts.setOnLoadCallback(()=>{
+		    	let dataTbl = google.visualization.arrayToDataTable(data);
+		    	let options = {
+				          hAxis: {title: '방문 일자',  titleTextStyle: {color: '#333'}},
+				          vAxis: {minValue: 0}
+				        };
+		    	let chart = new google.visualization.AreaChart(document.getElementById('visiterChart'));
+		        chart.draw(dataTbl, options);
+		    });
+		});
     };
     
     var pref=()=>{
@@ -223,9 +235,6 @@ nr = (()=>{
     	}else {
     		tdiv.appendTo($("#row"));
     	}
-    	
-    	
-    	
     	return tdiv;
     };
     var section=()=>{
@@ -374,47 +383,10 @@ nr = (()=>{
 	};
 })();
 
-nr.stats={
-		new_and_strm:()=>{
-			console.log("메인1 nr.stats.new_user: 오늘 가입자 수 진입");
-			$.getJSON($.ctx()+'/admin/visit',d=>{
-				console.log("d.nu.newUser"+d.nu);
-				$('<p/>').html(d.nu).appendTo($("#new_user"));
-				$('<p/>').html(d.st.strm).appendTo($("#streaming"));
-			});
-		},
-		cnt_visiter:()=>{
-			console.log("메인3 nr.stats.cnt_visiter: 방문자 통계 ");
-			$.getJSON($.ctx()+'/admin/visiter/cntVisiter',d=>{
-				let data=[["date","남","여","합계"]];
-				$.each(d, (k,v)=>{
-					let trans=x=>{
-						let month=new Date(x).getMonth()+1;
-						let day=new Date(x).getDate();
-						return month+"월 "+day+"일";
-					};
-					data.push([trans(new Date(v.date)), v.mVisit*1, v.fVisit*1, v.mVisit+v.fVisit]);
-				});
-				
-				google.charts.load('current', {'packages':['corechart']});
-			    google.charts.setOnLoadCallback(()=>{
-			    	let dataTbl = google.visualization.arrayToDataTable(data);
-			    	let options = {
-					          hAxis: {title: '방문 일자',  titleTextStyle: {color: '#333'}},
-					          vAxis: {minValue: 0}
-					        };
-			    	let chart = new google.visualization.AreaChart(document.getElementById('visiterChart'));
-			        chart.draw(dataTbl, options);
-			    });
-			    
-			});
-		}
-}
-
 nr.chart={
 		age_genre:x=>{
 				$.getJSON($.ctx()+'/admin/pref',d=>{
-					var data=[['장르','선호도']];
+					let data=[['장르','선호도']];
 	    	    	$.each(d.AG, (k,v)=>{
 	    	    		if(v.ageGroup==x+"0대"){
 	    	    			data.push([v.genreName, v.sumGood]);
@@ -422,13 +394,12 @@ nr.chart={
 	    	    	});
 					google.charts.load("current", {packages:["corechart"]});
 		    	    google.charts.setOnLoadCallback(()=>{
-
-		    	    	var datas = google.visualization.arrayToDataTable(data);
-		    	    	var options =  {
+		    	    	let datas = google.visualization.arrayToDataTable(data);
+		    	    	let options =  {
 		    	    			chartArea:{left:10,top:20,width:"85%",height:"85%"},
 		    	    		    pieHole: 0.3,
 		    			        };
-		    	    	var chart = new google.visualization.PieChart(document.getElementById('donutchart'+x));
+		    	    	let chart = new google.visualization.PieChart(document.getElementById('donutchart'+x));
 				        chart.draw(datas, options); 
 		    	    
 		    	    });

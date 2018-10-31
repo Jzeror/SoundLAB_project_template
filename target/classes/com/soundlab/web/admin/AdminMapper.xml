@@ -52,13 +52,14 @@
 	</select>
 	<select id="cntVisiter" resultMap="admin">
 	SELECT * FROM NR_VISITER 
-	WHERE DATE BETWEEN #{ago} AND #{now}
+	WHERE DATE BETWEEN "2018-10-19" AND "2018-10-25"
+	<!-- 날짜 고정시켜 놓음 -->
 	</select>
 	
 	
 	<!-- 아티스트 -->
 	<select id="artistStats" resultMap="admin">
-		SELECT * FROM nr_artist_stats
+		SELECT * FROM NR_ARTIST_STATS
 		WHERE ARTIST_NAME LIKE #{artistName}
 	</select>
 	<select id="getPerSex" resultMap="admin">
@@ -71,13 +72,13 @@
 	WHERE ARTIST_NAME LIKE #{artistName}
 	</select>
 	<select id="listTopSong" parameterType="map" resultMap="admin" >
-	SELECT * FROM nr_artist_stats
+	SELECT * FROM NR_ARTIST_STATS
 		WHERE ARTIST_NAME LIKE #{artistName}
 		<if test="order == 'sum_good' ">
-		order by sum_good desc LIMIT 5
+		ORDER BY SUM_GOOD DESC LIMIT 5
 		</if>
 		<if test="order == 'sum_bad' ">
-		order by sum_bad desc LIMIT 5
+		ORDER BY SUM_BAD DESC LIMIT 5
 		</if>
 	</select>
 	
@@ -96,12 +97,12 @@
 	WHERE ARTIST_NAME IN ("방탄소년단","레드벨벳","트와이스")
 	</select>
 	<select id="listTotalSong" parameterType="map" resultMap="admin" >
-	SELECT * FROM nr_artist_stats
+	SELECT * FROM NR_ARTIST_STATS
 		<if test="order == 'sum_good' ">
-		order by sum_good desc LIMIT 5
+		ORDER BY SUM_GOOD DESC LIMIT 5
 		</if>
 		<if test="order == 'sum_bad' ">
-		order by sum_bad desc LIMIT 5
+		ORDER BY SUM_BAD DESC LIMIT 5
 		</if>
 	</select>
 	
