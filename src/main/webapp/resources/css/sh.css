@@ -494,7 +494,7 @@ html, body, main {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: -440px;
+  margin: -180px 0px 0px 0px;
   font-size: 20px;
   color: #F68657;
   

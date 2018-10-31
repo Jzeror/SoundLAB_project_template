@@ -191,20 +191,22 @@ sh = (()=>{
 	    		 ua = $('<a/>').attr({href : '#'}).appendTo(up);
 	    		 $('<i/>').attr({id : 'sh-up-'+i}).addClass((updown[i]==='u')?'sh-up fa fa-heart sh-updown':'sh-up fa fa-heart').appendTo(ua).click(e=>{
 	    			 e.preventDefault();
-	    			 sh.service.auth();
-	    			 alert('좋아요  :: '+ musicSeq[i]);
-	    			 $('#sh-up-'+i).addClass('sh-updown');
-	    			 $('#sh-down-'+i).removeClass('sh-updown');
-	    			 
+	    			 if(sh.service.auth()==0){
+	    				 alert('좋아요  :: '+ musicSeq[i]);
+		    			 $('#sh-up-'+i).addClass('sh-updown');
+		    			 $('#sh-down-'+i).removeClass('sh-updown');
+	    			 }
 	    		 });
 	    		 down = $('<td/>').addClass('sh-music-downbtn').appendTo(tr);
 	    		 da = $('<a/>').attr({href : '#'}).appendTo(down);
 	    		 $('<i/>').attr({id : 'sh-down-'+i}).addClass((updown[i]==='d')?'sh-down fa fa-thumbs-down sh-updown':'sh-down fa fa-thumbs-down').appendTo(da).click(e=>{
 	    			 e.preventDefault();
-	    			 sh.service.auth();
-	    			 alert('싫어요  :: '+ musicSeq[i]);
-	    			 $('#sh-down-'+i).addClass('sh-updown');
-	    			 $('#sh-up-'+i).removeClass('sh-updown');
+	    			 if(sh.service.auth()==0){
+	    				 alert('싫어요  :: '+ musicSeq[i]);
+		    			 $('#sh-down-'+i).addClass('sh-updown');
+		    			 $('#sh-up-'+i).removeClass('sh-updown');
+	    			 }
+	    			
 	    		 });
 	    	 }
 	    	 $('.sh-music-info').hover(
@@ -292,17 +294,19 @@ sh = (()=>{
          });
          $('#forBtn').click(e=>{
         	 e.preventDefault();
-        	 sh.service.auth();
-        	 if(!($("#banner").length >0)){   //not exist
-    			 home(); 
+        	 if(sh.service.auth()==0){
+        		 if(!($("#banner").length >0)){   //not exist
+        			 home(); 
+            	 }
+            	 sh.service.removeSec();  
+         		 sj.forYou();
+         		 setTimeout(()=>{
+    				 if($("#foryouSec").length > 0){
+    					 fn.scroll({ id : $("#foryouSec"), len : 200});
+    				 }
+             	 },400); 
         	 }
-        	 sh.service.removeSec();  
-     		 sj.forYou();
-     		 setTimeout(()=>{
-				 if($("#foryouSec").length > 0){
-					 fn.scroll({ id : $("#foryouSec"), len : 200});
-				 }
-         	 },400); 
+        	 
          });
          
         $('#logoImg').click(e=>{
