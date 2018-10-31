@@ -372,7 +372,7 @@
 	padding: 0;
 }
 #jt_selected{
-	margin-left: 90px;
+	margin-left: -1px;
 	float: left;
     width: 50%;
     height: 35px;
@@ -710,7 +710,7 @@
     margin-left: 120px;
 }
 
-.jt_td_table5 i.btn.active {
+.jt_td_table5 i.btn.active, #jt_search_body i.btn.active {
 	 color: #f68657;
 	 box-shadow:none;
 }
@@ -720,8 +720,4 @@
 }
 .jt_td_table5 span {
 	 margin: 0 2.5rem;
-}
-.jt_active{
-	color: #f68657;
-	 box-shadow:none;
 }

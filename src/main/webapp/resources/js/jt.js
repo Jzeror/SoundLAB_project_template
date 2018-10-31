@@ -92,25 +92,13 @@ jt ={
   				$('<p/>').html('활동유형 : '+art.GROUP_NAME).appendTo($('#jt_search_body'));
   				$('<p/>').html('생년월일 : '+art.BIRTH).appendTo($('#jt_search_body'));
   				$('<p/>').html('데뷔 : '+art.DEBUT).appendTo($('#jt_search_body'));
-  				$('<i/>').html('좋아요').addClass((art.TYPES=='u')?'jt_active':'').attr({id:'jt_artUp'}).addClass('btn btn-brand fa fa-thumbs-up')
+  				$('<i/>').html('좋아요').addClass((art.TYPES=='u')?'active':'').attr({id:'jt_artUp'}).addClass('btn btn-brand fa fa-thumbs-up')
   				.click(function(e){
-  					
-  				    if($('#jt_artUp' ).hasClass('jt_active')){
-                        $('#jt_artUp' ).removeClass('jt_active');
-                       
-                    }else{
-                        $('#jt_artUp').addClass('jt_active');
-                        if($('#jt_artDown').hasClass('jt_active')) $('#jt_artDown').removeClass('jt_active');
-                    }
+  					jt.updown({thiz:$(this), btn:'like', aSeq:art.ARTIST_SEQ})
   				}).appendTo($('#jt_search_body'));
-  				$('<i/>').html('싫어요').addClass((art.TYPES=='d')?'jt_active':'').attr({id:'jt_artDown'}).addClass('btn btn-brand fa fa-thumbs-down')
+  				$('<i/>').html('싫어요').addClass((art.TYPES=='d')?'active':'').attr({id:'jt_artDown'}).addClass('btn btn-brand fa fa-thumbs-down')
   				.click(function(e){
-  				    if($('#jt_artDown').hasClass('jt_active')){
-                        $('#jt_artDown').removeClass('jt_active');
-                    }else{
-                        $('#jt_artDown').addClass('jt_active');
-                        if($('#jt_artUp').hasClass('jt_active')) $('#jt_artUp').removeClass('jt_active');
-                    }
+  					jt.updown({thiz:$(this), btn:'hate', aSeq:art.ARTIST_SEQ})
   				}).appendTo($('#jt_search_body'));
   				
   				
@@ -217,7 +205,30 @@ jt ={
   				
   			
 			})
-},
+		},
+		
+		updown : x=>{ // jt.updown({thiz:$(this), btn:'like'||'hate', aSeq:ARTIST_SEQ})
+				
+			let $this = x.thiz;
+			
+			let url = (x.btn == 'like')
+						?(($this.hasClass('active'))?'delAL':'putAL')
+								:(($this.hasClass('active'))?'delAH':'putAH');
+			
+			if($.cookie("loginID") == 'sound') $.getJSON($.ctx()+'/foryou/'+url+'/'+x.aSeq,d=>{console.log(d.res);});
+			
+			jt.ud_active($this);
+			
+		},
+		ud_active : x=>{
+			if(x.hasClass('active')){
+				x.removeClass('active');
+			}else{
+				x.addClass('active');
+				if(x.siblings('i').hasClass('active')) x.siblings('i').removeClass('active');
+			}
+			
+		},
 		
 		//곡 차트
 		music_list : x=>{
@@ -316,10 +327,11 @@ jt ={
 									$('<i/>').addClass('btn btn-brand fa fa-play')
 									.click(e=>{
 										console.log('뮤직시퀀스::'+j.MUSIC_SEQ);
-										$.getJSON($.ctx()+'/service/player/music/'+j.MUSIC_SEQ,d=>{
+										jt.music_player(j.MUSIC_SEQ);
+										/*$.getJSON($.ctx()+'/service/player/music/'+j.MUSIC_SEQ,d=>{
 											console.log('넘어온값::'+d.musicSeq);
 											jt.music_player(d.musicSeq);
-										})
+										})*/
 									}),
 									$('<i/>').addClass((j.TYPES == 'u')?'active':'').attr({id : 'jt_up'+i }).addClass('btn btn-brand fa fa-heart')
 									.click(function(){
@@ -375,7 +387,7 @@ jt ={
 		
 		//앨범디테일 페이지
 		album_detail : z=>{
-			$.getJSON($.ctx()+'/detailPg/detail/'+z,x=>{
+			$.getJSON($.ctx()+'/detailPg/detail/'+z+'/'+$.cookie('loginID'),x=>{
 				console.log('앨범디테일에 넘어온 앨범SEQ::'+x.album.ALBUMSEQ);
 				let $cnts = $('#contents');
 				$cnts.empty();
@@ -442,10 +454,9 @@ jt ={
 						music += v.value + ((i < ckMusic.length-1)?',':'');
 					});
 					console.log("선택한시퀀스::"+music);
-					$.getJSON($.ctx()+'/service/player/music/'+music,d=>{
-						console.log("넘어온값::"+d.musicSeq);
-						jt.music_player(d.musicSeq);
-					})
+					
+						jt.music_player(music);
+					
 					
 					
 				}).appendTo($('#jt_music_btn_bar1'));
@@ -465,10 +476,9 @@ jt ={
 						music += v.value + ((i < ckMusic.length-1)?',':'');
 					});
 					console.log("선택한시퀀스::"+music);
-					$.getJSON($.ctx()+'/service/player/music/'+music,d=>{
-						console.log("넘어온값::"+d.musicSeq);
-						jt.music_player(d.musicSeq);
-					})
+					
+						jt.music_player(music);
+					
 					
 					
 				
@@ -516,10 +526,11 @@ jt ={
 									$('<i/>').addClass('btn btn-brand fa fa-play')
 									.click(e=>{
 										console.log('뮤직시퀀스::'+j.MUSIC_SEQ);
-										$.getJSON($.ctx()+'/service/player/music/'+j.MUSIC_SEQ,d=>{
+										jt.music_player(j.MUSIC_SEQ);
+									/*	$.getJSON($.ctx()+'/service/player/music/'+j.MUSIC_SEQ,d=>{
 											console.log('넘어온값::'+d.musicSeq);
 											jt.music_player(d.musicSeq);
-										})
+										})*/
 									}),
 
 									$('<i/>').addClass((j.TYPES == 'u')?'active':'').attr({id : 'jt_up'+i }).addClass('btn btn-brand fa fa-heart')
@@ -805,8 +816,10 @@ jt ={
 	                    	$('<div/>').attr({id:'jt_playerOption'}).addClass('jt_playerOption').appendTo(openWin.document.getElementById('jt_playerdt'));
 	                    	$('<ul/>').attr({id:'jt_tabControl'}).addClass('jt_tabControl').appendTo(openWin.document.getElementById('jt_playerOption'));
 	                    	$('<li/>').attr({id:'jt_selected'}).addClass('selected').appendTo(openWin.document.getElementById('jt_tabControl'));
-	                    	$('<a/>').attr({id:'jt_play_list', herf:'#'}).addClass('jt_play_list').html('재생목록').appendTo(openWin.document.getElementById('jt_selected'));
+	                    	$('<a/>').attr({id:'jt_play_list'}).addClass('jt_play_list').html('재생목록').appendTo(openWin.document.getElementById('jt_selected'));
+	                    	$('<li/>').attr({id:'jt_delet'}).addClass('selected').appendTo(openWin.document.getElementById('jt_tabControl'));
 	                    	$('<div/>').attr({id:'jt_tab_area'}).appendTo(openWin.document.getElementById('jt_playerOption'));
+	                    	
 	                    	$('<div/>')
 	                    	.attr({id:'jt_mplay_list','style':'position:relative','overflow':'hidden'})
 	                    	.addClass('jt_mplay_list')
@@ -1039,8 +1052,6 @@ jt ={
 	          
 			})
 	
-		},
-		
-		
+		}
 		
 };

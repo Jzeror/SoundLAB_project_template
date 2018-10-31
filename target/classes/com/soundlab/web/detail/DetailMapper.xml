@@ -20,7 +20,8 @@
 			WHERE A.ALBUM_SEQ LIKE #{albumSeq};
 	</select>
 	
-	 <select id="getAlbumMusic" resultType="map" parameterType="string">
+	 <select id="getAlbumMusic" resultType="map" parameterType="map">
+				<if test="#{id} == null">
 				SELECT 
 					M.MUSIC_SEQ,
 					M.MUSIC_TITLE,
@@ -30,7 +31,38 @@
 				FROM MUSIC AS M
 					JOIN ALBUM AS A
 					ON M.ALBUM_SEQ = A.ALBUM_SEQ
+				WHERE M.ALBUM_SEQ LIKE #{albumSeq}
+				</if>
+				<if test="#{id} != null">
+				SELECT 
+					M.MUSIC_SEQ,
+					M.MUSIC_TITLE,
+					M.GENRE_SEQ,
+					A.ARTIST_NAME,
+					A.ALBUM_SEQ,
+					U.TYPES,
+					U.SG_ELEMENT
+				FROM MUSIC AS M
+					LEFT JOIN (SELECT
+					*
+					FROM(
+					SELECT
+					MAX(UD_SEQ) MAX_SEQ
+					FROM UPDOWN UD
+					WHERE MEMBER_ID LIKE #{id}
+					GROUP BY UD.SEQ_GROUP
+					ORDER BY UD_SEQ DESC
+					)A
+					JOIN(SELECT * FROM UPDOWN U) B
+					ON A.MAX_SEQ LIKE B.UD_SEQ
+					ORDER BY B.SEQ_GROUP) U
+					ON M.MUSIC_SEQ = U.SEQ_GROUP
+					LEFT JOIN ALBUM AS A
+					ON M.ALBUM_SEQ = A.ALBUM_SEQ
 				WHERE M.ALBUM_SEQ LIKE #{albumSeq};
+				
+				
+				</if>
 	</select>
 	<select id="count" resultType="int">
 		SELECT COUNT(*) 
