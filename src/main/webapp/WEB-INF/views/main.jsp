@@ -33,7 +33,6 @@
     <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js" type="text/JavaScript"></script> -->
     <script src="${context}/resources/js/d3.layout.cloud.js"></script>
 	<script src="${context}/resources/js/wordcloud.js"></script>
-	<!-- <script src="https://d3js.org/d3-transition.v1.min.js"></script> -->
 
 	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 	
