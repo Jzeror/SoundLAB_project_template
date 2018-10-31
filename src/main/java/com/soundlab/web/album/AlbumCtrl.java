@@ -32,10 +32,8 @@ public class AlbumCtrl {
 		List<Map<?,?>> newAl = null;
 		  if(x.equals("newAl_recent")) {
 				 newAl=alMapper.newAl_recent();
-				  Util.log.accept("album:: " +newAl);
 		  }else {
 			  newAl=alMapper.newAl_like();
-			  Util.log.accept("album:: " +newAl);
 		  }
 		
 		return newAl;

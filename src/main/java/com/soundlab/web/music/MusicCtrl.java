@@ -86,12 +86,14 @@ public class MusicCtrl {
 		  Calendar cal = Calendar.getInstance();
 		  String todayDate= new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //오늘
 		  map.put("todayDate",todayDate);
-		  cal.add(cal.DATE, +1); 
-	      String chartDate1 = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
-	      map.put("chartDate1",chartDate1);
-	      cal.add(cal.DATE, -7); 
-	      String chartDate2  = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
-		  map.put("chartDate2",chartDate2);
+		  
+		   cal.add(cal.DATE, -7); 
+			  map.put("chartDate2",new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
+			  
+		  cal.add(cal.DATE, +8); 
+	      map.put("chartDate1",new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
+	   
+	
 		  chartData = musMapper.top50lineChart(map);
 		return chartData;
 	}
