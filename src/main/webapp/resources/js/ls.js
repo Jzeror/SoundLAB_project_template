@@ -2,7 +2,7 @@
 var ls = ls || {};
 ls ={
 		chart :x=>{
-			var bool_sw = true;
+	
 			$.getJSON(sh.ctx()+'/music/top50/'+x+','+$.cookie("loginID"),d=>{
 				
 				
@@ -26,13 +26,14 @@ ls ={
 										$('<div/>').append(
 												 $('<ul/>').addClass("ls_chart_nav nav nav-tabs nav-justified").append(
 														 $('<li/>').append(
-																 $('<a/>').attr({id : 'liveChr'}).html('실시간'))
+																 $('<a/>').attr({id : 'liveChr'}).html('일간'))
 																 .click(()=>{ 
 																	 alert('liveChr click');
 																	 let realChart = 'realChart';
 																		$.getJSON(sh.ctx()+'/music/top50/'+realChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
 																			 ls.top50table(d);
+																			 ls.infiSc('realChart');
 																	 })
 																	 
 																 }),
@@ -44,6 +45,7 @@ ls ={
 																		$.getJSON(sh.ctx()+'/music/top50/'+weekChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
 																			 ls.top50table(d);
+																			 ls.infiSc('weekChart');
 																	 })
 																	 }),
 														 $('<li/>').append(
@@ -54,6 +56,7 @@ ls ={
 																		$.getJSON(sh.ctx()+'/music/top50/'+monthChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
 																			 ls.top50table(d);
+																			 ls.infiSc('monthChart');
 																	 })
 																	})
 
@@ -76,9 +79,11 @@ ls ={
 																let seqs = '';
 																$.each(ck,(i,v)=>{
 																	seqs += v.value + ((i < ck.length-1)?',':'');
+																    
 																});
-																jt.music_player(seqs);
-																console.log('무얼넘길까 ::: '+seqs);
+																jt.music_player(seqs)
+															   $('input[name = al_chkBox]:checkbox').prop('checked',false);
+																console.log(seqs);
 																
 														}),
 																	$('<button/>').attr({id : 'listenAll'})
@@ -105,7 +110,7 @@ ls ={
 					).appendTo($('#chart-top50')),
 					ls.tHeader(),
 					ls.top50table(d),
-					
+					ls.infiSc('realChart');
 					$('#allCheck').click(()=>{
 		                if($('#allCheck').is(':checked')){
 		                    $('input[name = al_chkBox]:checkbox').prop('checked',true);
@@ -122,16 +127,16 @@ ls ={
 					 			google.charts.setOnLoadCallback(drawChart1);
 							    function drawChart1() {
 							    	  var data = new google.visualization.DataTable();
-							          data.addColumn('number', 'Day');
+							          data.addColumn('string', 'Day');
 						        	  data.addColumn('number', d[0].ARTIST_NAME+'/'+d[0].MUSIC_TITLE);
 							          data.addColumn('number', d[1].ARTIST_NAME+'/'+d[1].MUSIC_TITLE);
 							          data.addColumn('number', d[2].ARTIST_NAME+'/'+d[2].MUSIC_TITLE);
 							          
-							          for(let i=0; i <18; i=i+3){	
+							          for(let i=0; i <21; i=i+3){	
 							          data.addRows([
-							            [d[i].VIEW_DATE*1,  d[i].PER, d[i+1].PER, d[i+2].PER],
-							            [d[i+1].VIEW_DATE*1,  d[i].PER, d[i+1].PER, d[i+2].PER],
-							            [d[i+2].VIEW_DATE*1,  d[i].PER, d[i+1].PER, d[i+2].PER]
+							            [d[i].VIEW_DATE,  d[i].PER, d[i+1].PER, d[i+2].PER],
+							            ['',  d[i].PER, d[i+1].PER, d[i+2].PER],
+							            ['',  d[i].PER, d[i+1].PER, d[i+2].PER]
 							          ]);
 							          }
 							         
@@ -175,44 +180,12 @@ ls ={
 				)
 		).appendTo('#chart_title');
 })
-				
+			
 		     	
-								let no= 31;
-									//무한 스크롤
-						     	$(window).on("scroll", function() {
-						     			console.log('무한스크롤!');
-						        		var scrollHeight = $(document).height();
-						        		var scrollPosition = $(window).height() + $(window).scrollTop();		
-
-						        		$("#scrollHeight").text(scrollHeight);
-						        		$("#scrollPosition").text(scrollPosition);
-						        		$("#bottom").text(scrollHeight - scrollPosition);
-						        		
-						        		
-						        		if ( scrollPosition > scrollHeight - 100) {
-						        			if(bool_sw){ 
-						    		     		sendData(); //실행 
-						    		     		} 
-						    		     		function sendData(){ 
-						    		     		bool_sw = false;
-						    		     		
-						    		     			$.getJSON($.ctx()+'/music/infiSc/'+no+','+$.cookie("loginID"),d=>{
-						    		     				if(no <= 50){
-							        					ls.top50table(d);
-							        						no=no+5;
-							        						  setTimeout(function(){bool_sw = true;},500) 
-						    		     		} 
-						    		     			})
-						    		     		}
-						        		}
-						        	});
+		     	
 					
 					}
 	        	});
-			
-		
-
-			
 		},
 				
 		album :x=>{
@@ -308,6 +281,8 @@ ls ={
 						$('<table/>').addClass("ls_table table ls_table-filter").attr({id :'topTable'})
 				).appendTo($('#pull-left'));
 		
+				
+		
 					$.each(d,(i,v)=>{
 								
 						$('<tr/>').append(
@@ -371,40 +346,49 @@ ls ={
 								
 							
 				).appendTo($('#topTable'));
-						var bool_sw = true;
-						let no= 31;
-						//무한 스크롤
-			     	/*$(window).on("scroll", function() {
-			     			console.log('무한스크롤!');
-			        		var scrollHeight = $(document).height();
-			        		var scrollPosition = $(window).height() + $(window).scrollTop();		
-
-			        		$("#scrollHeight").text(scrollHeight);
-			        		$("#scrollPosition").text(scrollPosition);
-			        		$("#bottom").text(scrollHeight - scrollPosition);
-			        		
-			        
-			        		if ( scrollPosition > scrollHeight - 100) {
-			        			if(bool_sw){ 
-			    		     		sendData(); //실행 
-			    		     		} 
-			    		     		function sendData(){ 
-			    		     		bool_sw = false;
-			    		     		
-			    		     			$.getJSON($.ctx()+'/music/infiSc/'+no+','+$.cookie("loginID"),d=>{
-			    		     				if(no <= 50){
-				        					ls.top50table(d);
-				        						no=no+5;
-				        						  setTimeout(function(){bool_sw = true;},500) 
-			    		     		} 
-			    		     			})
-			    		     		}
-			        		}
-			        	});*/
+				 
+			 
 		
 				
 					})
 			
+		},
+		
+		
+		infiSc : p =>{
+			
+			var bool_sw = true;
+			//무한 스크롤
+			let no= 31;
+		
+			$(window).on("scroll", function() {
+ 	
+    		var scrollHeight = $(document).height();
+    		var scrollPosition = $(window).height() + $(window).scrollTop();		
+
+    		$("#scrollHeight").text(scrollHeight);
+    		$("#scrollPosition").text(scrollPosition);
+    		$("#bottom").text(scrollHeight - scrollPosition);
+    		
+    
+    		if ( scrollPosition > scrollHeight - 100) {
+    			if(bool_sw){ 
+		     		sendData(); //실행 
+		     		} 
+		     		function sendData(){ 
+		     		bool_sw = false;
+		     		
+		     			$.getJSON($.ctx()+'/music/infiSc/'+no+','+$.cookie("loginID")+','+p,d=>{
+		     				if(no <= 50){
+        					ls.top50table(d);
+        						no=no+5;
+        						  setTimeout(function(){bool_sw = true;},500) 
+		     		} 
+		     			})
+		     		}
+    		}
+    	});
+
 		},
 		new_alList :d=>{
 			$('#ls_newA').empty();
@@ -426,7 +410,7 @@ ls ={
 												$('<div/>').addClass('ls_card__div').append(
 														$('<div/>').addClass('ls_card__text').html(v.REGI_DATE),
 														$('<div/>').addClass('glyphicon glyphicon-thumbs-up')
-														.html(v.LIKE_COUNT)
+														.html(v.SUMCNT)
 												),
 												
 												$('<div/>').append(
@@ -434,7 +418,7 @@ ls ={
 
 														.click(()=>{ 
 														
-																console.log('진태야 받아라 :: '+v.ALBUM_SEQ);
+																console.log(v.ALBUM_SEQ);
 																jt.album_player(v.ALBUM_SEQ);
 															
 														 })
@@ -588,7 +572,10 @@ ls ={
 			
 			$('<div/>').attr({id :'ls_comments'}).appendTo($('#blog-comment'))
 			$.getJSON($.ctx()+'/album/viewComment',d=>{
-				for(let i=0 ; i<6; i++){
+				for(let i=0 ; i<d.length; i++){
+					if(i==6){
+						break;
+					}
 					$('<div/>').addClass('clearfix').append(
 							 $('<img/>').attr({src : $.ctx()+'/resources/img/user_1.jpg'})
 							 .addClass('avatar'),
