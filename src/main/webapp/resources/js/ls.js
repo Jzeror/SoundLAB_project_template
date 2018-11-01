@@ -15,7 +15,7 @@ ls ={
 								$('<div/>').addClass("ls_char_panel_top Panel panel-dafalt container").append(
 										$('<h1/>').html('TOP 50')
 								).appendTo($chartSec);
-								// 차트
+								// 
 								$('<div/>').attr({id :'chart_title'}).addClass("container").appendTo($chartSec);
 								 $('<div/>').addClass("ls_lineCh Panel panel-dafalt container").append(
 						                    
@@ -127,16 +127,21 @@ ls ={
 					 			google.charts.setOnLoadCallback(drawChart1);
 							    function drawChart1() {
 							    	  var data = new google.visualization.DataTable();
-							          data.addColumn('string', 'Day');
-						        	  data.addColumn('number', d[0].ARTIST_NAME+'/'+d[0].MUSIC_TITLE);
-							          data.addColumn('number', d[1].ARTIST_NAME+'/'+d[1].MUSIC_TITLE);
-							          data.addColumn('number', d[2].ARTIST_NAME+'/'+d[2].MUSIC_TITLE);
+							    	  data.addColumn('string', 'day');
+						        	  data.addColumn('number', '1위    '+d[6].R1_NAME+'/'+d[6].R1_TITLE);
+						         	  data.addColumn('number', '2위    '+d[6].R2_NAME+'/'+d[6].R2_TITLE);
+						         	  data.addColumn('number', '3위    '+d[6].R3_NAME+'/'+d[6].R3_TITLE);
+							
 							          
-							          for(let i=0; i <21; i=i+3){	
+							          for(let i=0; i <7; i++){	
+							        	  let trans=x=>{
+												let day=new Date(x).getDate();
+										
+												return day+"일";
+											};
 							          data.addRows([
-							            [d[i].VIEW_DATE,  d[i].PER, d[i+1].PER, d[i+2].PER],
-							            ['',  d[i].PER, d[i+1].PER, d[i+2].PER],
-							            ['',  d[i].PER, d[i+1].PER, d[i+2].PER]
+							            [trans(new Date(d[i].VIEW_DATE)),  d[i].R1_PER*1, d[i].R2_PER*1, d[i].R3_PER*1]
+							           
 							          ]);
 							          }
 							         
@@ -165,16 +170,16 @@ ls ={
 						$('<ul/>').append(
 								$('<li/>').addClass('lank01').append(
 										$('<span/>').addClass('none').html('1위'),
-										$('<em/>').html(d[0].PER+'%')
+										$('<em/>').html(d[6].R1_PER+'%')
 										
 								),
 								$('<li/>').addClass('lank02').append(
 										$('<span/>').addClass('none').html('2위'),
-										$('<em/>').html(d[1].PER+'%')
+										$('<em/>').html(d[6].R2_PER+'%')
 								),
 								$('<li/>').addClass('lank03').append(
 										$('<span/>').addClass('none').html('3위'),
-										$('<em/>').html(d[2].PER+'%')
+										$('<em/>').html(d[6].R3_PER+'%')
 								)
 						)
 				)

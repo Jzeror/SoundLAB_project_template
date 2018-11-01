@@ -883,7 +883,6 @@ sh.service ={
              at : $joinForm
          })
          .click(e=>{
-        	 alert('회원가입!!');
         	 let memberId = $('#memberId').val();
              let pass = $('#pass').val();
              let name = $('#name').val();
@@ -902,8 +901,6 @@ sh.service ={
                        email : email,
                        phone : phone
                      })){
-                alert('true logic');
-                alert($('input[name="sex"]:checked').val());
                 let genres = [];
                 $('input:checkbox[class=genre]:checked').each((i,o)=>{
                           genres.push(o.value);
@@ -913,7 +910,6 @@ sh.service ={
                 $('input:checkbox[class=artist]:checked').each((i,o)=>{
                 	artists.push(o.value);
                 });
-                alert(artists);
                 $.ajax({
                     url : sh.ctx()+'/member/member',
                     method : 'post',

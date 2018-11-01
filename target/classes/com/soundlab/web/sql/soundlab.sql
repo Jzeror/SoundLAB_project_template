@@ -31,7 +31,7 @@ create table IMG(
 );
 create table MV(
     MV_SEQ INT PRIMARY KEY,
-    MV_TITLE VARCHAR(20),
+    MV_TITLE VARCHAR(80),
     MUSIC_SEQ INT,
     RELEASE_DATE VARCHAR(20),
     YTB VARCHAR(100)
@@ -664,7 +664,6 @@ WHERE V1.SEQ_GROUP IN (
 AND V1.VIEW_DATE BETWEEN CONCAT(DATE_ADD(CURDATE(), INTERVAL -6 DAY),'%') AND CONCAT(DATE_ADD(CURDATE(), INTERVAL 1 DAY),'%')
 GROUP BY V1.SEQ_GROUP, V1.VIEW_DATE
 ORDER BY V1.VIEW_DATE DESC, COUNT(*) DESC;
-## LS_TOP3 + NUM VIEW
 CREATE OR REPLACE VIEW LS_TOP3_NUM AS
 SELECT
 *,
@@ -1988,7 +1987,10 @@ UPDATE ARTICLE SET TITLE = '나의 어머님, 위에도 이름자를 봅니다',
 UPDATE ARTICLE SET TITLE = '하나에 무덤 덮어 풀이 써 봅니다',  CONTENTS = '81,147,110,109,123,116,137,139,90' WHERE ARTICLE_SEQ LIKE 175 ;
 UPDATE ARTICLE SET TITLE = '책상을 하나에 마리아 릴케 까닭입니다',  CONTENTS = '135,138,141,134,102,71,107,133' WHERE ARTICLE_SEQ LIKE 176 ;
 INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('shin',30,'지노형 얼른 전역하세요ㅠㅠ');
-INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('criss',30,'지노형 인생 살고싶다..');
+INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('신난 튜브',-1,'아이유 삐삐 들으면 들을수록 좋다~!');
+INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('감동받은 네오',-1,'박효신 FOREVER');
+INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('감동받은 어피치',-1,'방탄 지붕뚫고 가즈아~');
+INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG) VALUES('졸린 네오',-1,'IDOL 인생 명곡');
 INSERT INTO MV ( MV_SEQ,
  MV_TITLE,
  MUSIC_SEQ,
@@ -2036,6 +2038,474 @@ VALUES(
    65,
    '2018.10.10',
    'https://www.youtube.com/embed/nM0xDI5R50E'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   191,
+   '어젯밤 이야기',
+   68,
+   '2017.09.22',
+   'https://www.youtube.com/embed/cxcxskPKtiI'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   192,
+   '하루도 그대를 사랑하지 않은 적이 없었다',
+   69,
+   '2018.09.19',
+   'https://www.youtube.com/embed/Xaqpvy-ZbMg'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   193,
+   'IDOL',
+   74,
+   '2018.08.24',
+   'https://www.youtube.com/embed/pBuZEGYXA6E'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   194,
+   '1도 없어',
+   77,
+   '2018.07.02',
+   'https://www.youtube.com/embed/F4oHuML9U2A'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   195,
+   '시간이 들겠지(Feat. Colde)',
+   79,
+   '2018.10.08',
+   'https://www.youtube.com/embed/YfQzz00Oc_M'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   196,
+   '이별길',
+   81,
+   '2018.10.01',
+   'https://www.youtube.com/embed/2O6dRaBbFoo'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   197,
+   '내가 모르게',
+   82,
+   '2018.10.01',
+   'https://www.youtube.com/embed/nQJx28w-yb4'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   198,
+   '그때 헤어지면 돼',
+   83,
+   '2018.02.12',
+   'https://www.youtube.com/embed/SkN_hWI6n28'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   199,
+   '빗속으로',
+   86,
+   '2016.03.25',
+   'https://www.youtube.com/embed/h2etWUFzURw'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   200,
+   '사랑이고프다',
+   92,
+   '2010.12.13',
+   'https://www.youtube.com/embed/vnFyo1eEYqw'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   201,
+   'If You Were Me',
+   94,
+   '2018.09.23',
+   'https://www.youtube.com/embed/e_ZNkheaMiw'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   202,
+   '좋니',
+   95,
+   '2017.06.22',
+   'https://www.youtube.com/embed/jy_UiIQn_d0'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   203,
+   '이방인',
+   96,
+   '2018.08.13',
+   'https://www.youtube.com/embed/FcxEI4v8ASY'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   204,
+   '너나 해',
+   97,
+   '2018.07.16',
+   'https://www.youtube.com/embed/pHtxTSiPh5I'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   205,
+   '잠이라도 자지',
+   98,
+   '2018.07.16',
+   'https://www.youtube.com/embed/BVbvoQQI6as'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   206,
+   'Dejavu',
+   102,
+   '2018.07.17',
+   'https://www.youtube.com/embed/LebzXsLFwaM'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   207,
+   '매트리스',
+   104,
+   '2018.08.23',
+   'https://www.youtube.com/embed/seNNCbiXTSY'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   208,
+   'Power Up',
+   105,
+   '2018.08.06',
+   'https://www.youtube.com/embed/aiHSVQy9xN8'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   209,
+   '한 여름의 크리스마스',
+   106,
+   '2018.08.06',
+   'https://www.youtube.com/embed/2gIy65zbG-8'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   210,
+   '동화',
+   110,
+   '2018.07.03',
+   'https://www.youtube.com/embed/FoYyqHqbnxc'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   211,
+   '바람',
+   111,
+   '2018.07.03',
+   'https://www.youtube.com/embed/4SNuqpHjRPQ'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   212,
+   '가을 안부',
+   115,
+   '2017.10.14',
+   'https://www.youtube.com/embed/rGVRvhm7ddk'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   213,
+   'Dance The Night Away',
+   116,
+   '2018.07.09',
+   'https://www.youtube.com/embed/Fm5iP0S1z9w'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   214,
+   'What is Love?',
+   119,
+   '2018.04.09',
+   'https://www.youtube.com/embed/i0p1bmr0EmE'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   215,
+   '뚜두뚜두',
+   122,
+   '2018.06.15',
+   'https://www.youtube.com/embed/IHNzOHi8sJs'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   216,
+   'Forever Young',
+   123,
+   '2018.06.15',
+   'https://www.youtube.com/embed/89kTb73csYg'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   217,
+   'See U Later',
+   125,
+   '2018.06.15',
+   'https://www.youtube.com/embed/MZuxtzdVVzQ'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   218,
+   'FAKE LOVE',
+   133,
+   '2018.05.18',
+   'https://www.youtube.com/embed/7C2z4GqqS5E'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   219,
+   'DNA',
+   137,
+   '2017.09.18',
+   'https://www.youtube.com/embed/MBdVXkSdhwU'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   220,
+   'MIC Drop',
+   138,
+   '2017.09.18',
+   'https://www.youtube.com/embed/kTlv5_Bs8aw'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   221,
+   'Not Today',
+   142,
+   '2017.02.13',
+   'https://www.youtube.com/embed/9DwzBICPhdM'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   222,
+   'CHEER UP',
+   177,
+   '2016.04.25',
+   'https://www.youtube.com/embed/c7rCyll5AeY'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   223,
+   'KNOCK KNOCK',
+   178,
+   '2017.02.20',
+   'https://www.youtube.com/embed/8A2t_tAjMz8'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   224,
+   'TT',
+   181,
+   '2016.10.24',
+   'https://www.youtube.com/embed/ePpPVE-GGJw'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   225,
+   'LIKEY',
+   179,
+   '2017.10.30',
+   'https://www.youtube.com/embed/V2hlQkVJZhE'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   226,
+   '빨간 맛 (Red Flavor)',
+   182,
+   '2017.07.09',
+   'https://www.youtube.com/embed/WyiIGEHQP8o'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   227,
+   '러시안 룰렛 (Russian Roulette)',
+   184,
+   '2016.09.07',
+   'https://www.youtube.com/embed/QslJYDX3o8s'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   228,
+   'Rookie',
+   185,
+   '2017.02.01',
+   'https://www.youtube.com/embed/J0h8-OTC38I'
+);
+INSERT INTO MV ( MV_SEQ,
+MV_TITLE,
+MUSIC_SEQ,
+RELEASE_DATE,
+ytb)
+VALUES(
+   229,
+   'Ice Cream Cake',
+   186,
+   '2015.03.17',
+   'https://www.youtube.com/embed/glXgSSOKlls'
 );
 INSERT INTO UPDOWN(MEMBER_ID,SEQ_GROUP,SG_ELEMENT,TYPES) 
 VALUES
@@ -2102,6 +2572,244 @@ VALUES
 INSERT INTO UPDOWN(MEMBER_ID,SEQ_GROUP,SG_ELEMENT,TYPES) 
 VALUES
 ('sound',20 ,'artist','u');
+UPDATE ARTIST
+SET INTRO1 = '빈지노 (Beenzino)는 대한민국의 래퍼이다. 프로젝트 팀 Hot Clip과 Jazzyfact의 활동을 통해 가요계에 진출했고, 2011년 일리네어 레코즈에 입단하며 본격적인 행보를 이어갔다.
+2012년 7월에 발표한 첫 EP [2 4 : 2 6]가 폭발적인 반응을 얻었으며, 힙합 앨범으로는 기록적인 판매량을 기록하면서 힙합 신의 주목을 받기 시작했다.',
+    INTRO2 = '2014년에는 미니 앨범 [Up All Night]을 공개, "자신감 넘치고 예술을 사랑하는 남자"를 모티브로 삼으며 유니크한 음악들을 선보였다.
+이어 싱글 어쩌라고(So What), Life In Color 등을 연이어 발표했으며, 2016년 5월에는 장기간 심혈을 기울여 만든 첫 정규앨범 [12]로 컴백했다.
+이 앨범 역시 대중의 찬사를 받았고, 탁월한 실력을 인정받으며 국내에서 가장 영향력 있는 래퍼로 자리매김하고 있다.'
+WHERE ARTIST_SEQ LIKE 8;
+UPDATE ARTIST
+SET INTRO1 = '아이유는 카카오M과 페이브 엔터테인먼트에 소속된 대한민국의 가수이다. "I"와"You"의 합성어로"너와 내가 음악으로 하나가 된다"는 의미의 이름으로 2008년 데뷔했다.
+미니 앨범 [Lost And Found]으로 윤상을 비롯 유희열, 휘성 같은 선배 가수들에게 인정을 받은 그는 이후 이전에 발표한 미니 앨범의 트랙을 포함 시킨 정규 풀 앨범 [Growing Up]을 통해 앳되고 귀여운 타입의 콘셉트로 활동을 시작한다.',
+    INTRO2 = '본인이 직접 프로듀싱 한 앨범 [CHAT-SHIRE]을 발매하며 한 단계 성숙해진 가수이자 아티스트로서 호평을 받았고, 화제를 모았다.
+정규 4집 [Palette] 선공개 곡으로 발표된 밤편지는 앨범 내 가장 아끼는 곡이라고 말하기도 했고, 이 곡으로 골든디스크 시상식에서 음원 대상을 받았다.
+대세 아티스트 오혁과 컬래버레이션 사랑이 잘 로 2017년 4월 월간 차트 1위를 차지하는 등의 성과를 거둔데 이어 정식 발매된 [Palette]는 멜론에서 역대 제일 많이 스트리밍 된 음반 1위를 차지하며 멜론 뮤직 어워드 앨범상을 수상, 빌보드가 선정한 올해의 K-POP 앨범 부문 TOP 1위에 오르는 기염을 토했다.
+2017년 가을, 두 번째 리메이크 앨범 [꽃갈피 둘]을 발매하며, 공개하자마자 1위를 차지하는 위력을 보여주었고, 한국 대중음악상, 가온차트 뮤직 어워드에서도 아티스트로서의 능력을 인정받았다.
+이듬해 10월에는 데뷔 10주는 디지털 싱글 삐삐 를 통해 Alternative R&B 스타일의 새로운 스타일을 입었으며, 발매 즉시 모든 음원 차트 1위에 오르는 음원 퀸의 저력을 보여주었다.'
+WHERE ARTIST_SEQ LIKE 9;
+UPDATE ARTIST
+SET INTRO1 = '임창정은 가수와 예능인, 배우로서 모두 일정 수준의 성공을 거둔 만능 엔터테이너다. 출발은 영화배우였지만 곧 가수로도 성공하였으며 예능 프로그램에서도 발군의 재능을 뽐내며 1990년대와 2000년대 최고의 멀티 엔터테이너 연예인으로 활동했다.
+현재도 연기와 음악을 병행하며 좋은 성적을 거두고 있다. 가녀린 미성의 발라드 곡을 주로 하는 임창정의 음악 세계다.',
+    INTRO2 = '2009년 3월 10일, 임창정 표 발라드 오랜만이야 를 타이틀로 한 그의 음악계 컴백 앨범 [Return To My World]가 발매되었다. 소주 한 잔 의 작곡가 이동원의 작품인 오랜만이야 는 오랜만의 컴백에 힘을 실어주었지만 긴 공백기로 인해 기대한 만큼의 성적을 내지는 못했다.
+임창정은 그 해 뮤지컬 "빨래"에 출연하였고, 이듬해 뮤지컬 "라디오스타"에 출연하는 등 음악적으로 다시금 기지개를 켜기 시작했다. 2014년 정규 12집 [흔한 노래……. 흔한 멜로디]를 발매하여 정석적인 발라드 곡 흔한 노래 는 발라드 장인 임창정의 매력을 대중에게 다시 한 번 어필한 곡이었다.
+영화와 음악계에서 종횡무진 활동하던 2015년, 소주 한 잔 같은 히트곡이 탄생한다. 임창정의 첫 미니 앨범 [또다시 사랑]의 타이틀곡 또다시 사랑은 임창정이 직접 작사 작곡해 깊은 감성을 담았으며,
+"히든싱어 시즌4" 방송 이후 역주행을 시작해 음원 차트 1위를 차지했다. 2015년 9월에 발매되어 차트 반영 기간이 3개월이었음에도 불구하고 멜론 연간 차트 11위를 기록하기도 했다. 흥행에 이어 이듬해인 2016년 발표된 신곡 내가 저지른 사랑이 발매하자마자 음원 차트 1위에 랭크되었고, 엄청난 고음에도 흔들리지 않는 라이브 실력을 선보였다.
+2018년 9월, [하루도 그대를 사랑하지 않은 적이 없었다]를 발표, 동명의 타이틀곡으로 발매 직후 음원 차트 최상위권에 진입해 변하지 않은 영향력을 증명했다.'
+WHERE ARTIST_SEQ LIKE 10;
+UPDATE ARTIST
+SET INTRO1 = '가요계의 새로운 역사를 쓰고 있는 그룹 방탄소년단은 데뷔 이후 끊임없는 성장세를 보여주는 것은 물론, 빌보드 진입 기록을 갱신하며 K-POP을 대표하는 아티스트로 한국을 넘어 세계의 기록을 세우는 행보를 이어가고 있다.
+7인조로 이루어진 보이 그룹 방탄소년단은 뛰어난 보컬과 랩, 댄스 실력은 물론 매 앨범마다 작사, 작곡과 프로듀싱에까지 이름을 올리는 실력파 그룹으로 트렌드를 반영한 곡을 선보이며 성장한 모습을 기대하게 한다. 그룹은 2013년 6월 학교 3부작 시리즈의 시작인 [2 COOL 5 SKOOL]로 데뷔했다.',
+    INTRO2 = '이후 발매된 다섯 번째 미니앨범 [LOVE YOURSELF 承`Her`]은 국내 차트 1위 등극, 빌보드 앨범 차트 7위에 오르며 한국 가수 최고 순위이자 아시아 최고 신기록을 세웠으며, 타이틀 곡 DNA는 빌보드 HOT 67위에 랭크되었다. 이 앨범으로 멜론 뮤직 어워드를 비롯한 국내 주요 4개의 대상을 모두 석권했고, 아메리칸 뮤직 어워드에 퍼포머로 초청받아 성공적인 무대를 치뤘다.
+2017년 12월, 발표만으로 화제가 된 월드 DJ Steve Aoki와의 컬래버레이션 MIC Drop 의 리믹스 버전은 빌보드 HOT 100 28위에 오르는 위엄을 펼쳤고, 팀의 자체기록을 경신하며 한국의 대표 아이돌로서의 행보를 이어가고 있다.
+2018년 5월 18일 [LOVE YOURSELF 轉‘Tear]를 발매했으며, FAKE LOVE 의 첫 무대는 미국 라스베이거스에서 열린 "빌보드 뮤직 어워드"에서 공개됐으며, 2년 연속 "톱 소셜 아티스트" 부문을 수상했다. 화제에 이어 대한민국 가수 최초로 빌보드 앨범 차트 1위,
+싱글 차트 10위에 올랐으며 뮤직비디오는 8일만에 1억뷰에 도달해 전 세계 역대 뮤직비디오 최단 기록 7위에 올랐다.
+2018년 8월, LOVE YOURSELF의 마지막 시리즈의 대미를 장식할 [LOVE YOURSELF 結`Answer`]을 발매, 방탄소년단만이 할 수 있는 국악과 트랩 그루브, EDM을 믹스했으며, 발매 직후 국내 주요 음원 사이트 1위에 올랐다.'
+WHERE ARTIST_SEQ LIKE 11;
+UPDATE ARTIST
+SET INTRO1 = 'Apink(에이핑크)는 2011년 7인조로 데뷔하였다. 리더 박초롱, 윤보미, 정은지, 손나은, 김남주, 오하영, 홍유경으로 구성되었다. 데뷔 전 티저를 순차적으로 공개하며 많은 이들의 관심을 모은 Apink는 첫 EP 음반 [Seven Springs of Apink]을 발매하며 몰라요 를 타이틀곡으로 내세웠다.
+몰라요 는 슈퍼창따이가 프로듀싱을 도맡은 곡으로 현악기와 브라스 세션이 곡의 사운드를 이끌어나가며 소녀의 사랑스러운 분위기를 표현했고, 아직은 앳되고 풋풋한 Apink 멤버들의 목소리로 귀여움을 더했다.',
+    INTRO2 = 'Apink는 같은 해 11월 두 번째 EP 음반 [Snow Pink]를 발매했다. 이 음반의 타이틀 곡 My My 로 데뷔 후 처음으로 음악 방송 1위를 수상했고, 엠넷 아시안 뮤직 어워드에서 여자 신인상을 차지하며 그룹의 밝은 시작을 알렸다. 2012년 5월에는 첫 정규 음반 [UNE ANNEE]를 발매,
+타이틀곡 HUSH 는 그동안 내세웠던 순수한 소녀의 이미지에서 벗어나 복고 디스코 풍의 곡으로 새로운 매력을 선보였다.
+NoNoNo 의 여세를 몰아 2014년 4월, 네 번째 미니 음반 [Pink Blossom]을 발매하였다. 타이틀곡 Mr. Chu 는 프로듀서 이단옆차기가 작사 및 작곡을 맡은 팝 댄스곡으로 듣기 편한 멜로디와 펑키한 베이스 라인, 브라스의 사용 등이 돋보인다. 또한 각종 음원 차트에서 상위권을 놓치지 않았고, 공중파 및 케이블 음악방송에서 1위를 수상하며 그랜드슬램을 달성하였다.
+11월에는 [Pink LUV]를 발매, 타이틀곡 LUV 가 음악 방송 1위를 차지했으며, "쇼! 음악중심" 최초로 5주 연속 1위라는 기록을 세우기도 했다.
+2016년 9월 세 번째 정규 앨범 [Pink Revolution]의 타이틀곡 내가 설렐 수 있게 를 발표했다. 아이돌 그룹 대부분이 위기를 겪는 데뷔 7년차에 소속사와의 재계약을 알린 Apink는 2017년 6월 미니앨범 [Pink UP]의 Five로 활동을 이어나갔고, 2018년 7월에는 과감한 변화를 선보인 7번째 미니앨범 [ONE & SIX]를 공개했다.'
+WHERE ARTIST_SEQ LIKE 12;
+UPDATE ARTIST
+SET INTRO1 = '로꼬는 힙합 레이블 AOMG 소속된 대한민국의 래퍼이다. "쇼미 더 머니 시즌1"의 초대 우승자로 더블케이와 함께한 Home 으로 데뷔했으며, 방송 종료 후 최종 공연 곡인 See The Light 를 발매했다.',
+    INTRO2 = 'AOMG로 이적 후 첫 EP [LOCOMOTIVE]를 발매했다. 2017년 5월 첫 정규 앨범 [BLEACHED]을 발표했으며 타이틀 곡 지나쳐 가 실시간 음원 차트 1위에 랭크되었다. 또한 그레이와 함께 피처링으로 참여한 우원재의 시차 가 음원 사이트 주간 차트 1위에 올랐다.
+음악 예능 프로그램 "건반 위의 하이에나"에서 화사와 함께한 듀엣 곡 주지마 로 주간 차트 1위를 차지한 바 있다. 이후 박재범, 사이먼 도미닉, GRAY와의 합작 뒤집어버려 와 EXO 백현과 호흡을 맞춘 YOUNG , 그리고 싱글 시간이 들겠지 를 발표했다.'
+WHERE ARTIST_SEQ LIKE 13;
+UPDATE ARTIST
+SET INTRO1 = '바이브는 윤민수, 류재현 2인조로 구성된 대한민국의 보컬 그룹이다. 본래 윤민수. 류재현, 유성규의 3인조 그룹이었으나 유성규가 솔로 활동을 위해 탈퇴함으로서 2인조 그룹이 되었다.
+2000년대 중반 SG 워너비, 먼데이키즈 등 R&B 발라드 그룹의 유행을 이끌었으며 현재까지 활동을 이어가고 있는 보컬 그룹이기도 하다.',
+    INTRO2 = '윤민수는 본래 남성 보컬 그룹 포맨의 멤버였다. 1998년 포맨의 한현희, 정세영, 이정호와 함께 1기 멤버로서 활동하였으며, 같은 해 [Four Man First Album]을 발매함으로서 가요계 데뷔를 이뤘다.
+포맨은 당시 전 세계적으로 유행하던 발라드 보이 그룹의 음악 스타일을 따랐으며, 미국의 유명 보컬 그룹 Boyz II Man이나 보이 그룹 Backstreet Boys, 98 Degrees 등의 음악을 연상케 한다는 평을 받았다. 타이틀곡 나보다 더 나를 사랑한,
+나만의 너 등이 수록되어있다. 이후 애절한 분위기 대신 전자음과 힙합 비트를 적극적으로 사용한 두 번째 정규 앨범 [이렇게 천일 동안 모으면 이별이 사라진다고 했다]를 2000년 발표했다. 강렬한 전자음과 보컬이 어우러진 꽃잎 과 Sad Song  등으로 활동을 이어갔다.
+이 앨범을 마지막으로 윤민수는 포맨을 떠나 새로운 보컬 그룹 바이브에 합류하게 된다.
+2011년 멤버 윤민수가 MBC 음악 경연 프로그램 "나는 가수다"에 출연하여 인지도를 쌓았다. 이후 2012년 데뷔 10주년을 맞아 [Vibe 10th Anniversary Live Edition] 스페셜 앨범을 발매하였고, 2013년에는 어쿠스틱 사운드를 담은 [Organic Sound]를 발매하며 꼭 한번 만나고 싶다 를 히트시켰으며,
+ 이듬해 2014년 2월에는 정규 6집 [Ritardando]를 통해 두 남자의 이야기를 이어갔다.'
+WHERE ARTIST_SEQ LIKE 14;
+UPDATE ARTIST
+SET INTRO1 = 'B.I, 김진환, 송윤형, BOBBY, 김동혁, 구준회, 정찬우 이상 7명으로 구성된 iKON은 icon과 Korea 의 합성어로 한국의 아이콘이 되라는 의미를 갖고 있다. 힙합을 기반으로 한 다양한 장
+르의 곡들을 선보일 뿐 아니라 그룹의 전체적인 이미지와는 상반된 부드럽고 섬세한 매력까지 보여주며 새로운 한류 문화를 만들어가고 있다. 첫 등장은 아이돌 데뷔 서바이벌 프로그램 "WIN - Who Is Next?"였다.',
+    INTRO2 = '데뷔와 동시에 국내외에서 많은 사랑을 받은 그룹이 다시 한 번 화제가 된 것은 공연 기록이다. 해외 아티스트 사상 최단 기록 일본 돔 투어를 개최한 것을 시작으로 일본과 대만, 중국, 홍
+콩, 인도네시아 등 아시아를 투어하며 상당한 수의 팬들을 끌어모았고, 티켓 추가 요청에 따라 공연을 추가하는 에피소드까지 있었으니, 해외에서까지 대형 신인임을 증명한 셈이다.
+2018년 1월, 두 번째 정규 앨범 [Return]을 발매하며 국내에 컴백했고, 발매 직후 타이틀곡 사랑을 했다 가 음원 차트 1위를 석권했다. 급기야 모든 차트 실시간 1위를 넘어 일간 차트 1위를 줄 세우며 "퍼펙트 올킬"을 기록했는데,
+이는 단순히 아이돌이 팬덤으로 이룬 결과가 아니라 대중들에게 음악성을 인정받아 입소문이 퍼지며 세운 기록이라는 점에서 화제를 모으며 iKON의 대중성을 증명한 계기였다. 같은 해 8월에는 새 미니앨범 [NEW KIDS : CONTINUE]로 컴백했으며,
+2개월 후 [NEW KIDS : THE FINAL]을 발표해 차트 정상과 함께 NEW KIDS 시리즈의 마침표를 찍었다.'
+WHERE ARTIST_SEQ LIKE 15;
+UPDATE ARTIST
+SET INTRO1 = '"슈퍼스타K 시즌4" 우승자 출신 싱어송라이터 로이킴은 본명 김상우로 한국 본토 출신 가수이다. 어려서부터 여러 악기를 배우며 음악을 접해온 그는 중학교 시절 기타 연주를 시작하면서
+ 본격적으로 가수의 꿈을 키웠다. 중학교 졸업 즈음 미국으로 떠나 그곳에서 고교시절을 보내며 노래 동아리를 운영하고, 유튜브에 자작곡을 올리는 등 다양한 음악 활동을 통해 실력을 쌓았다.
+ 대학 입학을 앞두고 참가한 오디션 프로그램 "슈퍼스타K 시즌4"는 그의 삶을 바꿔준 프로그램이었다.',
+    INTRO2 = '이듬해 4월, 포크 음악의 정서가 담긴 봄봄봄 으로 데뷔, 발매 직후 음원차트 1위에 올랐다. 2013년 6월에 발매한 정규 앨범[Love Love Love]는 전곡을 자작곡으로 채우며 싱어송라이터로서
+의 가능성을 보인 작품이었다. 계절감을 담은 포크 음악과 짙은 감성 발라드가 특기인 그는 이어진 두 번째 정규앨범 [HOME]에서 가을의 감성포크를 선보이는가 하면, 세 번째 정규앨범[북두칠성]에서는
+겨울에 어울리는 농후한 발라드로 외로운 남자의 감성을 표현했다.
+로이킴의 히스토리에서 OST를 빼놓을 수 없다. 데뷔와 동시에 발매된 "응답하라1994"의 서울 그곳은 으로 OST계의 블루칩으로 떠오르며 본격적인 커리어를 쌓아갔다. "피노키오"의 피노키오 , "두번째 스무살"의
+날 사랑하지 않는다 , "또 오해영"의 어쩌면 나 는 OST에서 그의 존재감을 강하게 드러낸 보석 같은 기회였다. 특히 2017년을 강타한 드라마 "도깨비"에서는 극 중 주인공의 데이트 신을 장식한 HEAVEN 으로 방영
+직후 시청자들의 음원 문의를 부르며 그 어느 때보다 열광적인 사랑을 받았다.
+어느덧 6년차 가수가 된 로이킴은 2018년 한 해를 맞이하는 첫 곡으로 자작곡 그때 헤어지면 돼 발매했으며, 발매 직 후 차트를 점령하며 명실상부한 음원 강자로 활동하고 있다.'
+WHERE ARTIST_SEQ LIKE 16;
+UPDATE ARTIST
+SET INTRO1 = '폴킴은 뉴런 뮤직에 소속된 대한민국의 싱어송라이터다. 2014년 싱글 커피 한 잔 할래요 로 데뷔했다.
+EP [Song Diary], [Her]을 발매했으며, 2017년 9월 멜로망스와 함께 출연한 "유희열의 스케치북"을 통해 인지도가 급 상승했다.',
+    INTRO2 = '2017년 9월에 정규 앨범 Part 1 [길]을, 2018년 1월에 정규 앨범 Part 2 [터널]을 발매했다.'
+WHERE ARTIST_SEQ LIKE 17;
+UPDATE ARTIST
+SET INTRO1 = 'BLACKPINK (블랙핑크)는 YG엔터테인컨트에 소속되어 있는 대한민국의 4인조 걸그룹이다. 2016년 8월 싱글 [SQUARE ONE]으로 데뷔했으며
+타이틀 곡인 휘파람 이 음원 사이트 주간 차트에 2주 연속1위로 랭크되었다.',
+    INTRO2 = '2016년 11월 두 번째 싱글 [SQUARE ONE]이 발매되었고 2017년 6월[마지막처럼]으로 활동했으며, 2018년 이전의 싱글들과 새 노래인 뚜두뚜두 를 포함한 EP [SQUARE UP]이 발표되었다.
+
+[수상이력]
+제7회 가온 차트K-POP 어워드 | 월드루키상
+2017 하이원 서울가요대상 | 본상
+2017 골든디스크 어워즈 | 음원 본상
+제6회 가온 차트K-POP 어워드 | 올해의 신인상
+2016 하이원 서울가요대상 | 신인상
+2016 골든디스크 어워즈 | 음원 신인상
+2016 Mnet Asian Music Awards | 베스트 뮤직비디오
+2016 MelOn Music Awards | 신인상
+2016 제1회 아시아 아티스트 어워즈 | 신인상'
+WHERE ARTIST_SEQ LIKE 18;
+UPDATE ARTIST
+SET INTRO1 = '데뷔와 동시에 정상급 위치로 발돋움 한 9인조 걸그룹 TWICE는 눈으로 한 번, 귀로 두 번 감동을 준다는 당찬 포부를 가진 걸그룹이다. 이들은 데뷔와 동시에 발매한 모든 싱글이 차트 최
+상단에 위치한 것은 물론, 다양한 콘셉트를 소화하며 대중적 사랑을 받고 있다. 오디션 프로그램 "Sixteen" 선발 멤버로 구성된 TWICE는 2015년 10월 OOH-AHH하게 로 데뷔 후
+음원 차트 최상위권 랭크 및 폭발적인 성장세를 보이며 대형 신인의 탄생을 알렸다.',
+    INTRO2 = '두 번째 EP [PAGE TWO]에서는 한층 밝은 에너지를 담은 Cheer Up 으로 모든 방송사와 음원 차트 1위를 석권했고, 멜론 주간 TOP 10에 17주 연속 랭크되는 등 신인 그룹으로서 놀라운
+기록을 세웠다. 특히 이 곡은 2016년 멜론 연간 차트 1위에 오르며 TWICE를 명실상부한 대세 걸그룹으로 이끌었다. 그 해 말 발매한 세 번째 EP [TWICEcoaster : LANE 1] 수록곡
+TT 의 뮤직비디오는 공개 하루 만에 500만 뷰를 기록했으며, 제37회 "골든디스크" 디지털 음원 대상을 수상했다.
+이듬해 2월 첫 번째 단독 콘서트 겸 투어 "TWICE LAND –The Opening"을 성공적으로 개최하였고, 스페셜 앨범 타이틀곡 Knock Knock 과 이어 발매한 Signal 역시 멜론 주간 차
+트에 3주 연속 1위를 차지하며 히트곡의 대열에 올랐다. 2017년 10월 발매한 첫 정규앨범 [Twicetagram] 타이틀곡 LIKEY 의 뮤직비디오는 오픈 33일 만에 유튜브 조회 수 1억을 돌파
+하면서 대한민국 여성 가수 최단 기록을 세웠다. 이어 발매한 리패키지 앨범[Merry & Happy]의 Heartshaker 과 2018년 4월 발표한 What is Love? 까지 멜론 주간 차트 1위에
+올라 흥행에 성공하면서 대한민국 최고의 걸그룹으로 자리매김했다.
+2018년 7월에는 두 번째 스페셜 앨범 [Summer Nights]을 공개, 무더위를 가시게 할 청량한 분위기의 밝은 에너지를 담아냈다.'
+WHERE ARTIST_SEQ LIKE 19;
+UPDATE ARTIST
+SET INTRO1 = 'Red Velvet (레드벨벳)은 강렬하고 매혹적인 레드와 여성스럽고 부드러운 벨벳 의 이미지에서 연상되듯, 색깔 있고 세련된 음악과 퍼포먼스로 전 세계를 매료시키겠다는 포부를 가진
+걸그룹이다. 레드와 벨벳 콘셉트를 번갈아 선보인 독특한 전략으로 글로벌 팬들에게 큰 사랑을 받고 있다. 메인 보컬인 웬디, 리드보컬 슬기, 서브보컬 조이, 랩 파트를 맡고 있는 아이린
+과 예리까지 총 5명으로 구성된 레드벨벳은 전원 오디션 연습생 출신에 노래, 랩, 춤이 가능한 실력파그룹이다.',
+    INTRO2 = '2014년, 데뷔 2주 만에 음악방송 정상에 선 첫 싱글 행복(Happiness) 을 시작으로 선배 걸그룹 S.E.S의 원작을 커버한 Be Natural 마저 정상권에 올리며 가요계를 이끌 특급
+신인으로 주목받았다. 이들은 성공적 데뷔 시즌의 성과를 바탕으로 "골든디스크", "서울가요대상"에서 신인상을 받으며 차세대 걸그룹으로서의 입지를 확고히 다졌다.
+2015년 예리를 영입, 5인조로 발표한 EP [Ice Cream Cake]는 레드와 벨벳의 느낌을 한 작품에 녹이며 반전 매력을 선보였다. 예능 프로그램 출연을 병행하는 등 만능 엔터테이너의
+모습을 보여주기 시작한 것이 이 시기다. 이어서 발매된 정규 1집 [The Red]는 이들을 국내 정상권 걸그룹으로 포지셔닝 한 터닝포인트였다. 첫 싱글 Dumb Dumb 은 주요 차트 1위를 석
+권하며 화제를 모았고, 뒤이어 발매한 EP [The Velvet]의 발라드 트랙 7월7일 에서는 기존과는 다른 부드러운 매력을, 유튜브 1억 뷰를 돌파한 Russian Roulette 에선 비비드
+한 매력을 선보이며 글로벌 걸그룹의 저력을 보였다.
+사랑하는 이를 "루키"로 귀엽고 재치 있게 비유한 팝 댄스 트랙 Rookie, 그리고 중독적인 후크와 시원한 여름의 분위기를 담은 빨간 맛 은 팬덤을 넘어 대중적으로 고른 사랑을 받은 2017년의
+히트곡들이었다. 이후 정규작 [Perfect Velvet]의 타이틀곡 피카부 에서는 현 세대의 쿨한 사랑 방식을 업 템포 넘버로 표현했으며, 앨범 전체에 국내외 유명 뮤지션들이 참여해 완성도를 높였다.
+ 이어 [The Perfect Red Velvet - The 2nd Album Repackage]의 타이틀곡 Bad Boy 는 리패키지 앨범임에도 오랜 시간 차트 상위권에 랭크되었다.
+2018년에는 새 EP [Summer Magic]을 공개해 또 한 번 여름을 강타했다.'
+WHERE ARTIST_SEQ LIKE 20;
+UPDATE ARTIST
+SET INTRO1 = '10cm는 포크음악을 주로 하는 대한민국의 인디밴드이다. 2010년 4월 [10cm The First EP]로 데뷔했으며, 2010년 발매한 싱글 아메리카노 가 미디어에서 화제가 되며 주목을 받았다.
+2011년 2월 첫 정규 앨범 [1.0]과 싱글 안아줘요 로 "제8회 한국 대중음악상"에서 최우수 팝 부문을 수상했다.',
+    INTRO2 = '2016년 4월에 발매된 싱글 봄이 좋냐 는 멜론 월간 차트 1위, 가온 차트 월간 1위를 달성했고, 2016년 "멜론 뮤직 어워드"에서 포크 부문 뮤직 스타일 상을 수상한 바 있다.
+2017년, 기타를 담당하던 윤철중이 탈퇴하면서 권정열 1인 체제로 변경해 그 해 9월 네 번째 정규앨범 [4.0]을 공개했고, 11월에는 EXO 첸과의 컬래버레이션 Bye Babe 로 새로운 조화를 보
+여주었다. 2018년 8월에는 싱글 매트리스 로 컴백했다.
+
+[수상이력]
+2016 MelOn Music Awards | 뮤직스타일상(포크/블루스)
+2015 MelOn Music Awards | 포크 부문
+제8회 한국대중음악상 | 최우수 팝(노래부문)
+2010 Mnet Asian Music Awards | 올해의 발견'
+WHERE ARTIST_SEQ LIKE 21;
+UPDATE ARTIST
+SET INTRO1 = '발매하는 곡마다 메가 히트를 기록하는 히트곡 메이커 볼빨간사춘기는 인디 밴드를 넘어 대중에게 사랑받는 아티스트로 거듭난 여성 듀오다. 사춘기의 순수하고 풋풋한 감성을 표현하
+겠다는 팀명처럼 부끄러움이 많은 사춘기 소녀의 마음을 표현한 곡으로 많은 사랑을 받고 있는 이 그룹은 고등학교 동문인 멤버 안지영 (보컬)과 우지윤 (기타)으로 구성되어 있다.',
+    INTRO2 = '2016년 4월 [RED ICKLE]로 본격적인 활동을 시작했으며 뒤이어 첫 정규앨범 [Full Album RED PLANET]을 발매했다. "유희열의 스케치북" 출연 후 입소문을 타기
+시작한 타이틀곡 우주를 줄게 가 발매 한 달 만에 차트에 진입했고, 결국 1위를 차지하며 역주행의 주인공으로 거듭났다. 앨범의 흥행 뒤 공개한 히든트랙 좋다고 말해 는 발매되자마자
+실시간 차트 1위를 차지했고, 앨범의 수록곡들까지 차트인에 성공하며 명실공히 음원 강자로 떠올랐다.
+소속사 동료인 스무살과 컬래버레이션 한 남이 될 수 있을까 는 발매 후 2주 동안 주간 차트 1위를 지키며 음원 강자의 위력을 보여줬고, 2017년 9월 [Red Diary Page.1]에
+서는 사랑의 시작부터 이별의 순간까지를 일기 형식으로 선보이며 화제를 모았다. 특히 수록곡 중 썸 탈꺼야 , 나의 사춘기에게 , Blue 를 TOP 10에, 전곡을 TOP 20에 안착
+시킨 것은 인디 듀오로서 또 다른 기록이라 할 수 있다.
+준수한 성적으로 사랑 받은 그룹은 2017년 연간 차트 100위에 무려 7곡을 올리는 기염을 토했다. 앨범의 대부분의 곡들을 직접 작사, 작곡하며 자신들만의 감성을 그려가고 있는 볼
+빨간사춘기는 2018년 5월 [Red Diary Page.2]을 발매했으며, 7월에는 Red Diary의 마지막 장 [Hidden Track]을 선보였다.'
+WHERE ARTIST_SEQ LIKE 22;
+
+UPDATE ARTIST
+SET INTRO1 = '차별화된 콘셉트와 뛰어난 실력으로 대중의 사랑을 받으며 "믿듣맘무"라는 수식어를 탄생시킨 걸그룹 마마무는 데뷔 이전부터 실력파 아이돌로 기대를 모았다. 2014년 범키의 행복하
+지마 , 케이윌의 썸남썸녀 , 긱스의 히히하헤호  등 여러 곡에서 활발한 컬래버레이션으로 대중의 관심을 불러 일으켰고 신인답지 않은 완성형 아이돌의 모습을 선보였다.',
+    INTRO2 = '특히 4명의 멤버 모두 작사, 작곡, 안무 메이킹, 보컬, 랩 분야에서 뛰어난 실력을 자랑하는 것이 마마무만의 차별화된 장점이라 할 수 있다.
+그룹은 갓난 아이의 옹알이처럼 원초적이고 본능적인 매력으로 다가가겠다는 뜻인 "마마무"라는 이름으로 2014년 6월 Mr. 애매모호 를 통해 정식 데뷔했다. 같은 해 11월에는 Piano Man
+을 발표, 복고풍의 레트로 음악을 매끄럽게 소화하며 팬들의 주목을 받았다. 뛰어난 실력과 화제성을 인정받은 이들은 4회 가온차트 K-POP 어워드에서 신인상을 수상한 하며 성공적 데뷔를 치렀다.
+이듬해, 두 번째 미니앨범 [Pink Funky]의 음오아예 는 음원 차트 상위권에 올랐고 가온 연간 차트 27위, 멜론 연간 차트 30위를 기록했다. 2016년 3월 넌 is 뭔들 로 음원 사이트 주간
+1위를 석권한 이들은 싱글 Angel, DAB DAB, NEW YORK 을 연이어 발표했으며 2016년 11월 발매한 EP [MEMORY] 수록곡 Decalcomanie로 역주행에 성공, 차트 롱런과 함께 대
+세 걸그룹으로 자리잡았다.
+드라마 "도깨비", "힘쎈여자 도봉순", "맨투맨" 등에서 실력을 뽐냈으며, 특히 "불후의 명곡"에서 역대급 실력과 화려한 퍼포먼스로 1위를 차지하며 사랑 받았다. 2017년 6월 EP [Purple]
+은 활동 기간 중 음악 방송 1위를 7회 차지하는 등 역대급 성과를 이루었으며, 2018년 1월 싱글 칠해줘 를 발매, 4위에 오르기도 했다. 2018년에 들어서는 마마무 연간 앨범 프로젝트 "포시즌"의 신
+호탄으로 [Yellow Flower]를 발매, 음악적 재능의 성숙함을 드러내며 음원 차트를 장악하고 있다.'
+WHERE ARTIST_SEQ LIKE 23;
+UPDATE ARTIST
+SET INTRO1 = '박원은 대한민국의 싱어송라이터이다. "유재하 음악경연대회" 출신 선배였던 정지찬과 함께 듀오 원 모어 찬스(one more chance)를 결성해 데뷔했고, 따뜻하고 정감 있는 음악
+들로 사랑을 받았다.',
+    INTRO2 = '2015년 11월 정규 1집 [Like A Wonder]를 통해 솔로 활동을 시작했으며, 전 곡을 작사, 작곡하여 자신의 음악적 색깔을 가득 담았다. 본래 타이틀곡인 우리 둘이 보다 절절한 이별 노래인
+이럴거면 헤어지지 말았어야지 와 나를 좋아하지 않는 그대에게 가 주목받으며 이별 전문 가수로 성공적인 홀로서기를 시작했다.
+이듬해 이별 감성을 이어 발매한 [1/24]의 타이틀곡 노력 으로 음원 차트 상위권에 진입했고, 아티스트적 색깔을 확고히 구축하며 평단의 호평을 받았다. 2017년 2월 수지와의 듀엣인 러브송 기다리지 말아요
+로 대중들에게 자신을 알렸고, 7월 발매한 EP [0M]의 타이틀곡 all of my life 로 실시간 차트 1위와 주간차트 2위 등극, 2개월 이상 상위권에 랭크되며 상업적인 파급력을 입증했다.
+2018년 10월에는 새 미니앨범 [r]을 공개하며 차가운 가을 감성으로 사랑 받았다.
+
+[수상이력]
+2008 유재하 음악경연대회 | 대상'
+WHERE ARTIST_SEQ LIKE 24;
+UPDATE ARTIST
+SET INTRO1 = '가요계와 예능계 전반에서 맹활약 하고 있는 윤종신은 현재 가수, 싱어송라이터, 예능인, 프로듀서 등 여러 분야에서 독보적인 활약을 펼치는 멀티 엔터테이너이다. 특유의 담백하고 덤덤한
+창법과 현실적인 가사, 새로운 멜로디를 만들어내는 탁월한 재능과 노력을 이어온 그는 데뷔 이후 지금까지 활발한 활동을 이어가고 있다. 윤종신은 대학 내 가요제 입상하며 음악을 시작, 음악
+동료이자 스승인 정석원을 만나 1990년 7월 015B 텅 빈 거리에서 의 객원 보컬로서 가요계에 데뷔했다',
+    INTRO2 = '2009년부터 "슈퍼스타 K"의 심사위원으로 활약하면서 설득력 있는 평가로 좋은 반응을 얻었으며, 2010년에는 재능 있는 가수들을 발굴하고 지원하기 위해 소속사 미스틱 89를 설립했다.
+음악인으로서의 나태를 거부하며 매달 싱글 한 곡을 발표하고 매년 1분기에 컴필레이션으로 묶어 발표하는 프로젝트 "월간 윤종신"을 시작한 것이 이 무렵이다. "월간 윤종신"은 특히 주변에
+뛰어난 아티스트들을 발굴하며 함께 작업하는 것이 특징인데, 협업과 함께 다양한 콘셉트의 노래들을 발표하며 이제는 그의 상징과도 같은 활동이 되었다. 기본적으로 발라드에 능통한 것으로 알려져 있지만,
+누구보다 다양하고 새로운 시도를 선보이고 있음을 그의 끊임없는 디스코그래피를 통해 알 수 있다.
+객원보컬로 데뷔해 프로 작곡가와 작사가로, 또 프로듀서로, 더 나아가 올라운드 멀티 엔터테이너로 인정을 받은 가수는 윤종신이 유일하다. 2018년에는 대중성과 함께 그동안의 공로를 인정받아 제 7회
+가온 차트 뮤직 어워드에서 올해의 파퓰러 싱어상, K-POP 공헌상을 동시에 수상하는 쾌거도 거두었다. 객원가수로 시작해 이제는 가요계에서 새로운 판을 짜고 있는 윤종신,
+우리는 그를 올라운드 플레이어라 부른다.'
+WHERE ARTIST_SEQ LIKE 25;
+UPDATE ARTIST
+SET INTRO1 = '벤은 대한민국의 가수로 2010년 그룹 베베미뇽의 싱글 키도 작고 예쁘지도 않지만 으로 데뷔했으며, 2012년 10월 첫 솔로 EP [147.5]를 발매해 활동을 시작했다.
+2014년부터 음악 경연 프로그램 "불후의 명곡"에서 리틀 이선희로 활약하면서 주목을 받아 드라마 "프로듀사", "오 나의 귀신님","또 오해영" 등 사운드 트랙에 참여했으며, 미니 앨범 [M',
+    INTRO2 = '2009년부터 "슈퍼스타 K"의 심사위원으로 활약하면서 설득력 있는 평가로 좋은 반응을 얻었으며, 2010년에는 재능 있는 가수들을 발굴하고 지원하기 위해 소속사 미스틱 89를 설립했다.
+음악인으로서의 나태를 거부하며 매달 싱글 한 곡을 발표하고 매년 1분기에 컴필레이션으로 묶어 발표하는 프로젝트 "월간 윤종신"을 시작한 것이 이 무렵이다. "월간 윤종신"은 특히 주변에
+뛰어난 아티스트들을 발굴하며 함께 작업하는 것이 특징인데, 협업과 함께 다양한 콘셉트의 노래들을 발표하며 이제는 그의 상징과도 같은 활동이 되었다. 기본적으로 발라드에 능통한 것으로 알려져 있지만,
+누구보다 다양하고 새로운 시도를 선보이고 있음을 그의 끊임없는 디스코그래피를 통해 알 수 있다.
+객원보컬로 데뷔해 프로 작곡가와 작사가로, 또 프로듀서로, 더 나아가 올라운드 멀티 엔터테이너로 인정을 받은 가수는 윤종신이 유일하다. 2018년에는 대중성과 함께 그동안의 공로를 인정받아 제 7회
+가온 차트 뮤직 어워드에서 올해의 파퓰러 싱어상, K-POP 공헌상을 동시에 수상하는 쾌거도 거두었다. 객원가수로 시작해 이제는 가요계에서 새로운 판을 짜고 있는 윤종신,
+우리는 그를 올라운드 플레이어라 부른다.'
+WHERE ARTIST_SEQ LIKE 26;
+UPDATE ARTIST
+SET INTRO1 = '2017년, 역주행 전설을 실현한 선물 속 가사처럼 "마법같이 빛난" 한 해를 보낸 멜로망스는 대중 음악계의 차세대 인디 듀오다. 시크한 표정으로 시원한 고음을 내뱉는 보컬 김민석과 유
+명 뮤지션의 작품에 세션으로 참여할 만큼 뛰어난 실력을 지닌 피아노의 정동환은 서울예대 실용음악과 동문 사이로, 2015년 첫 EP [Sentimental]을 통해 데뷔했다.',
+    INTRO2 = '데뷔 EP에서 전곡을 작사, 작곡하며 멜로망스만의 음악적 색깔을 선보였고 훈훈한 비주얼과 돋보이는 실력으로 팬들의 주목을 받았다. 데뷔 앨범 발표 후 보컬 김민석은 음악 예능 프로그램
+"너의 목소리가 보여"에서 세 번째 나얼로 출연하며 뛰어난 노래 실력을 뽐냈고 정동환은 "자라섬 재즈 페스티벌" 무대에서 자신만의 음악을 연주하는 등 그룹 외 활동도 활발하게 펼쳤다.
+첫 앨범과 대칭 구조를 이루는 미니앨범 [Romantic]과 새 연작의 첫 앨범 [Sunshine]를 발매하며 꾸준한 활동을 이어간 그룹은 2017년 7월 EP [Moonlight]를 발매하며 새로운
+시작을 알린다. 심플한 악기구성으로 시작한 타이틀 곡 선물 은 중반부부터 더해지는 현악기에 풍성한 사운드로 사랑에 빠진 기적 같은 순간을 다이나믹하게 그렸다. 특히 9월 출연한 "유희열의
+스케치북" 방송 이후 차트에 진입, 순위 상승을 거듭하다 마침내 1위를 차지하며 역주행의 신화를 썼고, 11월에는 멜론 월간 차트 1위에 올라서는 등 저력을 보였다.
+차트 1위에 오른 10월을 시작으로 2018년 상반기까지 최상위권을 지키며 꾸준한 사랑을 받고 있는 멜로망스는 2018년 7월, 미니앨범 [The Fairy Tale]를 발매하며 대중 친화적이면서도
+편안한 음악들을 선보였다. 가요계의 대표 인디 뮤지션으로 자리 잡은 멜로망스는 그들의 애칭인 "웰 메이드 피아노 팝 듀오"의 아이덴티티를 성공적으로 구축해 나가고 있다.'
+WHERE ARTIST_SEQ LIKE 27;
+UPDATE ARTIST
+SET INTRO1 = '먼데이키즈(Monday Kiz)는 2005년 결성되어 현재까지 활동하고 있는 남성 R&B 그룹이다. 2000년대 중반 SG 워너비 등의 그룹 R&B 사운드의 유행을 일조했던 그룹이다. 현재까지
+다섯 장의 정규 앨범을 발매하였으며, 본래 2인조 그룹이었으나 2008년 멤버 김민수가 오토바이 사고로 사망함으로서 해체되었고, 다시 새로운 멤버를 받아들여 3인조로 재편 후 현재는 이진
+성 1인 솔로 아티스트로 활동하고 있다.',
+    INTRO2 = '2005년 먼데이키즈는 1985년생 서울 출신 이진성과 부산 출신 김민수의 2인조로 데뷔했다. 정규 앨범 발매 이전 신해철의 락 그룹 넥스트(NEXT)의 5.5집 리메이크 앨범 [Regame]의
+인형의 기사에 피처링하며 이름을 알렸다. 첫 번째 정규 앨범 [Bye Bye Bye]는 2005년 11월 발매되었다. 당시 R&B 그룹들의 공통된 유행이었던 드라마식 구성의 뮤직비디오와 애절
+한 가사와 가창을 따라간 앨범에서는 하모니카 연주자 전제덕이 참여한 Bye Bye Bye , 보컬 그룹 원티드(Wanted)의 앨범에 수록되는 것 대신 그들의 앨범에 수록된 Promise 등이
+절절한 보컬 속에서 주목받았다.
+2016년 원년 멤버 이진성이 군 제대 후 홀로서기를 시작. 2005년 먼데이 키즈의 처음 모습 그대로를 담은 EP 앨범 [Reboot]를 발매하며 새로운 먼데이 키즈의 이야기를 이어갔다.
+많은 변화가 있었음에도 불구하고 여전히 깊은 감성을 담은 싱글 하기 싫은 말 , 누군가를 떠나 보낸다는 건 , 가을 안부 등을 발표했다. 또한 김나영, 김보경, 015B, 지아 등과
+컬래버레이션 싱글을 발표하면서 많은 이들에게 공감과 낭만을 선물하고 있다.'
+WHERE ARTIST_SEQ LIKE 28;
+UPDATE ARTIST
+SET INTRO1 = '박효신은 특유의 굵은 보이스로 일명 "소몰이 창법"의 창시자로 대한민국에 몇 안 되는 감성 발라더이다. 고등학교 재학 시절 가수의 꿈을 키우며 "부천 청소년 가요제", "YMCA 청소년
+가요제", "제물포 가요제" 등의 각종 대회에 나가 수상을 하면서 프로듀서 황윤민에게 스카우트되었다. 1년 반의 연습 기간을 거쳐 신촌 뮤직을 통해 1999년 [해줄 수 없는 일]로 데뷔했다.',
+    INTRO2 = '박효신은 실력만큼 발표하는 앨범마다 대중적으로도 좋은 평가를 받았음에도 소속사와 분쟁으로 번번이 가수 활동에 제약을 받은 불운의 가수이기도 하다. 신촌뮤직 시절부터 시작된 불운은 2006
+년 닛시 엔터테인먼트와 법정 공방에서 박효신이 닛시 측에 계약금 전액을 돌려주는 것으로 마무리되었고, 2008년 1월에는 전 소속사였던 인터스테이지(나원)로부터 전속계약 위반으로 30억 원
+소송을 당했다. 한편, 2009년 1월, 팬텀 엔터테인먼트로부터 또 한번의 고소를 당했고, 이는 박효신의 승소로 끝났다. 기나긴 소속사와의 전쟁은 2012년 6월 박효신이 15억원을 배상하는
+것으로 최종 판결이 나면서 종결됐다. 오랜 시간 심적 고초를 겪으면서도 박효신은 꾸준히 음악 활동을 계속 해왔으며, 2009년 6집 [Gift - Part 1]을 발표, 사랑한 후에 로 케이블 음
+악방송 1위를 차지해 발라더로서 여전함을 보여주었다.
+이어 발매한 HAPPY TOGETHER 와 Shine Your Light 도 차트에서 준수한 성적을 보였다. 마지막 싱글 Shine Your Light 발매 후 1년 6개월 만에 정규앨범 [I am A Dre
+amer]라는 앨범을 발매했는데, Home과 Beautiful Tommorrow 가 나란히 차트에 올라 주목을 받았고 이때 진행한 전국투어 "I am A Dreamer 가 성황리에 공연을 마치면서 한국
+발라드계 최정상급 보컬리스트임을 보여줬다. 2017 멜론 뮤직 어워드에서 Stage of the year를 수상하며 공연계에서의 영향력을 입증했고, 겨울의 감성을 담은 겨울소리 로 2018년을
+열며 박효신만의 색채를 고스란히 담아냈다.'
+WHERE ARTIST_SEQ LIKE 60;
 UPDATE MUSIC SET MUSIC_ADDR = 'https://www.youtube.com/embed/mjTdMX27ThM' WHERE MUSIC_SEQ LIKE 57;
 UPDATE MUSIC SET MUSIC_ADDR = 'https://www.youtube.com/embed/Pf88Wdj68JY' WHERE MUSIC_SEQ LIKE 73;
 UPDATE MUSIC SET MUSIC_ADDR = 'https://www.youtube.com/embed/DUTUHUbJ6u8' WHERE MUSIC_SEQ LIKE 72;
