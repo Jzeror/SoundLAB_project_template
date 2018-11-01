@@ -30,7 +30,7 @@ ls ={
 																 .click(()=>{ 
 																	 alert('liveChr click');
 																	 let realChart = 'realChart';
-																		$.getJSON(sh.ctx()+'/music/top50/'+realChart,d=>{
+																		$.getJSON(sh.ctx()+'/music/top50/'+realChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
 																			 ls.top50table(d);
 																	 })
@@ -41,7 +41,7 @@ ls ={
 																 .click(()=>{ 
 																	 alert('wklChr click'); 
 																	 	let weekChart = 'weekChart';
-																		$.getJSON(sh.ctx()+'/music/top50/'+weekChart,d=>{
+																		$.getJSON(sh.ctx()+'/music/top50/'+weekChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
 																			 ls.top50table(d);
 																	 })
@@ -51,7 +51,7 @@ ls ={
 																.click(()=>{ 
 																	alert('dayChr click'); 
 																	 let monthChart = 'monthChart';
-																		$.getJSON(sh.ctx()+'/music/top50/'+monthChart,d=>{
+																		$.getJSON(sh.ctx()+'/music/top50/'+monthChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
 																			 ls.top50table(d);
 																	 })
@@ -78,7 +78,7 @@ ls ={
 																	seqs += v.value + ((i < ck.length-1)?',':'');
 																});
 																jt.music_player(seqs);
-																console.log(seqs);
+																console.log('무얼넘길까 ::: '+seqs);
 																
 														}),
 																	$('<button/>').attr({id : 'listenAll'})
@@ -175,41 +175,44 @@ ls ={
 				)
 		).appendTo('#chart_title');
 })
-						let no= 31;
-					//무한 스크롤
-		     	$(window).on("scroll", function() {
+				
 		     	
-		        		var scrollHeight = $(document).height();
-		        		var scrollPosition = $(window).height() + $(window).scrollTop();		
+								let no= 31;
+									//무한 스크롤
+						     	$(window).on("scroll", function() {
+						     			console.log('무한스크롤!');
+						        		var scrollHeight = $(document).height();
+						        		var scrollPosition = $(window).height() + $(window).scrollTop();		
 
-		        		$("#scrollHeight").text(scrollHeight);
-		        		$("#scrollPosition").text(scrollPosition);
-		        		$("#bottom").text(scrollHeight - scrollPosition);
-		        		
-		        
-		        		if ( scrollPosition > scrollHeight - 100) {
-		        			if(bool_sw){ 
-		    		     		sendData(); //실행 
-		    		     		} 
-		    		     		function sendData(){ 
-		    		     		bool_sw = false;
-		    		     		
-		    		     			$.getJSON($.ctx()+'/music/infiSc/'+no+','+$.cookie("loginID"),d=>{
-		    		     				if(no <= 50){
-			        					ls.top50table(d);
-			        						no=no+5;
-			        						  setTimeout(function(){bool_sw = true;},500) 
-		    		     		} 
-		    		     			})
-		    		     		}
-		        		}
-		        	});
-
-		     	
-		     	
+						        		$("#scrollHeight").text(scrollHeight);
+						        		$("#scrollPosition").text(scrollPosition);
+						        		$("#bottom").text(scrollHeight - scrollPosition);
+						        		
+						        		
+						        		if ( scrollPosition > scrollHeight - 100) {
+						        			if(bool_sw){ 
+						    		     		sendData(); //실행 
+						    		     		} 
+						    		     		function sendData(){ 
+						    		     		bool_sw = false;
+						    		     		
+						    		     			$.getJSON($.ctx()+'/music/infiSc/'+no+','+$.cookie("loginID"),d=>{
+						    		     				if(no <= 50){
+							        					ls.top50table(d);
+							        						no=no+5;
+							        						  setTimeout(function(){bool_sw = true;},500) 
+						    		     		} 
+						    		     			})
+						    		     		}
+						        		}
+						        	});
 					
 					}
 	        	});
+			
+		
+
+			
 		},
 				
 		album :x=>{
@@ -368,8 +371,36 @@ ls ={
 								
 							
 				).appendTo($('#topTable'));
-				 
-			 
+						var bool_sw = true;
+						let no= 31;
+						//무한 스크롤
+			     	/*$(window).on("scroll", function() {
+			     			console.log('무한스크롤!');
+			        		var scrollHeight = $(document).height();
+			        		var scrollPosition = $(window).height() + $(window).scrollTop();		
+
+			        		$("#scrollHeight").text(scrollHeight);
+			        		$("#scrollPosition").text(scrollPosition);
+			        		$("#bottom").text(scrollHeight - scrollPosition);
+			        		
+			        
+			        		if ( scrollPosition > scrollHeight - 100) {
+			        			if(bool_sw){ 
+			    		     		sendData(); //실행 
+			    		     		} 
+			    		     		function sendData(){ 
+			    		     		bool_sw = false;
+			    		     		
+			    		     			$.getJSON($.ctx()+'/music/infiSc/'+no+','+$.cookie("loginID"),d=>{
+			    		     				if(no <= 50){
+				        					ls.top50table(d);
+				        						no=no+5;
+				        						  setTimeout(function(){bool_sw = true;},500) 
+			    		     		} 
+			    		     			})
+			    		     		}
+			        		}
+			        	});*/
 		
 				
 					})
@@ -403,7 +434,7 @@ ls ={
 
 														.click(()=>{ 
 														
-																console.log(v.ALBUM_SEQ);
+																console.log('진태야 받아라 :: '+v.ALBUM_SEQ);
 																jt.album_player(v.ALBUM_SEQ);
 															
 														 })

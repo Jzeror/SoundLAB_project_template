@@ -27,7 +27,9 @@ public class MusicCtrl {
 	static final Logger logger = LoggerFactory.getLogger(MusicCtrl.class);
 	@Autowired MusicMapper musMapper;
 	@Autowired HashMap<String, Object> map;
-
+	 
+	 String[] arr = new String[10];
+	 int no =0;
 	@GetMapping("/top50/{x}")
 	private List<Map<?,?>> top50(@PathVariable String x) {
 		map.clear();
@@ -36,9 +38,9 @@ public class MusicCtrl {
 		String chartType = x.split(",")[0];
 		String id = x.split(",")[1];
 		Util.log.accept("id :: "+ id );
-		
+		if(!id.equals("undefined")) map.put("id",id);
 		if(chartType.equals("realChart") ) {
-			if(!id.equals("undefined")) map.put("id",id);
+			
 			 Calendar cal = Calendar.getInstance();
 			 cal.add(Calendar.DATE, -1);
 		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
@@ -50,7 +52,6 @@ public class MusicCtrl {
 			 Util.log.accept("id:: " +map.get("id"));
 			 System.out.println("topList:::::"+topList);
 		}else if (chartType.equals("weekChart")){
-			if(!id.equals("undefined")) map.put("id",id);
 			Calendar cal = Calendar.getInstance();
 			 cal.add(Calendar.DATE, -7);
 		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
@@ -62,7 +63,6 @@ public class MusicCtrl {
 			 Util.log.accept("id:: " +map.get("id"));
 			 System.out.println("topList:::::"+topList);
 		}else if (chartType.equals("monthChart") ){
-			if(!id.equals("undefined")) map.put("id",id);
 			Calendar cal = Calendar.getInstance();
 			 cal.add(Calendar.DATE, -30);
 		     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
@@ -80,6 +80,7 @@ public class MusicCtrl {
 	
 	@GetMapping("/top50lineChart")
 	public List<Map<?,?>> top50lineChart() {
+		
 		map.clear();
 		  List<Map<?,?>> chartData = null;
 		  Calendar cal = Calendar.getInstance();

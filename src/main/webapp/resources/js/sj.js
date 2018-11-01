@@ -126,7 +126,7 @@ sj ={
 										albumTitle : v.albumTitle,
 										type : v.type
 								};
-								ald.push(z);		
+								ald.push(z);
 							}
 						});
 						
@@ -549,7 +549,7 @@ sj.service = {
 		},
 		fy_album_dt : x=>{
 			$('#for-album-dt').empty();
-			
+			console.log(x.length);
 			$('<div/>').addClass('sj-music-songs-info sj-mb-10 sj-d-flex sj-flex-wrap sj-align-items-center sj-justify-content-between').append(
 					$('<div/>').addClass('sj-songs-info-title').append(
 							$('<h4/>').html(x[0].albumTitle)

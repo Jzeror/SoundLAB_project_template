@@ -637,7 +637,7 @@ html, body, main {
     padding : 0px 0px 0px 5px;
 }
 
-.sh-updown {
+.sh-music-upbtn i.active {
 	color: #f68657;
     text-decoration: none;
 }

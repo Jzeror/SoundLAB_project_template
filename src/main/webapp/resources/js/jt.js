@@ -2,6 +2,7 @@
 var jt = jt || {};
 jt ={
 		search :z=>{ //앞에서 넘어온 map
+		
 			$.getJSON($.ctx()+'/service/search/'+z+'/'+$.cookie('loginID'),x=>{
 
   				let art = x.artist;
@@ -174,11 +175,7 @@ jt ={
   								$('<span/>').addClass('glyphicon glyphicon-play').html('앨범듣기')
   							).click(e=>{
   								console.log('넘기는 앨범시퀀스::'+j.ALBUM_SEQ);
-  								$.getJSON($.ctx()+'/service/player/album/'+j.ALBUM_SEQ,d=>{
-  									console.log("넘어온값::"+d.albumSeq);
-  									jt.album_player(d.albumSeq);
-  								})
-  								
+  									jt.album_player(j.ALBUM_SEQ);
   							});
   						$('<br/>').appendTo($('#jt_album_body'+i));
   					})
@@ -221,6 +218,7 @@ jt ={
 		
 		//곡 차트
 		music_list : x=>{
+			
 			console.log('곡화면에 넘어온 가수이름:::'+x.musics[0].ARTIST_NAME);
 			console.log('곡화면에 넘어온 뮤직이름:::'+x.musics[0].MUSIC_SEQ);
 			$('<div/>').attr({id:'jt_search_music'}).addClass('container').appendTo($('#jt_content'));
@@ -704,15 +702,21 @@ jt ={
 
 					
 				})
-
+				
 		},
 
 		
 		// 뮤직 플레이어
 		music_player : x=>{
+
 			console.log('player받은값::'+x);
-			
-			$.getJSON($.ctx()+'/service/player/music/'+x,d=>{
+			let memberId = 'shin';
+			console.log('memberId ::: '+memberId);
+			if($.cookie('loginID') != null){
+				memberId = $.cookie('loginID');
+				console.log('memberId is not null ::: '+memberId);
+			}
+			$.getJSON($.ctx()+'/service/player/music/'+x+'/'+memberId,d=>{
 				let openWin = window.open(sh.ctx()+'/#SoundLAB_Player',"soundlab","left="+(screen.availWidth-730)/2+",top="+(screen.availHeight-495)/2+","+"width=730,height=495, menubar=no");
 				let player = $(openWin.document.getElementById('wrapper')).length;
 				console.log('player ::: '+player);
@@ -721,7 +725,6 @@ jt ={
 		            	setTimeout(x=>{
 		                    let sonWrap = $(openWin.document.getElementById('wrapper'));
 		                    sonWrap.empty();
-		                    console.log(d.musics[0].music_addr);
 		                    
 		                    	$('<div/>').attr({id:'jt_playerdt'}).addClass('nowPlaying').appendTo(sonWrap);
 		                    	$('<div/>').attr({id:'jt_player'}).appendTo(openWin.document.getElementById('jt_playerdt'));
@@ -910,7 +913,13 @@ jt ={
 		//앨범 플레이어
 		album_player : x=>{
 			console.log('player받은값::'+x);
-			$.getJSON($.ctx()+'/service/player/album/'+x,d=>{
+			let memberId = 'shin';
+			console.log('memberId ::: '+memberId);
+			if($.cookie('loginID') != null){
+				memberId = $.cookie('loginID');
+				console.log('memberId is not null ::: '+memberId);
+			}
+			$.getJSON($.ctx()+'/service/player/album/'+x+'/'+memberId,d=>{
 
 				let openWin = window.open(sh.ctx()+'/#SoundLAB_Player',"","left="+(screen.availWidth-730)/2+",top="+(screen.availHeight-495)/2+","+"width=730,height=495, menubar=no");
 	            openWin.onload =(()=>{

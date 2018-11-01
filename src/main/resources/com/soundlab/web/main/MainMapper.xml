@@ -4,31 +4,31 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.soundlab.web.main.MainMapper">
 	  <select id="getHash" resultType="int">
-	    SELECT count(*) 
-	    FROM view_record 
-	    WHERE sg_element like 'hash' 
-	    GROUP BY seq_group 
-	    ORDER BY seq_group;
+	    SELECT COUNT(*) 
+	    FROM VIEW_RECORD 
+	    WHERE sg_element LIKE 'hash' 
+	    GROUP BY SEQ_GROUP 
+	    ORDER BY SEQ_GROUP;
 	  </select>
 	  <select id="getChart" parameterType="map" resultType="map">
-	     select 
-			RANK() OVER (PARTITION BY v.sg_element ORDER BY count(*) desc) RANK,
-			v.seq_group MUSIC_SEQ ,count(*) 스트리밍, m.MUSIC_TITLE 타이틀,m.ARTIST_SEQ ARTIST_SEQ,
-			(select artist_name from artist where artist_seq like m.artist_seq) 가수,
-			 m.ALBUM_SEQ ALBUM_SEQ, (select album_title from album where album_seq like m.album_seq) 앨범,
-			 (select CONCAT(img_name,'.',EXT) from img where seq like ALBUM_SEQ) IMG_NAME,
-			 CASE WHEN v.seq_group like (select seq_group from updown where member_id like #{memberId} and seq_group like v.seq_group and types like 'd' group by ud_seq desc LIMIT 1)
-			       THEN 'd'
-			      WHEN v.seq_group like (select seq_group from updown where member_id like #{memberId} and seq_group like v.seq_group and types like 'u' group by ud_seq desc LIMIT 1)
-			       THEN 'u'
-			      ELSE 'n'
-			 END AS 업다운
-		from view_record v
-			left join music m on v.SEQ_GROUP = m.MUSIC_SEQ
-		where 
-			v.sg_element like 'music' 
-			and v.view_date between  CONCAT(#{date1},'%') AND CONCAT(#{date2},'%')
-		group by v.seq_group
-		order by count(*) desc limit 5;
+		SELECT 
+			RANK() OVER (PARTITION BY V.SG_ELEMENT ORDER BY COUNT(*) DESC) RANK, 
+			V.SEQ_GROUP MUSIC_SEQ ,M.GENRE_SEQ 장르 ,COUNT(*) 스트리밍, M.MUSIC_TITLE 타이틀,M.ARTIST_SEQ ARTIST_SEQ, 
+			(SELECT ARTIST_NAME FROM ARTIST WHERE ARTIST_SEQ LIKE M.ARTIST_SEQ) 가수, 
+			M.ALBUM_SEQ ALBUM_SEQ, (SELECT ALBUM_TITLE FROM ALBUM WHERE ALBUM_SEQ LIKE M.ALBUM_SEQ) 앨범, 
+			(SELECT CONCAT(IMG_NAME,'.',EXT) FROM IMG WHERE SEQ LIKE ALBUM_SEQ) IMG_NAME, 
+			CASE WHEN V.SEQ_GROUP LIKE (SELECT SEQ_GROUP FROM UPDOWN WHERE MEMBER_ID LIKE #{memberId} AND SEQ_GROUP LIKE V.SEQ_GROUP AND TYPES LIKE 'd' GROUP BY UD_SEQ DESC LIMIT 1) 
+			THEN 'd' 
+			WHEN V.SEQ_GROUP LIKE (SELECT SEQ_GROUP FROM UPDOWN WHERE MEMBER_ID LIKE #{memberId} AND SEQ_GROUP LIKE V.SEQ_GROUP AND TYPES LIKE 'u' GROUP BY UD_SEQ DESC LIMIT 1) 
+			THEN 'u' 
+			ELSE 'n' 
+			END AS 업다운 
+			FROM VIEW_RECORD V 
+			LEFT JOIN MUSIC M ON V.SEQ_GROUP = M.MUSIC_SEQ 
+		WHERE 
+			V.SG_ELEMENT LIKE 'music' 
+			AND V.VIEW_DATE BETWEEN CONCAT(#{date1},'%') AND CONCAT(#{date2},'%') 
+		GROUP BY V.SEQ_GROUP 
+		ORDER BY COUNT(*) DESC LIMIT 5;
 	  </select>
 </mapper>
