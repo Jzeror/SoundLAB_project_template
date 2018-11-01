@@ -33,7 +33,7 @@ ls ={
 																		$.getJSON(sh.ctx()+'/music/top50/'+realChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
 																			 ls.top50table(d);
-																			 ls.infiSc();
+																			 ls.infiSc('realChart');
 																	 })
 																	 
 																 }),
@@ -45,7 +45,7 @@ ls ={
 																		$.getJSON(sh.ctx()+'/music/top50/'+weekChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
 																			 ls.top50table(d);
-																			 ls.infiSc();
+																			 ls.infiSc('weekChart');
 																	 })
 																	 }),
 														 $('<li/>').append(
@@ -56,7 +56,7 @@ ls ={
 																		$.getJSON(sh.ctx()+'/music/top50/'+monthChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
 																			 ls.top50table(d);
-																			 ls.infiSc();
+																			 ls.infiSc('monthChart');
 																	 })
 																	})
 
@@ -110,7 +110,7 @@ ls ={
 					).appendTo($('#chart-top50')),
 					ls.tHeader(),
 					ls.top50table(d),
-					ls.infiSc();
+					ls.infiSc('realChart');
 					$('#allCheck').click(()=>{
 		                if($('#allCheck').is(':checked')){
 		                    $('input[name = al_chkBox]:checkbox').prop('checked',true);
@@ -127,16 +127,16 @@ ls ={
 					 			google.charts.setOnLoadCallback(drawChart1);
 							    function drawChart1() {
 							    	  var data = new google.visualization.DataTable();
-							          data.addColumn('number', 'Day');
+							          data.addColumn('string', 'Day');
 						        	  data.addColumn('number', d[0].ARTIST_NAME+'/'+d[0].MUSIC_TITLE);
 							          data.addColumn('number', d[1].ARTIST_NAME+'/'+d[1].MUSIC_TITLE);
 							          data.addColumn('number', d[2].ARTIST_NAME+'/'+d[2].MUSIC_TITLE);
 							          
 							          for(let i=0; i <21; i=i+3){	
 							          data.addRows([
-							            [d[i].VIEW_DATE*1,  d[i].PER, d[i+1].PER, d[i+2].PER],
-							            [d[i+1].VIEW_DATE*1,  d[i].PER, d[i+1].PER, d[i+2].PER],
-							            [d[i+2].VIEW_DATE*1,  d[i].PER, d[i+1].PER, d[i+2].PER]
+							            [d[i].VIEW_DATE,  d[i].PER, d[i+1].PER, d[i+2].PER],
+							            ['',  d[i].PER, d[i+1].PER, d[i+2].PER],
+							            ['',  d[i].PER, d[i+1].PER, d[i+2].PER]
 							          ]);
 							          }
 							         
@@ -355,7 +355,8 @@ ls ={
 		},
 		
 		
-		infiSc : () =>{
+		infiSc : p =>{
+			
 			var bool_sw = true;
 			//무한 스크롤
 			let no= 31;
@@ -377,7 +378,7 @@ ls ={
 		     		function sendData(){ 
 		     		bool_sw = false;
 		     		
-		     			$.getJSON($.ctx()+'/music/infiSc/'+no+','+$.cookie("loginID"),d=>{
+		     			$.getJSON($.ctx()+'/music/infiSc/'+no+','+$.cookie("loginID")+','+p,d=>{
 		     				if(no <= 50){
         					ls.top50table(d);
         						no=no+5;

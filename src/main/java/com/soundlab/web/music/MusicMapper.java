@@ -8,5 +8,6 @@ public interface MusicMapper {
 	 public List<Map<?,?>> top50List(HashMap<?,?> map);
 	 public List<Map<?,?>> top50lineChart(HashMap<?,?> map);
 	 public List<Map<?,?>> infiSc(HashMap<?,?> map);
+	public List<Map<?, ?>> infiScMap(HashMap<?, ?> map);
 }
 
