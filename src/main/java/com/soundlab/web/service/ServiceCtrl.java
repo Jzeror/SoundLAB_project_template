@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.soundlab.web.bean.*;
 import com.soundlab.web.service.ServiceCtrl;
 
-import jdk.nashorn.internal.ir.annotations.Reference;
 
 
 @RestController
@@ -25,7 +24,6 @@ public class ServiceCtrl {
 	@Autowired Map<String, Object> map;
 	@Autowired ServiceMapper sm;
 	@Autowired artist at;
-	
 	
 	@SuppressWarnings("unchecked")
 	@GetMapping("/search/{artist}/{id}")

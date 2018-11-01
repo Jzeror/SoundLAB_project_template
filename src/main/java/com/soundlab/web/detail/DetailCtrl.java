@@ -26,14 +26,19 @@ public class DetailCtrl {
 	
 	
 	
-	@GetMapping("/detail/{albumSeq}")
-	public Map<String,Object> detail(@PathVariable String albumSeq){
+	@GetMapping("/detail/{albumSeq}/{id}")
+	public Map<String,Object> detail(@PathVariable String albumSeq,@PathVariable String id){
 		logger.info("DetailPgCtrl ::: detail");
 		map.clear();
+		System.out.println("cookieID :: "+id);
+		if(!id.equals("undefined")) {
+			map.put("id", id);
+		}
+		
+		map.put("albumSeq", albumSeq);
+		map.put("musics", dm.getAlbumMusic(map));
 		
 		map.put("album", dm.getAlbum(albumSeq));
-		map.put("musics", dm.getAlbumMusic(albumSeq));
-		
 		map.put("rowCount", dm.count(albumSeq));
 		System.out.println("앨범정보::"+map.get("album"));
 		System.out.println("musics::"+map.get("musics"));
