@@ -152,7 +152,6 @@ jt ={
   						.append(
   								$('<span/>').addClass('glyphicon glyphicon-play').html('앨범듣기')
   							).click(e=>{
-  								console.log('넘기는 앨범시퀀스::'+j.ALBUM_SEQ);
   									jt.album_player(j.ALBUM_SEQ);
   							});
   						$('<br/>').appendTo($('#jt_album_body'+i));
@@ -162,8 +161,6 @@ jt ={
   				//앨범디테일 페이지 이동. 클래스로 접근.
   				$('.jt_album_detail').click(function(e){
   					let albumSeq = $(this).parents('div.jt_album_div').attr('id');
-  					alert(albumSeq);
-  					console.log("뒤에서 넘긴 값::"+x.album.ALBUMTITLE);
   					jt.album_detail(albumSeq);
   				
   				});
@@ -188,13 +185,16 @@ jt ={
   				
   			
 			})
+			 setTimeout(()=>{
+				 fn.scroll({ id : $("#jt_search"), len : 400});
+	         },300);
 		},
 		updown : x=>{ // jt.updown({thiz:$(this), btn:'like'||'hate', aSeq:ARTIST_SEQ})
 			let $this = x.thiz;
 			let url = (x.btn == 'like')
 						?(($this.hasClass('active'))?'delAL':'putAL')
 								:(($this.hasClass('active'))?'delAH':'putAH');
-			if($.cookie("loginID") == 'sound') $.getJSON($.ctx()+'/foryou/'+url+'/'+x.aSeq,d=>{console.log(d.res);});
+			if($.cookie("loginID") == 'sound') $.getJSON($.ctx()+'/foryou/'+url+'/'+x.aSeq,d=>{});
 			jt.ud_active($this);
 		},
 		ud_active : x=>{
@@ -209,9 +209,6 @@ jt ={
 		
 		//곡 차트
 		music_list : x=>{
-			
-			console.log('곡화면에 넘어온 가수이름:::'+x.musics[0].ARTIST_NAME);
-			console.log('곡화면에 넘어온 뮤직이름:::'+x.musics[0].MUSIC_SEQ);
 			$('<div/>').attr({id:'jt_search_music'}).addClass('container').appendTo($('#jt_content'));
 			$('<h3/>').html('곡').appendTo($('#jt_search_music'));
 			$('<div/>')
@@ -234,7 +231,6 @@ jt ={
 				$.each(ckMusic,(i,v)=>{
 					music += v.value + ((i < ckMusic.length-1)?',':'');
 				});
-				console.log("선택한시퀀스::"+music);
 				jt.music_player(music);
 			}).appendTo($('#jt_music_btn_bar1'));
 			
@@ -252,7 +248,6 @@ jt ={
 				$.each(ckMusic,(i,v)=>{
 					music += v.value + ((i < ckMusic.length-1)?',':'');
 				});
-				console.log("선택한시퀀스::"+music);
 				jt.music_player(music);
 			}).appendTo($('#jt_music_btn_bar2'));			
 			$('<br>').appendTo($('#jt_search_music'));
@@ -293,40 +288,21 @@ jt ={
 						$('<td/>').addClass('jt_td_table5').append(
 									$('<i/>').addClass('btn btn-brand fa fa-play')
 									.click(e=>{
-										console.log('뮤직시퀀스::'+j.MUSIC_SEQ);
 										jt.music_player(j.MUSIC_SEQ);
 									}),
 									$('<i/>').addClass((j.TYPES == 'u')?'active':'').attr({id : 'jt_up'+i }).addClass('btn btn-brand fa fa-heart')
 									.click(function(){
-										if($.cookie("loginID")!=null){
+										if(sh.service.auth() == 0 ){
 											sj.service.put_ud({thiz:$(this),btn:'like',mSeq:j.MUSIC_SEQ,gSeq:j.GENRE_SEQ});
-										}else{
-											$.ajax({
-									    		 url : sh.ctx()+'/member/auth',
-										       	  method : 'get',
-										       	  error : m=>{
-										       		alert('로그인이 필요한 서비스입니다.');
-									    			sh.service.login();
-										       	  }
-									    	 });
 										}
+										
 									}),
 									$('<i/>').addClass('btn btn-brand glyphicon glyphicon-facetime-video'),
 									$('<i/>').addClass((j.TYPES == 'd')?'active':'').attr({id : 'jt_down'+i }).addClass('btn btn-brand fa fa-thumbs-down')
 									.click(function(){
-										if($.cookie("loginID")!=null){
+										if(sh.service.auth() == 0 ){
 											sj.service.put_ud({thiz:$(this),btn:'hate',mSeq:j.MUSIC_SEQ,gSeq:j.GENRE_SEQ});
-										}else{
-											$.ajax({
-									    		 url : sh.ctx()+'/member/auth',
-										       	  method : 'get',
-										       	  error : m=>{
-										       		alert('로그인이 필요한 서비스입니다.');
-									    			sh.service.login();
-										       	  }
-									    	 });
 										}
-										
 									})
 								
 								)
@@ -347,7 +323,6 @@ jt ={
 		//앨범디테일 페이지
 		album_detail : z=>{
 			$.getJSON($.ctx()+'/detailPg/detail/'+z+'/'+$.cookie('loginID'),x=>{
-				console.log('앨범디테일에 넘어온 앨범SEQ::'+x.album.ALBUMSEQ);
 				let $cnts = $('#contents');
 				$cnts.empty();
 				let $albumDetailSec = $('<section/>').attr({ id : 'albumDetailSec'});
@@ -411,7 +386,6 @@ jt ={
 					$.each(ckMusic,(i,v)=>{
 						music += v.value + ((i < ckMusic.length-1)?',':'');
 					});
-					console.log("선택한시퀀스::"+music);
 					
 						jt.music_player(music);
 				}).appendTo($('#jt_music_btn_bar1'));
@@ -430,7 +404,6 @@ jt ={
 					$.each(ckMusic,(i,v)=>{
 						music += v.value + ((i < ckMusic.length-1)?',':'');
 					});
-					console.log("선택한시퀀스::"+music);
 						jt.music_player(music);
 				}).appendTo($('#jt_music_btn_bar2'));			
 				$('<br>').appendTo($('#jt_search_music'));
@@ -470,38 +443,19 @@ jt ={
 							$('<td/>').addClass('jt_td_table5').append(
 									$('<i/>').addClass('btn btn-brand fa fa-play')
 									.click(e=>{
-										console.log('뮤직시퀀스::'+j.MUSIC_SEQ);
 										jt.music_player(j.MUSIC_SEQ);
 									}),
 									$('<i/>').addClass((j.TYPES == 'u')?'active':'').attr({id : 'jt_up'+i }).addClass('btn btn-brand fa fa-heart')
 									.click(function(){
-										if($.cookie("loginID")!=null){
+										if(sh.service.auth() == 0 ){
 											sj.service.put_ud({thiz:$(this),btn:'like',mSeq:j.MUSIC_SEQ,gSeq:j.GENRE_SEQ});
-										}else{
-											$.ajax({
-									    		 url : sh.ctx()+'/member/auth',
-										       	  method : 'get',
-										       	  error : m=>{
-										       		alert('로그인이 필요한 서비스입니다.');
-									    			sh.service.login();
-										       	  }
-									    	 });
 										}
 									}),
 									$('<i/>').addClass('btn btn-brand glyphicon glyphicon-facetime-video'),
 									$('<i/>').addClass((j.TYPES == 'd')?'active':'').attr({id : 'jt_down'+i }).addClass('btn btn-brand fa fa-thumbs-down')
 									.click(function(){
-										if($.cookie("loginID")!=null){
+										if(sh.service.auth() == 0 ){
 											sj.service.put_ud({thiz:$(this),btn:'hate',mSeq:j.MUSIC_SEQ,gSeq:j.GENRE_SEQ});
-										}else{
-											$.ajax({
-									    		 url : sh.ctx()+'/member/auth',
-										       	  method : 'get',
-										       	  error : m=>{
-										       		alert('로그인이 필요한 서비스입니다.');
-									    			sh.service.login();
-										       	  }
-									    	 });
 										}
 									})
 								)
@@ -516,7 +470,6 @@ jt ={
 						$('input[name = chk]:checkbox').prop('checked',false);
 					}
 				});
-				alert('넘어온 앨범시퀀스~::'+x.album.ALBUMSEQ);
 				jt.album_write(x);
 				setTimeout(()=>{
 					fn.scroll({ id : $('#jt_album_dtpage'), len : 200});
@@ -526,7 +479,6 @@ jt ={
 		
 		//댓글쓰기
 		album_write : x=>{
-				console.log(x.rowCount);
 					$('<div/>').attr({id: 'jt_cmt'}).addClass('container').appendTo($('#jt_content'));
 					$('<h3/>').html('댓글').appendTo($('#jt_cmt'));
 					$('<hr/>').appendTo($('#jt_cmt'));
@@ -573,8 +525,6 @@ jt ={
 
 		//댓글읽기
 		album_read: x=>{
-			console.log('ALBUMSEQ:::'+x.id);
-			console.log('pageNo:::'+x.pageNo);
 			$('.jt_cmt_count').remove();
 			$('.jt_album_row').remove();
 			$('.pagination').remove();
@@ -604,11 +554,6 @@ jt ={
 			            }
 					(ui.page()).appendTo($('#jt_content'));
 					let ul = $('.pagination');
-					console.log('beginPage::'+d.page.beginPage);
-					console.log('endPage::'+d.page.endPage);
-					console.log('beginRow::'+d.page.beginRow);
-					console.log('endRow::'+d.page.endRow);
-					console.log('seqGroup:::'+d.seqGroup);
 					
 					for(let i=d.page.beginPage ; i<=d.page.endPage ; i++){
 						let ac=(i==d.page.pageNumber)? "active" : ""; 
@@ -634,23 +579,18 @@ jt ={
 		},
 		// 뮤직 플레이어
 		music_player : x=>{
-			console.log('player받은값::'+x);
 			let memberId = 'shin';
-			console.log('memberId ::: '+memberId);
 			if($.cookie('loginID') != null){
 				memberId = $.cookie('loginID');
-				console.log('memberId is not null ::: '+memberId);
 			}
 			$.getJSON($.ctx()+'/service/player/music/'+x+'/'+memberId,d=>{
 				let openWin = window.open(sh.ctx()+'/#SoundLAB_Player',"soundlab","left="+(screen.availWidth-730)/2+",top="+(screen.availHeight-495)/2+","+"width=730,height=495, menubar=no");
 				let player = $(openWin.document.getElementById('wrapper')).length;
-				console.log('player ::: '+player);
 				if(player == 0){
 					openWin.onload =(()=>{
 		            	setTimeout(x=>{
 		                    let sonWrap = $(openWin.document.getElementById('wrapper'));
 		                    sonWrap.empty();
-		                    console.log(d.musics[0].music_addr);
 		                    	$('<div/>').attr({id:'jt_playerdt'}).addClass('nowPlaying').appendTo(sonWrap);
 		                    	$('<div/>').attr({id:'jt_player'}).appendTo(openWin.document.getElementById('jt_playerdt'));
 		                    	$('<div/>').attr({id:'jt_info'}).appendTo(openWin.document.getElementById('jt_player'));
@@ -719,7 +659,6 @@ jt ={
 		                    	
 		                    	//오른쪽
 		                    	let musicCnt = d.musics.length;
-		                    	console.log('d.musics.length musicCnt :: '+musicCnt);
 		                    	$('<div/>').attr({id:'jt_playerOption'}).addClass('jt_playerOption').appendTo(openWin.document.getElementById('jt_playerdt'));
 		                    	$('<ul/>').attr({id:'jt_tabControl'}).addClass('jt_tabControl').appendTo(openWin.document.getElementById('jt_playerOption'));
 		                    	$('<li/>').attr({id:'jt_selected'}).addClass('selected').appendTo(openWin.document.getElementById('jt_tabControl'));
@@ -739,9 +678,7 @@ jt ={
 		                        $('<label for="play_allCheck">').appendTo(openWin.document.getElementById('jt_playBtnArea'));
 		                    	$('<a/>').addClass('delete_msg').html('삭제')
 		                    	.click(e=>{
-		                    		console.log('삭제 전 전체 musicCnt :: '+ $(openWin.document.getElementById('musicCnt')).html());
 		                    		let delLen = $(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox:checked').parents('.jt_mplay_li').length;
-		                    		console.log('삭제.. '+delLen);	
 		                    		$(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox:checked').parents('.jt_mplay_li').remove();
 		                    			let mplay_li = $(openWin.document).find('#jt_playerdt .jt_mplay_li');
 		                    			let itemcheck = $(openWin.document).find('#jt_playerdt .itemcheck');
@@ -757,9 +694,7 @@ jt ={
 		                    		    let jt_titsong = $(openWin.document).find('#jt_playerdt .jt_titsong');
 		                    		    let jt_itemem = $(openWin.document).find('#jt_playerdt .jt_itemem');
 		                    		    let _jt_artist = $(openWin.document).find('#jt_playerdt ._jt_artist');
-		                    			console.log('num len ::: '+num.length);
 		                    			for(let i=0;i<num.length;i++){
-		                    				//console.log('num'+i+' :: '+ num[i].innerHTML());
 		                    				mplay_li[i].id = 'jt_mplay_li'+i;
 		                    				itemcheck[i].id ='jt_itemcheck'+ i;
 		                    				itemcheck_chbox[i].id ='checkbox'+ i;
@@ -777,7 +712,6 @@ jt ={
 		                    				_jt_artist[i].id ='jt_artist'+ i;
 		                    			}
 		                    		musicCnt = $(openWin.document.getElementById('musicCnt')).html() - delLen;
-		                    		console.log('삭제 후 전체 musicCnt :: '+ musicCnt);
 		                    		$(openWin.document.getElementById('musicCnt')).html(musicCnt);
 		                    		}).appendTo(openWin.document.getElementById('jt_playBtnArea'));
 		                    	  $(openWin.document.getElementById('play_allCheck')).click(e=>{
@@ -815,7 +749,6 @@ jt ={
 		            });
 				}else {
 					let cnt =$(openWin.document.getElementById('musicCnt')).html()*1;
-					console.log('musicCNT :: '+ cnt);
                 	for(var i=0; i<d.musics.length;i++){
                 		$('<li/>').attr({id:'jt_mplay_li'+cnt}).addClass('jt_mplay_li').appendTo(openWin.document.getElementById('jt_mplay_ul'));
                     	$('<em/>').attr({id:'jt_itemcheck'+cnt}).addClass('itemcheck jt_playckbox').appendTo(openWin.document.getElementById('jt_mplay_li'+cnt));
@@ -832,7 +765,6 @@ jt ={
                     	cnt++;
                 	}
                 	$(openWin.document.getElementById('musicCnt')).html(cnt);
-                	console.log('붙이고 나서 musicCnt ::: '+ cnt);
 				}
 				
 	          
@@ -841,12 +773,9 @@ jt ={
 		},
 		//앨범 플레이어
 		album_player : x=>{
-			console.log('player받은값::'+x);
 			let memberId = 'shin';
-			console.log('memberId ::: '+memberId);
 			if($.cookie('loginID') != null){
 				memberId = $.cookie('loginID');
-				console.log('memberId is not null ::: '+memberId);
 			}
 			$.getJSON($.ctx()+'/service/player/album/'+x+'/'+memberId,d=>{
 				let openWin = window.open(sh.ctx()+'/#SoundLAB_Player',"soundlab","left="+(screen.availWidth-730)/2+",top="+(screen.availHeight-495)/2+","+"width=730,height=495, menubar=no");
@@ -856,7 +785,6 @@ jt ={
 		            	setTimeout(x=>{
 		                    let sonWrap = $(openWin.document.getElementById('wrapper'));
 		                    sonWrap.empty();
-		                    console.log(d.albums[0].music_addr);
 		                    	$('<div/>').attr({id:'jt_playerdt'}).addClass('nowPlaying').appendTo(sonWrap);
 		                    	$('<div/>').attr({id:'jt_player'}).appendTo(openWin.document.getElementById('jt_playerdt'));
 		                    	$('<div/>').attr({id:'jt_info'}).appendTo(openWin.document.getElementById('jt_player'));
@@ -986,7 +914,6 @@ jt ={
 		            });
 				}else {
 					let cnt =$(openWin.document.getElementById('musicCnt')).html()*1;
-					console.log('musicCNT :: '+ cnt);
                 	for(var i=0; i<d.albums.length;i++){
                 		$('<li/>').attr({id:'jt_mplay_li'+cnt}).addClass('jt_mplay_li').appendTo(openWin.document.getElementById('jt_mplay_ul'));
                     	$('<em/>').attr({id:'jt_itemcheck'+cnt}).addClass('itemcheck jt_playckbox').appendTo(openWin.document.getElementById('jt_mplay_li'+cnt));
