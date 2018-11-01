@@ -107,7 +107,7 @@ jt ={
   				//아티스트 소개글
   	            $('<div/>').attr({id: 'jt_introduce_div'}).addClass('container').appendTo($('#jt_search_artist'));
   	            $('<h3/>').html('아티스트 소개').appendTo($('#jt_introduce_div'));
-  	            $('<p/>').attr({id:'jt_artist_introduce'}).html(art.intro1).appendTo($('#jt_introduce_div'));
+  	            $('<p/>').attr({id:'jt_artist_introduce'}).html(art.INTRO1).appendTo($('#jt_introduce_div'));
   	            
   	       
   	            $('<button/>').attr({
@@ -120,7 +120,7 @@ jt ={
   	            ).appendTo($('#jt_introduce_div'));
   	            $('<div/>').attr({id:'jt_demo','aria-expanded':"false"}).addClass('collapse').appendTo($('#jt_introduce_div'));
   	            $('<br/>').appendTo($('#jt_demo'));
-  	            $('<p/>').html(art.intro2).appendTo($('#jt_demo'));
+  	            $('<p/>').html(art.INTRO2).appendTo($('#jt_demo'));
   	            $('<hr/>').appendTo($('#jt_introduce_div'));
   				
   				//곡 

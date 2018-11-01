@@ -635,6 +635,41 @@ SELECT
 FROM MUSIC AS M
      JOIN ALBUM AS A
      ON M.ALBUM_SEQ = A.ALBUM_SEQ;
+CREATE OR REPLACE VIEW LS_TOP3 AS
+SELECT  DATE_FORMAT(V1.VIEW_DATE,'%Y-%m-%d')AS VIEW_DATE, MUS.MUSIC_TITLE,AR.ARTIST_NAME,V1.SEQ_GROUP,COUNT(*) CNT ,
+     FLOOR((COUNT(*)/(SELECT COUNT(*) FROM VIEW_RECORD V2 WHERE V2.VIEW_DATE LIKE V1.VIEW_DATE AND V2.SEQ_GROUP IN (
+                 SELECT TMP.MSEQ
+                 FROM
+                 (
+                     SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
+                     FROM VIEW_RECORD V
+                     WHERE V.VIEW_DATE LIKE CONCAT(CURDATE(),'%')
+                     GROUP BY V.SEQ_GROUP
+                     ORDER BY CNT
+                     DESC LIMIT 3) TMP
+                 ))) * 100) PER
+FROM VIEW_RECORD V1
+JOIN MUSIC MUS ON V1.SEQ_GROUP LIKE MUS.MUSIC_SEQ
+JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
+WHERE V1.SEQ_GROUP IN (
+                 SELECT TMP.MSEQ
+                 FROM
+                     (SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
+                     FROM VIEW_RECORD V
+                     WHERE V.VIEW_DATE LIKE CONCAT(CURDATE(),'%')
+                     GROUP BY V.SEQ_GROUP
+                     ORDER BY CNT
+                     DESC LIMIT 3) TMP
+                 )
+AND V1.VIEW_DATE BETWEEN CONCAT(DATE_ADD(CURDATE(), INTERVAL -6 DAY),'%') AND CONCAT(DATE_ADD(CURDATE(), INTERVAL 1 DAY),'%')
+GROUP BY V1.SEQ_GROUP, V1.VIEW_DATE
+ORDER BY V1.VIEW_DATE DESC, COUNT(*) DESC;
+## LS_TOP3 + NUM VIEW
+CREATE OR REPLACE VIEW LS_TOP3_NUM AS
+SELECT
+*,
+(SELECT COUNT(*)+1 FROM LS_TOP3 WHERE VIEW_DATE LIKE LT.VIEW_DATE AND CNT > LT.CNT) AS RANK
+FROM LS_TOP3 LT;
 INSERT INTO HASHTAG(HASH) VALUES('신나는'),('차분한'),('어쿠스틱'),('트로피칼'),('부드러운'),('드라이브'),('휴식'),('편집숍/카페'),('헬스'),('클럽'),('스트레스'),('이별'),('사랑/고백'),('새벽감성'),('위로');
 INSERT INTO BOARD(BOARD_NAME) VALUES('DJ');
 INSERT INTO BOARD(BOARD_NAME) VALUES('COMMENT');
@@ -1636,6 +1671,17 @@ SET INTRO2 =
  2014년에 첫 솔로 앨범인 [장범준 1집]을 발표하게 되는데, 버스커 버스커 때의 장난기 있는 모습보다는 가을에 어울리는 감성적인 곡들을 수록했으며, 웹툰과 함께 앨범을 발표하는 독특한 프로
  모션으로 화제가 되기도 했다.'
 WHERE ARTIST_SEQ LIKE 61;
+UPDATE ARTIST
+SET INTRO1 = '독보적인 여성 솔로 아티스트로 자리매김하고 있는 선미는 걸그룹 원더걸스의 멤버로 처음 가수 생활을 시작했다. 2007년 2월 싱글 Irony 로 데뷔하며 안정적인 보컬과 깜찍한 비주얼로 사랑을 받았고, Tell Me 로 신드롬급 열풍을 일으키며 국민 걸그룹의 자리에 올라 So Hot, Nobody 까지 3연속 흥행을 거뒀다.',
+	 INTRO2 = '원더걸스 활동 중단 후에는 가수로서의 트레이닝을 꾸준히 병행했다. 활동 중단 선언 3년 후인 2013년에는 싱글 24시간이 모자라 를 통해 멤버들 중 가장 먼저 솔로로 데뷔했다. 이전의 풋풋한 이미지와는 확연히 다른 파격적인 변신으로 발매와 동시에 7개 음원 사이트 1위를 석권하는 센세이션을 일으켰고, 이어 발매한 보름달에서도 콘셉트, 의상, 퍼포먼스 모든 부분에서 화제를 모았다.
+원더걸스로 재합류한 이후에도 도전은 계속되었다.
+2015년에 발표한 [REBOOT]에서는 앨범 콘셉트에 따라 멤버 개개인의 연주를 담은 티저 영상에서 수준급의 베이스 실력을 뽐내며 화제를 모았다. 연주는 물론 앨범 수록곡의 작사와 작곡에도 적극적으로 참여하며 음악적 성장을 보여준 시기였다. 이는 10주년 기념 싱글인 Why So Lonely 와 해체 직전 발표한 그려줘에서도 이어졌다.
+2018년 9월, 선미의 3부작 프로젝트를 모두 담아낸 미니앨범 [WARNING]을 내놓았으며, 전곡 작사, 작곡에 참여해 음악적으로도 더욱 성숙해진 면모를 보였다.'
+WHERE ARTIST_SEQ LIKE 7;
+
+
+
+
 INSERT INTO ALBUM(
    ALBUM_SEQ, ALBUM_TITLE, ARTIST_NAME, ALBUM_GENRE
 )
@@ -1905,7 +1951,25 @@ INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_2', 'jpg', 172 );
 INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_3', 'jpg', 173 );
 INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_3', 'jpg', 174 );
 INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_1', 'jpg', 175 );
-INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_1', 'jpg', 176 );			
+INSERT INTO IMG ( IMG_NAME, EXT, SEQ ) VALUE ( 'DJ_IMAGE_1', 'jpg', 176 );
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_임창정','jpg',10);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_에이핑크','jpg',12);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_로꼬','jpg',13);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_바이브','jpg',14);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_아이콘','jpg',15);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_로이킴','jpg',16);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_폴킴','jpg',17);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_블랙핑크','jpg',18);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_10cm','jpg',21);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_볼빨간사춘기','jpg',22);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_마마무','jpg',23);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_박원','jpg',24);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_윤종신','jpg',25);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_벤','jpg',26);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_멜로망스','jpg',27);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_먼데이키즈','jpg',28);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_박효신','jpg',60);
+INSERT INTO IMG(IMG_NAME,EXT,SEQ) VALUES('profile_장범준','jpg',61);
 UPDATE ARTICLE SET TITLE = '하나 별 밤을 듯합니다', CONTENTS = '97,85,62,96,115,138,76,110,57' WHERE ARTICLE_SEQ LIKE 160 ;
 UPDATE ARTICLE SET TITLE = '봄이 소녀들의 멀리 까닭입니다', CONTENTS = '73,92,67,81,101,108' WHERE ARTICLE_SEQ LIKE 161 ;
 UPDATE ARTICLE SET TITLE = '보고, 파란 어머니, 시와 있습니다', CONTENTS = '93,74,110,109,115,79,108,89' WHERE ARTICLE_SEQ LIKE 162 ;
@@ -2044,3 +2108,247 @@ UPDATE MUSIC SET MUSIC_ADDR = 'https://www.youtube.com/embed/DUTUHUbJ6u8' WHERE 
 UPDATE MUSIC SET MUSIC_ADDR = 'https://www.youtube.com/embed/3yoRkQBVUzM' WHERE MUSIC_SEQ LIKE 63;
 UPDATE MUSIC SET MUSIC_ADDR = 'https://www.youtube.com/embed/HFRoJrcG-B0' WHERE MUSIC_SEQ LIKE 64;
 UPDATE MUSIC SET MUSIC_ADDR = 'https://www.youtube.com/embed/d4Wcqe1a6xk' WHERE MUSIC_SEQ LIKE 59;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/AU6shR8rkCA' WHERE MUSIC_SEQ LIKE 65;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/CxsffBwhnSw' WHERE MUSIC_SEQ LIKE 66;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/U6FopXugJo8' WHERE MUSIC_SEQ LIKE 67;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/IhYxz6eXegM' WHERE MUSIC_SEQ LIKE 68;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/MkUcDLsCbGU' WHERE MUSIC_SEQ LIKE 69;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/PobwfenaD_U' WHERE MUSIC_SEQ LIKE 70;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/HWK4NVzoNNI' WHERE MUSIC_SEQ LIKE 71;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/mxSWBhURJ3M' WHERE MUSIC_SEQ LIKE 74;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/kCYTOR7XIB8' WHERE MUSIC_SEQ LIKE 75;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/zSMOO6SA7Uw' WHERE MUSIC_SEQ LIKE 76;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/fujuo-ms1nI' WHERE MUSIC_SEQ LIKE 77;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/KpdGwluW8QY' WHERE MUSIC_SEQ LIKE 78;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/er5sTELLZ60' WHERE MUSIC_SEQ LIKE 79;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/rbcTZGCzAi8' WHERE MUSIC_SEQ LIKE 80;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/fthzn5U3xHU?list=PLPgQcN4QerkEhSPs3uc26P1iKZYjG5Nz7' WHERE MUSIC_SEQ LIKE 81;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/rVxI7dX7nuE' WHERE MUSIC_SEQ LIKE 82;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/zLHOyiMfTmM' WHERE MUSIC_SEQ LIKE 83;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/9II_GQJ7mKo' WHERE MUSIC_SEQ LIKE 84;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/LOl1ENoPwxo' WHERE MUSIC_SEQ LIKE 85;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/Mr2DA8RNuow' WHERE MUSIC_SEQ LIKE 86;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/SUaXXwdaBYo' WHERE MUSIC_SEQ LIKE 87;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/pQ_bTi9fXVg' WHERE MUSIC_SEQ LIKE 88;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/7uJl6b2JTuE' WHERE MUSIC_SEQ LIKE 89;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/2XYP3kcDpYs' WHERE MUSIC_SEQ LIKE 90;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/jFFDDANFAKI' WHERE MUSIC_SEQ LIKE 91;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/f6xGhx1sHqI' WHERE MUSIC_SEQ LIKE 92;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/I1w1Sd1HeUI' WHERE MUSIC_SEQ LIKE 93;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/xKPg6zPZbW0' WHERE MUSIC_SEQ LIKE 94;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/d3M_tUWnjHI' WHERE MUSIC_SEQ LIKE 95;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/T3GqVt8RCI8' WHERE MUSIC_SEQ LIKE 96;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/yFNmuhD48BE' WHERE MUSIC_SEQ LIKE 97;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/p1OdWbpD9sA' WHERE MUSIC_SEQ LIKE 98;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/V38GnjOjHbk' WHERE MUSIC_SEQ LIKE 99;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/JANAfyuVukA' WHERE MUSIC_SEQ LIKE 100;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/i_x2oQPlfng' WHERE MUSIC_SEQ LIKE 101;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/oPNmqG4o-GM' WHERE MUSIC_SEQ LIKE 102;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/VGwFxQkNQCk' WHERE MUSIC_SEQ LIKE 103;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/LoYgZ5Q6qlM' WHERE MUSIC_SEQ LIKE 104;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/oYf7BodmSu0' WHERE MUSIC_SEQ LIKE 105;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/aPgOM-5q-hQ' WHERE MUSIC_SEQ LIKE 106;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/MuD00um66K4' WHERE MUSIC_SEQ LIKE 107;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/C7AaJ-EK7pE' WHERE MUSIC_SEQ LIKE 108;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/3H1FCCc-_MM' WHERE MUSIC_SEQ LIKE 109;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/MJlIfsXw2F0' WHERE MUSIC_SEQ LIKE 110;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/qDMnEm4Smf8' WHERE MUSIC_SEQ LIKE 111;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/tPuzbDIx5qY' WHERE MUSIC_SEQ LIKE 112;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/aRTlm05jDOs' WHERE MUSIC_SEQ LIKE 113;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/rzcsDOozLGw' WHERE MUSIC_SEQ LIKE 114;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/vQ05MHEnXjw' WHERE MUSIC_SEQ LIKE 115;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/kvA_0c0C0mo' WHERE MUSIC_SEQ LIKE 116;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/eLiEn2phlMI' WHERE MUSIC_SEQ LIKE 117;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/ZJo3B22uFwM' WHERE MUSIC_SEQ LIKE 118;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/KWZ-ytC9Uyk' WHERE MUSIC_SEQ LIKE 119;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/VgtEyhEJpKg' WHERE MUSIC_SEQ LIKE 120;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/Rlx0-7gxtk8' WHERE MUSIC_SEQ LIKE 121;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/pYKPJl1PIIw' WHERE MUSIC_SEQ LIKE 122;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/s_7yNDzG7OI' WHERE MUSIC_SEQ LIKE 123;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/bLhVpz1a4mE' WHERE MUSIC_SEQ LIKE 124;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/ZQDWoXC2r5k' WHERE MUSIC_SEQ LIKE 125;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/rIGifjx_F1U' WHERE MUSIC_SEQ LIKE 133;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/TpuZeNFMs1Q' WHERE MUSIC_SEQ LIKE 134;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/rM_SZLfFkVg' WHERE MUSIC_SEQ LIKE 135;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/QpwNVNryLSo' WHERE MUSIC_SEQ LIKE 136;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/2AsLK_7k-5U' WHERE MUSIC_SEQ LIKE 137;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/Cqe37sLrH2I' WHERE MUSIC_SEQ LIKE 138;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/Lwp0PAZJ8ag' WHERE MUSIC_SEQ LIKE 139;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/1WHqOPkGoqA' WHERE MUSIC_SEQ LIKE 140;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/Y4Zpm41f1VQ' WHERE MUSIC_SEQ LIKE 141;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/-QCp2nHYxe0' WHERE MUSIC_SEQ LIKE 142;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/-YIj6H4ShQA' WHERE MUSIC_SEQ LIKE 143;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/rlaRw_5sxGE' WHERE MUSIC_SEQ LIKE 144;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/TjCyMv8b0_I' WHERE MUSIC_SEQ LIKE 145;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/BK1e3DDkdi0' WHERE MUSIC_SEQ LIKE 146;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/PSXm3FuxEcU' WHERE MUSIC_SEQ LIKE 147;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/15vNx-NfVow' WHERE MUSIC_SEQ LIKE 148;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/ECHzQ_82p4U' WHERE MUSIC_SEQ LIKE 149;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/Ag5gfyKniPE' WHERE MUSIC_SEQ LIKE 150;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/7H4zkgKkNMI' WHERE MUSIC_SEQ LIKE 151;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/iv2ADx4wqfI' WHERE MUSIC_SEQ LIKE 152;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/9qaKC3u7Viw' WHERE MUSIC_SEQ LIKE 153;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/97Zyp0PAK04' WHERE MUSIC_SEQ LIKE 154;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/b8BjDTGOuzw' WHERE MUSIC_SEQ LIKE 155;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/1wccNQKiCWs' WHERE MUSIC_SEQ LIKE 156;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/Sn88Kjkhwig' WHERE MUSIC_SEQ LIKE 157;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/s6DI1qg5CfM' WHERE MUSIC_SEQ LIKE 158;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/LwZB-BuQj4s' WHERE MUSIC_SEQ LIKE 159;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/F1n4TKIv2SQ' WHERE MUSIC_SEQ LIKE 177;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/IvAsyLc7kEc' WHERE MUSIC_SEQ LIKE 178;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/BHOCt2pBVMg' WHERE MUSIC_SEQ LIKE 179;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/dMmDDFCaGNA' WHERE MUSIC_SEQ LIKE 180;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/dpJbYm-Ju80' WHERE MUSIC_SEQ LIKE 181;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/kEijTTA7Dbc' WHERE MUSIC_SEQ LIKE 182;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/8fl8pXbT-t8' WHERE MUSIC_SEQ LIKE 183;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/pSlikGQaj08' WHERE MUSIC_SEQ LIKE 184;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/tqs_oXYfdZA' WHERE MUSIC_SEQ LIKE 185;
+UPDATE MUSIC SET MUSIC_ADDR ='https://www.youtube.com/embed/FLuhVsDFOh8' WHERE MUSIC_SEQ LIKE 186;
+
+
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('auctor','여','2018-10-25 08:31:24'),
+('auctor','여','2018-10-25 08:31:24'),
+('auctor','여','2018-10-25 08:31:24'),
+('auctor','여','2018-10-25 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('sound','남','2018-10-25 08:31:24'),
+('sound','남','2018-10-25 08:31:24'),
+('sound','남','2018-10-25 08:31:24'),
+('sound','남','2018-10-25 08:31:24'),
+('sound','남','2018-10-25 08:31:24'),
+('sound','남','2018-10-25 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('auctor','여','2018-10-26 08:31:24'),
+('auctor','여','2018-10-26 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('sound','남','2018-10-26 08:31:24'),
+('sound','남','2018-10-26 08:31:24'),
+('sound','남','2018-10-26 08:31:24'),
+('sound','남','2018-10-26 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('auctor','여','2018-10-27 08:31:24'),
+('auctor','여','2018-10-27 08:31:24'),
+('auctor','여','2018-10-27 08:31:24'),
+('auctor','여','2018-10-27 08:31:24'),
+('auctor','여','2018-10-27 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('sound','남','2018-10-27 08:31:24'),
+('sound','남','2018-10-27 08:31:24'),
+('sound','남','2018-10-27 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('auctor','여','2018-10-28 08:31:24'),
+('auctor','여','2018-10-28 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('sound','남','2018-10-28 08:31:24'),
+('sound','남','2018-10-28 08:31:24'),
+('sound','남','2018-10-28 08:31:24'),
+('sound','남','2018-10-28 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('auctor','여','2018-10-29 08:31:24'),
+('auctor','여','2018-10-29 08:31:24'),
+('auctor','여','2018-10-29 08:31:24'),
+('auctor','여','2018-10-29 08:31:24'),
+('auctor','여','2018-10-29 08:31:24'),
+('auctor','여','2018-10-29 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('sound','남','2018-10-29 08:31:24'),
+('sound','남','2018-10-29 08:31:24'),
+('sound','남','2018-10-29 08:31:24'),
+('sound','남','2018-10-29 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('auctor','여','2018-10-30 08:31:24'),
+('auctor','여','2018-10-30 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('sound','남','2018-10-30 08:31:24'),
+('sound','남','2018-10-30 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('auctor','여','2018-10-31 08:31:24'),
+('auctor','여','2018-10-31 08:31:24'),
+('auctor','여','2018-10-31 08:31:24'),
+('auctor','여','2018-10-31 08:31:24'),
+('auctor','여','2018-10-31 08:31:24'),
+('auctor','여','2018-10-31 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('sound','남','2018-10-31 08:31:24'),
+('sound','남','2018-10-31 08:31:24'),
+('sound','남','2018-10-31 08:31:24'),
+('sound','남','2018-10-31 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('auctor','여','2018-11-01 08:31:24'),
+('auctor','여','2018-11-01 08:31:24'),
+('auctor','여','2018-11-01 08:31:24'),
+('auctor','여','2018-11-01 08:31:24'),
+('auctor','여','2018-11-01 08:31:24'),
+('auctor','여','2018-11-01 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('sound','남','2018-11-01 08:31:24'),
+('sound','남','2018-11-01 08:31:24'),
+('sound','남','2018-11-01 08:31:24'),
+('sound','남','2018-11-01 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('auctor','여','2018-11-02 08:31:24'),
+('auctor','여','2018-11-02 08:31:24'),
+('auctor','여','2018-11-02 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('sound','남','2018-11-02 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('auctor','여','2018-11-03 08:31:24'),
+('auctor','여','2018-11-03 08:31:24'),
+('auctor','여','2018-11-03 08:31:24'),
+('auctor','여','2018-11-03 08:31:24'),
+('auctor','여','2018-11-03 08:31:24'),
+('auctor','여','2018-11-03 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('sound','남','2018-11-03 08:31:24'),
+('sound','남','2018-11-03 08:31:24'),
+('sound','남','2018-11-03 08:31:24'),
+('sound','남','2018-11-03 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('auctor','여','2018-11-04 08:31:24'),
+('auctor','여','2018-11-04 08:31:24'),
+('auctor','여','2018-11-04 08:31:24'),
+('auctor','여','2018-11-04 08:31:24'),
+('auctor','여','2018-11-04 08:31:24'),
+('auctor','여','2018-11-04 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('sound','남','2018-11-04 08:31:24'),
+('sound','남','2018-11-04 08:31:24'),
+('sound','남','2018-11-04 08:31:24'),
+('sound','남','2018-11-04 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('auctor','여','2018-11-05 08:31:24'),
+('auctor','여','2018-11-05 08:31:24'),
+('auctor','여','2018-11-05 08:31:24'),
+('auctor','여','2018-11-05 08:31:24'),
+('auctor','여','2018-11-05 08:31:24'),
+('auctor','여','2018-11-05 08:31:24');
+INSERT INTO LOGIN_RECORD(MEMBER_ID,SEX,LOGIN_DATE) 
+VALUES
+('sound','남','2018-11-05 08:31:24'),
+('sound','남','2018-11-05 08:31:24'),
+('sound','남','2018-11-05 08:31:24'),
+('sound','남','2018-11-05 08:31:24');
