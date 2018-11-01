@@ -83,19 +83,8 @@ public class MusicCtrl {
 		
 		map.clear();
 		  List<Map<?,?>> chartData = null;
-		  Calendar cal = Calendar.getInstance();
-		  String todayDate= new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //오늘
-		  map.put("todayDate",todayDate);
-		  cal.add(cal.DATE, +1); 
-	      String chartDate1 = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
-	      map.put("chartDate1",chartDate1);
-	      cal.add(cal.DATE, -7); 
-	      String chartDate2  = new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime());
-		  map.put("chartDate2",chartDate2);
-		  chartData = musMapper.top50lineChart(map);
-			 Util.log.accept("todayDate:: " +map.get("todayDate"));
-			 Util.log.accept("chartDate1:: " +map.get("chartDate1"));
-			 Util.log.accept("chartDate2:: " +map.get("chartDate2"));
+		 
+		  chartData = musMapper.top50lineChart();
 			 Util.log.accept("chartData:: " +chartData);
 		return chartData;
 	}
