@@ -79,6 +79,7 @@ sj ={
 						
 						let fmsA = [], fmsB = [], fal = [], fat = [], ald = [];
 						let genreA = d.fy[0].msGenreA, genreB = d.fy[0].msGenreB;
+						alert(genreA+" :: "+genreB);
 						$.each(d.fy,(i,v)=>{
 							if(v.msRankA <= 5){
 								let u = {
@@ -89,7 +90,12 @@ sj ={
 										artistName : v.msArtistNameA,
 										albumSeq : v.msAlbumA,
 										albumTitle : v.msAlbumTitleA
-								}, w = {
+								};
+								fmsA.push(u);
+								
+							}
+							if(v.msRankB <= 5){
+								let w = {
 										musicSeq : v.msSeqB,
 										musicTitle : v.msTitleB,
 										genreSeq : v.msGenreSeqB,
@@ -97,7 +103,11 @@ sj ={
 										artistName : v.msArtistNameB,
 										albumSeq : v.msAlbumB,
 										albumTitle : v.msAlbumTitleB
-								}, x = {
+								};
+								fmsB.push(w);
+							}
+							if(v.alRank <= 5){
+								let x = {
 										albumSeq : v.alSeq,
 										albumTitle : v.alTitle,
 										artistSeq : v.alArtist,
@@ -110,8 +120,8 @@ sj ={
 										imgName : v.atImgName,
 										ext : v.atImgExt
 								};
-								fmsA.push(u);
-								fmsB.push(w);
+								
+								
 								fal.push(x);
 								fat.push(y);
 							}
@@ -621,6 +631,20 @@ sj.service = {
 			$('#fy-music-list').empty();
 				
 			let $pl = $('<div/>').addClass('sj-music-playlist').appendTo($('#fy-music-list'));
+			
+			console.log(x.length);
+			
+			if(x.length === 0){
+				
+				$('<div/>').addClass('single-music').append(
+						$('<div/>').addClass('sj-music-item row').append(
+								$('<p/>').attr({'style':'margin:auto;'}).html('해당 장르의 추천 곡이 없습니다.')
+						)
+				).appendTo($pl);
+				
+				
+			}
+			
 			$.each(x,(i,v)=>{
 				
 				$('<div/>').addClass('single-music').append(
@@ -668,7 +692,7 @@ sj.service = {
 										})
 								)
 						)
-				).appendTo($pl)
+				).appendTo($pl);
 			
 			});
 			
