@@ -28,7 +28,6 @@ ls ={
 														 $('<li/>').append(
 																 $('<a/>').attr({id : 'liveChr'}).html('일간'))
 																 .click(()=>{ 
-																	 alert('liveChr click');
 																	 let realChart = 'realChart';
 																		$.getJSON(sh.ctx()+'/music/top50/'+realChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
@@ -40,7 +39,6 @@ ls ={
 														 $('<li/>').append(
 																 $('<a/>').attr({id : 'wklChr'}).html('주간'))
 																 .click(()=>{ 
-																	 alert('wklChr click'); 
 																	 	let weekChart = 'weekChart';
 																		$.getJSON(sh.ctx()+'/music/top50/'+weekChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
@@ -51,7 +49,6 @@ ls ={
 														 $('<li/>').append(
 																$('<a/>').attr({id : 'monthChr'}).html('월간'))
 																.click(()=>{ 
-																	alert('dayChr click'); 
 																	 let monthChart = 'monthChart';
 																		$.getJSON(sh.ctx()+'/music/top50/'+monthChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
@@ -83,8 +80,6 @@ ls ={
 																});
 																jt.music_player(seqs)
 															   $('input[name = al_chkBox]:checkbox').prop('checked',false);
-																console.log(seqs);
-																
 														}),
 																	$('<button/>').attr({id : 'listenAll'})
 																	.addClass("btn btn-default btn-filter").html('전체듣기')
@@ -95,15 +90,18 @@ ls ={
 																			seqs += v.value + ((i < ck.length-1)?',':'');
 																		});
 																		jt.music_player(seqs);
-																		console.log(seqs);
-																		
-																	 
+																		$('input[name = al_chkBox]:checkbox').prop('checked',false);
 																	 }),
 																	$('<button/>').attr({id : 'addToList'})
 																	.addClass("btn btn-default btn-filter").html('담기')
 																	.click(()=>{ 
-																		 alert('addToList click'); 
-																		 
+																		 let ck = $('input[name=al_chkBox]:checkbox:checked');
+																			let seqs = '';
+																			$.each(ck,(i,v)=>{
+																				seqs += v.value + ((i < ck.length-1)?',':'');
+																			});
+																			jt.music_player(seqs);
+																			$('input[name = al_chkBox]:checkbox').prop('checked',false);
 																		 })
 															)
 											)
@@ -123,7 +121,34 @@ ls ={
 		            //-------------차트-----------------
 		            
 		           $.getJSON(sh.ctx()+'/music/top50lineChart',d=>{	
-		        	   
+		        	   			let vd = [];
+		        	   			let ttl = [];
+		        	   			let strm = [];
+		        	   			let arti = [];
+		        	   			let sq = [];
+		        	   			let per = [];
+		        	   			let sum;
+		        	   			for(let i=0;i<21;i=i+3){
+		        	   				vd.push(d[i].날짜);
+		        	   				vd.push(d[i+1].날짜);
+		        	   				vd.push(d[i+2].날짜);
+		        	   				ttl.push(d[i].TITLE);
+		        	   				ttl.push(d[i+1].TITLE);
+		        	   				ttl.push(d[i+2].TITLE);
+		        	   				strm.push(d[i].스트리밍);
+		        	   				strm.push(d[i+1].스트리밍);
+		        	   				strm.push(d[i+2].스트리밍);
+		        	   				arti.push(d[i].가수);
+		        	   				arti.push(d[i+1].가수);
+		        	   				arti.push(d[i+2].가수);
+		        	   				sq.push(d[i].SEQ);
+		        	   				sq.push(d[i+1].SEQ);
+		        	   				sq.push(d[i+2].SEQ);
+		        	   				sum = strm[i]+strm[i+1]+strm[i+2];
+		        	   				per.push((strm[i]/sum)*100);
+		        	   				per.push((strm[i+1]/sum)*100);
+		        	   				per.push((strm[i+2]/sum)*100);
+		        	   			}
 							 	google.charts.load('current', {'packages':['line']});
 					 			google.charts.setOnLoadCallback(drawChart1);
 					 			
@@ -132,19 +157,19 @@ ls ={
 							    function drawChart1() {
 							    	  var data = new google.visualization.DataTable();
 							    	  data.addColumn('string', 'day');
-						        	  data.addColumn('number', '1위    '+d[6].R1_NAME+'/'+d[6].R1_TITLE);
-						         	  data.addColumn('number', '2위    '+d[6].R2_NAME+'/'+d[6].R2_TITLE);
-						         	  data.addColumn('number', '3위    '+d[6].R3_NAME+'/'+d[6].R3_TITLE);
+						        	  data.addColumn('number', '1위    '+arti[18]+'/'+ttl[18]);
+						         	  data.addColumn('number', '2위    '+arti[19]+'/'+ttl[19]);
+						         	  data.addColumn('number', '3위    '+arti[20]+'/'+ttl[20]);
 							
-							          
-							          for(let i=0; i <7; i++){	
-							        	  let trans=x=>{
-												let day=new Date(x).getDate();
-										
-												return day+"일";
-											};
+						         	 let trans=x=>{
+											let day=new Date(x).getDate();
+									
+											return day+"일";
+										};
+							          for(let i=0; i <21; i=i+3){	
+							        	  
 							          data.addRows([
-							            [trans(new Date(d[i].VIEW_DATE)),  d[i].R1_PER*1, d[i].R2_PER*1, d[i].R3_PER*1]
+							            [trans(new Date(vd[i])),  per[i], per[i+1], per[i+2]]
 							           
 							          ]);
 							          }
@@ -155,7 +180,6 @@ ls ={
 							        	        height: 350,
 							        	        axes: {
 							        	          x: {
-							        	        	
 							        	            0: {side: 'bottom'}
 							        	          }
 							        	        }
@@ -174,16 +198,16 @@ ls ={
 						$('<ul/>').append(
 								$('<li/>').addClass('lank01').append(
 										$('<span/>').addClass('none').html('1위'),
-										$('<em/>').html(d[6].R1_PER+'%')
+										$('<em/>').html(per[18].toFixed(1)+'%')
 										
 								),
 								$('<li/>').addClass('lank02').append(
 										$('<span/>').addClass('none').html('2위'),
-										$('<em/>').html(d[6].R2_PER+'%')
+										$('<em/>').html(per[19].toFixed(1)+'%')
 								),
 								$('<li/>').addClass('lank03').append(
 										$('<span/>').addClass('none').html('3위'),
-										$('<em/>').html(d[6].R3_PER+'%')
+										$('<em/>').html(per[20].toFixed(1)+'%')
 								)
 						)
 				)
@@ -214,7 +238,6 @@ ls ={
 													$('<h2/>').attr('style','margin-left: 1.2rem;').addClass('my-4'),
 													$('<div/>').attr({id : 'alCarousel'}).addClass('carousel slide ls_featured-shows-slides')
 													.on('click','.item>div',function(e){
-														alert($(this).attr('id'));
 														jt.album_detail($(this).attr('id'));
 													})
 											)
@@ -231,7 +254,6 @@ ls ={
 													 $('<li/>').attr({id : 'ali1'}).append(
 															 $('<a/>').attr({href:'#',id : 'ls_alDateSort'}).html('발매일'))
 														.click(()=>{ 
-																 	alert('발매일 click'); 
 																	$.getJSON(sh.ctx()+'/album/newAl/'+'newAl_recent',d=>{
 																	
 																		ls.new_alList(d);
@@ -241,7 +263,6 @@ ls ={
 													 $('<li/>').attr({id : 'ali2'}).append(
 															 $('<a/>').attr({href:'#', id : 'ls_alUpSort'}).html('좋아요'))
 															 .click(()=>{ 
-																 alert('좋아요 click'); 
 																 $.getJSON(sh.ctx()+'/album/newAl/'+'newAl_like',d=>{
 																		ls.new_alList(d);
 																	})
@@ -313,42 +334,32 @@ ls ={
 								$('<td/>').attr({id : 'tableTd4'}).html(v.MUSIC_TITLE)
 								.attr({style : 'text-overflow: ellipsis'}),
 								$('<td/>').attr({id : 'tableTd5'}).html(v.ARTIST_NAME).click(()=>{
-									alert(v.ARTIST_NAME);
-									
 										jt.search(v.ARTIST_NAME);
 								}),
 								$('<td/>').attr({id : 'tableTd6'}).html(v.ALBUM_TITLE).click(()=>{
-									alert(v.ALBUM_SEQ);
 										jt.album_detail(v.ALBUM_SEQ);
 								}),
 								$('<td/>').attr({id : 'tableTd7'}).append(
 										$('<i/>').addClass('ls_fa fa fa-play')
 										.click(()=>{
-											alert(v.MUSIC_SEQ);
 												jt.music_player(v.MUSIC_SEQ);
 										}),
 										$('<i/>').addClass((v.TYPES == 'u')?'active':'').attr({id : 'ls_up'+v.NO }).addClass('ls_fa fa fa-heart')
 										.click(function(e){
-											if($.cookie("loginID")!= null){
+											if(sh.service.auth() == 0 ){
 												sj.service.put_ud({thiz:$(this),btn:'like',mSeq:v.MUSIC_SEQ ,gSeq:v.GENRE_SEQ});
-											}else{
-												alert('로그인이 필요한 서비스입니다')
 											}
 										}),
 										$('<i/>').addClass('ls_fa glyphicon glyphicon-facetime-video')
 										.click(()=>{
-											alert(v.MUSIC_SEQ);
 												jt.album_detail(v.MUSIC_SEQ);
 										
 										}),
 										$('<i/>').addClass((v.TYPES == 'd')?'active':'').attr({id : 'ls_down'+v.NO })
 										.addClass('ls_fa fa fa-thumbs-down')
 										.click(function(e){
-											if($.cookie("loginID")!= null){
+											if(sh.service.auth() == 0 ){
 												sj.service.put_ud({thiz:$(this),btn:'hate',mSeq:v.MUSIC_SEQ ,gSeq:v.GENRE_SEQ});
-												
-											}else{
-												alert('로그인이 필요한 서비스입니다')
 											}
 										})
 								)
@@ -426,8 +437,6 @@ ls ={
 														$('<button/>').addClass('ls_btn btn--block card__btn').html('앨범듣기')
 
 														.click(()=>{ 
-														
-																console.log(v.ALBUM_SEQ);
 																jt.album_player(v.ALBUM_SEQ);
 															
 														 })
@@ -524,10 +533,6 @@ ls ={
 			
 			let nic1 = Math.floor(Math.random()*3);
 			let nic2= Math.floor(Math.random()*7);
-			//alert(nic1);
-			//alert(nic2);
-		//	alert(arr1[nic1]+arr2[nic2])
-			
 			 for(let i =0; i < 1;i++){
 				 $('<div/>').append(
 							$('<div/>').addClass('row').append(
@@ -541,7 +546,6 @@ ls ={
 																 $('<input/>').attr({type : 'text',id : 'alcommentText'}).addClass('alInputText'),
 																 $('<a/>').addClass('alCommentBtn').html('확인')
 																 .click(()=>{
-																	 alert('클릭');
 																	$.ajax({
 																		url : $.ctx()+'/album/alComment',
 																		method : 'post',

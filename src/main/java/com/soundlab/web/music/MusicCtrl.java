@@ -82,15 +82,23 @@ public class MusicCtrl {
 	
 	@GetMapping("/top50lineChart")
 	public List<Map<?,?>> top50lineChart() {
-		
 		map.clear();
-		  List<Map<?,?>> chartData = null;
-		 
-		  
-		  
-			 Util.log.accept("chartData:: " +chartData);
+
+		 List<Map<?,?>> chartData = null;
+		 String todayDate= new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //오늘
+         map.put("todayDate",todayDate);
+         Calendar cal = Calendar.getInstance();
+		 cal.add(Calendar.DATE, -6);
+	     map.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
+		 cal.add(Calendar.DATE, +7);
+	     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
+		 Util.log.accept("date1:: " +map.get("date1"));
+		 Util.log.accept("date2:: " +map.get("date2"));
+		 chartData = musMapper.top50lineChart(map);
+		 Util.log.accept("chartData:: " +chartData);
 		return chartData;
 	}
+	
 	@GetMapping("/infiSc/{x}")
 	
 	public List<Map<?,?>> infiSc(@PathVariable String x) {

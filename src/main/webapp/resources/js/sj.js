@@ -54,7 +54,6 @@ sj ={
 					for(let i of ckHash){
 						s += i.value+',';
 					}
-					console.log(':: 선택된 해시 :: '+s.slice(0,-1));
 					sj.service.dj_pl((s == '')?'first':s.slice(0,-1));
 				});
 				
@@ -220,19 +219,7 @@ sj ={
 									)
 							)
 					).appendTo($foryouSec);
-					
-					
-					/*$('#album-scroll').bind(function(){
-						let $this = $(this);
-						console.log($this.scrollTop());
-						console.log($this.innerHeight());
-						console.log($this[0].scrollHeight);
-						if($this.scrollTop() + $this.innerHeight() >= $this[0].scrollHeight){
-							console.log('Scroll End');
-						}
-					});*/
-					
-					
+
 					let $li = $('<div/>').addClass('list-group').attr({'style':'margin:0;'}).appendTo('#for-album-li');
 					
 					$.each(fal,(i, v)=>{
@@ -325,7 +312,7 @@ sj.service = {
 										if($this.find('h4').text() != $('#sj-dt-container .sj-songs-info-title>h4').text()){
 											$('#sj-dj-detail').empty();
 											sj.service.dj_pld($this.attr('id'));
-											$.getJSON($.ctx()+'/dj/hashs/'+$.cookie('loginID')+'/'+$this.children('label').html(),d=>{console.log(d.res);});
+											$.getJSON($.ctx()+'/dj/hashs/'+$.cookie('loginID')+'/'+$this.children('label').html(),d=>{});
 										}else{
 											$('#sj-dj-detail').remove();
 										}  
@@ -335,7 +322,6 @@ sj.service = {
 				).appendTo($('#djSec'));
 				
 				let djArr = d.djlist; 
-				console.log('carousel length :: '+djArr.length);
 				
 				if(djArr.length === 0){
 				
@@ -549,7 +535,6 @@ sj.service = {
 		},
 		fy_album_dt : x=>{
 			$('#for-album-dt').empty();
-			console.log(x.length);
 			$('<div/>').addClass('sj-music-songs-info sj-mb-10 sj-d-flex sj-flex-wrap sj-align-items-center sj-justify-content-between').append(
 					$('<div/>').addClass('sj-songs-info-title').append(
 							$('<h4/>').html(x[0].albumTitle)
@@ -693,7 +678,6 @@ sj.service = {
 			$.each(x,(i,v)=>{
 				seqs += v.value + ((i < x.length-1)?',':'');
 			});
-			console.log(seqs);
 			jt.music_player(seqs);
 		},
 		l_or_h:x=>{
@@ -711,7 +695,7 @@ sj.service = {
 			let url = (x.btn == 'like')
 				? (($this.hasClass('active'))?'del':'put')+'ML/'+ms+'/'+gs
 						:(($this.hasClass('active'))?'del':'put')+'MH/'+ms+(($this.siblings().hasClass('active'))?'/'+gs:'');
-			if($.cookie("loginID")=='sound') $.getJSON($.ctx()+'/foryou/'+url,d=>{console.log(d.res);});
+			if($.cookie("loginID")=='sound') $.getJSON($.ctx()+'/foryou/'+url,d=>{});
 			sj.service.l_or_h($this);
 		}
 };

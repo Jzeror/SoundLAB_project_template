@@ -4,7 +4,6 @@ sh = (()=>{
      var $ctx,$js,$css,$img,w,state;
      var setState =x=>{state=x};
      var init =()=>{
-         console.log('sh.init ::');
          $ctx = $.ctx();
          $js = $.js();
          $css = $.css();
@@ -17,15 +16,12 @@ sh = (()=>{
             $.getScript(sh.js()+'/jt.js'),
             $.getScript(sh.js()+'/nr.js')
          ).done(d=>{
-        	 //$.removeCookie("loginID");
-        	 
         	 home(); 
          });
          
      };
      var home =()=>{
     	 $('#nrcss').remove();
-         console.log('sh.home ::');
          w.html(nav()+banner()+slider()+mainContents()+footer());
 		 $('<main id="id_main">')
 		 .html(
@@ -108,7 +104,6 @@ sh = (()=>{
 		let loginID = 'none';
 		
 		if($.cookie('loginID') != null){
-            console.log('sh.home::priv::memberId = '+$.cookie("loginID"));
             loginID = $.cookie('loginID');
             $('#loginBtn').attr('id','logoutBtn').text('logout').click(()=>{
                 alert('로그아웃');
@@ -116,7 +111,6 @@ sh = (()=>{
                 home();
             });
             $('#joinBtn').attr('id','myPageBtn').text('My page').click(()=>{
-                alert('mypage::');
                 sh.service.mypage();
             });
        }
@@ -155,7 +149,6 @@ sh = (()=>{
 	    	 let updown = [];
 	    	 $.each(d.top5,(i,v)=>{
 	    		 genres.push(v.장르);
-	    		 console.log('genre :: '+v.장르);
 	    		 titles.push(v.타이틀);
 	    		 albums.push(v.앨범);
 	    		 albumSeq.push(v.ALBUM_SEQ);
@@ -166,7 +159,6 @@ sh = (()=>{
 	    		 musicSeq.push(v.MUSIC_SEQ);
 	    		 updown.push(v.업다운);
 	    	 });
-	    	 console.log('업다운 ::: '+updown);
 	    	 let tr,info,cover,title,artist,player,pa,up,ua,down,da;
 	    	 let tb = $('#sh-tbody');
 	    	 for(let i=0;i<5;i++){
@@ -176,12 +168,9 @@ sh = (()=>{
 	    		 cover = $('<a/>').attr({href : '#'}).addClass('sh-cover').appendTo(info);
 	    		 $('<span/>').addClass('mask').appendTo(cover);
 	    		 $('<img/>').addClass('sh-album-img').attr({src : $img+'/album/'+img[i]}).appendTo(cover).click(e=>{
-	    			 alert('앨범디테일 실행 :: '+ albumSeq[i]);
-	    			 jt_music
+	    			 jt.album_detail(albumSeq[i]);
 	    		 });
-	    		 title = $('<a/>').attr({href : '#'}).addClass('sh-title').html(titles[i]).appendTo(info).click(e=>{
-	    			 alert('웹플레이어 실행 :: '+ musicSeq[i]);
-	    		 });
+	    		 title = $('<a/>').attr({href : '#'}).addClass('sh-title').html(titles[i]).appendTo(info);
 	    		 artist = $('<a/>').attr({href : '#'}).addClass('sh-artist').html(artists[i]).appendTo(info).click(e=>{
 	    			 let x = artists[i];
 					 jt.search(x);
@@ -192,28 +181,19 @@ sh = (()=>{
 	    		 player = $('<td/>').addClass('sh-music-player').appendTo(tr);
 	    		 pa = $('<a/>').attr({href : '#'}).appendTo(player);
 	    		 $('<i/>').addClass('ls_fa fa fa-play').appendTo(pa).click(e=>{
-	    			 alert('웹플레이어 실행 :: '+ musicSeq[i]);
+	    			 jt.music_player(musicSeq[i]);
 	    		 });
 	    		 up = $('<td/>').addClass('sh-music-upbtn').appendTo(tr);
 	    		 //ua = $('<a/>').attr({href : '#'}).appendTo(up);
 	    		 $('<i/>').attr({id : 'sh-up-'+i}).addClass((updown[i]==='u')?'sh-up fa fa-heart active':'sh-up fa fa-heart').appendTo(up).click(function(e){
 	    			 e.preventDefault();
 	    			 if(sh.service.auth()==0){
-	    				 alert('좋아요  :: '+ musicSeq[i]);
-		    			 //$('#sh-up-'+i).addClass('sh-updown');
-		    			 //$('#sh-down-'+i).removeClass('sh-updown');
-	    				 
 	    				 sj.service.put_ud({thiz:$(this),btn:'like',mSeq:musicSeq[i],gSeq:genres[i]});
 	    			 }
 	    		 });
-	    		 //down = $('<td/>').addClass('sh-music-downbtn').appendTo(tr);
-	    		 //da = $('<a/>').attr({href : '#'}).appendTo(down);
 	    		 $('<i/>').attr({id : 'sh-down-'+i}).addClass((updown[i]==='d')?'sh-down fa fa-thumbs-down active':'sh-down fa fa-thumbs-down').appendTo(up).click(function(e){
 	    			 e.preventDefault();
 	    			 if(sh.service.auth()==0){
-	    				 alert('싫어요  :: '+ musicSeq[i]);
-		    			 //$('#sh-down-'+i).addClass('sh-updown');
-		    			 //$('#sh-up-'+i).removeClass('sh-updown');
 	    				 sj.service.put_ud({thiz:$(this),btn:'hate',mSeq:musicSeq[i],gSeq:genres[i]});
 	    			 }
 	    			
@@ -233,11 +213,6 @@ sh = (()=>{
 	     $('#bannerItem').carousel({
 	    	 interval: 2600
 	     });
-	     ui.btn({ id : 'admin', txt : '관리자테스트', at : $('#userBox')})
-	     .click(e=>{
-	    	 nr.init();
-	     });
-         
          $('#loginBtn').click(()=>{
               sh.service.login();
          });
@@ -248,9 +223,6 @@ sh = (()=>{
          $('#searchBtn').click(e=>{
         		 let x = $('#searchInput').val();
 				 jt.search(x);
-				 setTimeout(()=>{
-					 fn.scroll({ id : $("#jt_search"), len : 400});
-		         },200);
     	 });
     	 $('#searchInput').keyup(e=>{
     		 if(e.keyCode == 13) { 
@@ -321,9 +293,6 @@ sh = (()=>{
          
         $('#logoImg').click(e=>{
         	e.preventDefault();
-        	/*$.getJSON(sh.ctx()+'/dummy/loginRecord',d=>{
-        		alert('seq ::' + d.seq);
-        	});*/
             home();
             fn.scroll({ id : $("#banner"), len : 150});
         });
@@ -492,8 +461,7 @@ var mainContents =()=> '<section id="mainContents">'
 	            +'<th scope="col" class="col-md-1">순위</th>'
 	            +'<th scope="col" class="col-md-8">곡정보</th>'
 	            +'<th scope="col" class="col-md-1">듣기</th>'
-	            +'<th scope="col" class="col-md-1">좋아요</th>'
-	            +'<th scope="col" class="col-md-1">싫어요</th>'
+	            +'<th scope="col" class="col-md-2">좋아요</th>'
 	        +'</tr>'
 	    +'</thead>'
 	    +'<tbody id="sh-tbody">'
@@ -511,22 +479,13 @@ var mainContents =()=> '<section id="mainContents">'
      +'</section>';
      
 var footer =()=> '</div>'
-     +'<section id="footer"  style="text-align:center">'
+     +'<section id="footer">'
      +'</br>'
      +'</br>'
      +'</br>'
      +'</br>'
      +'</br>'
      +'</br>'
-     +'<ul>'
-     +'<li style="list-style:none"><a href="http://www.bugscorp.co.kr?wl_ref=M_footer_03_01" target="_blank" aria-label="새창">팀 명 : Turtle King</a><span class="bar"></span></li>'
-     +'<li style="list-style:none"><a href="https://music.bugs.co.kr/cooperation?wl_ref=M_footer_03_01">LEADER : 신승호 </a><span class="bar"></span></li>'
-     +'<li style="list-style:none"><a href="https://music.bugs.co.kr/rules/use?wl_ref=M_footer_03_01">MEMBER : 김진태</a><span class="bar"></span></li>'
-     +'<li style="list-style:none"><a href="https://music.bugs.co.kr/rules/privacy?wl_ref=M_footer_03_01">MEMBER : 이 슬</a><span class="bar"></span></li>'
-     +'<li style="list-style:none"><a href="https://music.bugs.co.kr/rules/youth?wl_ref=M_footer_03_01">MEMBER : 최소진</a><span class="bar"></span></li>'
-     +'<li style="list-style:none"><a href="https://music.bugs.co.kr/connect/center?wl_ref=M_footer_03_01">MEMBER : 최솔빛누리</a><span class="bar"></span></li>'
-     +'<li style="list-style:none"><a href="http://help.bugs.co.kr?wl_ref=M_footer_03_01">영상</a><span class="bar"></span></li>'
-+'</ul>'
 +'</div>'
 +'</section>';
 var login = ()=> '<section id="loginSec" class="loginSec" >'
@@ -565,6 +524,30 @@ var login2 = ()=> '<section id="loginSec" class="loginSec" >'
 +'<input id="memberId" class="loginInput" type="text" placeholder="아이디" required/></br>'
 +'<input id="pass" class="loginInput" type="password" placeholder="비밀번호" required/></br>'
 +'</div>'
++'</div>'
+/*--loginBox--*/
++'</div>'
++'<div class="col-md-3">'
++'</div>'
++'</div>'
++'</section>';
+var find = ()=> '<section id="loginSec" class="loginSec" >'
++'<div class="container-fluid">'
++'<div class="col-md-4">'
++'</div>'
++'<div class="col-md-5">'
+/* loginBox */
++'<div id="loginBox" class="loginBox">'
++'<div id="logoForm" class="logoForm">'
++'<img src="'+$.img()+'/logo.png" id="logoImg" class="loginLogo2"><h2 class="loginInst">로그인 후 이용하실 수 있습니다.</h2>'
++'</div>'
++'<div id="loginForm" class="loginForm">'
++'<input id="memberId" class="loginInput" type="text" placeholder="메일" required/></br>'
++'</div>'
++'</br>'
++'</br>'
++'</br>'
++'</br>'
 +'</div>'
 /*--loginBox--*/
 +'</div>'
@@ -712,21 +695,14 @@ var mypage =()=>'<section id="mypageSec" class="joinSec">'
          footer : footer,
          login : login,
          login2 : login2,
+         find : find,
          join : join,
          mypage : mypage
       };
 })();
-/*$('#wrapper').on("click",'#loginBtn',function(event){
-    // 동적으로 여러 태그가 생성된 경우라면 이런식으로 클릭된 객체를 this 키워드를 이용해서 잡아올 수 있다.
-     alert('lg버튼클릭');
-     sh.clickEvent.login();
-  });
-*/
-
 sh.service ={
      login : ()=>{
     	 $('#nrcss').remove();
-         console.log('sh.service.login::');
          $(sh.w()).html(sh.login());
           let $memberId =  $('#memberId');
           let $pass = $('#pass');
@@ -739,7 +715,8 @@ sh.service ={
           let $loginForm = $('#loginForm');
           ui.br({len : 1, at : $loginForm});
           ui.span({ clazz : 'findJoin', at : $loginForm});
-          ui.a({ id : 'findIdBtn', clazz : 'findJoinBtn', txt : '아이디/비밀번호 찾기', at : $('.findJoin')});
+          ui.a({ id : 'findIdBtn', clazz : 'findJoinBtn', txt : '아이디/비밀번호 찾기', at : $('.findJoin')})
+          .attr({ 'data-tooltip-text' : '미구현 기능입니다. :) '});
           ui.a({ id : 'joinBtn', clazz : 'findJoinBtn', txt : '회원가입', at : $('.findJoin')})
           .click(e=>{
                    sh.service.join();
@@ -758,7 +735,6 @@ sh.service ={
                            pass : $pass.val()
                        }),
                        success : d=>{
-                           console.log('login success in :::');
                            if(d.valid === "admin"){
                         	   sh.service.loginInfo(d);
                         	   nr.init();
@@ -783,18 +759,9 @@ sh.service ={
           Kakao.Auth.createLoginButton({
               container: '#kakao-login-btn',
               success: function(authObj) {
-            	  alert(JSON.stringify(authObj));
             	  Kakao.API.request({
             		  url:'/v1/user/me',
                       success : d=>{
-                          console.log("id : "+d.id);
-                          console.log("email : "+d.kaccount_email);
-                          console.log("pw : "+d.uuid);
-                          console.log("age : "+d.properties.age_rang);
-                          console.log("birthday : "+d.properties.birthday);
-                          console.log("gender : "+d.properties.gender);
-                          console.log("profile image : "+d.properties.profile_image);
-                          console.log("nickname : "+d.properties.nickname);
                           $.ajax({
                               url : sh.ctx()+'/member/kakao',
                               method : 'post',
@@ -805,7 +772,6 @@ sh.service ={
                               }),
                               success : x=>{
                             	  if(x.valid === 'Y'){
-                            		  console.log('최초 아님 KAKAO login success in :::' +x.memberId);
                             		  $.cookie("loginID",x.memberId);
                             		  sh.home();
                             	  }else{
@@ -828,7 +794,6 @@ sh.service ={
                                                        KAKAO_PASS : x.kPass
                                                    }),
                                                    success : f=>{
-                                                       console.log('최초 KAKAO login success in :::');
                                                        if(f.valid === "user"){
                                                     	   $.cookie("loginID",f.memberId);
                                                  		   sh.home();
@@ -861,7 +826,6 @@ sh.service ={
          
      },
      join : ()=>{
-         console.log('sh.service.join::');
          $(sh.w()).html(sh.join());
          
          let $joinForm = $('#joinForm');
@@ -905,7 +869,6 @@ sh.service ={
                 $('input:checkbox[class=genre]:checked').each((i,o)=>{
                           genres.push(o.value);
                   });
-                alert(genres);
                 let artists = [];
                 $('input:checkbox[class=artist]:checked').each((i,o)=>{
                 	artists.push(o.value);
@@ -927,7 +890,6 @@ sh.service ={
                         artists : JSON.stringify(artists)
                     }),
                     success : d=>{
-                        console.log('join success in :::');
                         alert(d.valid);
                         if(d.valid === '회원가입성공'){
                         	sh.service.login();
@@ -958,8 +920,11 @@ sh.service ={
               
         });
      },
+     find : ()=>{
+    	/* $(sh.w()).html(sh.find());*/
+    	
+     },
      mypage : ()=>{
-         console.log('sh.service.mypage::');
          $(sh.w()).html(sh.mypage());
          $('#memberId').val($.cookie('loginID'));
          let $mypageForm = $('#joinForm');
@@ -990,7 +955,6 @@ sh.service ={
                          phone : phone,
                      }),
                      success : d=>{
-                         console.log('update success in :::');
                          alert(d.valid);
                          $.removeCookie("loginID");
                          sh.service.login();
@@ -1008,7 +972,6 @@ sh.service ={
                  url : sh.ctx()+'/member/'+$.cookie('loginID'),
                  method : 'delete',
                  success : d=>{
-                     console.log('delete success in :::');
                      alert(d.valid);
                      $.removeCookie("loginID");
                      sh.home();

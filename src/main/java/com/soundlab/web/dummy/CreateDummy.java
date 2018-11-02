@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class CreateDummy {
 
 	public static void main(String[] args) {
-		twicemusicUpDown();
+		chartview();
 
 	}
 	static void artistUpDown사운드제외() {
@@ -256,12 +256,20 @@ public class CreateDummy {
 														
 														
 				};
-				for(int s=17;s<67;s++) {
+				/*for(int s=17;s<67;s++) {
 					for(int i=0;i<s+1;i++) {
 						System.out.println("INSERT INTO VIEW_RECORD (MEMBER_ID, SEQ_GROUP, SG_ELEMENT, VIEW_DATE)\n" 
 								+"VALUES\n" 
 								+"('shin',"+lst[s]+",'music','2018-11-01 20:20:34');");
 					}
+				}*/
+				for(int i=0;i<67;i++) {
+					for(int j=0;j<4;j++) {
+						System.out.println("INSERT INTO VIEW_RECORD (MEMBER_ID, SEQ_GROUP, SG_ELEMENT, VIEW_DATE)\n" 
+								+"VALUES\n" 
+								+"('shin',"+lst[i]+",'music','2018-11-02 20:20:34');");
+					}
+					
 				}
 	 }
 	
