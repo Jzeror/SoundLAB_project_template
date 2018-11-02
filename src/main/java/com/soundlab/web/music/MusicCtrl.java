@@ -117,7 +117,7 @@ public class MusicCtrl {
 			     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
 			     
 			     map.put("PageNo", no);
-			     int PageNoEnd = no+4;
+			     int PageNoEnd = no+20;
 			     map.put("PageNoEnd",PageNoEnd);
 					System.out.println(no);
 					System.out.println(PageNoEnd);
@@ -133,7 +133,7 @@ public class MusicCtrl {
 				 cal.add(Calendar.DATE, +7);
 			     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
 			     map.put("PageNo", no);
-			     int PageNoEnd = no+4;
+			     int PageNoEnd = no+20;
 			     map.put("PageNoEnd",PageNoEnd);
 					System.out.println(no);
 					System.out.println(PageNoEnd);
@@ -149,7 +149,7 @@ public class MusicCtrl {
 				 cal.add(Calendar.DATE, +31);
 			     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
 			     map.put("PageNo", no);
-			     int PageNoEnd = no+4;
+			     int PageNoEnd = no+20;
 			     map.put("PageNoEnd",PageNoEnd);
 					System.out.println(no);
 					System.out.println(PageNoEnd);

@@ -401,7 +401,7 @@ ls ={
 		     			$.getJSON($.ctx()+'/music/infiSc/'+no+','+$.cookie("loginID")+','+p,d=>{
 		     				if(no <= 50){
         					ls.top50table(d);
-        						no=no+5;
+        						no=no+20;
         						  setTimeout(function(){bool_sw = true;},500) 
 		     		} 
 		     			})
