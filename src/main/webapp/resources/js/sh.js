@@ -717,10 +717,6 @@ sh.service ={
           ui.span({ clazz : 'findJoin', at : $loginForm});
           ui.a({ id : 'findIdBtn', clazz : 'findJoinBtn', txt : '아이디/비밀번호 찾기', at : $('.findJoin')})
           .attr({ 'data-tooltip-text' : '미구현 기능입니다. :) '});
-          /*.click(e=>{
-        	  sh.service.find();
-        	  alert('미구현 기능입니다. ^^');
-          });*/
           ui.a({ id : 'joinBtn', clazz : 'findJoinBtn', txt : '회원가입', at : $('.findJoin')})
           .click(e=>{
                    sh.service.join();
