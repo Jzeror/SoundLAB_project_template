@@ -478,10 +478,12 @@
 }
 .jt_titsong{
 	color: #333;
+
 	cursor: pointer;
 	overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+
 }
 .jt_itemem{
 	color: #dadada;
@@ -502,7 +504,7 @@
 	cursor: pointer;
 }
 .jt_musicCnt{
-	margin-left: 35rem;
+	margin-left: 32rem;
     font-size: 18px;
 }
 #musicCnt{
@@ -764,4 +766,9 @@
 }
 .jt_td_table5 span {
 	 margin: 0 2.5rem;
+}
+#jt_pagelink{
+	background-color: #f6b352;
+     border-color: #fff;
+     cursor: pointer;
 }
