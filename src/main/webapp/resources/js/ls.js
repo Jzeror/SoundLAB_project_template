@@ -90,6 +90,7 @@ ls ={
 																			seqs += v.value + ((i < ck.length-1)?',':'');
 																		});
 																		jt.music_player(seqs);
+																		$('input[name = al_chkBox]:checkbox').prop('checked',false);
 																	 }),
 																	$('<button/>').attr({id : 'addToList'})
 																	.addClass("btn btn-default btn-filter").html('담기')
@@ -100,6 +101,7 @@ ls ={
 																				seqs += v.value + ((i < ck.length-1)?',':'');
 																			});
 																			jt.music_player(seqs);
+																			$('input[name = al_chkBox]:checkbox').prop('checked',false);
 																		 })
 															)
 											)
@@ -118,25 +120,52 @@ ls ={
 		            
 		            //-------------차트-----------------
 		           $.getJSON(sh.ctx()+'/music/top50lineChart',d=>{	
-		        	   
+		        	   			let vd = [];
+		        	   			let ttl = [];
+		        	   			let strm = [];
+		        	   			let arti = [];
+		        	   			let sq = [];
+		        	   			let per = [];
+		        	   			let sum;
+		        	   			for(let i=0;i<21;i=i+3){
+		        	   				vd.push(d[i].날짜);
+		        	   				vd.push(d[i+1].날짜);
+		        	   				vd.push(d[i+2].날짜);
+		        	   				ttl.push(d[i].TITLE);
+		        	   				ttl.push(d[i+1].TITLE);
+		        	   				ttl.push(d[i+2].TITLE);
+		        	   				strm.push(d[i].스트리밍);
+		        	   				strm.push(d[i+1].스트리밍);
+		        	   				strm.push(d[i+2].스트리밍);
+		        	   				arti.push(d[i].가수);
+		        	   				arti.push(d[i+1].가수);
+		        	   				arti.push(d[i+2].가수);
+		        	   				sq.push(d[i].SEQ);
+		        	   				sq.push(d[i+1].SEQ);
+		        	   				sq.push(d[i+2].SEQ);
+		        	   				sum = strm[i]+strm[i+1]+strm[i+2];
+		        	   				per.push((strm[i]/sum)*100);
+		        	   				per.push((strm[i+1]/sum)*100);
+		        	   				per.push((strm[i+2]/sum)*100);
+		        	   			}
 							 	google.charts.load('current', {'packages':['line']});
 					 			google.charts.setOnLoadCallback(drawChart1);
 							    function drawChart1() {
 							    	  var data = new google.visualization.DataTable();
 							    	  data.addColumn('string', 'day');
-						        	  data.addColumn('number', '1위    '+d[6].R1_NAME+'/'+d[6].R1_TITLE);
-						         	  data.addColumn('number', '2위    '+d[6].R2_NAME+'/'+d[6].R2_TITLE);
-						         	  data.addColumn('number', '3위    '+d[6].R3_NAME+'/'+d[6].R3_TITLE);
+						        	  data.addColumn('number', '1위    '+arti[18]+'/'+ttl[18]);
+						         	  data.addColumn('number', '2위    '+arti[19]+'/'+ttl[19]);
+						         	  data.addColumn('number', '3위    '+arti[20]+'/'+ttl[20]);
 							
-							          
-							          for(let i=0; i <7; i++){	
-							        	  let trans=x=>{
-												let day=new Date(x).getDate();
-										
-												return day+"일";
-											};
+						         	 let trans=x=>{
+											let day=new Date(x).getDate();
+									
+											return day+"일";
+										};
+							          for(let i=0; i <21; i=i+3){	
+							        	  
 							          data.addRows([
-							            [trans(new Date(d[i].VIEW_DATE)),  d[i].R1_PER*1, d[i].R2_PER*1, d[i].R3_PER*1]
+							            [trans(new Date(vd[i])),  per[i], per[i+1], per[i+2]]
 							           
 							          ]);
 							          }
@@ -147,7 +176,6 @@ ls ={
 							        	        height: 350,
 							        	        axes: {
 							        	          x: {
-							        	        	
 							        	            0: {side: 'bottom'}
 							        	          }
 							        	        }
@@ -166,16 +194,16 @@ ls ={
 						$('<ul/>').append(
 								$('<li/>').addClass('lank01').append(
 										$('<span/>').addClass('none').html('1위'),
-										$('<em/>').html(d[6].R1_PER+'%')
+										$('<em/>').html(per[18].toFixed(1)+'%')
 										
 								),
 								$('<li/>').addClass('lank02').append(
 										$('<span/>').addClass('none').html('2위'),
-										$('<em/>').html(d[6].R2_PER+'%')
+										$('<em/>').html(per[19].toFixed(1)+'%')
 								),
 								$('<li/>').addClass('lank03').append(
 										$('<span/>').addClass('none').html('3위'),
-										$('<em/>').html(d[6].R3_PER+'%')
+										$('<em/>').html(per[20].toFixed(1)+'%')
 								)
 						)
 				)
