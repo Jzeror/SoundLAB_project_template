@@ -107,7 +107,8 @@ public class MemberCtrl {
 		logger.info("ssn {} email {} ",pm.get("ssn"),pm.get("email"));
 		logger.info("phone {} genres {} ",pm.get("phone"),pm.get("genres"));
 		logger.info("artists {} sex {}",pm.get("artists"),pm.get("sex"));
-		if(mp.count(rm) == 0) {
+		System.out.println("아이디 탐색 ::: "+mp.count(pm));
+		if(mp.count(pm) == 0) {
 			mp.post(pm);
 			logger.info("MemberController ::: join :: post fin");
 			mp.upGenre(pm);

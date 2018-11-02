@@ -44,14 +44,14 @@ public class ArticleCtrl {
 	@RequestMapping("/dj/hashs/{id}/{hash}")
 	public @ResponseBody Map<String, Object> putHashView(@PathVariable String id,@PathVariable String hash){
 		Map<String, Object> res = new HashMap<>();
-		Map<String, String> p = new HashMap<>();
+		Map<String, Object> p = new HashMap<>();
 		String[] hashArr = hash.split(",");
 		int count = 1;
 		for(String s : hashArr) {
 			p.put("t"+(count++), s);
 		}
 		p.put("id", id);
-		res.put("res", ts.putHashView(p));
+		res.put("res", (am.putHashView(p))?hash+" view in":"");
 		return res;
 	}
 	

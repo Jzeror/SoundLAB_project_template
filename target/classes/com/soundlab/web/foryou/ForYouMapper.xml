@@ -134,18 +134,30 @@ ORDER BY MS.MUSIC_SEQ
  	INSERT INTO UPDOWN ( MEMBER_ID , SEQ_GROUP , SG_ELEMENT , TYPES )
  	VALUES ('sound',#{p},'music','u')
   </insert>
+  <insert id="putMusicDown">
+  	INSERT INTO UPDOWN ( MEMBER_ID , SEQ_GROUP , SG_ELEMENT , TYPES )
+ 	VALUES ('sound',#{p},'music','d')
+  </insert>
   <insert id="putGenreUp">
  	INSERT INTO UPDOWN ( MEMBER_ID , SEQ_GROUP , SG_ELEMENT , TYPES )
  	VALUES ('sound',#{p},'genre','u')
   </insert>
-  <delete id="delMusicDown">
-  	DELETE FROM UPDOWN 
-  	WHERE SEQ_GROUP LIKE #{p}
-  	AND TYPES LIKE 'd'
-  	AND MEMBER_ID LIKE 'sound'
-  </delete>
+  <insert id="putArtistUp">
+  	INSERT INTO UPDOWN ( MEMBER_ID , SEQ_GROUP , SG_ELEMENT , TYPES )
+ 	VALUES ('sound',#{p},'artist','u')
+  </insert>
+  <insert id="putArtistDown">
+  	INSERT INTO UPDOWN ( MEMBER_ID , SEQ_GROUP , SG_ELEMENT , TYPES )
+ 	VALUES ('sound',#{p},'artist','d')
+  </insert>
   
-  <delete id="delMusicUp">
+  <delete id="delDown">
+  	DELETE FROM UPDOWN 
+  	WHERE MEMBER_ID LIKE 'sound'
+  	AND SEQ_GROUP LIKE #{p}
+  	AND TYPES LIKE 'd'
+  </delete>
+  <delete id="delUp">
 	DELETE FROM UPDOWN
 	WHERE MEMBER_ID LIKE 'sound'
 	AND SEQ_GROUP LIKE #{p}
@@ -162,8 +174,5 @@ ORDER BY MS.MUSIC_SEQ
 		GROUP BY SEQ_GROUP
 		)
   </delete>
-  <insert id="putMusicDown">
-  	INSERT INTO UPDOWN ( MEMBER_ID , SEQ_GROUP , SG_ELEMENT , TYPES )
- 	VALUES ('sound',#{p},'music','d')
-  </insert>
+
   </mapper>

@@ -123,6 +123,17 @@
 			)
 	</select>
 	
+	 <insert id="musicRecord" parameterType="map">
+	  	INSERT INTO VIEW_RECORD
+	  	(MEMBER_ID, SEQ_GROUP, SG_ELEMENT)
+	  	VALUES
+	  	<foreach collection="musicList" item="i" separator=" , ">
+	  	(#{memberId},
+	  	 (SELECT MUSIC_SEQ FROM MUSIC WHERE MUSIC_SEQ LIKE #{i} ),
+	  	 'music')
+	  	</foreach>
+	  </insert>
+	
 	<select id="getPlayer" resultType="map" >
 		SELECT * FROM JT_VIEW_PLAYER
 			<where>

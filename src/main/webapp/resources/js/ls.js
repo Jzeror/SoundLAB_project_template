@@ -2,7 +2,7 @@
 var ls = ls || {};
 ls ={
 		chart :x=>{
-			var bool_sw = true;
+	
 			$.getJSON(sh.ctx()+'/music/top50/'+x+','+$.cookie("loginID"),d=>{
 				
 				
@@ -15,7 +15,7 @@ ls ={
 								$('<div/>').addClass("ls_char_panel_top Panel panel-dafalt container").append(
 										$('<h1/>').html('TOP 50')
 								).appendTo($chartSec);
-								// 차트
+								// 
 								$('<div/>').attr({id :'chart_title'}).addClass("container").appendTo($chartSec);
 								 $('<div/>').addClass("ls_lineCh Panel panel-dafalt container").append(
 						                    
@@ -26,34 +26,34 @@ ls ={
 										$('<div/>').append(
 												 $('<ul/>').addClass("ls_chart_nav nav nav-tabs nav-justified").append(
 														 $('<li/>').append(
-																 $('<a/>').attr({id : 'liveChr'}).html('실시간'))
+																 $('<a/>').attr({id : 'liveChr'}).html('일간'))
 																 .click(()=>{ 
-																	 alert('liveChr click');
 																	 let realChart = 'realChart';
-																		$.getJSON(sh.ctx()+'/music/top50/'+realChart,d=>{
+																		$.getJSON(sh.ctx()+'/music/top50/'+realChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
 																			 ls.top50table(d);
+																			 ls.infiSc('realChart');
 																	 })
 																	 
 																 }),
 														 $('<li/>').append(
 																 $('<a/>').attr({id : 'wklChr'}).html('주간'))
 																 .click(()=>{ 
-																	 alert('wklChr click'); 
 																	 	let weekChart = 'weekChart';
-																		$.getJSON(sh.ctx()+'/music/top50/'+weekChart,d=>{
+																		$.getJSON(sh.ctx()+'/music/top50/'+weekChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
 																			 ls.top50table(d);
+																			 ls.infiSc('weekChart');
 																	 })
 																	 }),
 														 $('<li/>').append(
 																$('<a/>').attr({id : 'monthChr'}).html('월간'))
 																.click(()=>{ 
-																	alert('dayChr click'); 
 																	 let monthChart = 'monthChart';
-																		$.getJSON(sh.ctx()+'/music/top50/'+monthChart,d=>{
+																		$.getJSON(sh.ctx()+'/music/top50/'+monthChart+','+$.cookie("loginID"),d=>{
 																			$('#topTable').empty();
 																			 ls.top50table(d);
+																			 ls.infiSc('monthChart');
 																	 })
 																	})
 
@@ -76,10 +76,10 @@ ls ={
 																let seqs = '';
 																$.each(ck,(i,v)=>{
 																	seqs += v.value + ((i < ck.length-1)?',':'');
+																    
 																});
-																jt.music_player(seqs);
-																console.log(seqs);
-																
+																jt.music_player(seqs)
+															   $('input[name = al_chkBox]:checkbox').prop('checked',false);
 														}),
 																	$('<button/>').attr({id : 'listenAll'})
 																	.addClass("btn btn-default btn-filter").html('전체듣기')
@@ -90,22 +90,25 @@ ls ={
 																			seqs += v.value + ((i < ck.length-1)?',':'');
 																		});
 																		jt.music_player(seqs);
-																		console.log(seqs);
-																		
-																	 
+																		$('input[name = al_chkBox]:checkbox').prop('checked',false);
 																	 }),
 																	$('<button/>').attr({id : 'addToList'})
 																	.addClass("btn btn-default btn-filter").html('담기')
 																	.click(()=>{ 
-																		 alert('addToList click'); 
-																		 
+																		 let ck = $('input[name=al_chkBox]:checkbox:checked');
+																			let seqs = '';
+																			$.each(ck,(i,v)=>{
+																				seqs += v.value + ((i < ck.length-1)?',':'');
+																			});
+																			jt.music_player(seqs);
+																			$('input[name = al_chkBox]:checkbox').prop('checked',false);
 																		 })
 															)
 											)
 					).appendTo($('#chart-top50')),
 					ls.tHeader(),
 					ls.top50table(d),
-					
+					ls.infiSc('realChart');
 					$('#allCheck').click(()=>{
 		                if($('#allCheck').is(':checked')){
 		                    $('input[name = al_chkBox]:checkbox').prop('checked',true);
@@ -117,21 +120,53 @@ ls ={
 		            
 		            //-------------차트-----------------
 		           $.getJSON(sh.ctx()+'/music/top50lineChart',d=>{	
-		        	   
+		        	   			let vd = [];
+		        	   			let ttl = [];
+		        	   			let strm = [];
+		        	   			let arti = [];
+		        	   			let sq = [];
+		        	   			let per = [];
+		        	   			let sum;
+		        	   			for(let i=0;i<21;i=i+3){
+		        	   				vd.push(d[i].날짜);
+		        	   				vd.push(d[i+1].날짜);
+		        	   				vd.push(d[i+2].날짜);
+		        	   				ttl.push(d[i].TITLE);
+		        	   				ttl.push(d[i+1].TITLE);
+		        	   				ttl.push(d[i+2].TITLE);
+		        	   				strm.push(d[i].스트리밍);
+		        	   				strm.push(d[i+1].스트리밍);
+		        	   				strm.push(d[i+2].스트리밍);
+		        	   				arti.push(d[i].가수);
+		        	   				arti.push(d[i+1].가수);
+		        	   				arti.push(d[i+2].가수);
+		        	   				sq.push(d[i].SEQ);
+		        	   				sq.push(d[i+1].SEQ);
+		        	   				sq.push(d[i+2].SEQ);
+		        	   				sum = strm[i]+strm[i+1]+strm[i+2];
+		        	   				per.push((strm[i]/sum)*100);
+		        	   				per.push((strm[i+1]/sum)*100);
+		        	   				per.push((strm[i+2]/sum)*100);
+		        	   			}
 							 	google.charts.load('current', {'packages':['line']});
 					 			google.charts.setOnLoadCallback(drawChart1);
 							    function drawChart1() {
 							    	  var data = new google.visualization.DataTable();
-							          data.addColumn('number', 'Day');
-						        	  data.addColumn('number', d[0].ARTIST_NAME+'/'+d[0].MUSIC_TITLE);
-							          data.addColumn('number', d[1].ARTIST_NAME+'/'+d[1].MUSIC_TITLE);
-							          data.addColumn('number', d[2].ARTIST_NAME+'/'+d[2].MUSIC_TITLE);
-							          
-							          for(let i=0; i <18; i=i+3){	
+							    	  data.addColumn('string', 'day');
+						        	  data.addColumn('number', '1위    '+arti[18]+'/'+ttl[18]);
+						         	  data.addColumn('number', '2위    '+arti[19]+'/'+ttl[19]);
+						         	  data.addColumn('number', '3위    '+arti[20]+'/'+ttl[20]);
+							
+						         	 let trans=x=>{
+											let day=new Date(x).getDate();
+									
+											return day+"일";
+										};
+							          for(let i=0; i <21; i=i+3){	
+							        	  
 							          data.addRows([
-							            [d[i].VIEW_DATE*1,  d[i].PER, d[i+1].PER, d[i+2].PER],
-							            [d[i+1].VIEW_DATE*1,  d[i].PER, d[i+1].PER, d[i+2].PER],
-							            [d[i+2].VIEW_DATE*1,  d[i].PER, d[i+1].PER, d[i+2].PER]
+							            [trans(new Date(vd[i])),  per[i], per[i+1], per[i+2]]
+							           
 							          ]);
 							          }
 							         
@@ -141,7 +176,6 @@ ls ={
 							        	        height: 350,
 							        	        axes: {
 							        	          x: {
-							        	        	
 							        	            0: {side: 'bottom'}
 							        	          }
 							        	        }
@@ -160,51 +194,22 @@ ls ={
 						$('<ul/>').append(
 								$('<li/>').addClass('lank01').append(
 										$('<span/>').addClass('none').html('1위'),
-										$('<em/>').html(d[0].PER+'%')
+										$('<em/>').html(per[18].toFixed(1)+'%')
 										
 								),
 								$('<li/>').addClass('lank02').append(
 										$('<span/>').addClass('none').html('2위'),
-										$('<em/>').html(d[1].PER+'%')
+										$('<em/>').html(per[19].toFixed(1)+'%')
 								),
 								$('<li/>').addClass('lank03').append(
 										$('<span/>').addClass('none').html('3위'),
-										$('<em/>').html(d[2].PER+'%')
+										$('<em/>').html(per[20].toFixed(1)+'%')
 								)
 						)
 				)
 		).appendTo('#chart_title');
 })
-						let no= 31;
-					//무한 스크롤
-		     	$(window).on("scroll", function() {
-		     	
-		        		var scrollHeight = $(document).height();
-		        		var scrollPosition = $(window).height() + $(window).scrollTop();		
-
-		        		$("#scrollHeight").text(scrollHeight);
-		        		$("#scrollPosition").text(scrollPosition);
-		        		$("#bottom").text(scrollHeight - scrollPosition);
-		        		
-		        
-		        		if ( scrollPosition > scrollHeight - 100) {
-		        			if(bool_sw){ 
-		    		     		sendData(); //실행 
-		    		     		} 
-		    		     		function sendData(){ 
-		    		     		bool_sw = false;
-		    		     		
-		    		     			$.getJSON($.ctx()+'/music/infiSc/'+no+','+$.cookie("loginID"),d=>{
-		    		     				if(no <= 50){
-			        					ls.top50table(d);
-			        						no=no+5;
-			        						  setTimeout(function(){bool_sw = true;},500) 
-		    		     		} 
-		    		     			})
-		    		     		}
-		        		}
-		        	});
-
+			
 		     	
 		     	
 					
@@ -229,7 +234,6 @@ ls ={
 													$('<h2/>').attr('style','margin-left: 1.2rem;').addClass('my-4'),
 													$('<div/>').attr({id : 'alCarousel'}).addClass('carousel slide ls_featured-shows-slides')
 													.on('click','.item>div',function(e){
-														alert($(this).attr('id'));
 														jt.album_detail($(this).attr('id'));
 													})
 											)
@@ -246,7 +250,6 @@ ls ={
 													 $('<li/>').attr({id : 'ali1'}).append(
 															 $('<a/>').attr({href:'#',id : 'ls_alDateSort'}).html('발매일'))
 														.click(()=>{ 
-																 	alert('발매일 click'); 
 																	$.getJSON(sh.ctx()+'/album/newAl/'+'newAl_recent',d=>{
 																	
 																		ls.new_alList(d);
@@ -256,7 +259,6 @@ ls ={
 													 $('<li/>').attr({id : 'ali2'}).append(
 															 $('<a/>').attr({href:'#', id : 'ls_alUpSort'}).html('좋아요'))
 															 .click(()=>{ 
-																 alert('좋아요 click'); 
 																 $.getJSON(sh.ctx()+'/album/newAl/'+'newAl_like',d=>{
 																		ls.new_alList(d);
 																	})
@@ -305,6 +307,8 @@ ls ={
 						$('<table/>').addClass("ls_table table ls_table-filter").attr({id :'topTable'})
 				).appendTo($('#pull-left'));
 		
+				
+		
 					$.each(d,(i,v)=>{
 								
 						$('<tr/>').append(
@@ -326,42 +330,32 @@ ls ={
 								$('<td/>').attr({id : 'tableTd4'}).html(v.MUSIC_TITLE)
 								.attr({style : 'text-overflow: ellipsis'}),
 								$('<td/>').attr({id : 'tableTd5'}).html(v.ARTIST_NAME).click(()=>{
-									alert(v.ARTIST_NAME);
-									
 										jt.search(v.ARTIST_NAME);
 								}),
 								$('<td/>').attr({id : 'tableTd6'}).html(v.ALBUM_TITLE).click(()=>{
-									alert(v.ALBUM_SEQ);
 										jt.album_detail(v.ALBUM_SEQ);
 								}),
 								$('<td/>').attr({id : 'tableTd7'}).append(
 										$('<i/>').addClass('ls_fa fa fa-play')
 										.click(()=>{
-											alert(v.MUSIC_SEQ);
 												jt.music_player(v.MUSIC_SEQ);
 										}),
 										$('<i/>').addClass((v.TYPES == 'u')?'active':'').attr({id : 'ls_up'+v.NO }).addClass('ls_fa fa fa-heart')
 										.click(function(e){
-											if($.cookie("loginID")!= null){
+											if(sh.service.auth() == 0 ){
 												sj.service.put_ud({thiz:$(this),btn:'like',mSeq:v.MUSIC_SEQ ,gSeq:v.GENRE_SEQ});
-											}else{
-												alert('로그인이 필요한 서비스입니다')
 											}
 										}),
 										$('<i/>').addClass('ls_fa glyphicon glyphicon-facetime-video')
 										.click(()=>{
-											alert(v.MUSIC_SEQ);
 												jt.album_detail(v.MUSIC_SEQ);
 										
 										}),
 										$('<i/>').addClass((v.TYPES == 'd')?'active':'').attr({id : 'ls_down'+v.NO })
 										.addClass('ls_fa fa fa-thumbs-down')
 										.click(function(e){
-											if($.cookie("loginID")!= null){
+											if(sh.service.auth() == 0 ){
 												sj.service.put_ud({thiz:$(this),btn:'hate',mSeq:v.MUSIC_SEQ ,gSeq:v.GENRE_SEQ});
-												
-											}else{
-												alert('로그인이 필요한 서비스입니다')
 											}
 										})
 								)
@@ -374,6 +368,43 @@ ls ={
 				
 					})
 			
+		},
+		
+		
+		infiSc : p =>{
+			
+			var bool_sw = true;
+			//무한 스크롤
+			let no= 31;
+		
+			$(window).on("scroll", function() {
+ 	
+    		var scrollHeight = $(document).height();
+    		var scrollPosition = $(window).height() + $(window).scrollTop();		
+
+    		$("#scrollHeight").text(scrollHeight);
+    		$("#scrollPosition").text(scrollPosition);
+    		$("#bottom").text(scrollHeight - scrollPosition);
+    		
+    
+    		if ( scrollPosition > scrollHeight - 100) {
+    			if(bool_sw){ 
+		     		sendData(); //실행 
+		     		} 
+		     		function sendData(){ 
+		     		bool_sw = false;
+		     		
+		     			$.getJSON($.ctx()+'/music/infiSc/'+no+','+$.cookie("loginID")+','+p,d=>{
+		     				if(no <= 50){
+        					ls.top50table(d);
+        						no=no+5;
+        						  setTimeout(function(){bool_sw = true;},500) 
+		     		} 
+		     			})
+		     		}
+    		}
+    	});
+
 		},
 		new_alList :d=>{
 			$('#ls_newA').empty();
@@ -395,15 +426,13 @@ ls ={
 												$('<div/>').addClass('ls_card__div').append(
 														$('<div/>').addClass('ls_card__text').html(v.REGI_DATE),
 														$('<div/>').addClass('glyphicon glyphicon-thumbs-up')
-														.html(v.LIKE_COUNT)
+														.html(v.SUMCNT)
 												),
 												
 												$('<div/>').append(
 														$('<button/>').addClass('ls_btn btn--block card__btn').html('앨범듣기')
 
 														.click(()=>{ 
-														
-																console.log(v.ALBUM_SEQ);
 																jt.album_player(v.ALBUM_SEQ);
 															
 														 })
@@ -500,10 +529,6 @@ ls ={
 			
 			let nic1 = Math.floor(Math.random()*3);
 			let nic2= Math.floor(Math.random()*7);
-			//alert(nic1);
-			//alert(nic2);
-		//	alert(arr1[nic1]+arr2[nic2])
-			
 			 for(let i =0; i < 1;i++){
 				 $('<div/>').append(
 							$('<div/>').addClass('row').append(
@@ -517,7 +542,6 @@ ls ={
 																 $('<input/>').attr({type : 'text',id : 'alcommentText'}).addClass('alInputText'),
 																 $('<a/>').addClass('alCommentBtn').html('확인')
 																 .click(()=>{
-																	 alert('클릭');
 																	$.ajax({
 																		url : $.ctx()+'/album/alComment',
 																		method : 'post',
@@ -557,7 +581,10 @@ ls ={
 			
 			$('<div/>').attr({id :'ls_comments'}).appendTo($('#blog-comment'))
 			$.getJSON($.ctx()+'/album/viewComment',d=>{
-				for(let i=0 ; i<6; i++){
+				for(let i=0 ; i<d.length; i++){
+					if(i==6){
+						break;
+					}
 					$('<div/>').addClass('clearfix').append(
 							 $('<img/>').attr({src : $.ctx()+'/resources/img/user_1.jpg'})
 							 .addClass('avatar'),
