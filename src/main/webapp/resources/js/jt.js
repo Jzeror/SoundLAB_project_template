@@ -598,12 +598,14 @@ jt ={
 		                    	$('<div/>').attr({id:'jt_player'}).appendTo(openWin.document.getElementById('jt_playerdt'));
 		                    	$('<div/>').attr({id:'jt_info'}).appendTo(openWin.document.getElementById('jt_player'));
 		                    	$('<img/>')
-		                    	.attr({id:'jt_logo_img', src:$.img()+'/logo.png'})
+		                    	.attr({id:'jt_logo_img', src:$.img()+'/logo_admin.png'})
+		                    	
 		                    	.appendTo(openWin.document.getElementById('jt_info'));
 		                    	
 		                    	$('<div/>').attr({id:'jt_album_area'}).appendTo(openWin.document.getElementById('jt_player'));
 		                    	$('<div/>').attr({id:'jt_album_imgDiv'}).appendTo(openWin.document.getElementById('jt_album_area'));
 		                    	for(var i=0; i<d.musics.length;i++){
+		                    		console.log('len :: '+ d.musics.length);
 		                    	$('<iframe allowfullscreen>')
 		        				.attr({id:'jt_music_iframe', src : d.musics[i].music_addr, 'frameborder':'0',allow:'autoplay; encrypted-media'})
 		        				.appendTo(openWin.document.getElementById('jt_album_imgDiv'));
@@ -794,7 +796,7 @@ jt ={
 		                    	$('<div/>').attr({id:'jt_player'}).appendTo(openWin.document.getElementById('jt_playerdt'));
 		                    	$('<div/>').attr({id:'jt_info'}).appendTo(openWin.document.getElementById('jt_player'));
 		                    	$('<img/>')
-		                    	.attr({id:'jt_logo_img', src:$.img()+'/logo.png'})
+		                    	.attr({id:'jt_logo_img', src:$.img()+'/logo_admin.png'})
 		                    	.appendTo(openWin.document.getElementById('jt_info'));
 		                    	
 		                    	$('<div/>').attr({id:'jt_album_area'}).appendTo(openWin.document.getElementById('jt_player'));
@@ -825,6 +827,7 @@ jt ={
 		                    			$('<span/>').addClass('glyphicon glyphicon-play')	
 		                    	)
 		                    	.appendTo(openWin.document.getElementById('tooglePlay'));
+		                    	
 		                    	$('<button/>')
 		                    	.attr({id:'jt_btnPrev',type:'button',title:'이전곡'})
 		                    	.addClass('btnPrev fun-btn')
