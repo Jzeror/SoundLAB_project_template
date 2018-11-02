@@ -98,8 +98,7 @@
 
 #jt_logo_img{
  	display: block;
-    width: 70px;
-    height: auto;
+    height: 40px;
     text-indent: -9999px;
     overflow: hidden;
     background-position: 0 0;
@@ -471,13 +470,22 @@
 .jt_itemtitle_div{
 	text-align: left;
     margin: 0 82px 0 60px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .jt_itemtitle_a{
 	text-decoration: none;
 }
 .jt_titsong{
 	color: #333;
+<<<<<<< HEAD
 	
+=======
+	cursor: pointer;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+>>>>>>> refs/remotes/origin/master
 }
 .jt_itemem{
 	color: #dadada;
@@ -549,7 +557,9 @@
 	vertical-align: middle;
 	border-top-color: #eee;
 	text-align:center;
-	
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 	
 }
 
