@@ -478,14 +478,12 @@
 }
 .jt_titsong{
 	color: #333;
-<<<<<<< HEAD
-	
-=======
+
 	cursor: pointer;
 	overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
->>>>>>> refs/remotes/origin/master
+
 }
 .jt_itemem{
 	color: #dadada;
@@ -768,4 +766,9 @@
 }
 .jt_td_table5 span {
 	 margin: 0 2.5rem;
+}
+#jt_pagelink{
+	background-color: #f6b352;
+     border-color: #fff;
+     cursor: pointer;
 }

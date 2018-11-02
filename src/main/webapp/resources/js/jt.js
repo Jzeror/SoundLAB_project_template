@@ -561,7 +561,7 @@ jt ={
 					for(let i=d.page.beginPage ; i<=d.page.endPage ; i++){
 						let ac=(i==d.page.pageNumber)? "active" : ""; 
 						$('<li />').addClass("page-item "+ac)
-						.append($('<a/>').addClass("page-link").html(i))
+						.append($('<a/>').attr({id:'jt_pagelink'}).addClass("page-link").html(i))
 						.appendTo(ul).click(e=>{
 							e.preventDefault();
 							jt.album_read({id:d.seqGroup , pageNo:i, rowCount :x.rowCount});
@@ -569,8 +569,8 @@ jt ={
 					}
 					let disp = (d.page.existPrev)? "": "disabled" ;
 					let disn = (d.page.existNext)? "": "disabled" ;
-					$('<li id="epo" />').addClass("page-item "+disp).append($("<span />").addClass("page-link").html("Previous")).prependTo(ul);
-					$('<li id="eno" />').addClass("page-item "+disn).append($("<span />").addClass("page-link").html("Next")).appendTo(ul);
+					$('<li id="epo" />').addClass("page-item "+disp).append($("<span />").addClass("page-link").html("◀")).prependTo(ul);
+					$('<li id="eno" />').addClass("page-item "+disn).append($("<span />").addClass("page-link").html("▶")).appendTo(ul);
 					if(d.page.existPrev){$('#epo').click(e=>
 							{	
 								jt.album_read({id:d.seqGroup , pageNo:parseInt(d.page.beginPage-1),rowCount :x.rowCount});});}
