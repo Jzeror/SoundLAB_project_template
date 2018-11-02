@@ -81,8 +81,8 @@
 
 	<select id="al_comment" resultType="java.util.Map"
 		parameterType="com.soundlab.web.bean.comment">
-		insert into comment(member_id,seq_group,msg)
-		values(#{memberId},'-1',#{msg})
+		INSERT INTO COMMENT(MEMBER_ID,SEQ_GROUP,MSG)
+		VALUES(#{memberId},'-1',#{msg})
 	</select>
 	<select id="viewComment" resultType="java.util.Map">
 		SELECT MEMBER_ID, MSG,

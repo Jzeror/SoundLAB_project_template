@@ -66,7 +66,31 @@ public class ForYouCtrl {
 	@RequestMapping("/foryou/delMH/{mSeq}")
 	public @ResponseBody Map<String, Object> delMusicDown(@PathVariable String mSeq){
 		Map<String, Object> res = new HashMap<>();
-		res.put("res", (fm.delMusicDown(mSeq))?"m down del":"");
+		res.put("res", (fm.delDown(mSeq))?"m down del":"");
+		return res;
+	}
+	@RequestMapping("/foryou/putAL/{aSeq}")
+	public @ResponseBody Map<String, Object> putArtistUp(@PathVariable String aSeq){
+		Map<String, Object> res = new HashMap<>();
+		res.put("res", ts.putArtistUp(aSeq));
+		return res;
+	}
+	@RequestMapping("/foryou/delAL/{aSeq}")
+	public @ResponseBody Map<String, Object> delArtistUp(@PathVariable String aSeq){
+		Map<String, Object> res = new HashMap<>();
+		res.put("res", (fm.delUp(aSeq))?"a up del":"");
+		return res;
+	}
+	@RequestMapping("/foryou/putAH/{aSeq}")
+	public @ResponseBody Map<String, Object> putArtistDown(@PathVariable String aSeq){
+		Map<String, Object> res = new HashMap<>();
+		res.put("res", ts.putArtistDown(aSeq));
+		return res;
+	}
+	@RequestMapping("/foryou/delAH/{aSeq}")
+	public @ResponseBody Map<String, Object> delArtistDown(@PathVariable String aSeq){
+		Map<String, Object> res = new HashMap<>();
+		res.put("res", (fm.delDown(aSeq))?"a down del":"");
 		return res;
 	}
 	

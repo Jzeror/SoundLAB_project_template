@@ -75,6 +75,8 @@ public class MusicCtrl {
 			 System.out.println("topList:::::"+topList);
 			 topList = musMapper.top50List(map);
 		}
+		
+		//if(topList[0])
 		return topList;
 	}
 	
@@ -85,6 +87,8 @@ public class MusicCtrl {
 		  List<Map<?,?>> chartData = null;
 		 
 		  chartData = musMapper.top50lineChart();
+		  
+		  
 			 Util.log.accept("chartData:: " +chartData);
 		return chartData;
 	}

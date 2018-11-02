@@ -24,6 +24,7 @@ sh = (()=>{
          
      };
      var home =()=>{
+    	 $('#nrcss').remove();
          console.log('sh.home ::');
          w.html(nav()+banner()+slider()+mainContents()+footer());
 		 $('<main id="id_main">')
@@ -131,8 +132,7 @@ sh = (()=>{
 		     });
 	    	
 	    	$('#cloud-container').on("click",'text',function(event){
-	    		 $("#djSec").remove();
-	    		 //sh.service.removeSec();
+	    		 sh.service.removeSec();
 	    		 sj.dj();
 	    		 setTimeout(()=>{
 	    			 fn.scroll({ id : $("#djSec"), len : 200});
@@ -143,7 +143,7 @@ sh = (()=>{
 	          	 },300);
 	    	  });
 	    	 
-	    	 
+	    	 let genres =[];
 	    	 let titles = [];
 	    	 let musicSeq = [];
 	    	 let albums = [];
@@ -154,6 +154,8 @@ sh = (()=>{
 	    	 let artistSeq = [];
 	    	 let updown = [];
 	    	 $.each(d.top5,(i,v)=>{
+	    		 genres.push(v.장르);
+	    		 console.log('genre :: '+v.장르);
 	    		 titles.push(v.타이틀);
 	    		 albums.push(v.앨범);
 	    		 albumSeq.push(v.ALBUM_SEQ);
@@ -175,12 +177,17 @@ sh = (()=>{
 	    		 $('<span/>').addClass('mask').appendTo(cover);
 	    		 $('<img/>').addClass('sh-album-img').attr({src : $img+'/album/'+img[i]}).appendTo(cover).click(e=>{
 	    			 alert('앨범디테일 실행 :: '+ albumSeq[i]);
+	    			 jt_music
 	    		 });
 	    		 title = $('<a/>').attr({href : '#'}).addClass('sh-title').html(titles[i]).appendTo(info).click(e=>{
 	    			 alert('웹플레이어 실행 :: '+ musicSeq[i]);
 	    		 });
 	    		 artist = $('<a/>').attr({href : '#'}).addClass('sh-artist').html(artists[i]).appendTo(info).click(e=>{
-	    			 alert('아티스트 서치 실행 :: '+ artists[i]);
+	    			 let x = artists[i];
+					 jt.search(x);
+					 setTimeout(()=>{
+						 fn.scroll({ id : $("#jt_search"), len : 400});
+			         },200);
 	    		 });
 	    		 player = $('<td/>').addClass('sh-music-player').appendTo(tr);
 	    		 pa = $('<a/>').attr({href : '#'}).appendTo(player);
@@ -188,23 +195,28 @@ sh = (()=>{
 	    			 alert('웹플레이어 실행 :: '+ musicSeq[i]);
 	    		 });
 	    		 up = $('<td/>').addClass('sh-music-upbtn').appendTo(tr);
-	    		 ua = $('<a/>').attr({href : '#'}).appendTo(up);
-	    		 $('<i/>').attr({id : 'sh-up-'+i}).addClass((updown[i]==='u')?'sh-up fa fa-heart sh-updown':'sh-up fa fa-heart').appendTo(ua).click(e=>{
+	    		 //ua = $('<a/>').attr({href : '#'}).appendTo(up);
+	    		 $('<i/>').attr({id : 'sh-up-'+i}).addClass((updown[i]==='u')?'sh-up fa fa-heart active':'sh-up fa fa-heart').appendTo(up).click(function(e){
 	    			 e.preventDefault();
-	    			 sh.service.auth();
-	    			 alert('좋아요  :: '+ musicSeq[i]);
-	    			 $('#sh-up-'+i).addClass('sh-updown');
-	    			 $('#sh-down-'+i).removeClass('sh-updown');
-	    			 
+	    			 if(sh.service.auth()==0){
+	    				 alert('좋아요  :: '+ musicSeq[i]);
+		    			 //$('#sh-up-'+i).addClass('sh-updown');
+		    			 //$('#sh-down-'+i).removeClass('sh-updown');
+	    				 
+	    				 sj.service.put_ud({thiz:$(this),btn:'like',mSeq:musicSeq[i],gSeq:genres[i]});
+	    			 }
 	    		 });
-	    		 down = $('<td/>').addClass('sh-music-downbtn').appendTo(tr);
-	    		 da = $('<a/>').attr({href : '#'}).appendTo(down);
-	    		 $('<i/>').attr({id : 'sh-down-'+i}).addClass((updown[i]==='d')?'sh-down fa fa-thumbs-down sh-updown':'sh-down fa fa-thumbs-down').appendTo(da).click(e=>{
+	    		 //down = $('<td/>').addClass('sh-music-downbtn').appendTo(tr);
+	    		 //da = $('<a/>').attr({href : '#'}).appendTo(down);
+	    		 $('<i/>').attr({id : 'sh-down-'+i}).addClass((updown[i]==='d')?'sh-down fa fa-thumbs-down active':'sh-down fa fa-thumbs-down').appendTo(up).click(function(e){
 	    			 e.preventDefault();
-	    			 sh.service.auth();
-	    			 alert('싫어요  :: '+ musicSeq[i]);
-	    			 $('#sh-down-'+i).addClass('sh-updown');
-	    			 $('#sh-up-'+i).removeClass('sh-updown');
+	    			 if(sh.service.auth()==0){
+	    				 alert('싫어요  :: '+ musicSeq[i]);
+		    			 //$('#sh-down-'+i).addClass('sh-updown');
+		    			 //$('#sh-up-'+i).removeClass('sh-updown');
+	    				 sj.service.put_ud({thiz:$(this),btn:'hate',mSeq:musicSeq[i],gSeq:genres[i]});
+	    			 }
+	    			
 	    		 });
 	    	 }
 	    	 $('.sh-music-info').hover(
@@ -292,17 +304,19 @@ sh = (()=>{
          });
          $('#forBtn').click(e=>{
         	 e.preventDefault();
-        	 sh.service.auth();
-        	 if(!($("#banner").length >0)){   //not exist
-    			 home(); 
+        	 if(sh.service.auth()==0){
+        		 if(!($("#banner").length >0)){   //not exist
+        			 home(); 
+            	 }
+            	 sh.service.removeSec();  
+         		 sj.forYou();
+         		 setTimeout(()=>{
+    				 if($("#foryouSec").length > 0){
+    					 fn.scroll({ id : $("#foryouSec"), len : 200});
+    				 }
+             	 },400); 
         	 }
-        	 sh.service.removeSec();  
-     		 sj.forYou();
-     		 setTimeout(()=>{
-				 if($("#foryouSec").length > 0){
-					 fn.scroll({ id : $("#foryouSec"), len : 200});
-				 }
-         	 },400); 
+        	 
          });
          
         $('#logoImg').click(e=>{
@@ -711,6 +725,7 @@ var mypage =()=>'<section id="mypageSec" class="joinSec">'
 
 sh.service ={
      login : ()=>{
+    	 $('#nrcss').remove();
          console.log('sh.service.login::');
          $(sh.w()).html(sh.login());
           let $memberId =  $('#memberId');
@@ -868,7 +883,6 @@ sh.service ={
              at : $joinForm
          })
          .click(e=>{
-        	 alert('회원가입!!');
         	 let memberId = $('#memberId').val();
              let pass = $('#pass').val();
              let name = $('#name').val();
@@ -887,8 +901,6 @@ sh.service ={
                        email : email,
                        phone : phone
                      })){
-                alert('true logic');
-                alert($('input[name="sex"]:checked').val());
                 let genres = [];
                 $('input:checkbox[class=genre]:checked').each((i,o)=>{
                           genres.push(o.value);
@@ -898,7 +910,6 @@ sh.service ={
                 $('input:checkbox[class=artist]:checked').each((i,o)=>{
                 	artists.push(o.value);
                 });
-                alert(artists);
                 $.ajax({
                     url : sh.ctx()+'/member/member',
                     method : 'post',

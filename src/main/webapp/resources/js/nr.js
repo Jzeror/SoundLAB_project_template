@@ -62,28 +62,46 @@ nr = (()=>{
     	console.log('nr.home ::');
     	$cnts.empty();
     	section().addClass("dashboard-counts section-padding").appendTo($cnts);
-    	
-    	//메인 - 바탕 섹션
     	cnt({src:"https://static.thenounproject.com/png/1892501-200.png",
     		strong:"New Clients",
     		span:"오늘의 새로운 고객 수",
     		id:"new_user"
     		}).appendTo($("#row"));
-    	nr.stats.new_user();
-    	
     	cnt({src:"https://static.thenounproject.com/png/738103-200.png",
     		strong:"Streaming count",
     		span:"스트리밍 수 ",
     		id:"streaming"
     		}).appendTo($("#row"));
-    	nr.stats.streaming();
     	
-    	//메인 - 방문자 차트 섹션
     	section2().addClass("d-flex align-items-md-stretch").appendTo($cnts);
     	card({size:"12", title:"일주일 간의 방문통계", id:"visiterChart",style:"height:500px"}).appendTo($("#row2"));
     	
-    	nr.stats.cnt_visiter();
-    	
+    	$.getJSON($.ctx()+'/admin/visit',d=>{
+			console.log("d.nu.newUser"+d.nu);
+			$('<p/>').html(d.nu).appendTo($("#new_user"));
+			$('<p/>').html(d.st.strm).appendTo($("#streaming"));
+			
+			let data=[["date","남","여","합계"]];
+			$.each(d.vcha, (k,v)=>{
+				let trans=x=>{
+					let month=new Date(x).getMonth()+1;
+					let day=new Date(x).getDate();
+					return month+"월 "+day+"일";
+				};
+				data.push([trans(new Date(v.date)), v.mVisit*1, v.fVisit*1, v.mVisit+v.fVisit]);
+			});
+			
+			google.charts.load('current', {'packages':['corechart']});
+		    google.charts.setOnLoadCallback(()=>{
+		    	let dataTbl = google.visualization.arrayToDataTable(data);
+		    	let options = {
+				          hAxis: {title: '방문 일자',  titleTextStyle: {color: '#333'}},
+				          vAxis: {minValue: 0}
+				        };
+		    	let chart = new google.visualization.AreaChart(document.getElementById('visiterChart'));
+		        chart.draw(dataTbl, options);
+		    });
+		});
     };
     
     var pref=()=>{
@@ -212,8 +230,11 @@ nr = (()=>{
 								$('<div/>').attr({id:"tblRes"}).addClass("table-responsive").append(tbl))
 					)
 				);
-    	tdiv.appendTo($("#arti_area"));
-    	tdiv.appendTo($("#row"));
+    	if($("#arti_area").length==1){
+    		tdiv.appendTo($("#arti_area"));
+    	}else {
+    		tdiv.appendTo($("#row"));
+    	}
     	return tdiv;
     };
     var section=()=>{
@@ -277,6 +298,8 @@ nr = (()=>{
 										src:$.img()+"/logo_admin.png",
 										alt:"SoundLAB 로고",
 										style:"resize: both"
+									}).click(e=>{
+										nr.init();
 									})
 								),
 								$('<div/>').addClass("sidenav-header-logo").append(
@@ -325,10 +348,11 @@ nr = (()=>{
 							$('<a/>').addClass("nav-link logout").attr({id:"logoutBtn",href:"#",style:"float:right"}).append(
 								$('<span/>').addClass("d-none d-sm-inline-block").html("Logout")
 								.click(e=>{
-									$('#pinkcss').remove();
 									$('#nrcss').remove();
 									$.removeCookie("loginID");
-									sh.service.login(); 
+								   setTimeout(()=>{
+									   sh.service.login(); 
+									},1);
 								}),
 								$('<i/>').addClass("fa fa-sign-out")
 							)))
@@ -360,53 +384,10 @@ nr = (()=>{
 	};
 })();
 
-nr.stats={
-		new_user:()=>{
-			console.log("메인1 nr.stats.new_user: 오늘 가입자 수 진입");
-			$.getJSON($.ctx()+'/admin/visit',d=>{
-				console.log("d.nu.newUser"+d.nu.newUser);
-				return $('<p/>').html(d.nu.newUser).appendTo($("#new_user"));
-			});
-		},
-		streaming:()=>{
-			console.log("메인2 nr.stats.streaming: 오늘 스트리밍 진입");
-			$.getJSON($.ctx()+'/admin/visit',d=>{
-				console.log("streaming d.st.strm: "+d.st.strm);
-				return $('<p/>').html(d.st.strm).appendTo($("#streaming"));
-			});
-		},
-		cnt_visiter:()=>{
-			console.log("메인3 nr.stats.cnt_visiter: 방문자 통계 ");
-			$.getJSON($.ctx()+'/admin/visit/cntVisiter',d=>{
-				let data=[["date","남","여","합계"]];
-				$.each(d, (k,v)=>{
-					let trans=x=>{
-						let month=new Date(x).getMonth()+1;
-						let day=new Date(x).getDate();
-						return month+"월 "+day+"일";
-					};
-					data.push([trans(new Date(v.date)), v.mVisit*1, v.fVisit*1, v.mVisit+v.fVisit]);
-				});
-				
-				google.charts.load('current', {'packages':['corechart']});
-			    google.charts.setOnLoadCallback(()=>{
-			    	let dataTbl = google.visualization.arrayToDataTable(data);
-			    	let options = {
-					          hAxis: {title: '방문 일자',  titleTextStyle: {color: '#333'}},
-					          vAxis: {minValue: 0}
-					        };
-			    	let chart = new google.visualization.AreaChart(document.getElementById('visiterChart'));
-			        chart.draw(dataTbl, options);
-			    });
-			    
-			});
-		}
-}
-
 nr.chart={
 		age_genre:x=>{
 				$.getJSON($.ctx()+'/admin/pref',d=>{
-					var data=[['장르','선호도']];
+					let data=[['장르','선호도']];
 	    	    	$.each(d.AG, (k,v)=>{
 	    	    		if(v.ageGroup==x+"0대"){
 	    	    			data.push([v.genreName, v.sumGood]);
@@ -414,13 +395,12 @@ nr.chart={
 	    	    	});
 					google.charts.load("current", {packages:["corechart"]});
 		    	    google.charts.setOnLoadCallback(()=>{
-
-		    	    	var datas = google.visualization.arrayToDataTable(data);
-		    	    	var options =  {
+		    	    	let datas = google.visualization.arrayToDataTable(data);
+		    	    	let options =  {
 		    	    			chartArea:{left:10,top:20,width:"85%",height:"85%"},
 		    	    		    pieHole: 0.3,
 		    			        };
-		    	    	var chart = new google.visualization.PieChart(document.getElementById('donutchart'+x));
+		    	    	let chart = new google.visualization.PieChart(document.getElementById('donutchart'+x));
 				        chart.draw(datas, options); 
 		    	    
 		    	    });
@@ -429,12 +409,7 @@ nr.chart={
 		age_artist:()=>{
 			$.getJSON($.ctx()+'/admin/pref',d=>{
 				
-				let data =[];
-				let key=["연령"];
-				let g10=["10대"];
-				let g20=["20대"];
-				let g30=["30대"];
-				let g40=["40대"];
+				let data =[],key=["연령"],g10=["10대"],g20=["20대"],g30=["30대"],g40=["40대"];
 				$.each(d.AA,(k,v)=>{
 					key.push(v.artistName);
 				});
@@ -612,7 +587,6 @@ nr.arti={
 				        bubble: {
 				          textStyle: {
 				            fontSize: 12,
-				            fontName: 'Times-Roman',
 				            color: 'green',
 				            bold: true,
 				            italic: true
@@ -701,6 +675,7 @@ nr.arti={
 					ban.push(v.artistName);
 					bcount.push(v.sumBad);
 				});
+				
 		    	nr.table({title:$('#artist_name').val()+"의  좋아요 TOP 5",thead:["순위","곡명","가수","좋아요수"],row, ms, an, count});
 				nr.table({title:$('#artist_name').val()+"의  싫어요 TOP 5",thead:["순위","곡명","가수","싫어요수"],row, ms:bms, an:ban, count:bcount});
 			}); 

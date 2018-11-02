@@ -121,10 +121,14 @@ ls ={
 					
 		            
 		            //-------------차트-----------------
+		            
 		           $.getJSON(sh.ctx()+'/music/top50lineChart',d=>{	
 		        	   
 							 	google.charts.load('current', {'packages':['line']});
 					 			google.charts.setOnLoadCallback(drawChart1);
+					 			
+					 		
+					 			
 							    function drawChart1() {
 							    	  var data = new google.visualization.DataTable();
 							    	  data.addColumn('string', 'day');
@@ -170,16 +174,16 @@ ls ={
 						$('<ul/>').append(
 								$('<li/>').addClass('lank01').append(
 										$('<span/>').addClass('none').html('1위'),
-										$('<em/>').html(d[0].R1_PER+'%')
+										$('<em/>').html(d[6].R1_PER+'%')
 										
 								),
 								$('<li/>').addClass('lank02').append(
 										$('<span/>').addClass('none').html('2위'),
-										$('<em/>').html(d[0].R2_PER+'%')
+										$('<em/>').html(d[6].R2_PER+'%')
 								),
 								$('<li/>').addClass('lank03').append(
 										$('<span/>').addClass('none').html('3위'),
-										$('<em/>').html(d[0].R3_PER+'%')
+										$('<em/>').html(d[6].R3_PER+'%')
 								)
 						)
 				)
@@ -577,7 +581,10 @@ ls ={
 			
 			$('<div/>').attr({id :'ls_comments'}).appendTo($('#blog-comment'))
 			$.getJSON($.ctx()+'/album/viewComment',d=>{
-				for(let i=0 ; i<6; i++){
+				for(let i=0 ; i<d.length; i++){
+					if(i==6){
+						break;
+					}
 					$('<div/>').addClass('clearfix').append(
 							 $('<img/>').attr({src : $.ctx()+'/resources/img/user_1.jpg'})
 							 .addClass('avatar'),

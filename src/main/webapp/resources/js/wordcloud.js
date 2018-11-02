@@ -26,7 +26,6 @@ function startHash(d) {
 data = d;
 
 var word_entries = d3.entries(data['count']);
-console.log('word_entries ::: '+ word_entries);
 xScale.domain(d3.extent(word_entries, function(d) {return d.value;}));
 
 makeCloud();

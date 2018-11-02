@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class CreateDummy {
 
 	public static void main(String[] args) {
-		artistUpDown사운드제외();
+		twicemusicUpDown();
 
 	}
 	static void artistUpDown사운드제외() {
@@ -22,38 +22,19 @@ public class CreateDummy {
 				"nulla","lorem"
 		};
 		int[] artists = {
-				 7,
-				 8,
-				 9,
-				10,
+				
 				11,
-				12,
-				13,
-				14,
-				15,
-				16,
-				17,
-				18,
+				
 				19,
-				20,
-				21,
-				22,
-				23,
-				24,
-				25,
-				26,
-				27,
-				28,
-				60,
-				61
+				20
 		};
 		
 		for(int i=0;i<100;i++) {
 			int memIndex = (int)(Math.random()*16);
-			int	musicIndex = (int)(Math.random()*10);
+			int	musicIndex = (int)(Math.random()*3);
 			System.out.println("INSERT INTO UPDOWN (MEMBER_ID, SEQ_GROUP, SG_ELEMENT, TYPES)\n" 
 					+"VALUES\n" 
-					+"('"+mems[memIndex]+"',"+artists[musicIndex]+",'artist','d');");
+					+"('"+mems[memIndex]+"',"+artists[musicIndex]+",'artist','u');");
 		}
 		
 		
@@ -103,7 +84,7 @@ public class CreateDummy {
 				"velit","massa",
 				"nulla","lorem"
 		};
-		int[] twicemusics = {   116,
+		/*int[] twicemusics = {   116,
 				   117,
 				   118,
 				   119,
@@ -113,13 +94,15 @@ public class CreateDummy {
 				   178,
 				   179,
 				   180,
-				   181 };
-		for(int i=0;i<100;i++) {
+				   181 };*/
+		int[] twicemusics = {   
+				   119};
+		for(int i=0;i<50;i++) {
 			int memIndex = (int)(Math.random()*16);
-			int	musicIndex = (int)(Math.random()*11);
+			int	musicIndex = (int)(Math.random()*1);
 			System.out.println("INSERT INTO UPDOWN (MEMBER_ID, SEQ_GROUP, SG_ELEMENT, TYPES)\n" 
 					+"VALUES\n" 
-					+"('"+mems[memIndex]+"',"+twicemusics[musicIndex]+",'music','d');");
+					+"('"+mems[memIndex]+"',"+twicemusics[musicIndex]+",'music','u');");
 		}
 		
 		

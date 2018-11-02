@@ -8,9 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AdminMapper {
 	//방문자
-	public Map<?,?> cntNew();
+	public int cntNew();
 	public Map<?,?> countStrm();
-	public List<?> cntVisiter(Map<?,?> p);
+	public List<?> cntVisiter();
 
 	//선호도
 	public List<?> ageGenre();
