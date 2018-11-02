@@ -604,6 +604,7 @@ jt ={
 		                    	$('<div/>').attr({id:'jt_album_area'}).appendTo(openWin.document.getElementById('jt_player'));
 		                    	$('<div/>').attr({id:'jt_album_imgDiv'}).appendTo(openWin.document.getElementById('jt_album_area'));
 		                    	for(var i=0; i<d.musics.length;i++){
+		                    		console.log('len :: '+ d.musics.length);
 		                    	$('<iframe allowfullscreen>')
 		        				.attr({id:'jt_music_iframe', src : d.musics[i].music_addr, 'frameborder':'0',allow:'autoplay; encrypted-media'})
 		        				.appendTo(openWin.document.getElementById('jt_album_imgDiv'));
@@ -825,6 +826,7 @@ jt ={
 		                    			$('<span/>').addClass('glyphicon glyphicon-play')	
 		                    	)
 		                    	.appendTo(openWin.document.getElementById('tooglePlay'));
+		                    	
 		                    	$('<button/>')
 		                    	.attr({id:'jt_btnPrev',type:'button',title:'이전곡'})
 		                    	.addClass('btnPrev fun-btn')

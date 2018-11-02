@@ -721,7 +721,6 @@ sh.service ={
           .click(e=>{
                    sh.service.join();
               });
-          
           ui.br({len : 4, at : $loginForm});
           ui.btn({ id : 'loginConf', clazz : 'loginConf', txt : '로그인', at : $loginForm})
           .click(e=>{

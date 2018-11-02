@@ -98,8 +98,7 @@
 
 #jt_logo_img{
  	display: block;
-    width: 70px;
-    height: auto;
+    height: 40px;
     text-indent: -9999px;
     overflow: hidden;
     background-position: 0 0;
@@ -124,9 +123,9 @@
     background: #242b34;
     height: 504px;
 }
-#jt_info{
-	height: 70px;
-    padding: 12px 10px 0 130px;
+#jt_info {
+   height: 70px;
+   padding: 18px 12px 30px 100px;
 }
 #jt_album_area{
 	position: relative;
@@ -471,6 +470,8 @@
 .jt_itemtitle_div{
 	text-align: left;
     margin: 0 82px 0 60px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .jt_itemtitle_a{
 	text-decoration: none;
@@ -478,6 +479,9 @@
 .jt_titsong{
 	color: #333;
 	cursor: pointer;
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .jt_itemem{
 	color: #dadada;
@@ -549,7 +553,9 @@
 	vertical-align: middle;
 	border-top-color: #eee;
 	text-align:center;
-	
+	overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 	
 }
 
