@@ -48,6 +48,9 @@
 
 .jt_album_detail{
 	 cursor: pointer;
+	 overflow: hidden;
+     text-overflow: ellipsis;
+     white-space: nowrap;
 }
 
 
@@ -121,9 +124,9 @@
     background: #242b34;
     height: 504px;
 }
-#jt_info{
-	height: 70px;
-    padding: 12px 10px 0 130px;
+#jt_info {
+   height: 70px;
+   padding: 18px 12px 30px 100px;
 }
 #jt_album_area{
 	position: relative;

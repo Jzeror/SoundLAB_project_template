@@ -87,6 +87,9 @@
   </select>
   <insert id="putHashView">
  	INSERT INTO VIEW_RECORD (MEMBER_ID, SEQ_GROUP, SG_ELEMENT)
- 	VALUES (#{id},#{seq},'hash')
+ 	VALUES
+ 	(#{id},#{t1},'hash'),
+ 	(#{id},#{t2},'hash'),
+ 	(#{id},#{t3},'hash')
   </insert>
   </mapper>

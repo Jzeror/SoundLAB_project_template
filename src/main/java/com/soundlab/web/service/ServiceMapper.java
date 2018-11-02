@@ -13,6 +13,6 @@ public interface ServiceMapper {
 	public List<?> getMusicList(Map<?,?> map);
 	public List<?> getAlbumList(String album);
 	public List<?> getMvList(String mv);
-	public List<?> getPlayer(Map<?, ?> map);
-	
+	public List<Map<String,Object>> getPlayer(Map<?, ?> map);
+	public void musicRecord(Map<?, ?> map);
 }

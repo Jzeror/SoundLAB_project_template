@@ -494,7 +494,7 @@ html, body, main {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: -440px;
+  margin: -180px 0px 0px 0px;
   font-size: 20px;
   color: #F68657;
   
@@ -536,13 +536,12 @@ html, body, main {
 	 width: 48px;
     height: 48px;
 }
-/* .sh-cover:hover {
-	visibility: none;
-    float: left;
-    margin: 0 13px 0 3px;
-    
-} */
-
+.sh-cover {
+    cursor: pointer;
+}
+.sh-music-upbtn {
+	width: 100px;
+}
 #main-chart{
    font-size: 30px;
    cursor: pointer;
@@ -551,6 +550,8 @@ html, body, main {
 }
 
 .sh-title {
+	text-decoration:none !important;
+	cursor: text;
 	float: left;
     margin: 4px 25px 0px 0px;
     width: 44% !important;
@@ -627,17 +628,18 @@ html, body, main {
     padding : 0px 0px 0px 5px;
 } */
 .sh-up {
+	cursor: pointer;
 	color: #2b272757;
     text-decoration: none;
-    padding : 0px 0px 0px 3px;
 }
 .sh-down {
+	cursor: pointer;
 	color: #2b272757;
     text-decoration: none;
-    padding : 0px 0px 0px 5px;
+    padding: 0px 0px 0px 20px;
 }
 
-.sh-updown {
+.sh-music-upbtn i.active {
 	color: #f68657;
     text-decoration: none;
 }
@@ -657,3 +659,20 @@ svg text{
 }
 /*-- 해시태그 --*/
 
+[data-tooltip-text]:hover {
+	position: relative;
+}
+
+[data-tooltip-text]:hover:after {
+	content: attr(data-tooltip-text);
+    position: absolute;
+	/* bottom: 100%; */
+	bottom: -32px;
+	left: 0;
+    
+    background-color:  #ffffff;
+	color: #000000;
+	font-size: 18px;
+
+	z-index: 9999;
+}

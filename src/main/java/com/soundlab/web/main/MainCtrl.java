@@ -2,6 +2,7 @@ package com.soundlab.web.main;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -33,15 +34,9 @@ public class MainCtrl {
 		rm.clear();
 		System.out.println("hash ::: "+mp.getHash());
 		rm.put("cnt", mp.getHash());
-		
-		Calendar cal = Calendar.getInstance();
-		 cal.add(Calendar.DATE, -1);
-	     rm.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
-		 cal.add(Calendar.DATE, +2);
-	     rm.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));		    
-		 Util.log.accept("date1:: " +rm.get("date1"));
-		 Util.log.accept("date2:: " +rm.get("date2"));
-		 rm.put("memberId", memberId);
+    	rm.put("date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));	
+		Util.log.accept("main chart date :: " +rm.get("date"));
+		rm.put("memberId", memberId);
 		System.out.println("chart ::: "+mp.getChart(rm));
 		rm.put("top5", mp.getChart(rm));
 		
@@ -61,15 +56,8 @@ public class MainCtrl {
 	public Map<String,Object> chart() {
 		logger.info("MainCtrl ::: chart ");
 		rm.clear();
-		
-		Calendar cal = Calendar.getInstance();
-		 cal.add(Calendar.DATE, -1);
-	     rm.put("date1", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
-		 cal.add(Calendar.DATE, +2);
-	     rm.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));		    
-		 Util.log.accept("date1:: " +rm.get("date1"));
-		 Util.log.accept("date2:: " +rm.get("date2"));
-		
+	     rm.put("date", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));	
+		 Util.log.accept("main chart date :: " +rm.get("date"));
 		System.out.println("chart ::: "+mp.getChart(rm));
 		rm.put("top5", mp.getChart(rm));
 		

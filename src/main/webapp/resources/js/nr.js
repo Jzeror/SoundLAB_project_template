@@ -4,7 +4,6 @@ nr = (()=>{
 	var $ctx,$js,$css,$img, w, $page, $cnts;
 
 	var init =()=>{
-        console.log('nr.init ::');
         
         let nr = document.createElement('link');
         	nr.rel = 'stylesheet';
@@ -59,41 +58,50 @@ nr = (()=>{
 
     // ============================= 페이지 ============================
     var home =()=>{
-    	console.log('nr.home ::');
     	$cnts.empty();
     	section().addClass("dashboard-counts section-padding").appendTo($cnts);
-    	
-    	//메인 - 바탕 섹션
     	cnt({src:"https://static.thenounproject.com/png/1892501-200.png",
     		strong:"New Clients",
     		span:"오늘의 새로운 고객 수",
     		id:"new_user"
     		}).appendTo($("#row"));
-
-    	
     	cnt({src:"https://static.thenounproject.com/png/738103-200.png",
     		strong:"Streaming count",
     		span:"스트리밍 수 ",
     		id:"streaming"
     		}).appendTo($("#row"));
-
     	
-    	//메인 - 방문자 차트 섹션
     	section2().addClass("d-flex align-items-md-stretch").appendTo($cnts);
     	card({size:"12", title:"일주일 간의 방문통계", id:"visiterChart",style:"height:500px"}).appendTo($("#row2"));
-
     	
-    	nr.stats.new_and_strm();
-    	
-    	setTimeout(()=>{
-    		nr.stats.cnt_visiter();
-    	},100);
-    	
-    	
+    	$.getJSON($.ctx()+'/admin/visit',d=>{
+			$('<p/>').html(d.nu).appendTo($("#new_user"));
+			$('<p/>').html(d.st.strm).appendTo($("#streaming"));
+			
+			let data=[["date","남","여","합계"]];
+			$.each(d.vcha, (k,v)=>{
+				let trans=x=>{
+					let month=new Date(x).getMonth()+1;
+					let day=new Date(x).getDate();
+					return month+"월 "+day+"일";
+				};
+				data.push([trans(new Date(v.date)), v.mVisit*1, v.fVisit*1, v.mVisit+v.fVisit]);
+			});
+			
+			google.charts.load('current', {'packages':['corechart']});
+		    google.charts.setOnLoadCallback(()=>{
+		    	let dataTbl = google.visualization.arrayToDataTable(data);
+		    	let options = {
+				          hAxis: {title: '방문 일자',  titleTextStyle: {color: '#333'}},
+				          vAxis: {minValue: 0}
+				        };
+		    	let chart = new google.visualization.AreaChart(document.getElementById('visiterChart'));
+		        chart.draw(dataTbl, options);
+		    });
+		});
     };
     
     var pref=()=>{
-    	console.log('nr.pref ::');
     	$('nav.side-navbar').toggleClass('show-sm');
         $('.page').toggleClass('active-sm');
     	
@@ -117,7 +125,6 @@ nr = (()=>{
     	nr.chart.toplist();
     };
     var artist=()=>{
-    	console.log('nr.artist ::');
     	$cnts.empty();
     	section().addClass("forms").appendTo($cnts);
     	$('<div/>').addClass("form-group row").append(
@@ -144,7 +151,6 @@ nr = (()=>{
     	$('<div/>').attr({id:"arti_area"}).appendTo($('#row'));
     };
     var hash=()=>{
-    	console.log('nr.hash ::');
     	$cnts.empty();
     	section().addClass("forms").appendTo($cnts);
     	$('<div/>').attr({id:"treemap"}).appendTo($("#row"));
@@ -160,7 +166,6 @@ nr = (()=>{
        	     	let hash_theme=['뮤직스타일','상황&장소','감정&기분'];
 	       		for(let i=0;i<hash_theme.length;i++){
 	       			data.addRow([hash_theme[i],'해시태그',null]);
-	       			console.log(data);
 	       		}
 	       		for(let i=0;i<hash_theme.length;i++){
 	       			$.each(d.hs, (k,v)=>{
@@ -202,7 +207,6 @@ nr = (()=>{
     		let th= $('<th/>').html(x.thead[i]).appendTo(tr1);
     	};
     	for(let i=0;i<x.count.length;i++){
-    		console.log("x.row[i]: "+x.row[i]);
     		let tr2 = $('<tr/>').appendTo(tbody);
     		let row =$('<th scope="row"/>').html(x.row[i]).appendTo(tr2);
     		let td1 = $('<td/>').html(x.ms[i]).appendTo(tr2);
@@ -223,9 +227,6 @@ nr = (()=>{
     	}else {
     		tdiv.appendTo($("#row"));
     	}
-    	
-    	
-    	
     	return tdiv;
     };
     var section=()=>{
@@ -278,7 +279,6 @@ nr = (()=>{
 	};
 
 	var nav = ()=>{
-		console.log('nr.nav ::');
 		let $nav = $('<nav/>');
 		 $($nav).addClass("side-navbar").append(
 					$('<div/>').addClass("side-navbar-wrapper").append(
@@ -339,10 +339,11 @@ nr = (()=>{
 							$('<a/>').addClass("nav-link logout").attr({id:"logoutBtn",href:"#",style:"float:right"}).append(
 								$('<span/>').addClass("d-none d-sm-inline-block").html("Logout")
 								.click(e=>{
-									$('#pinkcss').remove();
 									$('#nrcss').remove();
 									$.removeCookie("loginID");
-									sh.service.login(); 
+								   setTimeout(()=>{
+									   sh.service.login(); 
+									},1);
 								}),
 								$('<i/>').addClass("fa fa-sign-out")
 							)))
@@ -374,47 +375,10 @@ nr = (()=>{
 	};
 })();
 
-nr.stats={
-		new_and_strm:()=>{
-			console.log("메인1 nr.stats.new_user: 오늘 가입자 수 진입");
-			$.getJSON($.ctx()+'/admin/visit',d=>{
-				console.log("d.nu.newUser"+d.nu);
-				$('<p/>').html(d.nu).appendTo($("#new_user"));
-				$('<p/>').html(d.st.strm).appendTo($("#streaming"));
-			});
-		},
-		cnt_visiter:()=>{
-			console.log("메인3 nr.stats.cnt_visiter: 방문자 통계 ");
-			$.getJSON($.ctx()+'/admin/visiter/cntVisiter',d=>{
-				let data=[["date","남","여","합계"]];
-				$.each(d, (k,v)=>{
-					let trans=x=>{
-						let month=new Date(x).getMonth()+1;
-						let day=new Date(x).getDate();
-						return month+"월 "+day+"일";
-					};
-					data.push([trans(new Date(v.date)), v.mVisit*1, v.fVisit*1, v.mVisit+v.fVisit]);
-				});
-				
-				google.charts.load('current', {'packages':['corechart']});
-			    google.charts.setOnLoadCallback(()=>{
-			    	let dataTbl = google.visualization.arrayToDataTable(data);
-			    	let options = {
-					          hAxis: {title: '방문 일자',  titleTextStyle: {color: '#333'}},
-					          vAxis: {minValue: 0}
-					        };
-			    	let chart = new google.visualization.AreaChart(document.getElementById('visiterChart'));
-			        chart.draw(dataTbl, options);
-			    });
-			    
-			});
-		}
-}
-
 nr.chart={
 		age_genre:x=>{
 				$.getJSON($.ctx()+'/admin/pref',d=>{
-					var data=[['장르','선호도']];
+					let data=[['장르','선호도']];
 	    	    	$.each(d.AG, (k,v)=>{
 	    	    		if(v.ageGroup==x+"0대"){
 	    	    			data.push([v.genreName, v.sumGood]);
@@ -422,13 +386,12 @@ nr.chart={
 	    	    	});
 					google.charts.load("current", {packages:["corechart"]});
 		    	    google.charts.setOnLoadCallback(()=>{
-
-		    	    	var datas = google.visualization.arrayToDataTable(data);
-		    	    	var options =  {
+		    	    	let datas = google.visualization.arrayToDataTable(data);
+		    	    	let options =  {
 		    	    			chartArea:{left:10,top:20,width:"85%",height:"85%"},
 		    	    		    pieHole: 0.3,
 		    			        };
-		    	    	var chart = new google.visualization.PieChart(document.getElementById('donutchart'+x));
+		    	    	let chart = new google.visualization.PieChart(document.getElementById('donutchart'+x));
 				        chart.draw(datas, options); 
 		    	    
 		    	    });
@@ -437,12 +400,7 @@ nr.chart={
 		age_artist:()=>{
 			$.getJSON($.ctx()+'/admin/pref',d=>{
 				
-				let data =[];
-				let key=["연령"];
-				let g10=["10대"];
-				let g20=["20대"];
-				let g30=["30대"];
-				let g40=["40대"];
+				let data =[],key=["연령"],g10=["10대"],g20=["20대"],g30=["30대"],g40=["40대"];
 				$.each(d.AA,(k,v)=>{
 					key.push(v.artistName);
 				});
@@ -450,29 +408,19 @@ nr.chart={
 					if(i.indexOf(j)<0) i.push(j);
 					return i;
 				},[]);
-				console.log("unique : "+unique);
 				$.each(d.AA, function(k,v){
 					if(v.ageGroup=="10대"){
 						g10.push(v.sumGood);
-						console.log("g10 : "+g10);
 					}else if(v.ageGroup=="20대"){
 						g20.push(v.sumGood);
-						console.log("g20 : "+g20);
 					}else if(v.ageGroup=="30대"){
 						g30.push(v.sumGood);
-						console.log("g30 : "+g30);
 					}else if(v.ageGroup=="40대"){
 						g40.push(v.sumGood);
-						console.log("g40 : "+g40);
 					}
 				});
 				
 					data.push(unique,g10,g20,g30,g40);
-					console.log("g10 : "+g10);
-					console.log("g20 : "+g20);
-					console.log("g30 : "+g30);
-					console.log("g40 : "+g40);
-					console.log("age_artist :data : "+data);
 					google.charts.load('current', {'packages':['bar']});
 					google.charts.setOnLoadCallback(()=>{
 		    	    	let dataTbl = google.visualization.arrayToDataTable(data);
@@ -485,7 +433,6 @@ nr.chart={
 		},
 		sex_genre:()=>{
 			$.getJSON($.ctx()+'/admin/pref',d=>{
-				console.log("sex_genre 진입 ");
 				let data =[];
 				let key=["장르"];
 				let male=["남"];
@@ -525,7 +472,6 @@ nr.chart={
 		},
 		sex_artist:()=>{
 			$.getJSON($.ctx()+'/admin/pref',d=>{
-				console.log("sex_artist: ");
 				let data =[];
 				let key=["아티스트"];
 				let male=["남"];
@@ -533,13 +479,11 @@ nr.chart={
 				$.each(d.SA,(k,v)=>{
 					key.push(v.artistName);
 				});
-				console.log("sex_artist:key: "+key);
 				
 				let unique = key.reduce(function(i,j){
 					if(i.indexOf(j)<0) i.push(j);
 					return i;
 				},[]);
-				console.log("sex_artist:unique : "+unique);
 				$.each(d.SA,(k,v)=>{
 					if(v.MF==="M"){
 						male.push(v.sumGood);
@@ -548,9 +492,6 @@ nr.chart={
 					}
 				});
 				data.push(unique,male,female);
-				console.log("sex_artist:M : "+male);
-				console.log("sex_artist:F : "+female);
-				console.log("sex_artist:data : "+data);
 				
 				google.charts.load("current", {packages:["corechart"]});
 			    google.charts.setOnLoadCallback(()=>{
@@ -601,7 +542,6 @@ nr.chart={
 nr.arti={
 		stats:()=>{
 			$.getJSON($.ctx()+'/admin/artist/'+$('#artist_name').val(),d=>{
-				console.log('제이슨 들어옴 : '+$('#artist_name').val());
 		//아티스트 관계 차트			
 				let artiGS = [['곡 명','스트리밍 수','좋아요 수','앨범 명','스트리밍*좋아요']];
 				let tempS=30000;
@@ -631,11 +571,9 @@ nr.arti={
 				});
 				
 		//아티스트 성별 차트			
-				console.log("d.mf.m : "+d.mf.m);
 				let data_mf =[["아티스트","남자","여자"],
 						      [d.mf.artistName, d.mf.m, d.mf.f]];
 				
-				console.log("data_mf : "+data_mf);
 				google.charts.setOnLoadCallback(()=>{
 					let data=google.visualization.arrayToDataTable(data_mf);
 					let view = new google.visualization.DataView(data);
@@ -675,7 +613,6 @@ nr.arti={
 				$.each(d.artiAG,(k,v)=>{
 					data_age.push([v.ageGroup,v.m,v.f]);
 				});
-				console.log("3.아티스트 나이:data_age : "+data_age);
 				
 				google.charts.load('current', {'packages':['bar']});
 				google.charts.setOnLoadCallback(()=>{

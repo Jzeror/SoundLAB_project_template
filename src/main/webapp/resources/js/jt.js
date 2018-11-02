@@ -2,6 +2,7 @@
 var jt = jt || {};
 jt ={
 		search :z=>{ //앞에서 넘어온 map
+		
 			$.getJSON($.ctx()+'/service/search/'+z+'/'+$.cookie('loginID'),x=>{
 
   				let art = x.artist;
@@ -106,7 +107,7 @@ jt ={
   				//아티스트 소개글
   	            $('<div/>').attr({id: 'jt_introduce_div'}).addClass('container').appendTo($('#jt_search_artist'));
   	            $('<h3/>').html('아티스트 소개').appendTo($('#jt_introduce_div'));
-  	            $('<p/>').attr({id:'jt_artist_introduce'}).html(art.intro1).appendTo($('#jt_introduce_div'));
+  	            $('<p/>').attr({id:'jt_artist_introduce'}).html(art.INTRO1).appendTo($('#jt_introduce_div'));
   	            
   	       
   	            $('<button/>').attr({
@@ -119,7 +120,7 @@ jt ={
   	            ).appendTo($('#jt_introduce_div'));
   	            $('<div/>').attr({id:'jt_demo','aria-expanded':"false"}).addClass('collapse').appendTo($('#jt_introduce_div'));
   	            $('<br/>').appendTo($('#jt_demo'));
-  	            $('<p/>').html(art.intro2).appendTo($('#jt_demo'));
+  	            $('<p/>').html(art.INTRO2).appendTo($('#jt_demo'));
   	            $('<hr/>').appendTo($('#jt_introduce_div'));
   				
   				//곡 
@@ -151,7 +152,6 @@ jt ={
   						.append(
   								$('<span/>').addClass('glyphicon glyphicon-play').html('앨범듣기')
   							).click(e=>{
-  								console.log('넘기는 앨범시퀀스::'+j.ALBUM_SEQ);
   									jt.album_player(j.ALBUM_SEQ);
   							});
   						$('<br/>').appendTo($('#jt_album_body'+i));
@@ -161,8 +161,6 @@ jt ={
   				//앨범디테일 페이지 이동. 클래스로 접근.
   				$('.jt_album_detail').click(function(e){
   					let albumSeq = $(this).parents('div.jt_album_div').attr('id');
-  					alert(albumSeq);
-  					console.log("뒤에서 넘긴 값::"+x.album.ALBUMTITLE);
   					jt.album_detail(albumSeq);
   				
   				});
@@ -187,13 +185,16 @@ jt ={
   				
   			
 			})
+			 setTimeout(()=>{
+				 fn.scroll({ id : $("#jt_search"), len : 400});
+	         },300);
 		},
 		updown : x=>{ // jt.updown({thiz:$(this), btn:'like'||'hate', aSeq:ARTIST_SEQ})
 			let $this = x.thiz;
 			let url = (x.btn == 'like')
 						?(($this.hasClass('active'))?'delAL':'putAL')
 								:(($this.hasClass('active'))?'delAH':'putAH');
-			if($.cookie("loginID") == 'sound') $.getJSON($.ctx()+'/foryou/'+url+'/'+x.aSeq,d=>{console.log(d.res);});
+			if($.cookie("loginID") == 'sound') $.getJSON($.ctx()+'/foryou/'+url+'/'+x.aSeq,d=>{});
 			jt.ud_active($this);
 		},
 		ud_active : x=>{
@@ -208,8 +209,6 @@ jt ={
 		
 		//곡 차트
 		music_list : x=>{
-			console.log('곡화면에 넘어온 가수이름:::'+x.musics[0].ARTIST_NAME);
-			console.log('곡화면에 넘어온 뮤직이름:::'+x.musics[0].MUSIC_SEQ);
 			$('<div/>').attr({id:'jt_search_music'}).addClass('container').appendTo($('#jt_content'));
 			$('<h3/>').html('곡').appendTo($('#jt_search_music'));
 			$('<div/>')
@@ -232,8 +231,8 @@ jt ={
 				$.each(ckMusic,(i,v)=>{
 					music += v.value + ((i < ckMusic.length-1)?',':'');
 				});
-				console.log("선택한시퀀스::"+music);
 				jt.music_player(music);
+				$('input[name = chk]:checkbox').prop('checked',false);
 			}).appendTo($('#jt_music_btn_bar1'));
 			
 			$('<div/>')
@@ -250,8 +249,8 @@ jt ={
 				$.each(ckMusic,(i,v)=>{
 					music += v.value + ((i < ckMusic.length-1)?',':'');
 				});
-				console.log("선택한시퀀스::"+music);
 				jt.music_player(music);
+				$('input[name = chk]:checkbox').prop('checked',false);
 			}).appendTo($('#jt_music_btn_bar2'));			
 			$('<br>').appendTo($('#jt_search_music'));
 			$('<table/>').addClass("jt_table table jt_table-filter").attr({id :'jt_music_tb'})
@@ -291,40 +290,21 @@ jt ={
 						$('<td/>').addClass('jt_td_table5').append(
 									$('<i/>').addClass('btn btn-brand fa fa-play')
 									.click(e=>{
-										console.log('뮤직시퀀스::'+j.MUSIC_SEQ);
 										jt.music_player(j.MUSIC_SEQ);
 									}),
 									$('<i/>').addClass((j.TYPES == 'u')?'active':'').attr({id : 'jt_up'+i }).addClass('btn btn-brand fa fa-heart')
 									.click(function(){
-										if($.cookie("loginID")!=null){
+										if(sh.service.auth() == 0 ){
 											sj.service.put_ud({thiz:$(this),btn:'like',mSeq:j.MUSIC_SEQ,gSeq:j.GENRE_SEQ});
-										}else{
-											$.ajax({
-									    		 url : sh.ctx()+'/member/auth',
-										       	  method : 'get',
-										       	  error : m=>{
-										       		alert('로그인이 필요한 서비스입니다.');
-									    			sh.service.login();
-										       	  }
-									    	 });
 										}
+										
 									}),
 									$('<i/>').addClass('btn btn-brand glyphicon glyphicon-facetime-video'),
 									$('<i/>').addClass((j.TYPES == 'd')?'active':'').attr({id : 'jt_down'+i }).addClass('btn btn-brand fa fa-thumbs-down')
 									.click(function(){
-										if($.cookie("loginID")!=null){
+										if(sh.service.auth() == 0 ){
 											sj.service.put_ud({thiz:$(this),btn:'hate',mSeq:j.MUSIC_SEQ,gSeq:j.GENRE_SEQ});
-										}else{
-											$.ajax({
-									    		 url : sh.ctx()+'/member/auth',
-										       	  method : 'get',
-										       	  error : m=>{
-										       		alert('로그인이 필요한 서비스입니다.');
-									    			sh.service.login();
-										       	  }
-									    	 });
 										}
-										
 									})
 								
 								)
@@ -345,7 +325,6 @@ jt ={
 		//앨범디테일 페이지
 		album_detail : z=>{
 			$.getJSON($.ctx()+'/detailPg/detail/'+z+'/'+$.cookie('loginID'),x=>{
-				console.log('앨범디테일에 넘어온 앨범SEQ::'+x.album.ALBUMSEQ);
 				let $cnts = $('#contents');
 				$cnts.empty();
 				let $albumDetailSec = $('<section/>').attr({ id : 'albumDetailSec'});
@@ -409,9 +388,8 @@ jt ={
 					$.each(ckMusic,(i,v)=>{
 						music += v.value + ((i < ckMusic.length-1)?',':'');
 					});
-					console.log("선택한시퀀스::"+music);
-					
 						jt.music_player(music);
+						$('input[name = chk]:checkbox').prop('checked',false);
 				}).appendTo($('#jt_music_btn_bar1'));
 				
 				$('<div/>')
@@ -428,8 +406,8 @@ jt ={
 					$.each(ckMusic,(i,v)=>{
 						music += v.value + ((i < ckMusic.length-1)?',':'');
 					});
-					console.log("선택한시퀀스::"+music);
 						jt.music_player(music);
+						$('input[name = chk]:checkbox').prop('checked',false);
 				}).appendTo($('#jt_music_btn_bar2'));			
 				$('<br>').appendTo($('#jt_search_music'));
 				
@@ -468,38 +446,19 @@ jt ={
 							$('<td/>').addClass('jt_td_table5').append(
 									$('<i/>').addClass('btn btn-brand fa fa-play')
 									.click(e=>{
-										console.log('뮤직시퀀스::'+j.MUSIC_SEQ);
 										jt.music_player(j.MUSIC_SEQ);
 									}),
 									$('<i/>').addClass((j.TYPES == 'u')?'active':'').attr({id : 'jt_up'+i }).addClass('btn btn-brand fa fa-heart')
 									.click(function(){
-										if($.cookie("loginID")!=null){
+										if(sh.service.auth() == 0 ){
 											sj.service.put_ud({thiz:$(this),btn:'like',mSeq:j.MUSIC_SEQ,gSeq:j.GENRE_SEQ});
-										}else{
-											$.ajax({
-									    		 url : sh.ctx()+'/member/auth',
-										       	  method : 'get',
-										       	  error : m=>{
-										       		alert('로그인이 필요한 서비스입니다.');
-									    			sh.service.login();
-										       	  }
-									    	 });
 										}
 									}),
 									$('<i/>').addClass('btn btn-brand glyphicon glyphicon-facetime-video'),
 									$('<i/>').addClass((j.TYPES == 'd')?'active':'').attr({id : 'jt_down'+i }).addClass('btn btn-brand fa fa-thumbs-down')
 									.click(function(){
-										if($.cookie("loginID")!=null){
+										if(sh.service.auth() == 0 ){
 											sj.service.put_ud({thiz:$(this),btn:'hate',mSeq:j.MUSIC_SEQ,gSeq:j.GENRE_SEQ});
-										}else{
-											$.ajax({
-									    		 url : sh.ctx()+'/member/auth',
-										       	  method : 'get',
-										       	  error : m=>{
-										       		alert('로그인이 필요한 서비스입니다.');
-									    			sh.service.login();
-										       	  }
-									    	 });
 										}
 									})
 								)
@@ -514,7 +473,6 @@ jt ={
 						$('input[name = chk]:checkbox').prop('checked',false);
 					}
 				});
-				alert('넘어온 앨범시퀀스~::'+x.album.ALBUMSEQ);
 				jt.album_write(x);
 				setTimeout(()=>{
 					fn.scroll({ id : $('#jt_album_dtpage'), len : 200});
@@ -524,7 +482,6 @@ jt ={
 		
 		//댓글쓰기
 		album_write : x=>{
-				console.log(x.rowCount);
 					$('<div/>').attr({id: 'jt_cmt'}).addClass('container').appendTo($('#jt_content'));
 					$('<h3/>').html('댓글').appendTo($('#jt_cmt'));
 					$('<hr/>').appendTo($('#jt_cmt'));
@@ -571,8 +528,6 @@ jt ={
 
 		//댓글읽기
 		album_read: x=>{
-			console.log('ALBUMSEQ:::'+x.id);
-			console.log('pageNo:::'+x.pageNo);
 			$('.jt_cmt_count').remove();
 			$('.jt_album_row').remove();
 			$('.pagination').remove();
@@ -602,11 +557,6 @@ jt ={
 			            }
 					(ui.page()).appendTo($('#jt_content'));
 					let ul = $('.pagination');
-					console.log('beginPage::'+d.page.beginPage);
-					console.log('endPage::'+d.page.endPage);
-					console.log('beginRow::'+d.page.beginRow);
-					console.log('endRow::'+d.page.endRow);
-					console.log('seqGroup:::'+d.seqGroup);
 					
 					for(let i=d.page.beginPage ; i<=d.page.endPage ; i++){
 						let ac=(i==d.page.pageNumber)? "active" : ""; 
@@ -628,27 +578,27 @@ jt ={
 							{	
 								jt.album_read({id:d.seqGroup , pageNo:parseInt(d.page.endPage+1),rowCount :x.rowCount});});}
 				})
-
+				
 		},
-		
-	
 		// 뮤직 플레이어
 		music_player : x=>{
-			$.getJSON($.ctx()+'/service/player/music/'+x,d=>{
+			let memberId = 'shin';
+			if($.cookie('loginID') != null){
+				memberId = $.cookie('loginID');
+			}
+			$.getJSON($.ctx()+'/service/player/music/'+x+'/'+memberId,d=>{
 				let openWin = window.open(sh.ctx()+'/#SoundLAB_Player',"soundlab","left="+(screen.availWidth-730)/2+",top="+(screen.availHeight-495)/2+","+"width=730,height=495, menubar=no");
 				let player = $(openWin.document.getElementById('wrapper')).length;
-				console.log('player ::: '+player);
 				if(player == 0){
 					openWin.onload =(()=>{
 		            	setTimeout(x=>{
 		                    let sonWrap = $(openWin.document.getElementById('wrapper'));
 		                    sonWrap.empty();
-		                    console.log(d.musics[0].music_addr);
 		                    	$('<div/>').attr({id:'jt_playerdt'}).addClass('nowPlaying').appendTo(sonWrap);
 		                    	$('<div/>').attr({id:'jt_player'}).appendTo(openWin.document.getElementById('jt_playerdt'));
 		                    	$('<div/>').attr({id:'jt_info'}).appendTo(openWin.document.getElementById('jt_player'));
 		                    	$('<img/>')
-		                    	.attr({id:'jt_logo_img', src:$.img()+'/logo.png'})
+		                    	.attr({id:'jt_logo_img', src:$.img()+'/logo_admin.png'})
 		                    	.appendTo(openWin.document.getElementById('jt_info'));
 		                    	
 		                    	$('<div/>').attr({id:'jt_album_area'}).appendTo(openWin.document.getElementById('jt_player'));
@@ -731,14 +681,43 @@ jt ={
 		                        $('<label for="play_allCheck">').appendTo(openWin.document.getElementById('jt_playBtnArea'));
 		                    	$('<a/>').addClass('delete_msg').html('삭제')
 		                    	.click(e=>{
-		                    			$(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox:checked').parents('.jt_mplay_li').remove();
-		                    			let num = $(openWin.document).find('#jt_playerdt .jt_rank');
+		                    		let delLen = $(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox:checked').parents('.jt_mplay_li').length;
+		                    		$(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox:checked').parents('.jt_mplay_li').remove();
+		                    			let mplay_li = $(openWin.document).find('#jt_playerdt .jt_mplay_li');
+		                    			let itemcheck = $(openWin.document).find('#jt_playerdt .itemcheck');
+		                    			let itemcheck_chbox = $(openWin.document).find('#jt_playerdt .jt_pp');
+		                    			let player_checkbox_label = $(openWin.document).find('#jt_playerdt .player_checkbox_label');
+		                    			
+		                    			let jt_itemrank = $(openWin.document).find('#jt_playerdt .jt_itemrank');
+		                    		    let num = $(openWin.document).find('#jt_playerdt .jt_rank');
+		                    		    
+		                    		    let jt_itemtitle_div = $(openWin.document).find('#jt_playerdt .jt_itemtitle_div');
+		                    		    let jt_itemdt = $(openWin.document).find('#jt_playerdt .jt_itemdt');
+		                    		    let jt_titgroup = $(openWin.document).find('#jt_playerdt .jt_titgroup');
+		                    		    let jt_titsong = $(openWin.document).find('#jt_playerdt .jt_titsong');
+		                    		    let jt_itemem = $(openWin.document).find('#jt_playerdt .jt_itemem');
+		                    		    let _jt_artist = $(openWin.document).find('#jt_playerdt ._jt_artist');
+		                    	
 		                    			for(let i=0;i<num.length;i++){
-		                    				num[i].innerHTML = i+1;
+		                    				mplay_li[i].id = 'jt_mplay_li'+i;
+		                    				itemcheck[i].id ='jt_itemcheck'+ i;
+		                    				itemcheck_chbox[i].id ='checkbox'+ i;
+		                    				$(player_checkbox_label[i]).attr({'for':itemcheck_chbox[i].id});
 		                    				
+		                    				jt_itemrank[i].id ='jt_itemrank'+ i;
+		                    				num[i].id ='jt_rank'+ i;
+		                    				num[i].innerHTML = i+1;
+
+		                    				jt_itemtitle_div[i].id ='jt_itemtitle_div'+ i;
+		                    				jt_itemdt[i].id ='jt_itemdt'+ i;
+		                    				jt_titgroup[i].id ='jt_titgroup'+ i;
+		                    				jt_titsong[i].id ='jt_titsong'+ i;
+		                    				jt_itemem[i].id ='jt_itemem'+ i;
+		                    				_jt_artist[i].id ='jt_artist'+ i;
+
 		                    			}
-		                    			musicCnt--;
-		                    			$(openWin.document.getElementById('musicCnt')).html(musicCnt);
+		                    		musicCnt = $(openWin.document.getElementById('musicCnt')).html() - delLen;
+		                    		$(openWin.document.getElementById('musicCnt')).html(musicCnt);
 		                    		}).appendTo(openWin.document.getElementById('jt_playBtnArea'));
 		                    	  $(openWin.document.getElementById('play_allCheck')).click(e=>{
 		          					if($(openWin.document.getElementById('play_allCheck')).is(':checked')){
@@ -760,46 +739,39 @@ jt ={
 		                    		$('<li/>').attr({id:'jt_mplay_li'+i}).addClass('jt_mplay_li').appendTo(openWin.document.getElementById('jt_mplay_ul'));
 		                        	$('<em/>').attr({id:'jt_itemcheck'+i}).addClass('itemcheck jt_playckbox').appendTo(openWin.document.getElementById('jt_mplay_li'+i));
 		                        	$('<input/>').attr({type : 'checkbox', id :'checkbox'+i, name :'play_chk'}).addClass('jt_pp').appendTo(openWin.document.getElementById('jt_itemcheck'+i));
-		                        	$('<label for="checkbox'+i+'">').appendTo(openWin.document.getElementById('jt_itemcheck'+i));
+		                        	$('<label for="checkbox'+i+'">').addClass('player_checkbox_label').appendTo(openWin.document.getElementById('jt_itemcheck'+i));
 		                        	$('<em/>').attr({id:'jt_itemrank'+i}).addClass('jt_itemrank').appendTo(openWin.document.getElementById('jt_mplay_li'+i));
 		                        	$('<span/>').attr({id:'jt_rank'+i}).addClass('rank jt_rank').html(i+1).appendTo(openWin.document.getElementById('jt_itemrank'+i));
 		                        	$('<div/>').attr({id:'jt_itemtitle_div'+i}).addClass('jt_itemtitle_div').appendTo(openWin.document.getElementById('jt_mplay_li'+i));
-		                        	$('<div/>').attr({id:'jt_itemdt'+i}).appendTo(openWin.document.getElementById('jt_itemtitle_div'+i));
-		                        	$('<span/>').attr({id:'jt_titgroup'+i}).appendTo(openWin.document.getElementById('jt_itemdt'+i));
-		                        	$('<span/>').attr({id:'jt_titsong'+i}).addClass('jt_titsong').html(d.musics[i].MUSIC_TITLE)
-		                        	
-		                        	.appendTo(openWin.document.getElementById('jt_titgroup'+i))
+		                        	$('<div/>').attr({id:'jt_itemdt'+i}).addClass('jt_itemdt').appendTo(openWin.document.getElementById('jt_itemtitle_div'+i));
+		                        	$('<span/>').attr({id:'jt_titgroup'+i}).addClass('jt_titgroup').appendTo(openWin.document.getElementById('jt_itemdt'+i));
+		                        	$('<a/>').attr({id:'jt_titsong'+i}).addClass('jt_titsong').html(d.musics[i].MUSIC_TITLE).appendTo(openWin.document.getElementById('jt_titgroup'+i));
+
 		                        	$('<em/>').attr({id:'jt_itemem'+i}).addClass('jt_itemem').html('|').appendTo(openWin.document.getElementById('jt_itemdt'+i));
-		                        	$('<span/>').attr({id:'jt_artist'+i}).html(d.musics[i].ARTIST_NAME).appendTo(openWin.document.getElementById('jt_itemdt'+i));
+		                        	$('<span/>').attr({id:'jt_artist'+i}).addClass('_jt_artist').html(d.musics[i].ARTIST_NAME).appendTo(openWin.document.getElementById('jt_itemdt'+i));
 		                        	
 		                    	}
-		                    	let musicTitC =$(openWin.document).find('#jt_playerdt .jt_titsong');
-		                    	musicTitC.click(e=>{
-		                    		console.log('웹 플레이어 뮤직타이틀::'+d.musics[0].MUSIC_TITLE);
-		                    	});
 
 		                },110);
 		            });
 				}else {
-
 					let cnt =$(openWin.document.getElementById('musicCnt')).html()*1;
-					console.log('musicCNT :: '+ cnt);
                 	for(var i=0; i<d.musics.length;i++){
                 		$('<li/>').attr({id:'jt_mplay_li'+cnt}).addClass('jt_mplay_li').appendTo(openWin.document.getElementById('jt_mplay_ul'));
                     	$('<em/>').attr({id:'jt_itemcheck'+cnt}).addClass('itemcheck jt_playckbox').appendTo(openWin.document.getElementById('jt_mplay_li'+cnt));
                     	$('<input/>').attr({type : 'checkbox', id :'checkbox'+cnt, name :'play_chk'}).addClass('jt_pp').appendTo(openWin.document.getElementById('jt_itemcheck'+cnt));
-                    	$('<label for="checkbox'+cnt+'">').appendTo(openWin.document.getElementById('jt_itemcheck'+cnt));
+                    	$('<label for="checkbox'+cnt+'">').addClass('player_checkbox_label').appendTo(openWin.document.getElementById('jt_itemcheck'+cnt));
                     	$('<em/>').attr({id:'jt_itemrank'+cnt}).addClass('jt_itemrank').appendTo(openWin.document.getElementById('jt_mplay_li'+cnt));
                     	$('<span/>').attr({id:'jt_rank'+cnt}).addClass('rank jt_rank').html(cnt+1).appendTo(openWin.document.getElementById('jt_itemrank'+cnt));
                     	$('<div/>').attr({id:'jt_itemtitle_div'+cnt}).addClass('jt_itemtitle_div').appendTo(openWin.document.getElementById('jt_mplay_li'+cnt));
-                    	$('<div/>').attr({id:'jt_itemdt'+cnt}).appendTo(openWin.document.getElementById('jt_itemtitle_div'+cnt));
-                    	$('<span/>').attr({id:'jt_titgroup'+cnt}).appendTo(openWin.document.getElementById('jt_itemdt'+cnt));
-                    	$('<sapn/>').attr({id:'jt_titsong'+cnt}).addClass('jt_titsong').html(d.musics[i].MUSIC_TITLE).appendTo(openWin.document.getElementById('jt_titgroup'+cnt));
+                    	$('<div/>').attr({id:'jt_itemdt'+cnt}).addClass('jt_itemdt').appendTo(openWin.document.getElementById('jt_itemtitle_div'+cnt));
+                    	$('<span/>').attr({id:'jt_titgroup'+cnt}).addClass('jt_titgroup').appendTo(openWin.document.getElementById('jt_itemdt'+cnt));
+                    	$('<a/>').attr({id:'jt_titsong'+cnt}).addClass('jt_titsong').html(d.musics[i].MUSIC_TITLE).appendTo(openWin.document.getElementById('jt_titgroup'+cnt));
                     	$('<em/>').attr({id:'jt_itemem'+cnt}).addClass('jt_itemem').html('|').appendTo(openWin.document.getElementById('jt_itemdt'+cnt));
-                    	$('<span/>').attr({id:'jt_artist'+cnt}).html(d.musics[i].ARTIST_NAME).appendTo(openWin.document.getElementById('jt_itemdt'+cnt));
+                    	$('<span/>').attr({id:'jt_artist'+cnt}).addClass('_jt_artist').html(d.musics[i].ARTIST_NAME).appendTo(openWin.document.getElementById('jt_itemdt'+cnt));
                     	cnt++;
-                    	$(openWin.document.getElementById('musicCnt')).html(cnt);
                 	}
+                	$(openWin.document.getElementById('musicCnt')).html(cnt);
 				}
 				
 	          
@@ -808,8 +780,11 @@ jt ={
 		},
 		//앨범 플레이어
 		album_player : x=>{
-			console.log('player받은값::'+x);
-			$.getJSON($.ctx()+'/service/player/album/'+x,d=>{
+			let memberId = 'shin';
+			if($.cookie('loginID') != null){
+				memberId = $.cookie('loginID');
+			}
+			$.getJSON($.ctx()+'/service/player/album/'+x+'/'+memberId,d=>{
 				let openWin = window.open(sh.ctx()+'/#SoundLAB_Player',"soundlab","left="+(screen.availWidth-730)/2+",top="+(screen.availHeight-495)/2+","+"width=730,height=495, menubar=no");
 				let player = $(openWin.document.getElementById('wrapper')).length;
 				if(player == 0){
@@ -817,12 +792,11 @@ jt ={
 		            	setTimeout(x=>{
 		                    let sonWrap = $(openWin.document.getElementById('wrapper'));
 		                    sonWrap.empty();
-		                    console.log(d.albums[0].music_addr);
 		                    	$('<div/>').attr({id:'jt_playerdt'}).addClass('nowPlaying').appendTo(sonWrap);
 		                    	$('<div/>').attr({id:'jt_player'}).appendTo(openWin.document.getElementById('jt_playerdt'));
 		                    	$('<div/>').attr({id:'jt_info'}).appendTo(openWin.document.getElementById('jt_player'));
 		                    	$('<img/>')
-		                    	.attr({id:'jt_logo_img', src:$.img()+'/logo.png'})
+		                    	.attr({id:'jt_logo_img', src:$.img()+'/logo_admin.png'})
 		                    	.appendTo(openWin.document.getElementById('jt_info'));
 		                    	
 		                    	$('<div/>').attr({id:'jt_album_area'}).appendTo(openWin.document.getElementById('jt_player'));
@@ -903,16 +877,44 @@ jt ={
 		                    		}
 		                    	});
 		                        $('<label for="play_allCheck">').appendTo(openWin.document.getElementById('jt_playBtnArea'));
-		                    	$('<a/>').addClass('delete_msg').html('삭제')
+                    			
+		                        $('<a/>').addClass('delete_msg').html('삭제')
 		                    	.click(e=>{
-		                    			$(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox:checked').parents('.jt_mplay_li').remove();
-		                    			let num = $(openWin.document).find('#jt_playerdt .jt_rank');
+		                    		let delLen = $(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox:checked').parents('.jt_mplay_li').length;
+		                    		
+		                    		$(openWin.document).find('#jt_playerdt input[name=play_chk]:checkbox:checked').parents('.jt_mplay_li').remove();
+		                    			let mplay_li = $(openWin.document).find('#jt_playerdt .jt_mplay_li');
+		                    			let itemcheck = $(openWin.document).find('#jt_playerdt .itemcheck');
+		                    			let itemcheck_chbox = $(openWin.document).find('#jt_playerdt .jt_pp');
+		                    			let player_checkbox_label = $(openWin.document).find('#jt_playerdt .player_checkbox_label');
+		                    			let jt_itemrank = $(openWin.document).find('#jt_playerdt .jt_itemrank');
+		                    		    let num = $(openWin.document).find('#jt_playerdt .jt_rank');
+		                    		    let jt_itemtitle_div = $(openWin.document).find('#jt_playerdt .jt_itemtitle_div');
+		                    		    let jt_itemdt = $(openWin.document).find('#jt_playerdt .jt_itemdt');
+		                    		    let jt_titgroup = $(openWin.document).find('#jt_playerdt .jt_titgroup');
+		                    		    let jt_titsong = $(openWin.document).find('#jt_playerdt .jt_titsong');
+		                    		    let jt_itemem = $(openWin.document).find('#jt_playerdt .jt_itemem');
+		                    		    let _jt_artist = $(openWin.document).find('#jt_playerdt ._jt_artist');
 		                    			for(let i=0;i<num.length;i++){
+		                    				mplay_li[i].id = 'jt_mplay_li'+i;
+		                    				itemcheck[i].id ='jt_itemcheck'+ i;
+		                    				itemcheck_chbox[i].id ='checkbox'+ i;
+		                    				$(player_checkbox_label[i]).attr({'for':itemcheck_chbox[i].id});
+		                    				
+		                    				jt_itemrank[i].id ='jt_itemrank'+ i;
+		                    				num[i].id ='jt_rank'+ i;
 		                    				num[i].innerHTML = i+1;
+		                    				jt_itemtitle_div[i].id ='jt_itemtitle_div'+ i;
+		                    				jt_itemdt[i].id ='jt_itemdt'+ i;
+		                    				jt_titgroup[i].id ='jt_titgroup'+ i;
+		                    				jt_titsong[i].id ='jt_titsong'+ i;
+		                    				jt_itemem[i].id ='jt_itemem'+ i;
+		                    				_jt_artist[i].id ='jt_artist'+ i;
 		                    			}
-		                    			musicCnt--;
-		                    			$(openWin.document.getElementById('musicCnt')).html(musicCnt);
+		                    		musicCnt = $(openWin.document.getElementById('musicCnt')).html() - delLen;
+		                    		$(openWin.document.getElementById('musicCnt')).html(musicCnt);
 		                    		}).appendTo(openWin.document.getElementById('jt_playBtnArea'));
+		                        
 		                    	  $(openWin.document.getElementById('play_allCheck')).click(e=>{
 		          					if($(openWin.document.getElementById('play_allCheck')).is(':checked')){
 		          						$('input[name=play_chk]:checkbox').prop('checked',true);
@@ -932,38 +934,37 @@ jt ={
 		                    		$('<li/>').attr({id:'jt_mplay_li'+i}).addClass('jt_mplay_li').appendTo(openWin.document.getElementById('jt_mplay_ul'));
 		                        	$('<em/>').attr({id:'jt_itemcheck'+i}).addClass('itemcheck jt_playckbox').appendTo(openWin.document.getElementById('jt_mplay_li'+i));
 		                        	$('<input/>').attr({type : 'checkbox', id :'checkbox'+i, name :'play_chk'}).addClass('jt_pp').appendTo(openWin.document.getElementById('jt_itemcheck'+i));
-		                        	$('<label for="checkbox'+i+'">').appendTo(openWin.document.getElementById('jt_itemcheck'+i));
+		                        	$('<label for="checkbox'+i+'">').addClass('player_checkbox_label').appendTo(openWin.document.getElementById('jt_itemcheck'+i));
 		                        	$('<em/>').attr({id:'jt_itemrank'+i}).addClass('jt_itemrank').appendTo(openWin.document.getElementById('jt_mplay_li'+i));
 		                        	$('<span/>').attr({id:'jt_rank'+i}).addClass('rank jt_rank').html(i+1).appendTo(openWin.document.getElementById('jt_itemrank'+i));
 		                        	$('<div/>').attr({id:'jt_itemtitle_div'+i}).addClass('jt_itemtitle_div').appendTo(openWin.document.getElementById('jt_mplay_li'+i));
-		                        	$('<div/>').attr({id:'jt_itemdt'+i}).appendTo(openWin.document.getElementById('jt_itemtitle_div'+i));
-		                        	$('<span/>').attr({id:'jt_titgroup'+i}).appendTo(openWin.document.getElementById('jt_itemdt'+i));
+		                        	$('<div/>').attr({id:'jt_itemdt'+i}).addClass('jt_itemdt').appendTo(openWin.document.getElementById('jt_itemtitle_div'+i));
+		                        	$('<span/>').attr({id:'jt_titgroup'+i}).addClass('jt_titgroup').appendTo(openWin.document.getElementById('jt_itemdt'+i));
 		                        	$('<a/>').attr({id:'jt_titsong'+i}).addClass('jt_titsong').html(d.albums[i].MUSIC_TITLE).appendTo(openWin.document.getElementById('jt_titgroup'+i));
 		                        	$('<em/>').attr({id:'jt_itemem'+i}).addClass('jt_itemem').html('|').appendTo(openWin.document.getElementById('jt_itemdt'+i));
-		                        	$('<span/>').attr({id:'jt_artist'+i}).html(d.albums[i].ARTIST_NAME).appendTo(openWin.document.getElementById('jt_itemdt'+i));
+		                        	$('<span/>').attr({id:'jt_artist'+i}).addClass('_jt_artist').html(d.albums[i].ARTIST_NAME).appendTo(openWin.document.getElementById('jt_itemdt'+i));
 		                    	}
 
 		                },110);
 		            });
 				}else {
 					let cnt =$(openWin.document.getElementById('musicCnt')).html()*1;
-					console.log('musicCNT :: '+ cnt);
                 	for(var i=0; i<d.albums.length;i++){
                 		$('<li/>').attr({id:'jt_mplay_li'+cnt}).addClass('jt_mplay_li').appendTo(openWin.document.getElementById('jt_mplay_ul'));
                     	$('<em/>').attr({id:'jt_itemcheck'+cnt}).addClass('itemcheck jt_playckbox').appendTo(openWin.document.getElementById('jt_mplay_li'+cnt));
                     	$('<input/>').attr({type : 'checkbox', id :'checkbox'+cnt, name :'play_chk'}).addClass('jt_pp').appendTo(openWin.document.getElementById('jt_itemcheck'+cnt));
-                    	$('<label for="checkbox'+cnt+'">').appendTo(openWin.document.getElementById('jt_itemcheck'+cnt));
+                    	$('<label for="checkbox'+cnt+'">').addClass('player_checkbox_label').appendTo(openWin.document.getElementById('jt_itemcheck'+cnt));
                     	$('<em/>').attr({id:'jt_itemrank'+cnt}).addClass('jt_itemrank').appendTo(openWin.document.getElementById('jt_mplay_li'+cnt));
                     	$('<span/>').attr({id:'jt_rank'+cnt}).addClass('rank jt_rank').html(cnt+1).appendTo(openWin.document.getElementById('jt_itemrank'+cnt));
                     	$('<div/>').attr({id:'jt_itemtitle_div'+cnt}).addClass('jt_itemtitle_div').appendTo(openWin.document.getElementById('jt_mplay_li'+cnt));
-                    	$('<div/>').attr({id:'jt_itemdt'+cnt}).appendTo(openWin.document.getElementById('jt_itemtitle_div'+cnt));
-                    	$('<span/>').attr({id:'jt_titgroup'+cnt}).appendTo(openWin.document.getElementById('jt_itemdt'+cnt));
+                    	$('<div/>').attr({id:'jt_itemdt'+cnt}).addClass('jt_itemdt').appendTo(openWin.document.getElementById('jt_itemtitle_div'+cnt));
+                    	$('<span/>').attr({id:'jt_titgroup'+cnt}).addClass('jt_titgroup').appendTo(openWin.document.getElementById('jt_itemdt'+cnt));
                     	$('<a/>').attr({id:'jt_titsong'+cnt}).addClass('jt_titsong').html(d.albums[i].MUSIC_TITLE).appendTo(openWin.document.getElementById('jt_titgroup'+cnt));
                     	$('<em/>').attr({id:'jt_itemem'+cnt}).addClass('jt_itemem').html('|').appendTo(openWin.document.getElementById('jt_itemdt'+cnt));
-                    	$('<span/>').attr({id:'jt_artist'+cnt}).html(d.albums[i].ARTIST_NAME).appendTo(openWin.document.getElementById('jt_itemdt'+cnt));
+                    	$('<span/>').attr({id:'jt_artist'+cnt}).addClass('_jt_artist').html(d.albums[i].ARTIST_NAME).appendTo(openWin.document.getElementById('jt_itemdt'+cnt));
                     	cnt++;
-                    	$(openWin.document.getElementById('musicCnt')).html(cnt);
                 	}
+                	$(openWin.document.getElementById('musicCnt')).html(cnt);
 				}
 				
 	          
