@@ -20,6 +20,7 @@ public class ForYouCtrl {
 		System.out.println("cookieID :: "+id);
 		Map<String, Object> res = new HashMap<>();
 		res.put("fy", fm.getForYou());
+		System.out.println(res.get("fy"));
 		return res;
 	}
 	@RequestMapping("/foryou/albums/{seq}")
