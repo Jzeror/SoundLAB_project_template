@@ -635,49 +635,6 @@ SELECT
 FROM MUSIC AS M
      JOIN ALBUM AS A
      ON M.ALBUM_SEQ = A.ALBUM_SEQ;
--- LS 수정중 뷰
-CREATE OR REPLACE VIEW LS_TOP3 AS
-SELECT
-DATE_FORMAT(V1.VIEW_DATE,'%Y-%m-%d')AS VD,
-
-MUS.MUSIC_TITLE,
-AR.ARTIST_NAME,
-V1.SEQ_GROUP,
-COUNT(*) CNT ,
-     FLOOR((COUNT(*)/(SELECT COUNT(*) FROM VIEW_RECORD V2 WHERE V2.VIEW_DATE LIKE V1.VIEW_DATE AND V2.SEQ_GROUP IN (
-                 SELECT TMP.MSEQ
-                 FROM
-                 (
-                     SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
-                     FROM VIEW_RECORD V
-                     WHERE V.VIEW_DATE LIKE '2018-11-01%'
-                     GROUP BY V.SEQ_GROUP
-                     ORDER BY CNT
-                     DESC LIMIT 3) TMP
-                 ))) * 100) PER
-FROM VIEW_RECORD V1
-JOIN MUSIC MUS ON V1.SEQ_GROUP LIKE MUS.MUSIC_SEQ
-JOIN ARTIST AR ON MUS.ARTIST_SEQ LIKE AR.ARTIST_SEQ
-WHERE V1.SEQ_GROUP IN (
-                 SELECT TMP.MSEQ
-                 FROM
-                     (SELECT V.SEQ_GROUP MSEQ, COUNT(*) CNT
-                     FROM VIEW_RECORD V
-                     WHERE V.VIEW_DATE LIKE '2018-11-01%'
-                     GROUP BY V.SEQ_GROUP
-                     ORDER BY CNT
-                     DESC LIMIT 3) TMP
-                 )
-AND V1.VIEW_DATE BETWEEN '2018-10-26%' AND  '2018-11-02%'
-GROUP BY V1.SEQ_GROUP, VD
-ORDER BY V1.VIEW_DATE DESC, COUNT(*) DESC, MUS.MUSIC_TITLE;
-
-CREATE OR REPLACE VIEW LS_TOP3_NUM AS
-SELECT
-*,
-(SELECT COUNT(*)+1 FROM LS_TOP3 WHERE VD LIKE LT.VD AND CNT > LT.CNT) AS RANK
-FROM LS_TOP3 LT;
--- LS 수정중 뷰
 INSERT INTO HASHTAG(HASH) VALUES('신나는'),('차분한'),('어쿠스틱'),('트로피칼'),('부드러운'),('드라이브'),('휴식'),('편집숍/카페'),('헬스'),('클럽'),('스트레스'),('이별'),('사랑/고백'),('새벽감성'),('위로');
 INSERT INTO BOARD(BOARD_NAME) VALUES('DJ');
 INSERT INTO BOARD(BOARD_NAME) VALUES('COMMENT');
