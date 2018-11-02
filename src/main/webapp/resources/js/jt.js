@@ -604,9 +604,8 @@ jt ={
 		                    	$('<div/>').attr({id:'jt_album_area'}).appendTo(openWin.document.getElementById('jt_player'));
 		                    	$('<div/>').attr({id:'jt_album_imgDiv'}).appendTo(openWin.document.getElementById('jt_album_area'));
 		                    	for(var i=0; i<d.musics.length;i++){
-		                    		console.log('len :: '+ d.musics.length);
 		                    	$('<iframe allowfullscreen>')
-		        				.attr({id:'jt_music_iframe', src : d.musics[i].music_addr, 'frameborder':'0',allow:'autoplay; encrypted-media'})
+		        				.attr({id:'jt_music_iframe', src : d.musics[i].MUSIC_ADDR, 'frameborder':'0',allow:'autoplay; encrypted-media'})
 		        				.appendTo(openWin.document.getElementById('jt_album_imgDiv'));
 		                    	}
 		                    	$('<div/>').attr({id:'jt_progressControl'}).appendTo(openWin.document.getElementById('jt_player'));
@@ -804,7 +803,7 @@ jt ={
 		                    	$('<div/>').attr({id:'jt_album_imgDiv'}).appendTo(openWin.document.getElementById('jt_album_area'));
 		                    	for(var i=0; i<d.albums.length;i++){
 		                    	$('<iframe allowfullscreen>')
-		        				.attr({id:'jt_music_iframe', src : d.albums[i].music_addr, 'frameborder':'0',allow:'autoplay; encrypted-media'})
+		        				.attr({id:'jt_music_iframe', src : d.albums[i].MUSIC_ADDR, 'frameborder':'0',allow:'autoplay; encrypted-media'})
 		        				.appendTo(openWin.document.getElementById('jt_album_imgDiv'));
 		                    	}
 		                    	$('<div/>').attr({id:'jt_progressControl'}).appendTo(openWin.document.getElementById('jt_player'));
