@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
      <title>SoundLAB</title> 
-     <link rel="shortcut icon" href="${context}/resources/img/favicon.ico" />
+     <link rel="shortcut icon" href="${context}/resources/img/logo.png" /> 
      <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
      <link rel="stylesheet"
@@ -39,7 +39,7 @@
 </head>
 <body data-spy="scroll" data-target="#header">
 <div id="wrapper"></div>
-<script> /* 바디 안에 넣음, 전역메소드로 처리한 것 */
+<script> 
 app.init('${context}');
 
 </script>

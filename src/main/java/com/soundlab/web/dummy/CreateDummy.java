@@ -186,10 +186,6 @@ public class CreateDummy {
 							  ,87
 								 ,119
 										,62
-												  
-											 ,101
-											 ,112
-											  ,83
 											  ,88
 										  	  ,111
 												 ,107
@@ -231,8 +227,6 @@ public class CreateDummy {
 																  ,57 
 																  ,103
 																  ,86
-																  ,89  // 박효신 기프트		
-																					 ,74  // 방탄 아이돌
 																  ,91
 																		  ,67
 																		  ,106
@@ -240,7 +234,7 @@ public class CreateDummy {
 												  						  ,76
 																			 ,82
 																			 ,105
-																	 
+																			 ,74  // 방탄 아이돌
 														  ,59
 														  ,77
 									  ,70
@@ -250,27 +244,31 @@ public class CreateDummy {
 													 ,118
 															  ,98 
 													  		  ,109	
-									  					
+																 ,101
+																 ,112
+																  ,83
 													  		 ,65 //아이유 삐삐
 										  ,63 //빈지노 아쿠아맨
+										  ,89  // 박효신 기프트		
+											 
 														
 														
 				};
-				/*for(int s=17;s<67;s++) {
+				for(int s=0;s<67;s++) {
 					for(int i=0;i<s+1;i++) {
 						System.out.println("INSERT INTO VIEW_RECORD (MEMBER_ID, SEQ_GROUP, SG_ELEMENT, VIEW_DATE)\n" 
 								+"VALUES\n" 
-								+"('shin',"+lst[s]+",'music','2018-11-01 20:20:34');");
+								+"('sound',"+lst[s]+",'music','2018-10-23 20:20:34');");
 					}
-				}*/
-				for(int i=0;i<67;i++) {
+				}
+				/*for(int i=0;i<67;i++) {
 					for(int j=0;j<4;j++) {
 						System.out.println("INSERT INTO VIEW_RECORD (MEMBER_ID, SEQ_GROUP, SG_ELEMENT, VIEW_DATE)\n" 
 								+"VALUES\n" 
 								+"('shin',"+lst[i]+",'music','2018-11-02 20:20:34');");
 					}
 					
-				}
+				}*/
 	 }
 	
 	

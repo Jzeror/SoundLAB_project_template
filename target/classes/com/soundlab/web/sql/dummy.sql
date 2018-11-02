@@ -99520,5 +99520,8 @@ VALUES
 INSERT INTO VIEW_RECORD (MEMBER_ID, SEQ_GROUP, SG_ELEMENT, VIEW_DATE)
 VALUES
 ('sound',89,'music','2018-10-23 20:20:34');
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> refs/remotes/origin/master
