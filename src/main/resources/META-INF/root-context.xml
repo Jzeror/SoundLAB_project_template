@@ -39,7 +39,7 @@
 		<property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
 
 		<!--  <property name="url" value="jdbc:mariadb://203.236.209.64:3306/mariadb"/>  -->
-			<property name="url" value="jdbc:mariadb://mariadb.ch7g3xrogbee.ap-northeast-2.rds.amazonaws.com:3306/mariadb"/> 
+			<property name="url" value="jdbc:mariadb://mariadb.cdmuy05p9aba.ap-northeast-2.rds.amazonaws.com:3306/mariadb"/> 
 
 
 		<property name="username" value="mariadb"/>
