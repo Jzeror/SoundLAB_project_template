@@ -63,14 +63,6 @@ public class ServiceCtrl {
 	public Map<String,Object> playerMusic(@PathVariable String musicSeq){
 		logger.info("ServiceCtrl ::: MusicPlayer");
 		System.out.println("넘어온 musicSeq::"+musicSeq);
-		/*pl += musicSeq + ",";
-		System.out.println(pl);
-		System.out.println(pl.length());
-		System.out.println(pl.substring(0,pl.length()-1));
-		map.put("musicSeq", pl.substring(0,pl.length()-1));
-		*/
-		
-		
 		map.clear();
 		map.put("musicSeq", musicSeq);
 		

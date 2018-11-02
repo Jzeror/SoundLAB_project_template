@@ -474,7 +474,7 @@
 }
 .jt_titsong{
 	color: #333;
-	cursor: pointer;
+	
 }
 .jt_itemem{
 	color: #dadada;
@@ -495,7 +495,7 @@
 	cursor: pointer;
 }
 .jt_musicCnt{
-	margin-left: 35rem;
+	margin-left: 32rem;
     font-size: 18px;
 }
 #musicCnt{
