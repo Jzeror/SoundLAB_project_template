@@ -86,7 +86,6 @@ public class MusicCtrl {
 		map.clear();
 		  List<Map<?,?>> chartData = null;
 		 
-		  chartData = musMapper.top50lineChart();
 		  
 		  
 			 Util.log.accept("chartData:: " +chartData);
