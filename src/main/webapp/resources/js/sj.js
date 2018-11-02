@@ -631,8 +631,6 @@ sj.service = {
 				
 			let $pl = $('<div/>').addClass('sj-music-playlist').appendTo($('#fy-music-list'));
 			
-			console.log(x.length);
-			
 			if(x.length === 0){
 				
 				$('<div/>').addClass('single-music').append(
