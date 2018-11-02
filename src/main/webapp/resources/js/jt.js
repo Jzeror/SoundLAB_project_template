@@ -598,7 +598,7 @@ jt ={
 		                    	$('<div/>').attr({id:'jt_player'}).appendTo(openWin.document.getElementById('jt_playerdt'));
 		                    	$('<div/>').attr({id:'jt_info'}).appendTo(openWin.document.getElementById('jt_player'));
 		                    	$('<img/>')
-		                    	.attr({id:'jt_logo_img', src:$.img()+'/logo.png'})
+		                    	.attr({id:'jt_logo_img', src:$.img()+'/logo_admin.png'})
 		                    	.appendTo(openWin.document.getElementById('jt_info'));
 		                    	
 		                    	$('<div/>').attr({id:'jt_album_area'}).appendTo(openWin.document.getElementById('jt_player'));
@@ -794,7 +794,7 @@ jt ={
 		                    	$('<div/>').attr({id:'jt_player'}).appendTo(openWin.document.getElementById('jt_playerdt'));
 		                    	$('<div/>').attr({id:'jt_info'}).appendTo(openWin.document.getElementById('jt_player'));
 		                    	$('<img/>')
-		                    	.attr({id:'jt_logo_img', src:$.img()+'/logo.png'})
+		                    	.attr({id:'jt_logo_img', src:$.img()+'/logo_admin.png'})
 		                    	.appendTo(openWin.document.getElementById('jt_info'));
 		                    	
 		                    	$('<div/>').attr({id:'jt_album_area'}).appendTo(openWin.document.getElementById('jt_player'));
