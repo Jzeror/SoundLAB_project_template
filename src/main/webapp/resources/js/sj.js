@@ -219,19 +219,7 @@ sj ={
 									)
 							)
 					).appendTo($foryouSec);
-					
-					
-					/*$('#album-scroll').bind(function(){
-						let $this = $(this);
-						console.log($this.scrollTop());
-						console.log($this.innerHeight());
-						console.log($this[0].scrollHeight);
-						if($this.scrollTop() + $this.innerHeight() >= $this[0].scrollHeight){
-							console.log('Scroll End');
-						}
-					});*/
-					
-					
+
 					let $li = $('<div/>').addClass('list-group').attr({'style':'margin:0;'}).appendTo('#for-album-li');
 					
 					$.each(fal,(i, v)=>{

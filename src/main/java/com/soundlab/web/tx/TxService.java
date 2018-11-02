@@ -1,6 +1,5 @@
 package com.soundlab.web.tx;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,18 +33,6 @@ public class TxService {
 		res += (fm.putMusicDown(ms))?"m down":"";
 		res += (fm.delUp(ms))?"/m up del":"";
 		res += (fm.delGenreUp(p.get("gSeq")))?"/g up del":"";
-		return res;
-	}
-	public String putHashView(Map<String, String> p) {
-		Map<String, Object> map = new HashMap<>();
-		String t1 = p.get("t1"), t2 = p.get("t2"), t3 = p.get("t3"), res = "";
-		map.put("id", p.get("id"));
-		map.put("seq", t1);
-		res += (am.putHashView(map))?t1+" view":"";
-		map.put("seq", t2);
-		res += (am.putHashView(map))?"/"+t2+" view":"";
-		map.put("seq", t3);
-		res += (am.putHashView(map))?"/"+t3+" view":"";
 		return res;
 	}
 	public String putArtistUp(String p) {
