@@ -1,4 +1,4 @@
-<!-- <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -58,7 +58,8 @@ A.ARTIST_NAME,
 A.GENRE_SEQ,
 A.ALBUM_SEQ,
 A.ALBUM_TITLE,
-UD.TYPES
+UD.TYPES,
+SR.NUM
 FROM
 (SELECT
 ROW_NUMBER() OVER(ORDER BY M.MUSIC_SEQ) AS MSEQ,
@@ -94,7 +95,7 @@ ORDER BY B.SEQ_GROUP
 ) UD
 ON A.MUSIC_SEQ LIKE UD.SEQ_GROUP
 )DT
-ON DT.MSEQ LIKE SJ.A_NUM
+ON DT.NUM LIKE SJ.A_NUM
 ORDER BY ISNULL(SJ.A_NUM) ASC, SJ.A_NUM
   </select>
   <select id="getAlbumDetail" resultMap="fy">
@@ -175,4 +176,4 @@ ORDER BY MS.MUSIC_SEQ
 		)
   </delete>
 
-  </mapper> -->
+  </mapper>

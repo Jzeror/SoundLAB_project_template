@@ -113,15 +113,16 @@ sj ={
 										artistName : v.alArtistName,
 										imgName : v.alImgName,
 										ext : v.alImgExt
-								}, y = {
+								};
+								fal.push(x);
+							}
+							if(v.atRank <= 5){
+								let y = {
 										artistSeq : v.atArtistSeq,
 										artistName : v.atArtistName,
 										imgName : v.atImgName,
 										ext : v.atImgExt
 								};
-								
-								
-								fal.push(x);
 								fat.push(y);
 							}
 							if(v.mSeq > 0){
@@ -206,8 +207,7 @@ sj ={
 					
 					sj.service.fy_music_li(fmsA);
 					
-					// for - album
-					
+					// for - album		
 					
 					$('<div/>')
 					.addClass('clearfix')
@@ -228,35 +228,42 @@ sj ={
 									)
 							)
 					).appendTo($foryouSec);
-
-					let $li = $('<div/>').addClass('list-group').attr({'style':'margin:0;'}).appendTo('#for-album-li');
 					
-					$.each(fal,(i, v)=>{
-						$('<div/>')
-						.addClass('sj-for-album-item sj-bg-img')
-						.attr({'style':'background-image:url('+$.ctx()+'/resources/img/album/'+v.imgName+'.'+v.ext+');'})
-						.append(
-								$('<div/>').addClass('sj-for-album-eff').append(
-										$('<h4/>').html(v.albumTitle),
-										$('<h6/>').html(v.artistName)
-								)
-						)
-						.appendTo($li)
-						.click(function(e){
-							let $this = $(this);
-							$this.siblings('.sj-for-album-item.active').removeClass('active');
-							$this.addClass('active');
-							$.getJSON($.ctx()+'/foryou/albums/'+v.albumSeq,d=>{
-								sj.service.fy_album_dt(d.albumDt);
-							})
+					if(fal.length === 0){
+						$('#for-album-li').remove();
+						$('#for-album-dt').remove();
+						$('#for-album p.sj-foryou-theme').after(function(){
+							return $('<p/>').attr({'style':'margin-left:300px;'}).html('좋아하는 장르의 앨범이 없습니다.');
 						});
-					});
-					
-					$('.sj-for-album-item:first').addClass('active');
-					
-					sj.service.fy_album_dt(ald);
-					
-					
+						$('#for-album .sj-music-content').css('height','200px');
+					}else{
+						let $li = $('<div/>').addClass('list-group').attr({'style':'margin:0;'}).appendTo('#for-album-li');
+						
+						$.each(fal,(i, v)=>{
+							$('<div/>')
+							.addClass('sj-for-album-item sj-bg-img')
+							.attr({'style':'background-image:url('+$.ctx()+'/resources/img/album/'+v.imgName+'.'+v.ext+');'})
+							.append(
+									$('<div/>').addClass('sj-for-album-eff').append(
+											$('<h4/>').html(v.albumTitle),
+											$('<h6/>').html(v.artistName)
+									)
+							)
+							.appendTo($li)
+							.click(function(e){
+								let $this = $(this);
+								$this.siblings('.sj-for-album-item.active').removeClass('active');
+								$this.addClass('active');
+								$.getJSON($.ctx()+'/foryou/albums/'+v.albumSeq,d=>{
+									sj.service.fy_album_dt(d.albumDt);
+								})
+							});
+						});
+						
+						$('.sj-for-album-item:first').addClass('active');
+						
+						sj.service.fy_album_dt(ald);
+					}
 					
 					// for - artist
 					
@@ -278,23 +285,35 @@ sj ={
 							)
 					).appendTo($foryouSec);
 											
-					let $accUl = $('<ul/>').appendTo($('#for-artist'));
-					$.each(fat,(i,v)=>{
-						$('<li/>').append(
-								$('<div/>')
-								.addClass('sj-bg-img')
-								.attr({'style':'background-image:url('+$.ctx()+'/resources/img/artist/'+v.imgName+'.'+v.ext+');'}),
-								$('<div/>').addClass('sj-acc-img-cnt')
-								.append(
-									$('<p/>').html(v.artistName)
-								)
-						)
-						.hover(function(){$(this).css("cursor","pointer")})
-						.click(e=>{
-							jt.search(v.artistName);
-						})
-						.appendTo($accUl);
-					});
+					if(fat.length === 0){
+						$('#for-artist').remove();
+						
+						$('#for-artist-con p.sj-foryou-theme').after(function(){
+							return $('<p/>').attr({'style':'margin-left:300px;'}).html('추천할 아티스트가 없습니다.');
+						});
+						$('#for-artist-con .sj-music-content').css('height','200px');
+						
+					}else{
+						
+						let $accUl = $('<ul/>').appendTo($('#for-artist'));
+						$.each(fat,(i,v)=>{
+							$('<li/>').append(
+									$('<div/>')
+									.addClass('sj-bg-img')
+									.attr({'style':'background-image:url('+$.ctx()+'/resources/img/artist/'+v.imgName+'.'+v.ext+');'}),
+									$('<div/>').addClass('sj-acc-img-cnt')
+									.append(
+										$('<p/>').html(v.artistName)
+									)
+							)
+							.hover(function(){$(this).css("cursor","pointer")})
+							.click(e=>{
+								jt.search(v.artistName);
+							})
+							.appendTo($accUl);
+						});
+						
+					}
 					
 				});
 			}
@@ -631,13 +650,11 @@ sj.service = {
 				
 			let $pl = $('<div/>').addClass('sj-music-playlist').appendTo($('#fy-music-list'));
 			
-			console.log(x.length);
-			
 			if(x.length === 0){
 				
 				$('<div/>').addClass('single-music').append(
 						$('<div/>').addClass('sj-music-item row').append(
-								$('<p/>').attr({'style':'margin:auto;'}).html('해당 장르의 추천 곡이 없습니다.')
+								$('<p/>').attr({'style':'margin-left:300px;'}).html('해당 장르의 추천 곡이 없습니다.')
 						)
 				).appendTo($pl);
 				
