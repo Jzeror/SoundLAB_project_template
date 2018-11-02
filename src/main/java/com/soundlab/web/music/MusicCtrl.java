@@ -75,12 +75,15 @@ public class MusicCtrl {
 			 System.out.println("topList:::::"+topList);
 			 topList = musMapper.top50List(map);
 		}
+		
+		//if(topList[0])
 		return topList;
 	}
 	
 	@GetMapping("/top50lineChart")
 	public List<Map<?,?>> top50lineChart() {
 		map.clear();
+
 		 List<Map<?,?>> chartData = null;
 		 String todayDate= new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //오늘
          map.put("todayDate",todayDate);
@@ -114,7 +117,7 @@ public class MusicCtrl {
 			     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));	
 			     
 			     map.put("PageNo", no);
-			     int PageNoEnd = no+4;
+			     int PageNoEnd = no+20;
 			     map.put("PageNoEnd",PageNoEnd);
 					System.out.println(no);
 					System.out.println(PageNoEnd);
@@ -130,7 +133,7 @@ public class MusicCtrl {
 				 cal.add(Calendar.DATE, +7);
 			     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
 			     map.put("PageNo", no);
-			     int PageNoEnd = no+4;
+			     int PageNoEnd = no+20;
 			     map.put("PageNoEnd",PageNoEnd);
 					System.out.println(no);
 					System.out.println(PageNoEnd);
@@ -146,7 +149,7 @@ public class MusicCtrl {
 				 cal.add(Calendar.DATE, +31);
 			     map.put("date2", new SimpleDateFormat("yyyy-MM-dd").format(cal.getTime()));
 			     map.put("PageNo", no);
-			     int PageNoEnd = no+4;
+			     int PageNoEnd = no+20;
 			     map.put("PageNoEnd",PageNoEnd);
 					System.out.println(no);
 					System.out.println(PageNoEnd);

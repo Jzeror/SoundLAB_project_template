@@ -12,7 +12,7 @@
 		</if>
 		(SELECT CAST(@RNUM := @RNUM + 1 AS SIGNED INTEGER) AS NO, A.*
 		FROM (
-		SELECT
+		SELECT DISTINCT
 		AL.ALBUM_TITLE,
 		AR.ARTIST_NAME,
 		MUS.MUSIC_TITLE,
@@ -64,6 +64,7 @@
 	</select>
 
 	<select id="top50lineChart" resultType="map" >
+
 		SELECT  V1.SEQ_GROUP SEQ, COUNT(*) 스트리밍 , DATE_FORMAT(V1.VIEW_DATE,'%Y-%m-%d') 날짜, M.MUSIC_TITLE TITLE, A.ARTIST_NAME 가수
 		FROM VIEW_RECORD V1
 		LEFT JOIN MUSIC M
